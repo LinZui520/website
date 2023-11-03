@@ -1,10 +1,13 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"backend/model"
+	"github.com/gin-gonic/gin"
+)
 
 type SettingsApi struct {
 }
 
 func (SettingsApi) SettingsInfoView(c *gin.Context) {
-	c.JSON(200, gin.H{"msg": "xxx"})
+	model.OK(map[string]string{}, "你好", c)
 }

@@ -8,6 +8,6 @@ type System struct {
 	Env  string `yaml:"env"`
 }
 
-func (s System) Addr() string {
+func (s System) Address() string {
 	return fmt.Sprintf("%s:%d", s.Host, s.Port)
 }

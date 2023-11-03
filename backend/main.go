@@ -14,10 +14,7 @@ func main() {
 	//连接数据库
 	global.DB = core.InitGorm()
 
-	Router := router.InitRouter()
-	global.Log.Infof("blog_server运行在：%s", global.Config.System.Addr())
-	err := Router.Run(global.Config.System.Addr())
-	if err != nil {
-		return
+	if router.InitRouter().Run(global.Config.System.Address()) != nil {
+		global.Log.Warnln("server运行失败")
 	}
 }
