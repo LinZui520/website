@@ -7,13 +7,12 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"log"
 	"time"
 )
 
 func InitGorm() *gorm.DB {
 	if viper.Get("mysql.host") == "" {
-		//未配置mysql，取消gorm连接
+		global.Log.Warnln("未配置mysql，取消gorm连接")
 		return nil
 	}
 	dsn := global.Config.Mysql.Dsn()
@@ -28,9 +27,8 @@ func InitGorm() *gorm.DB {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: mysqlLogger,
 	})
-
 	if err != nil {
-		log.Fatalf(fmt.Sprintln("mysql连接失败"))
+		global.Log.Fatalf(fmt.Sprintln("[#{dsn}]mysql连接失败"))
 	}
 
 	sqlDB, _ := db.DB()

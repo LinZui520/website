@@ -3,15 +3,21 @@ package main
 import (
 	"backend/core"
 	"backend/global"
-	"fmt"
+	"backend/router"
 )
 
 func main() {
+	//读取配置文件
 	core.InitConfig()
+	//初始化日志
 	global.Log = core.InitLogger()
-	global.Log.Warnln("你好")
-	global.Log.Error("你好")
-	global.Log.Infof("你好")
+	//连接数据库
 	global.DB = core.InitGorm()
-	fmt.Println(global.DB)
+
+	Router := router.InitRouter()
+	global.Log.Infof("blog_server运行在：%s", global.Config.System.Addr())
+	err := Router.Run(global.Config.System.Addr())
+	if err != nil {
+		return
+	}
 }
