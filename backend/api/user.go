@@ -6,13 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserApi struct {
-}
+type UserApi struct{}
 
 var userService service.UserService
 
-func (UserApi) UserGet(c *gin.Context) {
-	user, err := userService.UserGet(c)
+func (UserApi) GetUser(c *gin.Context) {
+	user, err := userService.GetUser(c)
 	if err != nil {
 		model.Fail(map[string]string{}, "查询失败", c)
 	} else if user.Username == "" {
@@ -23,8 +22,8 @@ func (UserApi) UserGet(c *gin.Context) {
 
 }
 
-func (UserApi) UserAdd(c *gin.Context) {
-	err := userService.UserAdd(c)
+func (UserApi) AddUser(c *gin.Context) {
+	err := userService.AddUser(c)
 	if err != nil {
 		model.Fail(map[string]string{}, "添加失败", c)
 	} else {

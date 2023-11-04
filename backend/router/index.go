@@ -10,6 +10,6 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 
 	UserRouter(router)
-
+	ArticleRouter(router)
 	return router
 }
