@@ -5,17 +5,17 @@ import (
 	"net/http"
 )
 
-type ErrorCode int
-
-const (
-	SettingsError ErrorCode = 1001
-)
-
-var (
-	ErrorMap = map[ErrorCode]string{
-		SettingsError: "系统错误",
-	}
-)
+//type ErrorCode int
+//
+//const (
+//	SettingsError ErrorCode = 1001
+//)
+//
+//var (
+//	ErrorMap = map[ErrorCode]string{
+//		SettingsError: "系统错误",
+//	}
+//)
 
 type Response struct {
 	Code int    `json:"code"`
@@ -40,11 +40,6 @@ func OK(data any, msg string, c *gin.Context) {
 	Result(Success, data, msg, c)
 }
 
-func Fail(code ErrorCode, data any, msg string, c *gin.Context) {
-	msg, ok := ErrorMap[code]
-	if ok {
-		Result(int(code), data, msg, c)
-		return
-	}
-	Result(Error, data, "未知错误", c)
+func Fail(data any, msg string, c *gin.Context) {
+	Result(Error, data, msg, c)
 }
