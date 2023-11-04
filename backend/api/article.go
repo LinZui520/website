@@ -49,3 +49,12 @@ func (ArticleApi) DeleteArticle(c *gin.Context) {
 		model.OK(map[string]string{}, "删除成功", c)
 	}
 }
+
+func (ArticleApi) UpdateArticle(c *gin.Context) {
+	err := articleService.UpdateArticle(c)
+	if err != nil {
+		model.Fail(map[string]string{}, "更新失败", c)
+	} else {
+		model.OK(map[string]string{}, "更新成功", c)
+	}
+}

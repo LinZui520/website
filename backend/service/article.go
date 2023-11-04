@@ -34,3 +34,8 @@ func (ArticleService) DeleteArticle(c *gin.Context) error {
 	var article model.Article
 	return global.DB.Unscoped().Delete(&article, c.Query("id")).Error
 }
+
+func (ArticleService) UpdateArticle(c *gin.Context) error {
+	var article model.Article
+	return global.DB.Model(&article).Where("id = ?", c.PostForm("id")).Update("title", c.PostForm("title")).Update("content", c.PostForm("content")).Error
+}
