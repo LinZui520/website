@@ -1,7 +1,7 @@
 package api
 
 type Group struct {
-	SettingsApi SettingsApi
+	UserApi UserApi
 }
 
 var Api = new(Group)

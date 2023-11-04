@@ -9,6 +9,7 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(global.Config.System.Env)
 	router := gin.Default()
 
-	SettingsRouter(router)
+	UserRouter(router)
+
 	return router
 }
