@@ -10,6 +10,7 @@ func ArticleRouter(router *gin.Engine) {
 	article := router.Group("article")
 	{
 		article.POST("/add", articleApi.AddArticle)
-		article.GET("/get", articleApi.GetArticle)
+		article.GET("/get", articleApi.GetOneArticle)
+		article.GET("/list", articleApi.GetAllArticle)
 	}
 }
