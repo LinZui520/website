@@ -15,3 +15,12 @@ func (ArticleService) AddArticle(c *gin.Context) {
 	}
 	global.DB.Create(&article)
 }
+
+func (ArticleService) GetArticle(c *gin.Context) (model.Article, error) {
+	var article model.Article
+	err := global.DB.Find(&article, c.Query("id")).Error
+	if err != nil {
+		return article, err
+	}
+	return article, nil
+}

@@ -3,7 +3,6 @@ package core
 import (
 	"backend/global"
 	"fmt"
-	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -11,7 +10,7 @@ import (
 )
 
 func InitGorm() *gorm.DB {
-	if viper.Get("mysql.host") == "" {
+	if global.Config.Mysql.Host == "" {
 		global.Log.Warnln("未配置mysql，取消gorm连接")
 		return nil
 	}
