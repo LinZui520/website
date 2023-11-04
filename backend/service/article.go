@@ -8,21 +8,17 @@ import (
 
 type ArticleService struct{}
 
-func (ArticleService) AddArticle(c *gin.Context) {
+func (ArticleService) AddArticle(c *gin.Context) error {
 	article := model.Article{
 		Title:   c.PostForm("title"),
 		Content: c.PostForm("content"),
 	}
-	global.DB.Create(&article)
+	return global.DB.Create(&article).Error
 }
 
 func (ArticleService) GetOneArticle(c *gin.Context) (model.Article, error) {
 	var article model.Article
-	err := global.DB.Find(&article, c.Query("id")).Error
-	if err != nil {
-		return article, err
-	}
-	return article, nil
+	return article, global.DB.Find(&article, c.Query("id")).Error
 }
 
 func (ArticleService) GetAllArticle() ([]model.Article, error) {
@@ -32,4 +28,9 @@ func (ArticleService) GetAllArticle() ([]model.Article, error) {
 		return articles, err
 	}
 	return articles, nil
+}
+
+func (ArticleService) DeleteArticle(c *gin.Context) error {
+	var article model.Article
+	return global.DB.Unscoped().Delete(&article, c.Query("id")).Error
 }

@@ -10,8 +10,7 @@ type UserService struct{}
 
 func (service UserService) GetUser(c *gin.Context) (model.User, error) {
 	var user model.User
-	err := global.DB.Find(&user, "username=?", c.Query("username")).Error
-	return user, err
+	return user, global.DB.Find(&user, "username=?", c.Query("username")).Error
 }
 
 func (service UserService) AddUser(c *gin.Context) error {

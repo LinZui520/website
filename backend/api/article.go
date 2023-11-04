@@ -11,8 +11,12 @@ type ArticleApi struct{}
 var articleService service.ArticleService
 
 func (ArticleApi) AddArticle(c *gin.Context) {
-	articleService.AddArticle(c)
-	model.OK(map[string]string{}, "添加成功", c)
+	err := articleService.AddArticle(c)
+	if err != nil {
+		model.OK(map[string]string{}, "添加失败", c)
+	} else {
+		model.OK(map[string]string{}, "添加成功", c)
+	}
 }
 
 func (ArticleApi) GetOneArticle(c *gin.Context) {
@@ -34,5 +38,14 @@ func (ArticleApi) GetAllArticle(c *gin.Context) {
 		model.Fail(map[string]string{}, "未查询到任何文章", c)
 	} else {
 		model.OK(articles, "查询成功", c)
+	}
+}
+
+func (ArticleApi) DeleteArticle(c *gin.Context) {
+	err := articleService.DeleteArticle(c)
+	if err != nil {
+		model.Fail(map[string]string{}, "删除失败", c)
+	} else {
+		model.OK(map[string]string{}, "删除成功", c)
 	}
 }
