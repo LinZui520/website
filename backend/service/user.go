@@ -24,5 +24,5 @@ func (UserService) AddUser(c *gin.Context) error {
 func (UserService) UserLogin(c *gin.Context) (bool, error) {
 	var user model.User
 	err := global.DB.Where("username = ?", c.PostForm("username")).Find(&user).Error
-	return user.Password == c.PostForm("password"), err
+	return user.Password == c.PostForm("password") && user.Password != "", err
 }
