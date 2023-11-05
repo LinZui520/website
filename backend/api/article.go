@@ -13,7 +13,7 @@ var articleService service.ArticleService
 func (ArticleApi) AddArticle(c *gin.Context) {
 	err := articleService.AddArticle(c)
 	if err != nil {
-		model.OK(map[string]string{}, "添加失败", c)
+		model.Fail(map[string]string{}, "添加失败", c)
 	} else {
 		model.OK(map[string]string{}, "添加成功", c)
 	}

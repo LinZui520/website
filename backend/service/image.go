@@ -4,6 +4,7 @@ import (
 	"backend/global"
 	"backend/model"
 	"github.com/gin-gonic/gin"
+	"os"
 	"strconv"
 	"time"
 )
@@ -23,4 +24,17 @@ func (ImageService) AddImage(c *gin.Context) error {
 		Belong: belong,
 	}
 	return global.DB.Create(&image).Error
+}
+
+func (ImageService) DeleteImage(c *gin.Context) error {
+	var image model.Image
+	err := global.DB.Find(&image, c.Query("id")).Error
+	if err != nil {
+		return err
+	}
+	err = os.Remove("./image/" + image.Name)
+	if err != nil {
+		return err
+	}
+	return global.DB.Unscoped().Delete(&image, c.Query("id")).Error
 }

@@ -10,5 +10,6 @@ func ImageRouter(router *gin.Engine) {
 	image := router.Group("image")
 	{
 		image.POST("/add", imageApi.AddImage)
+		image.DELETE("/delete", imageApi.DeleteImage)
 	}
 }
