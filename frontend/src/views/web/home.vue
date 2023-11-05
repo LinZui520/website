@@ -1,40 +1,23 @@
 <template>
 
-  <div class="common-layout home-view">
+  <el-container>
+    <el-main class="home-main">Main</el-main>
 
-    <el-container>
-
-      <el-header class="home-header">
-        Header
-      </el-header>
-
-      <el-container>
-        <el-main class="home-main">Main</el-main>
-
-        <el-aside width="200px" class="home-aside">Aside</el-aside>
-      </el-container>
-
-      <el-footer class="home-footer">Footer</el-footer>
-    </el-container>
-  </div>
+    <el-aside width="25%" class="home-aside">Aside</el-aside>
+  </el-container>
   
 </template>
 
 
 <script setup lang="ts">
-  import carousel from '@/components/web/carousel.vue'
+  
   
 
 </script>
 
 
 <style scoped>
-.home-view {
-  background-color: #f3f7fb;
-}
-.home-header {
-  background-color: white;
-}
+
 .home-aside {
   background-color: white;
 
@@ -52,8 +35,5 @@
 
   margin: 10px;
 }
-.home-footer {
-  background-color: white;
-  height: 100px;
-}
+
 </style>

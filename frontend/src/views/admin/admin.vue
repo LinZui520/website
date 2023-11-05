@@ -1,7 +1,5 @@
 <template>
-  <p style="height: 800px;">
-    about
-  </p>
+  
 </template>
 
 
