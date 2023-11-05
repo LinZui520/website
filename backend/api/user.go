@@ -30,3 +30,14 @@ func (UserApi) AddUser(c *gin.Context) {
 		model.OK(map[string]string{}, "添加成功", c)
 	}
 }
+
+func (UserApi) UserLogin(c *gin.Context) {
+	check, err := userService.UserLogin(c)
+	if err != nil {
+		model.Fail(map[string]string{}, "登陆失败", c)
+	} else if check == false {
+		model.Fail(false, "密码错误", c)
+	} else {
+		model.OK(true, "登陆成功", c)
+	}
+}
