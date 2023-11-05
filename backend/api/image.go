@@ -32,7 +32,7 @@ func (ImageApi) GetSpecifiedImage(c *gin.Context) {
 	images, err := imageService.GetSpecifiedImage(c)
 	if err != nil {
 		model.Fail(map[string]string{}, "查询失败", c)
-	} else if images == nil {
+	} else if len(images) == 0 {
 		model.Fail(map[string]string{}, "未查询到图片", c)
 	} else {
 		model.OK(images, "查询成功", c)

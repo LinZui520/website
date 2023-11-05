@@ -34,7 +34,7 @@ func (ArticleApi) GetAllArticle(c *gin.Context) {
 	articles, err := articleService.GetAllArticle()
 	if err != nil {
 		model.Fail(map[string]string{}, "查询失败", c)
-	} else if articles == nil {
+	} else if len(articles) == 0 {
 		model.Fail(map[string]string{}, "未查询到任何文章", c)
 	} else {
 		model.OK(articles, "查询成功", c)
