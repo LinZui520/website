@@ -6,6 +6,9 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
+      meta: { 
+        requiresAuth: false
+      },
       component: () => import('@/views/web/index.vue'),
       children: [
         {
@@ -23,14 +26,21 @@ const router = createRouter({
     {
       path: '/admin',
       name: 'admin',
+      meta: { 
+        requiresAuth: true 
+      },
       component: () => import('@/views/admin/admin.vue'),
     },
     {
       path: '/login',
       name: 'login',
+      meta: { 
+        requiresAuth: false
+      },
       component: () => import('@/views/admin/login.vue'),
     }
   ]
 })
+
 
 export default router
