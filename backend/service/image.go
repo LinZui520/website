@@ -38,3 +38,8 @@ func (ImageService) DeleteImage(c *gin.Context) error {
 	}
 	return global.DB.Unscoped().Delete(&image, c.Query("id")).Error
 }
+
+func (ImageService) GetSpecifiedImage(c *gin.Context) ([]model.Image, error) {
+	var images []model.Image
+	return images, global.DB.Where("belong = ?", c.Query("belong")).Find(&images).Error
+}

@@ -7,7 +7,7 @@ import (
 
 func ArticleRouter(router *gin.Engine) {
 	articleApi := api.Api.ArticleApi
-	article := router.Group("article")
+	article := router.Group("api/article")
 	{
 		article.POST("/add", articleApi.AddArticle)
 		article.GET("/get", articleApi.GetOneArticle)
