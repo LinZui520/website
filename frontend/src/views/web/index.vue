@@ -4,7 +4,7 @@
 
     <el-container>
 
-      <el-header class="home-header">
+      <el-header class="home-header" data-aos="fade-down">
         <el-row :gutter="20">
           <el-col :span="9" class="header-item">
             <el-link href="/" type="info" :underline="false">Home</el-link>

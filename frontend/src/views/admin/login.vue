@@ -2,7 +2,7 @@
 
   <div class="admin-login">
 
-    <span class="admin-item">Hello World!</span>
+    <span data-aos="fade-down" class="admin-item">Hello World!</span>
 
     <el-input class="admin-item" v-model="username" placeholder="Please input username" clearable />
 
@@ -14,9 +14,9 @@
       show-password
     />
     <div class="admin-button">
-      <el-button class="admin-item" style="width: 40%;" @click="back">back</el-button>
+      <el-button data-aos="fade-right" class="admin-item" style="width: 40%;" @click="back">back</el-button>
 
-      <el-button class="admin-item" style="width: 40%;" @click="login">login</el-button>
+      <el-button data-aos="fade-left" class="admin-item" style="width: 40%;" @click="login">login</el-button>
     </div>
     
   </div>
@@ -80,6 +80,7 @@
   text-align: center;
   width: 50%;
   margin-top: 40px;
+  color: #909399;
 }
 
 .admin-button {
