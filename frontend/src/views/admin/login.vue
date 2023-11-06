@@ -13,7 +13,12 @@
       placeholder="Please input password"
       show-password
     />
-    <el-button class="admin-item" style="width: 30%;" @click="login">login</el-button>
+    <div class="admin-button">
+      <el-button class="admin-item" style="width: 40%;" @click="back">back</el-button>
+
+      <el-button class="admin-item" style="width: 40%;" @click="login">login</el-button>
+    </div>
+    
   </div>
 
   
@@ -25,6 +30,7 @@
   import { userLogin } from '@/api/user'
   import { useRouter } from 'vue-router';
   import useUserStore from '@/store/user'
+  import { ElMessage } from 'element-plus'
 
   const router = useRouter();
   const userStore = useUserStore();
@@ -40,13 +46,18 @@
       if (res.data.data == true) {
         userStore.isLogin = true
         userStore.username = username.value
+        ElMessage.success('Login successful')
         router.push({path: '/admin'})
       } else {
-        console.log('登陆失败')
+        ElMessage.warning('Incorrect account or password')
       }
     }).catch(err => {
-      console.log('网络原因,登陆失败', err)
+      ElMessage.error('Network reasons, login failed')
     })
+  }
+
+  const back = () => {
+    router.push({path: '/'})
   }
 </script>
 
@@ -69,5 +80,9 @@
   text-align: center;
   width: 50%;
   margin-top: 40px;
+}
+
+.admin-button {
+  text-align: center;
 }
 </style>

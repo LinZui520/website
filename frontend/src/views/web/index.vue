@@ -6,11 +6,12 @@
 
       <el-header class="home-header">
         <el-row :gutter="20">
-          <el-col :span="18" class="header-item">
+          <el-col :span="9" class="header-item">
             <el-link href="/" type="info" :underline="false">Home</el-link>
             <el-link href="/about" type="info" :underline="false">About</el-link>
           </el-col>
-
+          <el-col :span="9" class="header-item">
+          </el-col>
           <el-col :span="6" class="header-item">
             <el-link href="/login" type="info" :underline="false">Login</el-link>
           </el-col>
@@ -54,9 +55,9 @@
     flex-direction: row;
     justify-content: center;
     padding-top: 18px;
-
+    
     .el-link {
-      font-size: medium;
+      font-size: large;
       margin-right: 25px;
       margin-left: 25px;
     }

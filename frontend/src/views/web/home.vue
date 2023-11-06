@@ -1,10 +1,17 @@
 <template>
 
-  <el-container>
-    <el-main class="home-main">Main</el-main>
-
-    <el-aside width="25%" class="home-aside">Aside</el-aside>
+  <el-container class="home-main">
+    <el-main class="home-article">
+        Main
+    </el-main>
+    <el-aside class="home-aside">aside</el-aside>
   </el-container>
+  <span data-aos="fade-up" style="background-color: aqua;width: 50px;margin: 0 auto;">
+    Main
+  </span>
+  <div style="height: 800px;">
+
+  </div>
   
 </template>
 
@@ -18,22 +25,13 @@
 
 <style scoped>
 
-.home-aside {
-  background-color: white;
-
-
-  border: 1px solid rgb(224, 224, 224);
-  border-radius: 10px;
-  margin: 10px;
-}
 .home-main {
   background-color: white;
-  height: 600px;
-
-  border: 1px solid rgb(224, 224, 224);
-  border-radius: 10px;
+  height: 1200px;
 
   margin: 10px;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
 </style>

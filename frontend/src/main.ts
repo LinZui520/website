@@ -9,13 +9,21 @@ import 'element-plus/dist/index.css'
 
 import pinia from './store'
 
+
+import 'aos/dist/aos.css'
+
+
 const app = createApp(App)
 
 app.use(router)
 app.use(ElementPlus)
 app.use(pinia)
 
+
 app.mount('#app')
+
+
+
 
 import useUserStore from '@/store/user'
 const userStore = useUserStore();
