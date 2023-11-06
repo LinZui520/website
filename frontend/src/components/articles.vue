@@ -1,6 +1,6 @@
 <template>
   <div v-for="item in reactiveItems.data">
-    <div class="article" data-aos="zoom-in-up">
+    <div class="article" data-aos="zoom-in-up" @click="read(item.article.id)">
 
       <img class="article-image" :src="item.image">
 
@@ -16,8 +16,10 @@
 
 
 <script setup lang="ts">
-  import { getAllArticle, getSpecifiedImage } from '@/api/article';
+  import { getAllArticle, getSpecifiedImage, getOneArticle } from '@/api/article';
   import { reactive } from 'vue';
+  import useArticleStore from "@/store/article";
+  import { useRouter } from 'vue-router';
 
   const ip = "http://127.0.0.1:8080/image/"
 
@@ -66,6 +68,19 @@
  
   update()
 
+  const articleStore = useArticleStore()
+  const router = useRouter()
+
+  const read = (id: number) => {
+    getOneArticle(id).then(res => {
+      articleStore.id = res.data.data.id
+      articleStore.title = res.data.data.title
+      articleStore.content = res.data.data.content
+    }).catch(err => {
+
+    })
+    router.push({path: '/article'})
+  }
 
 
   
@@ -74,7 +89,7 @@
 
 <style scoped>
 .article {
-  height: 200px;
+  height: 300px;
   margin-top: 50px;
   margin-bottom: 50px;
   display: flex;

@@ -4,12 +4,9 @@
     <el-main class="home-article" >
       <articles></articles>
     </el-main>
-    <el-aside class="home-aside" style="background-color: aquamarine;">aside</el-aside>
+    <!-- <el-aside class="home-aside" style="background-color: aquamarine;">aside</el-aside> -->
   </el-container>
   
-  <div style="height: 800px;">
-
-  </div>
   
 </template>
 
@@ -32,10 +29,11 @@
   margin-right: 15%;
 }
 .home-article {
-  margin-right: 2%;
+  width: 100%;
+  /* margin-right: 2%; */
 }
-.home-aside {
+/* .home-aside {
   margin-left: 2%;
-}
+} */
 
 </style>

@@ -9,7 +9,7 @@
 
 <style>
 * {
-  font-family: "ComicSansMS";
+  font-family: "ComicSansMS","YouSheYuFeiTeJianKangTi";
   margin: 0px;
   padding: 0px;
 }

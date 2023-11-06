@@ -20,6 +20,9 @@
       </el-header>
 
       <router-view></router-view>
+      <div style="height: 800px;">
+
+      </div>
 
       <el-footer class="home-footer">
         <div class="footer-left">

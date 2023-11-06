@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia'
 
 const useUserStore = defineStore("account", {
-    state: () => ({
-        username: '',
-        isLogin: false,
-    }),
+  state: () => ({
+    username: '',
+    isLogin: false,
+  }),
 
-    getters: {
+  getters: {
 
-    },
+  },
 
-    actions: {
+  actions: {
 
-    }
+  }
 })
 
 export default useUserStore
