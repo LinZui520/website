@@ -1,23 +1,32 @@
 <template>
-  <div class="markdown" v-html="markdown"></div>
+  <div class="markdown">
+    <MdEditor  v-model="content" />
+    <MdPreview :modelValue="content" />
+    <!-- <MdCatalog :editorId="id" :scrollElement="scrollElement" /> -->
+  </div>
+  
 </template>
 
 
 <script setup lang="ts">
   import useArticleStore from '@/store/article';
-  import MarkdownIt from 'markdown-it';
-  const md = new MarkdownIt()
+  import { ref } from 'vue';
+  import { MdPreview, MdCatalog } from 'md-editor-v3';
+  import 'md-editor-v3/lib/style.css';
 
   const articleStore = useArticleStore()
-  const markdown = md.render(articleStore.content)
+  const content = ref(articleStore.content)
+  // const scrollElement = document.documentElement;
 </script>
 
 
 <style scoped>
 .markdown {
+  display: flex;
+  flex-direction: row;
   margin-left: 15%;
   margin-right: 15%;
-  margin-top: 5%;
-  /* text-align: center; */
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 </style>

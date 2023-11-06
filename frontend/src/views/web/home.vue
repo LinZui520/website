@@ -4,7 +4,6 @@
     <el-main class="home-article" >
       <articles></articles>
     </el-main>
-    <!-- <el-aside class="home-aside" style="background-color: aquamarine;">aside</el-aside> -->
   </el-container>
   
   
@@ -21,8 +20,6 @@
 <style scoped>
 
 .home-main {
-  /* background-color: white; */
-  /* height: 1200px; */
 
   margin: 10px;
   margin-left: 15%;
@@ -30,10 +27,7 @@
 }
 .home-article {
   width: 100%;
-  /* margin-right: 2%; */
+  min-height: 800px;
 }
-/* .home-aside {
-  margin-left: 2%;
-} */
 
 </style>
