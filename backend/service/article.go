@@ -14,7 +14,8 @@ func (ArticleService) AddArticle(c *gin.Context) error {
 	file, _ := c.FormFile("image")
 	image := strconv.FormatInt(time.Now().Unix(), 10) + ".png"
 	err := c.SaveUploadedFile(file, "./image/"+image)
-	image = "http://" + global.Config.System.Host + ":" + strconv.Itoa(global.Config.System.Port) + "/image/" + image
+	//http://124.71.166.50/image/
+	image = "http://127.0.0.1/image/" + image
 	if err != nil {
 		return err
 	}
