@@ -13,11 +13,20 @@ export const getOneArticle = (id: number) => request({
   }
 })
 
-//根据文章获取图片
-export const getSpecifiedImage = (id: number) => request({
-  url: 'image/get',
-  method: 'get',
+export const addArticle = (title: string,image: File, content: string) => request({
+  url: 'article/add',
+  method: 'post',
+  data: {
+    title,
+    image,
+    content
+  }
+})
+
+export const deleteArticle = (id: number) => request({
+  url: 'article/delete',
+  method: 'delete',
   params: {
-    belong: id
+    id
   }
 })

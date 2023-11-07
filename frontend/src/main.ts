@@ -28,14 +28,19 @@ app.mount('#app')
 import useUserStore from '@/store/user'
 const userStore = useUserStore();
 
-router.beforeEach((to, from, next) => {
-  if (to.path == '/admin') {
-    if (userStore.isLogin == true) {
-      next();
-    } else {
-      next('/login')
-    }
-  } else {
-    next();
-  }
+// router.beforeEach((to, from, next) => {
+//   if (to.path == '/admin') {
+//     if (userStore.isLogin == true) {
+//       next();
+//     } else {
+//       next('/login')
+//     }
+//   } else {
+//     next();
+//   }
+// })
+
+//router跳转路由后回到顶部
+router.afterEach((to, from, next) => {
+  window.scrollTo(0, 0)
 })

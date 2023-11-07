@@ -22,7 +22,7 @@ const router = createRouter({
           component: () => import('@/views/web/about.vue'),
         },
         {
-          path: 'article',
+          path: '/article/:id',
           name: 'article',
           component: () => import('@/views/web/article.vue'),
         }
@@ -43,8 +43,21 @@ const router = createRouter({
         requiresAuth: false
       },
       component: () => import('@/views/admin/login.vue'),
+    },
+    {
+      path: '/404',
+      name: '404',
+      meta: { 
+        requiresAuth: false
+      },
+      component: () => import('@/components/404.vue')
+    },
+    {
+      path: '/:pathMatch(.*)',
+      redirect: '/404'
     }
-  ]
+  ],
+  
 })
 
 

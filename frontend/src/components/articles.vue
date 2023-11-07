@@ -1,11 +1,11 @@
 <template>
-  <div v-for="item in reactiveItems.data">
-    <div class="article" data-aos="zoom-in-up" @click="read(item.article.id)">
+  <div v-for="item in reactiveArticles.data">
+    <div class="article" data-aos="zoom-in-up" @click="read(item.id)">
 
       <img class="article-image" :src="item.image">
 
       <div class="article-title">
-        <span>{{ item.article.title }}</span>
+        <span>{{ item.title }}</span>
       </div>
     </div>
 
@@ -16,74 +16,40 @@
 
 
 <script setup lang="ts">
-  import { getAllArticle, getSpecifiedImage, getOneArticle } from '@/api/article';
+  import { getAllArticle } from '@/api/article';
   import { reactive } from 'vue';
-  import useArticleStore from "@/store/article";
   import { useRouter } from 'vue-router';
-
-  const ip = "http://127.0.0.1:8080/image/"
+  import { ElMessage } from 'element-plus'
 
   type Article = {
     id: number
     title: string
+    image: string
     content: string
   };
   let articles: Article[] = []
 
 
-  type Image = {
-    id: number
-    name: string
-    belong: number
-  }
-
-  type Show = {
-    article: Article
-    image: string
-  }
-  let items: Show[] = []
-  const reactiveItems = reactive({data: items})
+  const reactiveArticles = reactive({data: articles})
   
 
   const update = async () => {
     try {
-      articles = (await getAllArticle()).data.data
-      var article: any
-      articles.forEach((article) => {
-        getSpecifiedImage(article.id).then(res => {
-          console.log(article)
-          console.log(res.data.data[0].name)
-          reactiveItems.data.push({
-            article: article,
-            image: ip + res.data.data[0].name
-          })
-        }).catch(err => {
-
-        })
-      })
+      reactiveArticles.data = (await getAllArticle()).data.data
     } catch(err) {
-
+      ElMessage.warning("获取文章列表失败")
     }
   }
  
   update()
 
-  const articleStore = useArticleStore()
   const router = useRouter()
 
   const read = (id: number) => {
-    getOneArticle(id).then(res => {
-      articleStore.id = res.data.data.id
-      articleStore.title = res.data.data.title
-      articleStore.content = res.data.data.content
-    }).catch(err => {
-
-    })
-    router.push({path: '/article'})
+    router.push({name: 'article', params: {id: id}})
   }
-
-
   
+
 </script>
 
 
@@ -105,7 +71,7 @@
 }
 
 .article-image {
-  background-color: #f3f7fb;
+  background-color: white;
   border-radius: 10px 0px 0px 10px;
   width: 50%;
   height:100%;
@@ -117,13 +83,11 @@
   width: 50%;
   height: 100%;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
   border-radius: 0px 10px 10px 0px;
-
-  
 }
 span {
   margin-top: 50px;
-  margin-left: 30px;
-  margin-right: 30px;
 }
 </style>
