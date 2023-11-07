@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MdEditor class="markdown" v-model="text" />
+    <MdEditor class="markdown" v-model="content" />
     <div class="upload">
    
       <input  class="upload-button" type="file" @change="handleFileChange" />
@@ -25,11 +25,10 @@
   import { addArticle } from '@/api/article'
   import { ElMessage } from 'element-plus'
 
-  const text = ref()
   const title = ref()
   const file = ref()
+  const content = ref()
 
-  const formData = new FormData();
   const handleFileChange = (event: any) => {
     file.value = event.target.files[0]
   }
@@ -41,8 +40,10 @@
       return
     }
 
-    addArticle(title.value,file.value, text.value).then(res=>{
+    addArticle(title.value,file.value, content.value).then(res=>{
       if(res.data.msg == '添加成功') {
+        title.value = ''
+        content.value = ''
         ElMessage.info('添加成功')
       } else {
         ElMessage.warning('添加失败')
@@ -50,7 +51,6 @@
     }).catch(err => {
       ElMessage.warning('网络错误')
     })
-    console.log(formData)
   }
   
 
