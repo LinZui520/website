@@ -91,10 +91,11 @@ $ mysql
 mysql> ALTER USER 'root'@'localhost' IDENTIFIED BY '密码';
 ```
 
-登陆
+在``/root/blog/backend``目录下登陆
 
 ```sh
 $ mysql -u root -p
+$ source install.sql
 ```
 
 开启80端口访问
