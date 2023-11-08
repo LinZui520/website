@@ -4,7 +4,9 @@ import (
 	"backend/global"
 	"backend/model"
 	"github.com/gin-gonic/gin"
+	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -14,8 +16,7 @@ func (ArticleService) AddArticle(c *gin.Context) error {
 	file, _ := c.FormFile("image")
 	image := strconv.FormatInt(time.Now().Unix(), 10) + ".png"
 	err := c.SaveUploadedFile(file, "./image/"+image)
-	//http://124.71.166.50/image/
-	image = "http://127.0.0.1/image/" + image
+	image = global.Config.System.Router + image
 	if err != nil {
 		return err
 	}
@@ -42,6 +43,13 @@ func (ArticleService) GetAllArticle() ([]model.Article, error) {
 }
 
 func (ArticleService) DeleteArticle(c *gin.Context) error {
+	var articleService ArticleService
+	Article, _ := articleService.GetOneArticle(c)
+	image := strings.Split(Article.Image, global.Config.System.Router)[1]
+	err := os.Remove(global.Config.System.Directory + "image/" + image)
+	if err != nil {
+		global.Log.Warnln("图片删除失败")
+	}
 	var article model.Article
 	return global.DB.Unscoped().Delete(&article, c.Query("id")).Error
 }

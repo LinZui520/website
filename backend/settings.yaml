@@ -14,6 +14,8 @@ logger:
   log_in_console: true
 
 system:
-  host: "0.0.0.0"
+  host: "127.0.0.1"
   port: 8080
   env: release
+  directory: "/home/linzui/Code/blog/backend/"  #项目目录
+  router: "http://127.0.0.1:8080/image/"        #静态图片路由
