@@ -64,7 +64,7 @@ $ mkdir /root/blog/backend/image
 $ chmod 777 -R /root/blog/backend/image
 ```
 
-修改``settings.yaml``配置文件
+修改``settings.yaml``配置文件和``install.sql``脚本
 
 后台运行
 
@@ -75,7 +75,7 @@ $ setsid ./main
 
 ### 配置数据库
 
-安装mysql并运行
+安装``mysql``并运行
 
 ```sh
 $ apt install mysql-server
@@ -84,7 +84,7 @@ $ systemctl mysql-server
 $ mysql_secure_installation
 ```
 
-修改mysql密码
+修改``mysql``密码
 
 ```sh
 $ mysql
