@@ -11,7 +11,7 @@
 
 
 <script setup lang="ts">
-  import articles from '@/components/articles.vue';
+  import articles from '@/components/web/articles.vue';
   
 
 </script>

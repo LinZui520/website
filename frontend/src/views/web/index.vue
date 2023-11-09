@@ -7,13 +7,13 @@
       <el-header class="home-header" data-aos="fade-down">
         <el-row :gutter="20">
           <el-col :span="9" class="header-item">
-            <el-link href="/" type="info" :underline="false">Home</el-link>
-            <el-link href="/about" type="info" :underline="false">About</el-link>
+            <el-link href="/" type="info" :underline="false">首页</el-link>
+            <el-link href="/about" type="info" :underline="false">关于</el-link>
           </el-col>
           <el-col :span="9" class="header-item">
           </el-col>
           <el-col :span="6" class="header-item">
-            <el-link href="/login" type="info" :underline="false">Login</el-link>
+            <el-link href="/login" type="info" :underline="false">登录</el-link>
           </el-col>
         </el-row>
         
@@ -24,7 +24,7 @@
 
       <el-footer class="home-footer">
         <div class="footer-left">
-          <span style="color: rgb(79, 79, 79);">Hello World</span>
+          <span style="color: rgb(79, 79, 79);">你好 世界</span>
         </div>
         <div class="footer-right">
           <span style="color: rgb(79, 79, 79);">
@@ -59,8 +59,8 @@
     
     .el-link {
       font-size: large;
-      margin-right: 25px;
-      margin-left: 25px;
+      margin-right: 5%;
+      margin-left: 5%;
     }
   }
 }
