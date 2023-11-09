@@ -55,7 +55,7 @@ nginx
 
 ### 后端打包
 
-将打包生成的``main``  ``settings.yaml``复制到``/root/blog/backend``目录下
+将打包生成的``main``以及``settings.yaml``和``install.sql``复制到``/root/blog/backend``目录下
 
 新建``image``目录
 
