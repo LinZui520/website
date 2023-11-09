@@ -30,6 +30,11 @@ func (ArticleService) AddArticle(c *gin.Context) error {
 
 func (ArticleService) GetOneArticle(c *gin.Context) (model.Article, error) {
 	var article model.Article
+	tokenString, _ := c.Cookie("token")
+	_, err := ParseToken(tokenString)
+	if err != nil {
+		return article, err
+	}
 	return article, global.DB.Find(&article, c.Query("id")).Error
 }
 

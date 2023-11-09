@@ -20,10 +20,10 @@ func (UserApi) UserRegister(c *gin.Context) {
 }
 
 func (UserApi) UserLogin(c *gin.Context) {
-	err := userService.UserLogin(c)
+	tokenString, err := userService.UserLogin(c)
 	if err != nil {
-		model.Fail(false, err.Error(), c)
+		model.Fail(tokenString, err.Error(), c)
 	} else {
-		model.OK(true, "登陆成功", c)
+		model.OK(tokenString, "登陆成功", c)
 	}
 }

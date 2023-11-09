@@ -17,5 +17,5 @@ system:
   host: "127.0.0.1"
   port: 8080
   env: release
-  directory: "/home/linzui/Code/blog/backend/"  #项目目录
-  router: "http://127.0.0.1:8080/image/"        #静态图片路由
+  directory: "/home/linzui/Code/blog/backend/"  #项目目录 署在服务器时修改项目目录
+  router: "http://127.0.0.1:8080/image/"        #静态图片路由 部署在服务器时修改IP 不用添加端口

@@ -22,7 +22,7 @@ func (ArticleApi) AddArticle(c *gin.Context) {
 func (ArticleApi) GetOneArticle(c *gin.Context) {
 	article, err := articleService.GetOneArticle(c)
 	if err != nil {
-		model.Fail(map[string]string{}, "查询失败", c)
+		model.Fail(map[string]string{}, err.Error(), c)
 	} else if article.Title == "" {
 		model.Fail(map[string]string{}, "未查询到该文章", c)
 	} else {
