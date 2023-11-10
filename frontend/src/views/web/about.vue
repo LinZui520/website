@@ -43,7 +43,7 @@
     </p>
     <h1 class="about-item item-left" data-aos="fade-up" style="margin-top: 100px;">后端技术栈</h1>
     <p class="about-item item-left" data-aos="fade-up" style="margin-bottom: 200px;">
-      Go + Gin + Gorm + MySQL
+      Go + Gin + Gorm + JWT + MySQL
     </p>
 
   </div>

@@ -14,11 +14,13 @@ func main() {
 	//连接数据库
 	global.DB = core.InitGorm()
 
+	//NICKNAME := "狗哥"
 	//USERNAME := "linzui"
 	//PASSWORD := "123456"
 	//
 	//HASH, _ := bcrypt.GenerateFromPassword([]byte(PASSWORD), bcrypt.MinCost)
 	//USER := model.User{
+	//	Nickname: NICKNAME,
 	//	Username: USERNAME,
 	//	Password: string(HASH),
 	//}

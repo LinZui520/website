@@ -42,7 +42,15 @@ const router = createRouter({
       meta: { 
         requiresAuth: false
       },
-      component: () => import('@/views/admin/login.vue'),
+      component: () => import('@/views/web/login.vue'),
+    },
+    {
+      path: '/register',
+      name: 'register',
+      meta: { 
+        requiresAuth: false
+      },
+      component: () => import('@/views/web/register.vue')
     },
     {
       path: '/404',

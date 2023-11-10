@@ -13,6 +13,11 @@
       placeholder="请输入密码"
       show-password
     />
+
+    <el-link data-aos="fade-up" class="admin-item" href="/register" type="info" :underline="false">
+      New 一个 对象？
+    </el-link>
+
     <div class="admin-button">
       <el-button data-aos="fade-right" class="admin-item" style="width: 40%;" @click="back">返回</el-button>
 
@@ -27,7 +32,7 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { userLogin } from '@/api/user'
+  import { userLogin, userInfo } from '@/api/user'
   import { useRouter } from 'vue-router';
   import useUserStore from '@/store/user'
   import { ElMessage } from 'element-plus'
@@ -55,12 +60,19 @@
       username.value,
       password.value
     ).then(res => {
-      if (res.data.data != "") {
-        userStore.isLogin = true
-        userStore.username = username.value
+      if (res.data.code == 200) {
         cookies.set('token', res.data.data, '1m')
         ElMessage.success('登陆成功')
-        router.push({path: '/admin'})
+        userInfo(username.value).then(res => {
+          userStore.id = res.data.data.id
+          userStore.nickname = res.data.data.nickname
+          userStore.username = res.data.data.username
+          userStore.isLogin = true
+        }).catch(err => {
+          ElMessage.warning('获取个人信息失败')
+        })
+
+        router.push({path: '/'})
       } else {
         ElMessage.warning('账号或密码错误')
       }
@@ -72,13 +84,7 @@
   const back = () => {
     router.push({path: '/'})
   }
-  userLogin(cookies.get('username'), cookies.get('password')).then(res => {
-    if (res.data.data == true) {
-      userStore.isLogin = true
-      userStore.username = cookies.get('username')
-      router.push({path: '/admin'})
-    }
-  })
+
 </script>
 
 
@@ -88,7 +94,7 @@
   flex-direction: column;
   
   width: 500px;
-  height: 309px;
+  /* height: 309px; */
 
   
   margin: 0 auto;

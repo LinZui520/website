@@ -13,7 +13,8 @@
           <el-col :span="9" class="header-item">
           </el-col>
           <el-col :span="6" class="header-item">
-            <el-link href="/login" type="info" :underline="false">登录</el-link>
+            <el-link v-if="!isLogin" href="/login" type="info" :underline="false">登录</el-link>
+            <el-link v-else href="/login" type="info" :underline="false">{{ nickname }}</el-link>
           </el-col>
         </el-row>
         
@@ -39,8 +40,18 @@
 
 
 <script setup lang="ts">
+  import { ref } from 'vue';
+  import useUserStore from '@/store/user';
 
+  const userStore = useUserStore()
 
+  const isLogin = ref(false)
+  const nickname = ref('User')
+
+  if (userStore.isLogin == true) {
+    isLogin.value = userStore.isLogin
+    nickname.value = userStore.nickname
+  }
 </script>
 
 
