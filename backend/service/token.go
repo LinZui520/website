@@ -29,17 +29,17 @@ func ParseToken(tokenString string) (*model.UserClaims, error) {
 		return Secret, nil
 	})
 	if err != nil {
-		return nil, err
+		return nil, errors.New("无效令牌")
 	}
 
 	if !token.Valid {
-		return nil, errors.New("claim invalid")
+		return nil, errors.New("无效令牌")
 	}
 
-	claims, ok := token.Claims.(*model.UserClaims)
+	userClaims, ok := token.Claims.(*model.UserClaims)
 
 	if !ok {
-		return nil, errors.New("invalid claim type")
+		return nil, errors.New("无效令牌类型")
 	}
-	return claims, nil
+	return userClaims, nil
 }

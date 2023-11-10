@@ -42,7 +42,7 @@ func (UserService) UserLogin(c *gin.Context) (string, error) {
 	password := c.PostForm("password")
 	hasUsername, err := findUsername(username)
 	if err != nil {
-		return "", errors.New("系统内部错误")
+		return "", errors.New("查询数据库错误")
 	}
 	if hasUsername == false {
 		return "", errors.New("用户名不存在")
@@ -50,7 +50,7 @@ func (UserService) UserLogin(c *gin.Context) (string, error) {
 	var user model.User
 	err = global.DB.Where("username = ?", username).Find(&user).Error
 	if err != nil {
-		return "", errors.New("系统内部错误")
+		return "", errors.New("查询数据库错误")
 	}
 
 	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
@@ -58,7 +58,7 @@ func (UserService) UserLogin(c *gin.Context) (string, error) {
 	}
 	token, err := GenerateToken(username)
 	if err != nil {
-		return "", errors.New("系统内部错误")
+		return "", errors.New("生成token错误")
 	}
 	return token, nil
 }

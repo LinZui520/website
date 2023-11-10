@@ -31,7 +31,7 @@ func (ArticleApi) GetOneArticle(c *gin.Context) {
 }
 
 func (ArticleApi) GetAllArticle(c *gin.Context) {
-	articles, err := articleService.GetAllArticle()
+	articles, err := articleService.GetAllArticle(c)
 	if err != nil {
 		model.Fail(map[string]string{}, "查询失败", c)
 	} else if len(articles) == 0 {
@@ -50,11 +50,12 @@ func (ArticleApi) DeleteArticle(c *gin.Context) {
 	}
 }
 
-func (ArticleApi) UpdateArticle(c *gin.Context) {
-	err := articleService.UpdateArticle(c)
-	if err != nil {
-		model.Fail(map[string]string{}, "更新失败", c)
-	} else {
-		model.OK(map[string]string{}, "更新成功", c)
-	}
-}
+//
+//func (ArticleApi) UpdateArticle(c *gin.Context) {
+//	err := articleService.UpdateArticle(c)
+//	if err != nil {
+//		model.Fail(map[string]string{}, "更新失败", c)
+//	} else {
+//		model.OK(map[string]string{}, "更新成功", c)
+//	}
+//}
