@@ -2,7 +2,7 @@
   <div v-for="item in reactiveArticles.data">
     <div class="article" data-aos="zoom-in-up" @click="read(item.id)">
 
-      <img class="article-image" :src="item.image">
+      <img class="article-image" :src="item.imageURL">
 
       <div class="article-title">
         <span>{{ item.title }}</span>
@@ -17,30 +17,38 @@
 
 <script setup lang="ts">
   import { getAllArticle } from '@/api/article';
+  import { getImage } from '@/api/image';
   import { reactive } from 'vue';
   import { useRouter } from 'vue-router';
   import { ElMessage } from 'element-plus'
 
+
   type Article = {
     id: number
     title: string
-    image: string
+    image: number
     content: string
+    imageURL: string
   };
   let articles: Article[] = []
 
-
   const reactiveArticles = reactive({data: articles})
-  
 
   const update = async () => {
     try {
       reactiveArticles.data = (await getAllArticle()).data.data
+      reactiveArticles.data.forEach((value) => {
+        getImage(value.image).then(res => {
+          value.imageURL = res.data.data.url
+        })
+      })
     } catch(err) {
       ElMessage.warning("获取文章列表失败")
     }
   }
  
+  
+
   update()
 
   const router = useRouter()
