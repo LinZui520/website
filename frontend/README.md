@@ -1,6 +1,6 @@
-# frontend
+## frontend
 
-## 项目设置
+### 项目设置
 
 ```sh
 npm install
