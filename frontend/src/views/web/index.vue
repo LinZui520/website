@@ -8,6 +8,7 @@
         <el-row :gutter="20">
           <el-col :span="9" class="header-item">
             <el-link href="/" type="info" :underline="false">首页</el-link>
+            <el-link href="/articles" type="info" :underline="false">文章</el-link>
             <el-link href="/about" type="info" :underline="false">关于</el-link>
           </el-col>
           <el-col :span="9" class="header-item">
@@ -20,7 +21,11 @@
         
       </el-header>
 
-      <router-view></router-view>
+      <el-container class="home-main">
+        <el-main class="home-article" >
+          <router-view></router-view>
+        </el-main>
+      </el-container>
   
     </el-container>
   </div>
@@ -62,4 +67,16 @@
     }
   }
 }
+
+.home-main {
+
+margin: 10px;
+margin-left: 15%;
+margin-right: 15%;
+}
+.home-article {
+width: 100%;
+min-height: 800px;
+}
+
 </style>

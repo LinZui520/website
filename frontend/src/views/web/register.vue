@@ -47,16 +47,16 @@
 
   const register = () => {
     if (nickname.value == '' || nickname.value.length > 16) {
-      ElMessage.warning('请输入正确格式的昵称')
+      ElMessage.warning('昵称的格式不对噢')
       return
     }
     if (username.value == '' || username.value.length > 16) {
-      ElMessage.warning('请输入正确格式的账号')
+      ElMessage.warning('账号的格式不对噢')
       return
     }
 
     if (password.value == '' || password.value.length > 32) {
-      ElMessage.warning('请输入正确格式的密码')
+      ElMessage.warning('密码的格式不对噢')
       return
     }
 
@@ -66,10 +66,10 @@
       password.value
     ).then(res => {
       if (res.data.data == true) {
-        ElMessage.info('注册成功')
+        ElMessage.success('oh yes 账号注册成功')
         router.push({path: '/login'})
       } else {
-        ElMessage.warning(res.data.msg)
+        ElMessage.warning('失败了 应该是账号已存在')
       }
     })
 

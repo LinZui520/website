@@ -53,12 +53,12 @@
 
   const login = () => {
     if (username.value == '' || username.value.length > 16) {
-      ElMessage.warning('请输入正确格式的账号')
+      ElMessage.warning('账号的格式不对噢')
       return
     }
 
     if (password.value == '' || password.value.length > 32) {
-      ElMessage.warning('请输入正确格式的密码')
+      ElMessage.warning('密码的格式不对噢')
       return
     }
 
@@ -68,22 +68,22 @@
     ).then(res => {
       if (res.data.code == 200) {
         cookies.set('token', res.data.data, '1m')
-        ElMessage.success('登陆成功')
+        ElMessage.success('登陆成功了')
         userInfo(username.value).then(res => {
           userStore.id = res.data.data.id
           userStore.nickname = res.data.data.nickname
           userStore.username = res.data.data.username
           userStore.isLogin = true
         }).catch(err => {
-          ElMessage.warning('获取个人信息失败')
+          ElMessage.warning('可恶 获取个人信息失败了')
         })
 
         router.push({path: '/'})
       } else {
-        ElMessage.warning('账号或密码错误')
+        ElMessage.warning('怎么回事 账号或密码错误')
       }
     }).catch(err => {
-      ElMessage.error('网络错误 登陆失败')
+      ElMessage.error('网络错误 登陆失败了')
     })
   }
 

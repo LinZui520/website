@@ -45,11 +45,8 @@ func (ArticleService) GetAllArticle() ([]model.Article, error) {
 	//if err != nil {
 	//	return articles, err
 	//}
-	err := global.DB.Find(&articles).Error
-	if err != nil {
-		return articles, err
-	}
-	return articles, nil
+
+	return articles, global.DB.Find(&articles).Error
 }
 
 func (ArticleService) DeleteArticle(c *gin.Context) error {

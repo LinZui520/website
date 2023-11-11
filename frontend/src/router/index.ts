@@ -5,6 +5,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect: '/home'
+    },
+    {
+      path: '/home',
       name: 'home',
       meta: { 
         requiresAuth: false
@@ -12,9 +16,14 @@ const router = createRouter({
       component: () => import('@/views/web/index.vue'),
       children: [
         {
-          path: '',
+          path: '/home',
           name: 'home',
-          component: () => import('@/views/web/home.vue'),
+          component: () => import('@/views/web/home.vue')
+        },
+        {
+          path: '/articles',
+          name: 'articles',
+          component: () => import('@/views/web/articles.vue'),
         },
         {
           path: '/about',
@@ -24,7 +33,7 @@ const router = createRouter({
         {
           path: '/article/:id',
           name: 'article',
-          component: () => import('@/views/web/article.vue'),
+          component: () => import('@/components/web/article.vue'),
         }
       ]
     },

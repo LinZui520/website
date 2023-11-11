@@ -94,3 +94,8 @@ func (UserService) UserInfo(c *gin.Context) (model.User, error) {
 	}
 	return user, global.DB.Where("username = ?", c.Query("username")).Find(&user).Error
 }
+
+func (UserService) GetUser(c *gin.Context) (model.User, error) {
+	var user model.User
+	return user, global.DB.Where("id = ?", c.Query("id")).Find(&user).Error
+}

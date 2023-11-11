@@ -24,7 +24,7 @@ create table if not exists articles (
 
 create table if not exists comments (
     id int unsigned auto_increment comment '评论编号',
-    commenter int unsigned not null comment '留言者',
+    commenter int unsigned null comment '留言者',
     content text not null comment '留言内容',
     primary key (id), foreign key (commenter) references users(id)
 ) AUTO_INCREMENT=100000;

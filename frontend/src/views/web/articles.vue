@@ -1,6 +1,6 @@
 <template>
 
-  <div v-for="item in reactiveArticles.data">
+  <div v-for="item in refArticles">
     <div class="article" data-aos="zoom-in-up" @click="read(item.id)">
 
       <img class="article-image" :src="item.imageURL">
@@ -18,7 +18,7 @@
 <script setup lang="ts">
   import { getAllArticle } from '@/api/article';
   import { getImage } from '@/api/image';
-  import { reactive } from 'vue';
+  import { ref } from 'vue';
   import { useRouter } from 'vue-router';
   import { ElMessage } from 'element-plus'
 
@@ -32,18 +32,18 @@
   };
   let articles: Article[] = []
 
-  const reactiveArticles = reactive({data: articles})
+  const refArticles = ref(articles)
 
   const update = async () => {
     try {
-      reactiveArticles.data = (await getAllArticle()).data.data
-      reactiveArticles.data.forEach((value) => {
+      refArticles.value = (await getAllArticle()).data.data
+      refArticles.value.forEach((value) => {
         getImage(value.image).then(res => {
           value.imageURL = res.data.data.url
         })
       })
     } catch(err) {
-      ElMessage.warning("获取文章列表失败")
+      ElMessage.warning("怎么回事 获取文章列表失败")
     }
   }
  

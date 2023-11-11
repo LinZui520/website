@@ -1,33 +1,118 @@
 <template>
+  <div class="baberrage">
+    <vue-danmaku 
+      class="danmaku"
+      v-model:danmus="refComments"
+      loop
+      useSlot
+      :randomChannel="true"
+      :speeds="88"
+      :fontSize="25"
+      :debounce="2000"
+      :isSuspend="true"
+    >
+      <template v-slot:dm="{ danmu }">
+        <span style="color: rgb(79, 79, 79);">{{ danmu.nickname }}：{{ danmu.content }}</span>
+      </template>
+    </vue-danmaku>
 
-  <el-container class="home-main">
-    <el-main class="home-article" >
-      <articles></articles>
-    </el-main>
-  </el-container>
-  
-  
+    <div class="comment">
+      <el-input
+        v-model="content"
+        :autosize="{ minRows: 1, maxRows: 4 }"
+        type="textarea"
+        placeholder="请输入留言"
+        class="comment-item"
+      />
+      <el-button class="comment-item" style="max-width: 20%;" @click="send">发送</el-button>
+    </div>
+  </div>
 </template>
 
 
 <script setup lang="ts">
-  import articles from '@/components/web/articles.vue';
-  
+  import vueDanmaku from 'vue3-danmaku'
+  import { ref } from 'vue'
+  import { addComment, getAllComment } from '@/api/comment'
+  import { getUser } from '@/api/user'
+  import useUserStore from '@/store/user';
+  import { ElMessage } from 'element-plus'
+
+
+  type Comment = {
+    id: number
+    commenter: number
+    nickname: string
+    content: string
+  };
+  let comments: Comment[] = []
+  const refComments = ref(comments)
+  const update = async () => {
+    try {
+      refComments.value = (await getAllComment()).data.data
+      refComments.value.forEach((value) => {
+        getUser(value.commenter).then(res => {
+          value.nickname = res.data.data.nickname
+        })
+      })
+    } catch(err) {
+      ElMessage.warning("怎么回事 获取留言列表失败")
+    }
+  }
+ 
+
+  update()
+
+  const userStore = useUserStore()
+ 
+  const content = ref('')
+
+  const send = () => {
+    if (content.value == '') {
+      ElMessage.warning('是不是忘记写留言了？')
+      return
+    }
+    if (userStore.isLogin == false) {
+      ElMessage.warning('帅哥美女请先登录哇')
+      return
+    }
+
+    addComment(userStore.id, content.value).then(res => {
+      if (res.data.code == 200) {
+        ElMessage.success('留言成功')
+        content.value = ""
+        update()
+      } else {
+        ElMessage.warning('不知道怎么回事，留言失败了')
+      }
+    }).catch(err => {
+      ElMessage.warning('不知道怎么回事，留言失败了')
+    })
+  }
 
 </script>
 
 
 <style scoped>
 
-.home-main {
-
-  margin: 10px;
-  margin-left: 15%;
-  margin-right: 15%;
-}
-.home-article {
+.baberrage {
   width: 100%;
-  min-height: 800px;
+  height: 600px;
+  background: white;
+  .danmaku {
+    width: 100%;
+    height: 100%;
+  }
 }
 
+.comment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+.comment-item {
+  width: 50%;
+  margin-top: 20px;
+}
 </style>

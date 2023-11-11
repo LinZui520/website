@@ -32,3 +32,11 @@ export const userTokenLogin = () => request({
   url: 'user/token/login',
   method: 'get',
 })
+
+export const getUser = (id: number) => request({
+  url: 'user/get',
+  method: 'get',
+  params: {
+    id
+  }
+})
