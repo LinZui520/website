@@ -110,7 +110,8 @@
 }
 .login-item {
   text-align: center;
-  width: 20%;
+  /* width: 20%; */
+  width: 250px;
   margin-top: 40px;
   color: #909399;
 }

@@ -23,6 +23,8 @@
 
 <template>
   <RouterView />
+
+  
   <el-container>
     <el-footer class="home-footer">
       <div class="footer-left">

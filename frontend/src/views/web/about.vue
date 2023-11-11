@@ -9,7 +9,7 @@
     <p class="about-item item-left" data-aos="fade-up" style="margin-top: 30px;">
       Hi，大家好，我是本站博主，2003年到达这个世界，目前就读于南昌大学。
       搭建本网站的目的是分享自己所学习的知识，与大家一起讨论。
-      本站源代码完全开源，如果你正在学习如何搭建博客，欢迎借鉴我的代码。
+      本站代码完全开源，如果你正在学习如何搭建博客，欢迎借鉴我的代码。
       最后祝每一个看到这段话的陌生人：生活愉快！
     </p>
  
@@ -34,7 +34,7 @@
         "
         target="_blank"
       >
-        GitHub源代码
+        GitHub源代码(点击跳转)
       </a>
     </p>
     <h1 class="about-item item-left" data-aos="fade-up" style="margin-top: 100px;">前端技术栈</h1>

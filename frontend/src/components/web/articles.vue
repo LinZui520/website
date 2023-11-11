@@ -37,7 +37,6 @@
   const update = async () => {
     try {
       reactiveArticles.data = (await getAllArticle()).data.data
-      console.log(reactiveArticles.data)
       reactiveArticles.data.forEach((value) => {
         getImage(value.image).then(res => {
           value.imageURL = res.data.data.url

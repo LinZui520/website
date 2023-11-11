@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { userLogin, userRegister } from '@/api/user'
+  import { userRegister } from '@/api/user'
   import { useRouter } from 'vue-router';
   import { ElMessage } from 'element-plus'
 
@@ -96,7 +96,7 @@
 }
 .register-item {
   text-align: center;
-  width: 25%;
+  width: 250px;
   margin-top: 40px;
   color: #909399;
 }
