@@ -29,7 +29,8 @@ import useUserStore from '@/store/user'
 const userStore = useUserStore();
 
 router.beforeEach((to, from, next) => {
-  if (to.path == '/admin') {
+  
+  if (to.meta.requireAuth) {
     if (userStore.isLogin == true) {
       next();
     } else {

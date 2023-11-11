@@ -1,4 +1,5 @@
 <template>
+
   <div v-for="item in reactiveArticles.data">
     <div class="article" data-aos="zoom-in-up" @click="read(item.id)">
 
@@ -8,10 +9,9 @@
         <span>{{ item.title }}</span>
       </div>
     </div>
-
+  </div>
 
     
-  </div>
 </template>
 
 
@@ -37,6 +37,7 @@
   const update = async () => {
     try {
       reactiveArticles.data = (await getAllArticle()).data.data
+      console.log(reactiveArticles.data)
       reactiveArticles.data.forEach((value) => {
         getImage(value.image).then(res => {
           value.imageURL = res.data.data.url

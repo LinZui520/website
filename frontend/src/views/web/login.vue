@@ -1,27 +1,33 @@
 <template>
 
-  <div class="admin-login">
+  <div class="login">
 
-    <span data-aos="fade-down" class="admin-item">你好 世界!</span>
+    <span data-aos="fade-down" class="login-item" style="margin-top: 150px;">你好 世界!</span>
 
-    <el-input class="admin-item" v-model="username" placeholder="请输入账号" clearable />
+    <el-input class="login-item" maxlength="16" show-word-limit v-model="username" placeholder="请输入账号" clearable />
 
     <el-input
-      class="admin-item"
+      class="login-item"
       v-model="password"
+      maxlength="32"
+      show-word-limit
       type="password"
       placeholder="请输入密码"
       show-password
     />
 
-    <el-link data-aos="fade-up" class="admin-item" href="/register" type="info" :underline="false">
+    <el-link data-aos="fade-up" class="login-item" href="/register" type="info" :underline="false">
       New 一个 对象？
     </el-link>
 
-    <div class="admin-button">
-      <el-button data-aos="fade-right" class="admin-item" style="width: 40%;" @click="back">返回</el-button>
+    <div style="text-align: center;">
+      <el-button data-aos="fade-right" class="login-item" style="width: 40%;" @click="back">返回</el-button>
 
-      <el-button data-aos="fade-left" class="admin-item" style="width: 40%;" @click="login">登录</el-button>
+      <el-button data-aos="fade-left" class="login-item" style="width: 40%;" @click="login">登录</el-button>
+    </div>
+
+    <div data-aos="zoom-in-up" class="login-item" style="margin-top: 350px;">
+      你可以永远相信狗哥
     </div>
     
   </div>
@@ -36,8 +42,8 @@
   import { useRouter } from 'vue-router';
   import useUserStore from '@/store/user'
   import { ElMessage } from 'element-plus'
-
   import { useCookies } from "vue3-cookies";
+  
   const { cookies } = useCookies();
   const router = useRouter();
   const userStore = useUserStore();
@@ -46,13 +52,13 @@
   const password = ref('')
 
   const login = () => {
-    if (username.value == '') {
-      ElMessage.warning('请输入账号')
+    if (username.value == '' || username.value.length > 16) {
+      ElMessage.warning('请输入正确格式的账号')
       return
     }
 
-    if (password.value == '') {
-      ElMessage.warning('请输入密码')
+    if (password.value == '' || password.value.length > 32) {
+      ElMessage.warning('请输入正确格式的密码')
       return
     }
 
@@ -89,27 +95,23 @@
 
 
 <style scoped>
-.admin-login{
+.login{
   display: flex;
   flex-direction: column;
   
-  width: 500px;
-  /* height: 309px; */
+  background-color: #f3f7fb; 
+  width: 100%;
+  min-height: 1000px;
 
   
   margin: 0 auto;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   align-items: center;
-  justify-content: center;
 }
-.admin-item {
+.login-item {
   text-align: center;
-  width: 50%;
+  width: 20%;
   margin-top: 40px;
   color: #909399;
-}
-
-.admin-button {
-  text-align: center;
 }
 </style>

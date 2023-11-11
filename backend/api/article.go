@@ -31,7 +31,7 @@ func (ArticleApi) GetOneArticle(c *gin.Context) {
 }
 
 func (ArticleApi) GetAllArticle(c *gin.Context) {
-	articles, err := articleService.GetAllArticle(c)
+	articles, err := articleService.GetAllArticle()
 	if err != nil {
 		model.Fail(map[string]string{}, "查询失败", c)
 	} else if len(articles) == 0 {

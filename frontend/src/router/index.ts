@@ -53,6 +53,11 @@ const router = createRouter({
       component: () => import('@/views/web/register.vue')
     },
     {
+      path: '/info/:username',
+      name: 'info',
+      component: () => import('@/views/web/info.vue')
+    },
+    {
       path: '/404',
       name: '404',
       meta: { 

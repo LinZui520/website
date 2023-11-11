@@ -1,5 +1,6 @@
 <template>
-  <el-tabs v-model="activeName" class="tabs" >
+  <div style="height: 1000px;background-color: #f3f7fb;">
+    <el-tabs v-model="activeName" class="tabs" >
     <el-tab-pane class="pane" label="增加文章" name="add">
       <AddArticle></AddArticle>
     </el-tab-pane>
@@ -8,6 +9,8 @@
       <UpdateArticle></UpdateArticle>
     </el-tab-pane>
   </el-tabs>
+  </div>
+  
 </template>
 
 

@@ -26,6 +26,7 @@
     }
   }).catch(err => {
     ElMessage.warning("获取文章失败")
+    router.push({path: '/'})
   })
 
 </script>

@@ -88,9 +88,9 @@ func (UserService) UserInfo(c *gin.Context) (model.User, error) {
 	var user model.User
 
 	tokenString, _ := c.Cookie("token")
-	_, err := ParseToken(tokenString)
-	if err != nil {
-		return user, err
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Username != c.Query("username") {
+		return user, errors.New("用户权限不足")
 	}
 	return user, global.DB.Where("username = ?", c.Query("username")).Find(&user).Error
 }

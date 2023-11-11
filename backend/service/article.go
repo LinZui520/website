@@ -30,22 +30,22 @@ func (ArticleService) AddArticle(c *gin.Context) error {
 
 func (ArticleService) GetOneArticle(c *gin.Context) (model.Article, error) {
 	var article model.Article
-	tokenString, _ := c.Cookie("token")
-	_, err := ParseToken(tokenString)
-	if err != nil {
-		return article, err
-	}
+	//tokenString, _ := c.Cookie("token")
+	//_, err := ParseToken(tokenString)
+	//if err != nil {
+	//	return article, err
+	//}
 	return article, global.DB.Where("id = ?", c.Query("id")).Find(&article).Error
 }
 
-func (ArticleService) GetAllArticle(c *gin.Context) ([]model.Article, error) {
+func (ArticleService) GetAllArticle() ([]model.Article, error) {
 	var articles []model.Article
-	tokenString, _ := c.Cookie("token")
-	_, err := ParseToken(tokenString)
-	if err != nil {
-		return articles, err
-	}
-	err = global.DB.Find(&articles).Error
+	//tokenString, _ := c.Cookie("token")
+	//_, err := ParseToken(tokenString)
+	//if err != nil {
+	//	return articles, err
+	//}
+	err := global.DB.Find(&articles).Error
 	if err != nil {
 		return articles, err
 	}

@@ -41,6 +41,8 @@ func (UserApi) UserInfo(c *gin.Context) {
 	user, err := userService.UserInfo(c)
 	if err != nil {
 		model.Fail(nil, err.Error(), c)
+	} else if user.ID == 0 {
+		model.Fail(nil, "未查询到该用户", c)
 	} else {
 		model.OK(user, "查询成功", c)
 	}
