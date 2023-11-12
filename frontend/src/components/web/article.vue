@@ -36,8 +36,8 @@
 .markdown {
   display: flex;
   flex-direction: row;
-  margin-left: 15%;
-  margin-right: 15%;
+  margin-left: 5%;
+  margin-right: 5%;
   margin-top: 50px;
   margin-bottom: 50px;
   min-height: 800px;

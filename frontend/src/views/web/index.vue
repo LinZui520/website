@@ -70,13 +70,13 @@
 
 .home-main {
 
-margin: 10px;
-margin-left: 15%;
-margin-right: 15%;
+  margin: 10px;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 .home-article {
-width: 100%;
-min-height: 800px;
+  width: 100%;
+  min-height: 800px;
 }
 
 </style>
