@@ -2,11 +2,12 @@
 
 ### docker-compose 部署
 
-将项目克隆到```/root```目录下修改```./frontend/vite.config.ts```  ```./frontend/nginx.conf``` ```./backend/settings.yaml``` 文件下 ```ip``` 地址
+将项目克隆到```/root```目录下修改```./frontend/vite.config.ts```  ```./frontend/nginx.conf``` ```./backend/settings.yaml``` 文件下 ```ip``` 地址 ```172.20.0.0```
 
 #### 运行
 
 ```sh
+$ docker network create --subnet=172.20.0.0/16 --gateway=172.20.0.1 blog
 $ docker-compose up -d
 ```
 

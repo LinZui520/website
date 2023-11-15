@@ -29,6 +29,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
+        // target: 'http://172.20.0.3:8080',
         target: 'http://127.0.0.1:8080',
         changeOrigin: true,
         cookiePathRewrite: {

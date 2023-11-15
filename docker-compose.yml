@@ -42,3 +42,4 @@ services:
 networks:
   blog:
     driver: bridge
+    external: true
