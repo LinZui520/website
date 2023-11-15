@@ -1,4 +1,3 @@
-drop database blog;
 create database if not exists blog;
 use blog;
 create table if not exists users (
@@ -20,8 +19,6 @@ create table if not exists articles (
     content longtext null comment '内容',
     primary key (id),foreign key (image) references images (id)
 ) AUTO_INCREMENT=100000;
-
-
 create table if not exists comments (
     id int unsigned auto_increment comment '评论编号',
     commenter int unsigned null comment '留言者',

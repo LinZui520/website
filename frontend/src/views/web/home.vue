@@ -55,6 +55,7 @@
           value.nickname = res.data.data.nickname
         })
       })
+      refComments.value.sort(() => Math.random() - 0.5);
     } catch(err) {
       ElMessage.warning("怎么回事 获取留言列表失败")
     }

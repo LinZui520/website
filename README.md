@@ -95,7 +95,7 @@ mysql> ALTER USER 'root'@'localhost' IDENTIFIED BY '密码';
 
 ```sh
 $ mysql -u root -p
-$ source install.sql
+$ source init.sql
 ```
 
 开启80端口访问
