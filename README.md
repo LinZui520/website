@@ -1,5 +1,15 @@
 ## 从零搭建自己的博客😎
 
+### docker-compose 部署
+
+将项目克隆到```/root```目录下修改```./frontend/vite.config.ts```  ```./frontend/nginx.conf``` ```./backend/settings.yaml``` 文件下 ```ip``` 地址
+
+#### 运行
+
+```sh
+$ docker-compose up -d
+```
+
 ### 前端部署
 
 项目目录：**前端**``/root/blog/frontend`` **后端**``/root/blog/backend``
