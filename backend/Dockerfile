@@ -1,6 +1,6 @@
 FROM golang:latest
 
-WORKDIR /opt/backend
+WORKDIR /root/blog/backend
 
 COPY . .
 

@@ -4,7 +4,7 @@ services:
     build: ./mysql
     volumes:
       - ./mysql/data:/var/lib/mysql
-      - ./mysql/init:/docker-entrypoint-initdb.d/
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - MYSQL_ROOT_PASSWORD=123456
     ports:
@@ -18,6 +18,9 @@ services:
     build: ./backend
     ports:
       - "8080:8080"
+    volumes:
+      - /root/blog/backend/image:/root/blog/backend/image
+    restart: always
     tty: true
     networks:
       - blog
@@ -29,8 +32,12 @@ services:
     build: ./frontend
     ports:
       - "80:80"
+    volumes:
+      - /root/blog/backend/image:/root/blog/backend/image
     networks:
       - blog
+    depends_on:
+      - golang
 
 networks:
   blog:

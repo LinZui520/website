@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-WORKDIR /opt/frontend
+WORKDIR /root/blog/frontend
 
 COPY . .
 
@@ -11,8 +11,7 @@ RUN apt-get install -y nodejs npm curl wget && \
 RUN apt-get install -y nginx && \
     npm install && \
     npm run build && \
-    cp -r dist/* /usr/share/nginx/html && \
-    cp nginx.conf /etc/nginx/nginx.conf 
+    cp nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
