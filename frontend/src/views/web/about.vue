@@ -27,8 +27,7 @@
     <p class="about-item item-left" data-aos="fade-up" style="margin-top: 100px;">
       <a 
         href="https://github.com/LinZui520/blog"  
-        style="font-family: YouSheYuFeiTeJianKangTi;
-          font-size: larger;
+        style="
           color: #909399;
           text-decoration:none
         "
@@ -62,7 +61,6 @@
   flex-direction: column;
 }
 .about-title {
-  font-family: YouSheYuFeiTeJianKangTi;
   font-size: larger;
   color: #909399;
   margin: 0 auto;
@@ -71,7 +69,6 @@
 
 }
 .about-item {
-  font-family: YouSheYuFeiTeJianKangTi;
   font-size: larger;
   color: #909399;
   margin-top: 30px;

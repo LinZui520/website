@@ -28,10 +28,10 @@
   <el-container>
     <el-footer class="home-footer">
       <div class="footer-left">
-        <span style="color: rgb(79, 79, 79);">你好 世界</span>
+        <span style="color: #909399;">你好 世界</span>
       </div>
       <div class="footer-right">
-        <span style="color: rgb(79, 79, 79);">
+        <span style="color: #909399;">
           Copyright ©2023 Yangming He
         </span>
       </div>
@@ -40,8 +40,12 @@
 </template>
 
 <style>
+@font-face {
+  font-family: "LXGWWenKai-Bold";
+  src: url('@/assets/font/LXGWWenKai-Bold.ttf');
+}
 * {
-  font-family: "ComicSansMS","YouSheYuFeiTeJianKangTi";
+  font-family: "LXGWWenKai-Bold";
   margin: 0px;
   padding: 0px;
 }

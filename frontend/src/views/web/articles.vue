@@ -94,8 +94,9 @@
   flex-direction: row;
   justify-content: center;
   border-radius: 0px 10px 10px 0px;
+  color: #909399;
 }
 span {
-  margin-top: 50px;
+  margin-top: 135px;
 }
 </style>
