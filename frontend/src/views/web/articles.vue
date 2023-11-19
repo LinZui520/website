@@ -102,6 +102,6 @@
   color: #909399;
 }
 span {
-  margin-top: 135px;
+  align-self: center;
 }
 </style>
