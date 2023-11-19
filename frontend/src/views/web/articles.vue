@@ -83,7 +83,7 @@
   border-radius: 10px 0px 0px 10px;
   width: 50%;
   height:100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .article-title {
