@@ -1,6 +1,6 @@
 <template>
 
-  <div class="common-layout home-view">
+  <div class="common-layout" >
 
     <el-container>
 
@@ -21,11 +21,9 @@
         
       </el-header>
 
-      <el-container class="home-main">
-        <el-main class="home-article" >
-          <router-view></router-view>
-        </el-main>
-      </el-container>
+      <el-main class="home-main">
+        <router-view></router-view>
+      </el-main>
   
     </el-container>
   </div>
@@ -48,9 +46,7 @@
 
 
 <style scoped>
-.home-view {
-  background-color: #f3f7fb;
-}
+
 .home-header {
   background-color: white;
   height: 60px;
@@ -69,14 +65,9 @@
 }
 
 .home-main {
-
-  margin: 10px;
-  margin-left: 15%;
-  margin-right: 15%;
-}
-.home-article {
   width: 100%;
-  min-height: 800px;
+  min-height: 700px;
 }
+
 
 </style>

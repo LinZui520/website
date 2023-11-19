@@ -40,10 +40,6 @@
 </template>
 
 <style>
-@font-face {
-  font-family: "LXGWWenKai-Bold";
-  src: url('@/assets/font/LXGWWenKai-Bold.ttf');
-}
 * {
   font-family: "LXGWWenKai-Bold";
   margin: 0px;
@@ -52,19 +48,18 @@
 .home-footer {
   background-color: white;
   height: 100px;
-  padding: 1%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   .footer-left{
     display: flex;
     align-items: center;
-    padding-left: 10%;
+    padding-left: 5%;
   }
   .footer-right{
     display: flex;
     align-items: center;
-    padding-right: 10%;
+    padding-right: 5%;
   }
 }
 </style>

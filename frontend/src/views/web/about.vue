@@ -59,6 +59,8 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  margin-left: 7%;
+  margin-right: 7%;
 }
 .about-title {
   font-size: larger;

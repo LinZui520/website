@@ -1,6 +1,6 @@
 <template>
 
-  <div v-for="item in refArticles">
+  <div class="articles" v-for="item in refArticles">
     <div class="article" data-aos="zoom-in-up" @click="read(item.id)">
 
       <img class="article-image" :src="item.imageURL">
@@ -62,15 +62,20 @@
 
 
 <style scoped>
+
+.articles {
+  margin-left: 15%;
+  margin-right: 15%;
+}
 .article {
   height: 300px;
   margin-top: 50px;
   margin-bottom: 50px;
   display: flex;
   flex-direction: row;
-  background-color: #f3f7fb;
   border-radius: 10px;
   transition: all 0.3s;
+  box-shadow: #909399;
 }
 
 .article:hover {

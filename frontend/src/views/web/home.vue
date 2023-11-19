@@ -12,15 +12,14 @@
       :isSuspend="true"
     >
       <template v-slot:dm="{ danmu }">
-        <span style="color: rgb(79, 79, 79);">{{ danmu.nickname }}：{{ danmu.content }}</span>
+        <span style="color: #909399;">{{ danmu.nickname }}：{{ danmu.content }}</span>
       </template>
     </vue-danmaku>
 
     <div class="comment">
       <el-input
         v-model="content"
-        :autosize="{ minRows: 1, maxRows: 4 }"
-        type="textarea"
+        type="text"
         placeholder="请输入留言"
         class="comment-item"
       />
@@ -98,24 +97,26 @@
 
 .baberrage {
   width: 100%;
-  height: 600px;
+  height: 500px;
   background: white;
   .danmaku {
     width: 100%;
     height: 100%;
   }
 
-  border-radius: 15px 15px 15px 15px;
+  .comment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+  }
+  .comment-item {
+    width: 50%;
+    margin-top: 20px;
+  }
+  
+  /* border-radius: 15px 15px 15px 15px; */
 }
 
-.comment {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
-}
-.comment-item {
-  width: 50%;
-  margin-top: 20px;
-}
+
 </style>
