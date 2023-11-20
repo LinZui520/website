@@ -66,7 +66,7 @@
 
 .home-main {
   width: 100%;
-  /* min-height: 700px; */
+  min-height: 800px;
 }
 
 

@@ -5,33 +5,33 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/home'
-    },
-    {
-      path: '/home',
-      name: 'home',
+      name: 'index',
       meta: { 
         requiresAuth: false
       },
       component: () => import('@/views/web/index.vue'),
       children: [
+        // {
+        //   path: '',
+        //   redirect: '/home'
+        // },
         {
-          path: '/home',
+          path: '',
           name: 'home',
           component: () => import('@/views/web/home.vue')
         },
         {
-          path: '/articles',
+          path: 'articles',
           name: 'articles',
           component: () => import('@/views/web/articles.vue'),
         },
         {
-          path: '/about',
+          path: 'about',
           name: 'about',
           component: () => import('@/views/web/about.vue'),
         },
         {
-          path: '/article/:id',
+          path: 'article/:id',
           name: 'article',
           component: () => import('@/components/web/article.vue'),
         }

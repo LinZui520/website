@@ -38,7 +38,7 @@
     </p>
     <h1 class="about-item item-left" data-aos="fade-up" style="margin-top: 100px;">前端技术栈</h1>
     <p class="about-item item-left" data-aos="fade-up">
-      Vue3 + Vite + TypeScript + Element Plus + Pinia + Axios + AOS
+      Vue3 + Vite + TypeScript + Element Plus + Pinia + Axios
     </p>
     <h1 class="about-item item-left" data-aos="fade-up" style="margin-top: 100px;">后端技术栈</h1>
     <p class="about-item item-left" data-aos="fade-up" style="margin-bottom: 200px;">
