@@ -29,7 +29,7 @@
     <el-footer class="home-footer">
     
       <el-link href="https://beian.miit.gov.cn/" type="info" :underline="false" target='_blank'>
-        赣ICP备2023014673号
+        赣ICP备2023014673号-1
       </el-link>
    
       <span style="color: #909399;">
