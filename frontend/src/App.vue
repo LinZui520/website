@@ -27,14 +27,15 @@
   
   <el-container>
     <el-footer class="home-footer">
-      <div class="footer-left">
-        <span style="color: #909399;">你好 世界</span>
-      </div>
-      <div class="footer-right">
-        <span style="color: #909399;">
-          Copyright ©2023 Yangming He
-        </span>
-      </div>
+    
+      <el-link href="https://beian.miit.gov.cn/" type="info" :underline="false" target='_blank'>
+        赣ICP备2023014673号
+      </el-link>
+   
+      <span style="color: #909399;">
+        Copyright ©2023 Yangming He
+      </span>
+
     </el-footer>
   </el-container>
 </template>
@@ -51,15 +52,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  .footer-left{
-    display: flex;
-    align-items: center;
-    padding-left: 5%;
-  }
-  .footer-right{
-    display: flex;
-    align-items: center;
-    padding-right: 5%;
-  }
+  align-items: center;
 }
 </style>
