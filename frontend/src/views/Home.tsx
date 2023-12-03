@@ -1,6 +1,9 @@
-
+import { userLogin } from '../api/user'
 
 const Home = () => {
+
+  console.log(userLogin()) 
+
   return (
     <div>
       home
