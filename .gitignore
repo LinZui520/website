@@ -1,4 +1,4 @@
 clean.sh
 run.sh
-./database/data/image/*
-./database/data/mysql/*
+database/data/image/*
+database/data/mysql/*
