@@ -1,6 +1,6 @@
 FROM golang:latest
 
-WORKDIR /root/blog/backend
+WORKDIR /root/website/service
 
 COPY . .
 
@@ -12,7 +12,5 @@ ENV GO111MODULE=on \
 
 RUN go mod download
 RUN go build main.go
-
-EXPOSE 8080
 
 CMD ["./main"]

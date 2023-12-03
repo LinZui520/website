@@ -1,45 +1,38 @@
 version: '3'
 services:
   mysql:
-    build: ./mysql
+    build: ./database/mysql
     volumes:
-      - ./mysql/data:/var/lib/mysql
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/mysql/data/mysql:/var/lib/mysql
+      - ./database/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - MYSQL_ROOT_PASSWORD=123456
-    ports:
-      - "3306:3306"
     restart: always
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    networks:
-      - blog
+    network_mode: host
 
-  golang:
+  backend:
     build: ./backend
-    ports:
-      - "8080:8080"
     volumes:
-      - /root/blog/backend/image:/root/blog/backend/image
+      - ./database/mysql/data/image:/root/website/database/mysql/data/image
     restart: always
     tty: true
-    networks:
-      - blog
+    network_mode: host
     depends_on:
       - mysql
-
-
-  nginx:
+  frontend:
     build: ./frontend
-    ports:
-      - "80:80"
     volumes:
-      - /root/blog/backend/image:/root/blog/backend/image
-    networks:
-      - blog
+      - ./database/mysql/data/image:/root/website/database/mysql/data/image
+      - ./frontend/build:/root/website/frontend/build
+    network_mode: host
     depends_on:
-      - golang
+      - backend
+  nginx:
+    build: ./nginx
+    volumes:
+      - ./database/mysql/data/image:/root/website/database/mysql/data/image
+      - ./frontend/build:/root/website/frontend/build
+    network_mode: host
+    depends_on:
+      - frontend
 
-networks:
-  blog:
-    driver: bridge
-    external: true

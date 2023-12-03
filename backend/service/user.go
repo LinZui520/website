@@ -6,96 +6,75 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"time"
 )
 
 type UserService struct{}
-
-func findUsername(username string) (bool, error) {
-	var user model.User
-	return user.Username != "", global.DB.Find(&user, "username=?", username).Error
-}
 
 func (UserService) UserRegister(c *gin.Context) error {
 	nickname := c.PostForm("nickname")
 	username := c.PostForm("username")
 	password := c.PostForm("password")
-	hasUsername, err := findUsername(username)
-	if err != nil {
-		return errors.New("系统内部错误")
-	}
-	if hasUsername == true {
-		return errors.New("用户名已存在")
-	}
-
 	hash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 	user := model.User{
 		Nickname: nickname,
 		Username: username,
 		Password: string(hash),
+		Power:    0,
+		Creation: time.Now(),
+		Latest:   time.Now(),
 	}
-	if global.DB.Create(&user).Error != nil {
-		return errors.New("系统内部错误")
-	}
-	return nil
+	return global.DB.Create(&user).Error
 }
 
-func (UserService) UserLogin(c *gin.Context) (string, error) {
+func (UserService) UserLogin(c *gin.Context) (interface{}, error) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
-	hasUsername, err := findUsername(username)
-	if err != nil {
-		return "", errors.New("查询数据库错误")
-	}
-	if hasUsername == false {
-		return "", errors.New("用户名不存在")
-	}
+
 	var user model.User
-	err = global.DB.Where("username = ?", username).Find(&user).Error
-	if err != nil {
-		return "", errors.New("查询数据库错误")
-	}
+	global.DB.Where("username = ?", username).First(&user)
 
 	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
-		return "", errors.New("密码错误")
+		return struct{}{}, errors.New("账号或密码错误")
 	}
+
 	token, err := GenerateToken(username, password)
 	if err != nil {
-		return "", errors.New("生成token错误")
+		return struct{}{}, errors.New("生成token错误")
 	}
-	return token, nil
+	global.DB.Model(&user).Update("latest", time.Now())
+	return struct {
+		User  model.User
+		Token string
+	}{
+		User:  user,
+		Token: token,
+	}, nil
 }
 
-func (UserService) UserTokenLogin(c *gin.Context) (model.User, error) {
+func (UserService) UserTokenLogin(c *gin.Context) (interface{}, error) {
 	var user model.User
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
 	if err != nil {
-		return user, err
+		return struct{}{}, err
 	}
 	username := userClaims.Username
 	password := userClaims.Password
-	err = global.DB.Where("username = ?", username).Find(&user).Error
-	if err != nil {
-		return user, errors.New("查询数据库错误")
-	}
+	global.DB.Where("username = ?", username).First(&user)
 	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
-		return user, errors.New("密码错误")
+		return struct{}{}, errors.New("密码错误")
 	}
-	return user, nil
-}
-
-func (UserService) UserInfo(c *gin.Context) (model.User, error) {
-	var user model.User
-
-	tokenString, _ := c.Cookie("token")
-	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Username != c.Query("username") {
-		return user, errors.New("用户权限不足")
+	tokenString, err = GenerateToken(username, password)
+	if err != nil {
+		return struct{}{}, errors.New("生成token错误")
 	}
-	return user, global.DB.Where("username = ?", c.Query("username")).Find(&user).Error
-}
-
-func (UserService) GetUser(c *gin.Context) (model.User, error) {
-	var user model.User
-	return user, global.DB.Where("id = ?", c.Query("id")).Find(&user).Error
+	global.DB.Model(&user).Update("latest", time.Now())
+	return struct {
+		User  model.User
+		Token string
+	}{
+		User:  user,
+		Token: tokenString,
+	}, nil
 }

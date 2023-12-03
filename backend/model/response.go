@@ -5,18 +5,6 @@ import (
 	"net/http"
 )
 
-//type ErrorCode int
-//
-//const (
-//	SettingsError ErrorCode = 1001
-//)
-//
-//var (
-//	ErrorMap = map[ErrorCode]string{
-//		SettingsError: "系统错误",
-//	}
-//)
-
 type Response struct {
 	Code int    `json:"code"`
 	Data any    `json:"data"`

@@ -6,14 +6,13 @@ import (
 )
 
 func UserRouter(router *gin.Engine) {
-	userApi := api.Api.UserApi
+	userApi := api.UserApi{}
+
 	user := router.Group("api/user")
 	{
-		user.POST("/login", userApi.UserLogin)
 		user.POST("/register", userApi.UserRegister)
-		user.GET("/info", userApi.UserInfo)
-		user.GET("/token/login", userApi.UserTokenLogin)
-		user.GET("/get", userApi.GetUser)
+		user.POST("/login", userApi.UserLogin)
+		user.GET("/token", userApi.UserTokenLogin)
 	}
 
 }

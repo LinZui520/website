@@ -29,32 +29,10 @@ func (UserApi) UserLogin(c *gin.Context) {
 }
 
 func (UserApi) UserTokenLogin(c *gin.Context) {
-	user, err := userService.UserTokenLogin(c)
+	data, err := userService.UserTokenLogin(c)
 	if err != nil {
-		model.Fail(user, err.Error(), c)
+		model.Fail(data, err.Error(), c)
 	} else {
-		model.OK(user, "登陆成功", c)
-	}
-}
-
-func (UserApi) UserInfo(c *gin.Context) {
-	user, err := userService.UserInfo(c)
-	if err != nil {
-		model.Fail(nil, err.Error(), c)
-	} else if user.ID == 0 {
-		model.Fail(nil, "未查询到该用户", c)
-	} else {
-		model.OK(user, "查询成功", c)
-	}
-}
-
-func (UserApi) GetUser(c *gin.Context) {
-	user, err := userService.GetUser(c)
-	if err != nil {
-		model.Fail(nil, err.Error(), c)
-	} else if user.ID == 0 {
-		model.Fail(nil, "未查询到该用户", c)
-	} else {
-		model.OK(user, "查询成功", c)
+		model.OK(data, "登陆成功", c)
 	}
 }

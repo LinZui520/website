@@ -12,9 +12,6 @@ func InitRouter() *gin.Engine {
 	router.StaticFS("image", http.Dir("./image"))
 
 	UserRouter(router)
-	ArticleRouter(router)
-	ImageRouter(router)
-	CommentRouter(router)
 
 	return router
 }

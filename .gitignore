@@ -1,1 +1,4 @@
-mysql/data/*
+./clean.sh
+./run.sh
+./database/data/image/*
+./database/data/mysql/*
