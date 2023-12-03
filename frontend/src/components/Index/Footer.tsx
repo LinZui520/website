@@ -18,7 +18,7 @@ const Footer = () => {
         }}
       >
         <Button type="link" href='https://beian.miit.gov.cn/' target='_blank'>赣ICP备2023014673号-1</Button>
-        <span style={{fontSize: '20px', color: 'white'}}>Copyright ©2023 Yangming He</span>
+        <span style={{fontSize: '20px', color: 'white'}}>Copyright ©2023 朱贵是混蛋</span>
       </ConfigProvider>
     </div>
   );
