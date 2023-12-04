@@ -1,7 +1,16 @@
 import { ConfigProvider, Button } from "antd";
 import './Header.css'
+import gsap from "gsap";
+import { useEffect } from "react";
 
 const Header = () => {
+  useEffect(() => {
+    gsap.from(".header", {
+      y: -60
+    })
+  })
+
+  
 
   return (
     <div className="header">
@@ -11,9 +20,9 @@ const Header = () => {
             Button: {
               contentFontSize: 20,
               // colorLink: "#909399",
-              colorLink: "white",
-              colorLinkHover: "#bbbbbb",
-              colorLinkActive: "#bbbbbb",
+              colorLink: "#000000",
+              colorLinkHover: "#888888",
+              colorLinkActive: "#888888",
             }
           }
         }}

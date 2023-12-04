@@ -9,16 +9,16 @@ const Footer = () => {
         theme={{
           components: {
             Button: {
-              contentFontSize: 20,
-              colorLink: "white",
-              colorLinkHover: "white",
-              colorLinkActive: "white",
+              contentFontSize: 16,
+              colorLink: "#000000",
+              colorLinkHover: "#000000",
+              colorLinkActive: "#000000",
             }
           }
         }}
       >
         <Button type="link" href='https://beian.miit.gov.cn/' target='_blank'>赣ICP备2023014673号-1</Button>
-        <span style={{fontSize: '20px', color: 'white'}}>Copyright ©2023 朱贵是混蛋</span>
+        <div style={{color: '#000000'}}>Copyright ©2023 朱贵是混蛋</div>
       </ConfigProvider>
     </div>
   );
