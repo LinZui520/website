@@ -16,6 +16,7 @@ type User struct {
 }
 
 type UserClaims struct {
+	ID       int
 	Username string
 	Password string
 	Power    int

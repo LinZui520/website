@@ -4,6 +4,7 @@ import "time"
 
 type Article struct {
 	ID       int       `gorm:"type:int;unsigned" json:"id"`
+	Author   int       `gorm:"type:int;unsigned;not null;" json:"author"`
 	Image    int       `gorm:"type:int;unsigned;not null;" json:"image"`
 	Title    string    `gorm:"type:varchar(256);not null;" json:"title"`
 	Content  string    `gorm:"type:longtext" json:"content"`
@@ -12,6 +13,7 @@ type Article struct {
 }
 
 type ArticleList struct {
-	Article  Article
-	ImageURL string
+	Article        Article
+	ImageURL       string
+	AuthorNickName string
 }

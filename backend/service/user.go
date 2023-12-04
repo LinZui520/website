@@ -38,7 +38,7 @@ func (UserService) UserLogin(c *gin.Context) (interface{}, error) {
 		return struct{}{}, errors.New("账号或密码错误")
 	}
 
-	token, err := GenerateToken(user.Username, user.Password, user.Power)
+	token, err := GenerateToken(user.ID, user.Username, user.Password, user.Power)
 	if err != nil {
 		return struct{}{}, errors.New("生成token错误")
 	}
@@ -65,7 +65,7 @@ func (UserService) UserTokenLogin(c *gin.Context) (interface{}, error) {
 	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
 		return struct{}{}, errors.New("密码错误")
 	}
-	tokenString, err = GenerateToken(user.Username, user.Password, user.Power)
+	tokenString, err = GenerateToken(user.ID, user.Username, user.Password, user.Power)
 	if err != nil {
 		return struct{}{}, errors.New("生成token错误")
 	}
@@ -77,4 +77,9 @@ func (UserService) UserTokenLogin(c *gin.Context) (interface{}, error) {
 		User:  user,
 		Token: tokenString,
 	}, nil
+}
+
+func GetUserInfo(id int) (model.User, error) {
+	var user model.User
+	return user, global.DB.Where("id = ?", id).First(&user).Error
 }

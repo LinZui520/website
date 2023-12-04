@@ -11,8 +11,9 @@ const TokenExpireDuration = time.Hour * 24 * 7
 
 var Secret = []byte("ZhuGui")
 
-func GenerateToken(username string, password string, power int) (string, error) {
+func GenerateToken(id int, username string, password string, power int) (string, error) {
 	claims := model.UserClaims{
+		ID:       id,
 		Password: password,
 		Username: username,
 		Power:    power,

@@ -22,6 +22,7 @@ func (ArticleService) AddArticle(c *gin.Context) error {
 		return err
 	}
 	article := model.Article{
+		Author:   userClaims.ID,
 		Image:    image.ID,
 		Title:    c.PostForm("title"),
 		Content:  c.PostForm("content"),
@@ -65,9 +66,11 @@ func (ArticleService) GetAllArticle() ([]model.ArticleList, error) {
 	var list []model.ArticleList
 	for _, article := range articles {
 		image, _ := GetImage(article.Image)
+		user, _ := GetUserInfo(article.Author)
 		list = append(list, model.ArticleList{
-			Article:  article,
-			ImageURL: image.URL,
+			Article:        article,
+			ImageURL:       image.URL,
+			AuthorNickName: user.Nickname,
 		})
 	}
 	return list, nil

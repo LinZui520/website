@@ -22,6 +22,7 @@ create table if not exists images (
 
 create table if not exists articles (
     id int unsigned auto_increment comment '文章编号',
+    author int unsigned not null comment '作者编号',
     image int unsigned not null comment '标题图片编号',
     title varchar(256) not null comment '标题',
     content longtext null comment '内容',
