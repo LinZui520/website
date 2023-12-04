@@ -18,5 +18,6 @@ type User struct {
 type UserClaims struct {
 	Username string
 	Password string
+	Power    int
 	jwt.RegisteredClaims
 }

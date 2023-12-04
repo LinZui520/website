@@ -18,7 +18,6 @@ system:
   host: "0.0.0.0"
   port: 8080
   env: release
-  # directory: "/root/blog/service/"
-  # directory: "/home/linzui/Code/blog/service/"  #项目目录 署在服务器时修改项目目录
-  # router: "http://172.20.0.4/image/"        #静态图片路由 部署在服务器时修改IP 不用添加端口
+  directory: "../database/mysql/data/image/"
+  router: "http://127.0.0.1/image/"        #静态图片路由 部署在服务器时修改IP 不用添加端口
   # router: "http://127.0.0.1:8080/image/"

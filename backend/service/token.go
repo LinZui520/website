@@ -11,10 +11,11 @@ const TokenExpireDuration = time.Hour * 24 * 7
 
 var Secret = []byte("ZhuGui")
 
-func GenerateToken(username string, password string) (string, error) {
+func GenerateToken(username string, password string, power int) (string, error) {
 	claims := model.UserClaims{
 		Password: password,
 		Username: username,
+		Power:    power,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(TokenExpireDuration)),
 			NotBefore: jwt.NewNumericDate(time.Now()),
