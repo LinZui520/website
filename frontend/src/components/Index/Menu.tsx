@@ -63,8 +63,8 @@ export const Menu = () => {
       <motion.div className="menu-background" variants={sidebar} />
 
       <motion.ul variants={variantsUL} className="menu-ul">
-        {menu.map(item => (
-          <MenuItem key={item.href} item={item} />
+        {menu.map((item, index) => (
+          <MenuItem key={index} item={item} />
         ))}
       </motion.ul>
 

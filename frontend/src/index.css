@@ -3,9 +3,9 @@
   src: url('./assets/font/LXGWWenKai-Bold.ttf');
 }
 
-* {
+/* * {
   font-family: "LXGWWenKai-Bold";
-}
+} */
 
 *::-webkit-scrollbar {
   width: 10px;
