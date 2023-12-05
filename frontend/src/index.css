@@ -7,17 +7,22 @@
   font-family: "LXGWWenKai-Bold";
 } */
 
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  /* display: none; */
+* {
+  margin: 0;
+  padding: 0;
 }
 
-*::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar {
+  /* width: 10px;
+  height: 10px; */
+  display: none;
+}
+
+/* *::-webkit-scrollbar-thumb {
   background: #cccccc; 
   border-radius: 5px; 
 }
 
 *::-webkit-scrollbar-thumb:hover {
   background: #ababab; 
-}
+} */

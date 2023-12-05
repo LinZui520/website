@@ -1,4 +1,4 @@
-.menu-background {
+.menu-container .menu-background {
   position: fixed;
   left: 0px;
   top: 0px;
@@ -7,7 +7,7 @@
   background: #000;
 }
 
-.menu-button {
+.menu-container .menu-button {
   outline: none;
   border: none;
   -webkit-user-select: none;
@@ -25,21 +25,20 @@
 }
 
 
-.menu-ul {
+.menu-container .menu-ul {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: fixed;
-  width: 94vw;
+  width: 100%;
   height: 100vh;
   background: transparent;
 }
 
-.menu-li {
+.menu-container .menu-li {
   list-style: none;
   cursor: pointer;
   display: flex;
-  margin-top: 5vh;
+  margin-bottom: 5vh;
 }
-

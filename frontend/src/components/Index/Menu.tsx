@@ -1,21 +1,9 @@
-import { motion, useCycle } from "framer-motion";
-import "./Menu.css"
+import { motion } from "framer-motion";
 import { MenuItem } from "./MenuItem";
+import "./Menu.css"
+import { useEffect, useState } from "react";
 
-interface PathProps {
-  [key: string]: any;
-}
-const Path: React.FC<PathProps> = (props) => (
-  <motion.path
-    fill="transparent"
-    strokeWidth="3"
-    stroke="white"
-    strokeLinecap="round"
-    {...props}
-  />
-);
-
-const sidebar = {
+const variantsDiv = {
   open: (height = 1000) => ({
     clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
     transition: {
@@ -35,7 +23,7 @@ const sidebar = {
   }
 };
 
-const variantsUL = {
+const variantsUl = {
   open: {
     transition: { staggerChildren: 0.07, delayChildren: 0.2 }
   },
@@ -46,37 +34,65 @@ const variantsUL = {
 
 const menu = [
   {href: '/', text: '首页'},
-  {href: '/', text: '文章'},
-  {href: '/', text: '留言'},
+  {href: '/articles', text: '文章'},
+  {href: '/comments', text: '留言'},
   {href: '/about', text: '关于'},
 ]
 
-export const Menu = () => {
-  const [isOpen, toggleOpen] = useCycle(false, true);
+
+
+export const Menu = (props: any) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+
+    if (isOpen) {
+      props.onDataReceived(isOpen)
+    } else {
+      const delayDuration = 800;
+      const timer = setTimeout(() => {
+        props.onDataReceived(isOpen);
+      }, delayDuration);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, props]);
 
   return (
     <motion.nav
       initial={false}
       animate={isOpen ? "open" : "closed"}
-      className="menu"
+      className="menu-container"
     >
-      <motion.div className="menu-background" variants={sidebar} />
+      <motion.div className="menu-background" variants={variantsDiv} />
 
-      <motion.ul variants={variantsUL} className="menu-ul">
-        {menu.map((item, index) => (
-          <MenuItem key={index} item={item} />
-        ))}
+      <motion.ul variants={variantsUl} className="menu-ul">
+        {menu.map(item => 
+          <MenuItem key={item.href} item={item} />
+        )}
       </motion.ul>
 
-      <button className="menu-button" onClick={() => toggleOpen()} style={{alignItems: 'center', display: 'flex', justifyContent: 'center',paddingTop: '4px'}}>
+      <button 
+        className="menu-button" 
+        onClick={() => setIsOpen(!isOpen)} 
+        style={{alignItems: 'center', display: 'flex', justifyContent: 'center',paddingTop: '4px'}}
+      >
         <svg width="25" height="25" viewBox="0 0 23 23">
-          <Path
+          <motion.path
+            fill="transparent"
+            strokeWidth="3"
+            stroke="white"
+            strokeLinecap="round"
             variants={{
               closed: { d: "M 2 2.5 L 20 2.5" },
               open: { d: "M 3 16.5 L 17 2.5" }
             }}
           />
-          <Path
+          <motion.path
+            fill="transparent"
+            strokeWidth="3"
+            stroke="white"
+            strokeLinecap="round"
             d="M 2 9.423 L 20 9.423"
             variants={{
               closed: { opacity: 1 },
@@ -84,7 +100,11 @@ export const Menu = () => {
             }}
             transition={{ duration: 0.1 }}
           />
-          <Path
+          <motion.path
+            fill="transparent"
+            strokeWidth="3"
+            stroke="white"
+            strokeLinecap="round"
             variants={{
               closed: { d: "M 2 16.346 L 20 16.346" },
               open: { d: "M 3 2.5 L 17 16.346" }

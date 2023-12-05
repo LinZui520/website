@@ -1,13 +1,17 @@
+import BackTopButton from '../components/Index/BackTopButton';
 import Footer from '../components/Index/Footer';
 import Menu from '../components/Index/Menu';
 import { Outlet } from 'react-router-dom';
+import { useState } from 'react';
 
 const Home = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className='index'>
-      <Menu />
+      <Menu onDataReceived={setIsOpen} />
       <Outlet /> 
-      {/* <FloatButton.BackTop icon={<ArrowUpOutlined />} visibilityHeight={500} /> */}
+      { isOpen ? null : <BackTopButton />}
       <Footer />
     </div>
   );
