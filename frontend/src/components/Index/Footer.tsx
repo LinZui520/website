@@ -4,7 +4,7 @@ import './Footer.css'
 
 const Footer = () => {
   return (
-    <div className='footer'>
+    <div className='index-footer'>
       <ConfigProvider 
         theme={{
           components: {

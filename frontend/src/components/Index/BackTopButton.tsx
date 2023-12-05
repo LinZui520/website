@@ -11,7 +11,7 @@ const BackTopButton = () => {
         }
       }}
     >
-      <FloatButton.BackTop style={{ backgroundColor: 'black' }} icon={<ArrowUpOutlined style={{color: 'white'}} />} visibilityHeight={500} />
+      <FloatButton.BackTop icon={<ArrowUpOutlined style={{color: 'white'}} />} visibilityHeight={500} />
     </ConfigProvider>
   )
 }

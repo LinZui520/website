@@ -2,8 +2,8 @@
 
 const Login = () => {
   return (
-    <div style={{height: '100vh', backgroundColor: 'red'}}>
-     
+    <div style={{height: '100vh'}}>
+      login
     </div>
   );
 }

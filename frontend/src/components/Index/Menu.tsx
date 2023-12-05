@@ -33,6 +33,7 @@ const variantsUl = {
 };
 
 const menu = [
+  {href: '/login', text: '登陆'},
   {href: '/', text: '首页'},
   {href: '/articles', text: '文章'},
   {href: '/comments', text: '留言'},

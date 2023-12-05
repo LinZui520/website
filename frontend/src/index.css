@@ -3,11 +3,9 @@
   src: url('./assets/font/LXGWWenKai-Bold.ttf');
 }
 
-/* * {
-  font-family: "LXGWWenKai-Bold";
-} */
 
 * {
+  /* font-family: "LXGWWenKai-Bold"; */
   margin: 0;
   padding: 0;
 }
