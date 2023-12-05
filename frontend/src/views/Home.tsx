@@ -5,7 +5,7 @@ const Home = () => {
 
   return (
     <div>
-      <div style={{height: '100vh'}}>
+      <div style={{height: '2000px', background: 'white'}}>
       </div>
     </div>
   );

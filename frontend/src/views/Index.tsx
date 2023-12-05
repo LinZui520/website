@@ -1,15 +1,13 @@
-import Header from '../components/Index/Header';
 import Footer from '../components/Index/Footer';
+import Menu from '../components/Index/Menu';
 import { Outlet } from 'react-router-dom';
-import { FloatButton } from 'antd';
-import { ArrowUpOutlined } from '@ant-design/icons';
 
 const Home = () => {
   return (
     <div className='index'>
-      <Header />
-      <Outlet />
-      <FloatButton.BackTop icon={<ArrowUpOutlined />} visibilityHeight={500} />
+      <Menu />
+      <Outlet /> 
+      {/* <FloatButton.BackTop icon={<ArrowUpOutlined />} visibilityHeight={500} /> */}
       <Footer />
     </div>
   );

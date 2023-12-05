@@ -1,0 +1,45 @@
+.menu-background {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100vh;
+  background: #000;
+}
+
+.menu-button {
+  outline: none;
+  border: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  cursor: pointer;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: transparent;
+}
+
+
+.menu-ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 97vw;
+  height: 100vh;
+  background: transparent;
+}
+
+.menu-li {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  margin-top: 5vh;
+}
+
