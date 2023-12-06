@@ -14,10 +14,10 @@ create table if not exists users (
 
 create table if not exists images (
     id int unsigned auto_increment comment '图片编号',
-    url  varchar(64) not null comment '图片url',
+    filename  varchar(64) not null comment '图片文件名',
     creation datetime not null comment '创建时间',
     primary key (id),
-    unique key (url)
+    unique key (filename)
 ) AUTO_INCREMENT=100000;
 
 create table if not exists articles (

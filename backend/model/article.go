@@ -14,6 +14,6 @@ type Article struct {
 
 type ArticleList struct {
 	Article        Article
-	ImageURL       string
+	ImageFilename  string
 	AuthorNickName string
 }

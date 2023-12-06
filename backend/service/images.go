@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -22,8 +21,7 @@ func AddImage(c *gin.Context) (model.Image, error) {
 	if err != nil {
 		return image, errors.New("图片保存失败")
 	}
-	url := global.Config.System.Router + name
-	image.URL = url
+	image.Filename = name
 	image.Creation = time.Now()
 	return image, global.DB.Create(&image).Error
 }
@@ -39,6 +37,5 @@ func DeleteImage(id int) error {
 	if err != nil {
 		return errors.New("图片删除失败")
 	}
-	name := strings.Split(image.URL, global.Config.System.Router)[1]
-	return os.Remove(global.Config.System.Directory + name)
+	return os.Remove(global.Config.System.Directory + image.Filename)
 }

@@ -7,7 +7,6 @@ type System struct {
 	Port      int    `yaml:"port"`
 	Env       string `yaml:"env"`
 	Directory string `yaml:"directory"`
-	Router    string `yaml:"router"`
 }
 
 func (s System) Address() string {

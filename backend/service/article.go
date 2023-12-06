@@ -69,7 +69,7 @@ func (ArticleService) GetAllArticle() ([]model.ArticleList, error) {
 		user, _ := GetUserInfo(article.Author)
 		list = append(list, model.ArticleList{
 			Article:        article,
-			ImageURL:       image.URL,
+			ImageFilename:  image.Filename,
 			AuthorNickName: user.Nickname,
 		})
 	}
