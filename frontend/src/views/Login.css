@@ -1,0 +1,36 @@
+.login-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container .login-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 35px;
+  margin-bottom: 15px;
+}
+
+
+
+@media screen and (min-width: 980px) {
+  .login-container .login-item {
+    width: 345.6px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 980px) {
+  .login-container .login-item {
+    width: 345.6px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .login-container .login-item {
+    width: 45vw;
+  }
+}

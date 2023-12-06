@@ -4,7 +4,7 @@ import './Footer.css'
 
 const Footer = () => {
   return (
-    <div className='index-footer'>
+    <div className='footer-container'>
       <ConfigProvider 
         theme={{
           components: {
@@ -18,7 +18,7 @@ const Footer = () => {
         }}
       >
         <Button type="link" href='https://beian.miit.gov.cn/' target='_blank'>赣ICP备2023014673号-1</Button>
-        <div style={{color: '#000000'}}>Copyright ©2023 朱贵是混蛋</div>
+        <div style={{color: '#000000'}}>Copyright ©2023 YangmingHe</div>
       </ConfigProvider>
     </div>
   );

@@ -33,31 +33,29 @@ const variantsUl = {
 };
 
 const menu = [
-  {href: '/login', text: '登陆'},
   {href: '/', text: '首页'},
   {href: '/articles', text: '文章'},
   {href: '/comments', text: '留言'},
-  {href: '/about', text: '关于'},
+  {href: '/login', text: '登陆'},
 ]
 
 
 
-export const Menu = (props: any) => {
+export const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';
-
-    if (isOpen) {
-      props.onDataReceived(isOpen)
-    } else {
-      const delayDuration = 800;
-      const timer = setTimeout(() => {
-        props.onDataReceived(isOpen);
-      }, delayDuration);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, props]);
+    // if (isOpen) {
+    //   props.onDataReceived(isOpen)
+    // } else {
+    //   const delayDuration = 800;
+    //   const timer = setTimeout(() => {
+    //     props.onDataReceived(isOpen);
+    //   }, delayDuration);
+    //   return () => clearTimeout(timer);
+    // }
+  }, [isOpen]);
 
   return (
     <motion.nav
@@ -67,7 +65,7 @@ export const Menu = (props: any) => {
     >
       <motion.div className="menu-background" variants={variantsDiv} />
 
-      <motion.ul variants={variantsUl} className="menu-ul">
+      <motion.ul variants={variantsUl} style={{pointerEvents: isOpen?'auto':'none'}} className="menu-ul">
         {menu.map(item => 
           <MenuItem key={item.href} item={item} />
         )}

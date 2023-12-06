@@ -1,10 +1,10 @@
 import request from "../utils/request";
 
-export const userLogin = () => request({
+export const UserLogin = (username: string, password: string) => request({
   url: '/user/login',
   method: 'post',
   data: {
-    username: 'linzui',
-    password: '123456',
+    username,
+    password,
   }
 })
