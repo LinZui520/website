@@ -15,13 +15,11 @@ const App = () => {
             activeShadow: 'black',
           },
           Button: {
-            contentFontSize: 12,
             colorLink: "#000000",
             colorLinkHover: "#666666",
             colorLinkActive: "#666666",
           },
         }
-        
       }}
     >
       <RouterProvider router={router} />

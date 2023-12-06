@@ -1,23 +1,21 @@
+import { useState } from 'react';
+import Menu from '../components/Index/Menu';
+import { UserRegister } from '../api/user';
+import './Register.css'
 import { Button, message } from "antd";
-import "./Login.css";
-import "./Register.css"
-import Menu from "../components/Index/Menu";
-import { useState } from "react";
-import { UserLogin } from "../api/user";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { setUser } from "../store/user";
 
-
-const Login = () => {
+const Register = () => {
+  const [nickname, setNickname] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate()
 
-  const dispatch = useDispatch();
-  
-
-  const login = () => {
+  const register = () => {
+    if (nickname === '' || nickname.length > 16) {
+      message.warning('昵称格式错误');
+      return
+    }
     if (username === '' || username.length > 16) {
       message.warning('账号格式错误');
       return
@@ -26,23 +24,28 @@ const Login = () => {
       message.warning('密码格式错误');
       return
     }
-    UserLogin(username, password).then(res => {
+    UserRegister(nickname, username, password).then(res => {
       if (res.data.code === 200) {
-        dispatch(setUser(res.data.data.User))
-        message.success('登录成功');
-        navigate('/')
+        message.success("注册成功")
+        navigate('/login')
       } else {
         message.warning(res.data.msg)
       }
+     
     }).catch(_ => {
-      message.error('网络问题登录失败');
+      message.error("网络原因注册失败")
     })
+    
   }
 
   return (
-    <div className="login-container register-container">
+    <div className="register-container">
       <Menu />
-      <span className="login-item">登录</span>
+      <span className="register-item">注册</span>
+      <div className="register-input" >
+        <input type="text" value={nickname} onChange={e => {setNickname(e.target.value)}} required />
+        <label>昵称</label>
+      </div>
       <div className="register-input" >
         <input type="text" value={username} onChange={e => {setUsername(e.target.value)}} required />
         <label>账号</label>
@@ -51,15 +54,11 @@ const Login = () => {
         <input type="password" value={password} onChange={e => {setPassword(e.target.value)}} required />
         <label>密码</label>
       </div>
-      <div className="login-item">
-        <Button type="link">忘记密码？</Button>
-        <Button type="link" href="/register">注册账号？</Button>
-      </div>
-      <div className="login-item">
-        <Button style={{width: '80px'}} onClick={login}>登陆</Button>
+      <div className="register-item">
+        <Button style={{width: '80px'}} onClick={register}>注册</Button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Register;

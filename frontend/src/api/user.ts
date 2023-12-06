@@ -8,3 +8,13 @@ export const UserLogin = (username: string, password: string) => request({
     password,
   }
 })
+
+export const UserRegister = (nickname: string, username: string, password: string) => request({
+  url: '/user/register',
+  method: 'post',
+  data: {
+    nickname,
+    username,
+    password,
+  }
+})

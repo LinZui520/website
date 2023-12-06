@@ -1,8 +1,10 @@
-
+import { useSelector } from 'react-redux';
 
 const Home = () => {
 
+  const user = useSelector((state: any) => state.user);
 
+  console.log(user)
   return (
     <div>
       <div style={{marginLeft: '10vw', marginRight: '10vw', height: '100vh', alignItems: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', fontSize: '2rem'}}>
