@@ -4,6 +4,8 @@ import Index from "../views/Index";
 import Home from "../views/Home";
 import Login from "../views/Login";
 import Register from "../views/Register";
+import Articles from "../views/Articles";
+import Info from "../views/Info";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,10 @@ const router = createBrowserRouter([
         path: '',
         element: <Home />
       },
+      {
+        path: 'articles',
+        element: <Articles />
+      }
     ]
   },
   {
@@ -23,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register />
+  },
+  {
+    path: '/info',
+    element: <Info />
   }
   
 ]);

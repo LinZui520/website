@@ -7,7 +7,7 @@ import { setUser } from "./store/user";
 import { useDispatch } from 'react-redux';
 import { useCallback, useEffect } from "react";
 import { useSelector } from 'react-redux';
-
+import Menu from "./components/Index/Menu";
 
 const App = () => {
 
@@ -56,6 +56,7 @@ const App = () => {
         }
       }}
     >
+      <Menu />
       <RouterProvider router={router} />
     </ConfigProvider>
   );

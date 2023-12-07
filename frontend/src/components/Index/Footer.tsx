@@ -18,7 +18,7 @@ const Footer = () => {
         }}
       >
         <Button type="link" href='https://beian.miit.gov.cn/' target='_blank'>赣ICP备2023014673号-1</Button>
-        <div style={{color: '#000000'}}>Copyright ©2023 YangmingHe</div>
+        <Button type="link" href='https://github.com/LinZui520/website' target='_blank'>Copyright ©2023 YangmingHe</Button>
       </ConfigProvider>
     </div>
   );

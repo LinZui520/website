@@ -1,7 +1,6 @@
 import { Button, message } from "antd";
 import "./Login.css";
 import "./Register.css"
-import Menu from "../components/Index/Menu";
 import { useState } from "react";
 import { UserLogin } from "../api/user";
 import { useNavigate } from "react-router-dom";
@@ -41,7 +40,6 @@ const Login = () => {
 
   return (
     <div className="login-container register-container">
-      <Menu />
       <span className="login-item">登录</span>
       <div className="register-input" >
         <input type="text" value={username} onChange={e => {setUsername(e.target.value)}} required />

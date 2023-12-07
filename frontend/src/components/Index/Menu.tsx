@@ -40,9 +40,9 @@ export const Menu = () => {
 
   const menu = [
     {href: '/', text: '首页'},
-    {href: '/articles', text: '文章'},
+    {href: '/articles', text: '博客'},
     {href: '/comments', text: '留言'},
-    user.id === 0 ? {href: '/login', text: '登陆'} : {href: '/login', text: '狗哥'},
+    user.id === 0 ? {href: '/login', text: '登陆'} : {href: '/info', text: user.nickname},
   ]
 
   useEffect(() => {
