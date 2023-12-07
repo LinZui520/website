@@ -62,7 +62,7 @@ func (UserService) UserTokenLogin(c *gin.Context) (interface{}, error) {
 	username := userClaims.Username
 	password := userClaims.Password
 	global.DB.Where("username = ?", username).First(&user)
-	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
+	if user.Password != password {
 		return struct{}{}, errors.New("密码错误")
 	}
 	tokenString, err = GenerateToken(user.ID, user.Username, user.Password, user.Power)
