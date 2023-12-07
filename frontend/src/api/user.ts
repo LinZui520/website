@@ -9,6 +9,11 @@ export const UserLogin = (username: string, password: string) => request({
   }
 })
 
+export const UserTokenLogin = () => request({
+  url: '/user/token',
+  method: 'get',
+})
+
 export const UserRegister = (nickname: string, username: string, password: string) => request({
   url: '/user/register',
   method: 'post',

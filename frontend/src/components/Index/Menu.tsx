@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { MenuItem } from "./MenuItem";
 import "./Menu.css"
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const variantsDiv = {
   open: (height = 1000) => ({
@@ -32,17 +33,17 @@ const variantsUl = {
   }
 };
 
-const menu = [
-  {href: '/', text: '首页'},
-  {href: '/articles', text: '文章'},
-  {href: '/comments', text: '留言'},
-  {href: '/login', text: '登陆'},
-]
-
-
-
 export const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const user = useSelector((state: any) => state.user);
+
+  const menu = [
+    {href: '/', text: '首页'},
+    {href: '/articles', text: '文章'},
+    {href: '/comments', text: '留言'},
+    user.id === 0 ? {href: '/login', text: '登陆'} : {href: '/login', text: '狗哥'},
+  ]
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';
