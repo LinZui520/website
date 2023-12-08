@@ -1,12 +1,13 @@
-import { Button, message } from "antd";
-import "./Login.css";
-import "./Register.css"
+import { Button } from "antd";
 import { useState } from "react";
 import { UserLogin } from "../api/user";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { setUser } from "../store/user";
-
+import cookie from 'react-cookies'
+import Menu from "../components/Index/Menu";
+import "./Login.css";
+import "./Register.css"
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -18,28 +19,30 @@ const Login = () => {
 
   const login = () => {
     if (username === '' || username.length > 16) {
-      message.warning('账号格式错误');
+      // message.warning('账号格式错误');
       return
     }
     if (password === '' || password.length > 32) {
-      message.warning('密码格式错误');
+      // message.warning('密码格式错误');
       return
     }
     UserLogin(username, password).then(res => {
       if (res.data.code === 200) {
         dispatch(setUser(res.data.data.User))
-        message.success('登录成功');
+        cookie.save('token', res.data.data.Token, {path:"/"})
+        // message.success('登录成功');
         navigate('/')
       } else {
-        message.warning(res.data.msg)
+        // message.warning(res.data.msg)
       }
     }).catch(_ => {
-      message.error('网络问题登录失败');
+      // message.error('网络问题登录失败');
     })
   }
 
   return (
     <div className="login-container register-container">
+      <Menu />
       <span className="login-item">登录</span>
       <div className="register-input" >
         <input type="text" value={username} onChange={e => {setUsername(e.target.value)}} required />

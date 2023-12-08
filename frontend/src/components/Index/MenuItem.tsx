@@ -1,5 +1,6 @@
 import { Button, ConfigProvider } from "antd";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import './Menu.css'
 
 const variants = {
@@ -19,7 +20,8 @@ const variants = {
   }
 };
 
-export const MenuItem = ({ item }: any) => {
+export const MenuItem = ({ item, onCloseMenu }: any) => {
+  const navigate = useNavigate()
   return (
     <motion.li
       variants={variants}
@@ -39,7 +41,12 @@ export const MenuItem = ({ item }: any) => {
           }
         }}
       >
-        <Button type="link" href={item.href}>{item.text}</Button>
+        <Button type="link" onClick={() => {
+          navigate(item.href);
+          onCloseMenu();
+        }}>
+          {item.text}
+        </Button>
       </ConfigProvider>
       
     </motion.li>

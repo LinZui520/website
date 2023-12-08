@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { MenuItem } from "./MenuItem";
-import "./Menu.css"
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import "./Menu.css"
 
 const variantsDiv = {
   open: (height = 1000) => ({
@@ -47,15 +47,6 @@ export const Menu = () => {
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';
-    // if (isOpen) {
-    //   props.onDataReceived(isOpen)
-    // } else {
-    //   const delayDuration = 800;
-    //   const timer = setTimeout(() => {
-    //     props.onDataReceived(isOpen);
-    //   }, delayDuration);
-    //   return () => clearTimeout(timer);
-    // }
   }, [isOpen]);
 
   return (
@@ -68,7 +59,7 @@ export const Menu = () => {
 
       <motion.ul variants={variantsUl} style={{pointerEvents: isOpen?'auto':'none'}} className="menu-ul">
         {menu.map(item => 
-          <MenuItem key={item.href} item={item} />
+          <MenuItem key={item.href} item={item} onCloseMenu={() => setIsOpen(!isOpen)}  />
         )}
       </motion.ul>
 

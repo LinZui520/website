@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Menu from '../components/Index/Menu';
 import { UserRegister } from '../api/user';
-import './Register.css'
 import { Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
+import './Register.css'
 
 const Register = () => {
   const [nickname, setNickname] = useState('');
