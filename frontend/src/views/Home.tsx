@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import { ArrowUpOutlined } from '@ant-design/icons';
 import { FloatButton } from 'antd';
 import { useEffect } from 'react';
@@ -6,7 +5,6 @@ import Footer from '../components/Index/Footer';
 
 const Home = () => {
 
-  const user = useSelector((state: any) => state.user);
 
   useEffect(() => {
     window.scrollTo(0, 0);

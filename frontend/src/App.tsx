@@ -22,9 +22,8 @@ const App = () => {
           if (res.data.code === 200) {
             cookie.save('token', res.data.data.Token, { path: "/" });
             dispatch(setUser(res.data.data.User));
-            console.log("UserTokenLogin")
           }
-        } catch (err) {
+        } catch (_) {
 
         } 
       } 
