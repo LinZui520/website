@@ -32,6 +32,7 @@ services:
     volumes:
       - ./database/mysql/data/image:/root/website/database/mysql/data/image
       - ./frontend/build:/root/website/frontend/build
+    restart: always
     network_mode: host
     depends_on:
       - frontend

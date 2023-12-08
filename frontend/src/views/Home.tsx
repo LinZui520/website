@@ -16,7 +16,7 @@ const Home = () => {
     <div>
         <div style={{marginLeft: '10vw', marginRight: '10vw', height: '100vh', alignItems: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', fontSize: '2rem'}}>
           <span>朱贵是混蛋</span>
-          {user.nickname}
+          <span>重构代码。。。。。。</span>
         </div>
 
         <div style={{height: '100vh', alignItems: 'center', display: 'flex', justifyContent: 'center'}}>
