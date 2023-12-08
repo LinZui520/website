@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Menu from '../components/Index/Menu';
 import { UserRegister } from '../api/user';
 import { Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -40,7 +39,6 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <Menu />
       <span className="register-item">注册</span>
       <div className="register-input" >
         <input type="text" value={nickname} onChange={e => {setNickname(e.target.value)}} required />

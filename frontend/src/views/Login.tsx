@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { setUser } from "../store/user";
 import cookie from 'react-cookies'
-import Menu from "../components/Index/Menu";
 import "./Login.css";
 import "./Register.css"
 
@@ -42,7 +41,6 @@ const Login = () => {
 
   return (
     <div className="login-container register-container">
-      <Menu />
       <span className="login-item">登录</span>
       <div className="register-input" >
         <input type="text" value={username} onChange={e => {setUsername(e.target.value)}} required />
