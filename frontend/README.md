@@ -54,4 +54,5 @@ $ npm i antd
 $ npm i axios
 $ npm i react-redux
 $ npm i @reduxjs/toolkit
+$ npm i md-editor-rt 
 ```

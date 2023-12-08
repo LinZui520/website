@@ -8,6 +8,7 @@ import Info from '../views/Info';
 import Index from '../views/Index';
 import Message from '../views/Message';
 import NotFind from '../views/NotFind';
+import Article from '../views/Article';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: 'articles',
         element: <Articles />
+      },
+      {
+        path: 'article/:id',
+        element: <Article />
       },
       {
         path: 'message',

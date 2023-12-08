@@ -16,10 +16,10 @@
   justify-content: flex-start;
   align-items: center;
 
-  border: 1px solid black; /* 1像素宽的黑色边框 */
+  border: 2px solid black;
   padding: 10px;
   &:hover {
-    border: none; /* 鼠标悬停时，边框消失 */
+    border: 2px solid white;
   }
 }
 
