@@ -1,33 +1,14 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from 'react-router-dom';
 
-import Home from "../views/Home";
-import Login from "../views/Login";
-import Register from "../views/Register";
-import Articles from "../views/Articles";
-import Info from "../views/Info";
-import Index from "../views/Index";
+import Home from '../views/Home';
+import Login from '../views/Login';
+import Register from '../views/Register';
+import Articles from '../views/Articles';
+import Info from '../views/Info';
+import Index from '../views/Index';
+import Message from '../views/Message';
 
 const router = createBrowserRouter([
-  // {
-  //   path: '/',
-  //   element: <Home />,
-  // },
-  // {
-  //   path: '/articles',
-  //   element: <Articles />
-  // },
-  // {
-  //   path: '/login',
-  //   element: <Login />
-  // },
-  // {
-  //   path: '/register',
-  //   element: <Register />
-  // },
-  // {
-  //   path: '/info',
-  //   element: <Info />
-  // },
   {
     path: '/',
     element: <Index />,
@@ -41,6 +22,10 @@ const router = createBrowserRouter([
         element: <Articles />
       },
       {
+        path: 'message',
+        element: <Message />
+      },
+      {
         path: 'login',
         element: <Login />
       },
@@ -52,9 +37,9 @@ const router = createBrowserRouter([
         path: 'info',
         element: <Info />
       },
-    ]
-  }
+    ],
+  },
   
 ]);
 
-export default router
+export default router;
