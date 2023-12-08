@@ -1,8 +1,7 @@
-import { Button, Flex } from 'antd';
+import { Flex } from 'antd';
 import { GetAllArticle } from '../../api/article';
 import './ArticlesMain.css'
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 
 
 interface Article {
@@ -47,7 +46,7 @@ const ArticlesMain = () => {
 
         <div className='article' key={item.Article.id}>
           <div className='article-image'>
-            <img src={"/image/" + item.ImageFilename} draggable="false" />
+            <img src={"/image/" + item.ImageFilename} alt={item.Article.title} draggable="false" />
           </div>
           <div style={{fontSize: '25px', fontWeight: 'bold', marginBottom: '5px'}}>{item.Article.title}</div>
           <div style={{fontSize: '15px', marginBottom: '5px'}}>作者：{item.AuthorNickName}</div>

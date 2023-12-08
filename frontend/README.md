@@ -51,4 +51,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 $ npm i nomalize.css
 $ npm i -S react-router-dom
 $ npm i antd
+$ npm i axios
+$ npm i react-redux
+$ npm i @reduxjs/toolkit
 ```
