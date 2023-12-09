@@ -59,7 +59,7 @@ func (ArticleService) GetOneArticle(c *gin.Context) (model.Article, error) {
 func (ArticleService) GetAllArticle() ([]model.ArticleList, error) {
 	var list []model.ArticleList
 	err := global.DB.Table("articles").
-		Select("articles.*, users.nickname as AuthorNickName, images.filename as ImageFileName").
+		Select("articles.*, users.nickname as AuthorNickname, images.filename as ImageFilename").
 		Joins("LEFT JOIN users ON articles.author = users.id").
 		Joins("LEFT JOIN images ON articles.image = images.id").
 		Scan(&list).Error

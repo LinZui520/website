@@ -12,7 +12,7 @@ type Message struct {
 type MessageList struct {
 	ID             int       `json:"id"`
 	Author         int       `json:"author"`
-	AuthorNickName string    `json:"nickname"`
+	AuthorNickname string    `json:"nickname"`
 	Content        string    `json:"content"`
 	Creation       time.Time `json:"creation"`
 }

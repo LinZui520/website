@@ -4,6 +4,6 @@ import "time"
 
 type Image struct {
 	ID       int       `json:"id"`
-	FileName string    `json:"filename"`
+	Filename string    `json:"filename"`
 	Creation time.Time `json:"creation"`
 }

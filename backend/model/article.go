@@ -15,9 +15,9 @@ type Article struct {
 type ArticleList struct {
 	ID             int       `json:"id"`
 	Author         int       `json:"author"`
-	AuthorNickName string    `json:"nickname"`
+	AuthorNickname string    `json:"nickname"`
 	Image          int       `json:"image"`
-	ImageFileName  string    `json:"filename"`
+	ImageFilename  string    `json:"filename"`
 	Title          string    `json:"title"`
 	Content        string    `json:"content"`
 	Creation       time.Time `json:"creation"`

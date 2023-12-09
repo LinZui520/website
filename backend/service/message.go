@@ -28,7 +28,7 @@ func (MessageService) AddMessage(c *gin.Context) error {
 func (MessageService) GetAllMessage() ([]model.MessageList, error) {
 	var list []model.MessageList
 	err := global.DB.Table("messages").
-		Select("messages.*, users.nickname as AuthorNickName").
+		Select("messages.*, users.nickname as AuthorNickname").
 		Joins("LEFT JOIN users ON messages.author = users.id").
 		Scan(&list).Error
 	if err != nil {
