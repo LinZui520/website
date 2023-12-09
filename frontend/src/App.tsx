@@ -20,7 +20,10 @@ const App = () => {
         try {
           const res = await UserTokenLogin();
           if (res.data.code === 200) {
-            cookie.save('token', res.data.data.Token, { path: "/" });
+            cookie.save('token', res.data.data.Token, { 
+              path: "/", 
+              expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) 
+            });
             dispatch(setUser(res.data.data.User));
           }
         } catch (_) {
@@ -36,13 +39,9 @@ const App = () => {
     <ConfigProvider 
       theme={{
         token: {
-          colorBgElevated: 'black',
           colorPrimary: 'black',
         },
         components: {
-          Input: {
-            activeShadow: 'black',
-          },
           Button: {
             colorLink: "#000000",
             colorLinkHover: "#666666",
@@ -51,7 +50,7 @@ const App = () => {
         }
       }}
     >
-      <RouterProvider router={router}></RouterProvider>
+      <RouterProvider router={router} />
     </ConfigProvider>
   );
 }

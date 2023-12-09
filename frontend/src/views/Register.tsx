@@ -9,36 +9,38 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate()
+  const [messageApi, contextHolder] = message.useMessage();
 
   const register = () => {
     if (nickname === '' || nickname.length > 16) {
-      message.warning('昵称格式错误');
+      messageApi.warning('昵称格式错误');
       return
     }
     if (username === '' || username.length > 16) {
-      message.warning('账号格式错误');
+      messageApi.warning('账号格式错误');
       return
     }
     if (password === '' || password.length > 32) {
-      message.warning('密码格式错误');
+      messageApi.warning('密码格式错误');
       return
     }
     UserRegister(nickname, username, password).then(res => {
       if (res.data.code === 200) {
-        message.success("注册成功")
+        messageApi.success("注册成功")
         navigate('/login')
       } else {
-        message.warning(res.data.msg)
+        messageApi.warning("该账户已被注册")
       }
      
     }).catch(_ => {
-      message.error("网络原因注册失败")
+      messageApi.error("网络原因注册失败")
     })
     
   }
 
   return (
     <div className="register-container">
+      {contextHolder}
       <span className="register-item">注册</span>
       <div className="register-input" >
         <input type="text" value={nickname} onChange={e => {setNickname(e.target.value)}} required />
