@@ -6,7 +6,7 @@ import Register from '../views/Register';
 import Articles from '../views/Articles';
 import Info from '../views/Info';
 import Index from '../views/Index';
-import Message from '../views/Message';
+import Messages from '../views/Messages';
 import NotFind from '../views/NotFind';
 import Article from '../views/Article';
 
@@ -28,8 +28,8 @@ const router = createBrowserRouter([
         element: <Article />
       },
       {
-        path: 'message',
-        element: <Message />
+        path: 'messages',
+        element: <Messages />
       },
       {
         path: 'login',

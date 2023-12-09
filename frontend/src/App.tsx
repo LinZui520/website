@@ -39,6 +39,7 @@ const App = () => {
     <ConfigProvider 
       theme={{
         token: {
+          colorBgElevated: 'black',
           colorPrimary: 'black',
         },
         components: {
@@ -47,6 +48,9 @@ const App = () => {
             colorLinkHover: "#666666",
             colorLinkActive: "#666666",
           },
+          Message: {
+            contentBg: 'white',
+          }
         }
       }}
     >
