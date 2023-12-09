@@ -21,7 +21,7 @@ func AddImage(c *gin.Context) (model.Image, error) {
 	if err != nil {
 		return image, errors.New("图片保存失败")
 	}
-	image.Filename = name
+	image.FileName = name
 	image.Creation = time.Now()
 	return image, global.DB.Create(&image).Error
 }
@@ -37,5 +37,5 @@ func DeleteImage(id int) error {
 	if err != nil {
 		return errors.New("图片删除失败")
 	}
-	return os.Remove(global.Config.System.Directory + image.Filename)
+	return os.Remove(global.Config.System.Directory + image.FileName)
 }

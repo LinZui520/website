@@ -2,24 +2,17 @@ package model
 
 import "time"
 
-type Article struct {
+type Message struct {
 	ID       int       `json:"id"`
 	Author   int       `json:"author"`
-	Image    int       `json:"image"`
-	Title    string    `json:"title"`
 	Content  string    `json:"content"`
 	Creation time.Time `json:"creation"`
-	Latest   time.Time `json:"latest"`
 }
 
-type ArticleList struct {
+type MessageList struct {
 	ID             int       `json:"id"`
 	Author         int       `json:"author"`
 	AuthorNickName string    `json:"nickname"`
-	Image          int       `json:"image"`
-	ImageFileName  string    `json:"filename"`
-	Title          string    `json:"title"`
 	Content        string    `json:"content"`
 	Creation       time.Time `json:"creation"`
-	Latest         time.Time `json:"latest"`
 }

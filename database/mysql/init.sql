@@ -31,3 +31,11 @@ create table if not exists articles (
     primary key (id),
     foreign key (image) references images (id)
 ) AUTO_INCREMENT=100000;
+
+create table if not exists messages (
+    id int unsigned auto_increment comment '留言编号',
+    author int unsigned not null comment '留言人编号',
+    content longtext null comment '留言内容',
+    creation datetime not null comment '创建时间',
+    primary key (id)
+) AUTO_INCREMENT=100000;
