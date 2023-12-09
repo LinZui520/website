@@ -11,8 +11,10 @@ func main() {
 	core.InitConfig()
 	//初始化日志
 	global.Log = core.InitLogger()
-	//连接数据库
+	//连接MySQL
 	global.DB = core.InitGorm()
+	//连接Redis
+	global.Redis = core.InitRedis()
 
 	if router.InitRouter().Run(global.Config.System.Address()) != nil {
 		global.Log.Warnln("server运行失败")

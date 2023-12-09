@@ -10,6 +10,13 @@ services:
     restart: always
     network_mode: host
 
+  redis:
+    build: ./database/redis
+    restart: always
+    network_mode: host
+    depends_on:
+      - mysql
+
   backend:
     build: ./backend
     volumes:
@@ -18,6 +25,7 @@ services:
     tty: true
     network_mode: host
     depends_on:
+      - redis
       - mysql
   frontend:
     build: ./frontend
