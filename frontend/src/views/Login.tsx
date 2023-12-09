@@ -27,8 +27,8 @@ const Login = () => {
     }
     UserLogin(username, password).then(res => {
       if (res.data.code === 200) {
-        dispatch(setUser(res.data.data.User))
-        cookie.save('token', res.data.data.Token, {path:"/"})
+        dispatch(setUser(res.data.data.user))
+        cookie.save('token', res.data.data.token, {path:"/"})
         messageApi.success('登录成功');
         navigate('/')
       } else {

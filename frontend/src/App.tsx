@@ -20,11 +20,11 @@ const App = () => {
         try {
           const res = await UserTokenLogin();
           if (res.data.code === 200) {
-            cookie.save('token', res.data.data.Token, { 
+            cookie.save('token', res.data.data.token, { 
               path: "/", 
               expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) 
             });
-            dispatch(setUser(res.data.data.User));
+            dispatch(setUser(res.data.data.user));
           }
         } catch (_) {
 

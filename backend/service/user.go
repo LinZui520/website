@@ -38,17 +38,17 @@ func (UserService) UserLogin(c *gin.Context) (interface{}, error) {
 		return struct{}{}, errors.New("账号或密码错误")
 	}
 
-	token, err := GenerateToken(user.ID, user.Username, user.Password, user.Power)
+	tokenString, err := GenerateToken(user.ID, user.Username, user.Password, user.Power)
 	if err != nil {
 		return struct{}{}, errors.New("生成token错误")
 	}
 	global.DB.Model(&user).Update("latest", time.Now())
 	return struct {
-		User  model.User
-		Token string
+		User  model.User `json:"user"`
+		Token string     `json:"token"`
 	}{
 		User:  user,
-		Token: token,
+		Token: tokenString,
 	}, nil
 }
 
@@ -71,15 +71,10 @@ func (UserService) UserTokenLogin(c *gin.Context) (interface{}, error) {
 	}
 	global.DB.Model(&user).Update("latest", time.Now())
 	return struct {
-		User  model.User
-		Token string
+		User  model.User `json:"user"`
+		Token string     `json:"token"`
 	}{
 		User:  user,
 		Token: tokenString,
 	}, nil
-}
-
-func GetUserInfo(id int) (model.User, error) {
-	var user model.User
-	return user, global.DB.Where("id = ?", id).First(&user).Error
 }
