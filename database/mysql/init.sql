@@ -29,6 +29,7 @@ create table if not exists articles (
     creation datetime not null comment '创建时间',
     latest datetime not null comment '最近更新时间',
     primary key (id),
+    foreign key (author) references users(id),
     foreign key (image) references images (id)
 ) AUTO_INCREMENT=100000;
 
