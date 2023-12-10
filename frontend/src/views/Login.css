@@ -19,13 +19,13 @@
 
 @media screen and (min-width: 980px) {
   .login-container .login-item {
-    width: 345.6px;
+    width: 345px;
   }
 }
 
 @media screen and (min-width: 768px) and (max-width: 980px) {
   .login-container .login-item {
-    width: 345.6px;
+    width: 345px;
   }
 }
 

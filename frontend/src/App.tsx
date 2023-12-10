@@ -31,7 +31,7 @@ const App = () => {
         } 
       } 
     }
-    fetchData()
+    fetchData().then(_ => {})
   }, [user, dispatch]);
 
 

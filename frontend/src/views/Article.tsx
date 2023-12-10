@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { GetOneArticle } from '../api/article';
 import { useEffect, useState } from 'react';
 import { MdPreview } from 'md-editor-rt';
@@ -17,17 +17,10 @@ interface ArticleData {
 
 const Article = () => {
 
-  const { id } = useParams()
+  const id = useParams()
+  const navigate = useNavigate()
 
-  const [article, setArticle] = useState<ArticleData>({
-    id: 0,
-    author: 0,
-    image: 0,
-    title: '',
-    content: '',
-    creation: '',
-    latest: '',
-  });
+  const [article, setArticle] = useState<ArticleData>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,18 +28,20 @@ const Article = () => {
         const res = await GetOneArticle(Number(id));
         if (res.data.code === 200) {
           setArticle(res.data.data)
+        } else {
+          navigate("/404")
         }
       } catch (_) {
 
-      } 
+      }
     }
-    fetchData()
-  }, [id])
+    fetchData().then(_ => {})
+  }, [id, navigate])
 
   
   return (
     <div style={{width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-      <MdPreview style={{width: '80vw', maxWidth: '800px'}} modelValue={article.content} />
+      <MdPreview style={{width: '80vw', maxWidth: '800px'}} modelValue={article ? article.content: ""} />
     </div>
   );
 }

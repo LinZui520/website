@@ -1,4 +1,3 @@
-import { Flex } from 'antd';
 import { GetAllArticle } from '../../api/article';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -34,12 +33,12 @@ const ArticlesMain = () => {
 
       } 
     }
-    fetchData()
+    fetchData().then(_ => {})
   }, [])
 
   
   return (
-    <Flex className="articles-main-container" wrap="wrap" gap="large">
+    <div className="articles-main-container">
       {articles.map(item => 
         <div className='article' key={item.id} onClick={() => {
           navigate('/article/' + item.id)
@@ -55,7 +54,7 @@ const ArticlesMain = () => {
         </div>
 
       )}
-    </Flex>
+    </div>
   );
 }
   

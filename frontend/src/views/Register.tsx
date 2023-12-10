@@ -13,27 +13,27 @@ const Register = () => {
 
   const register = () => {
     if (nickname === '' || nickname.length > 16) {
-      messageApi.warning('昵称格式错误');
+      messageApi.warning('昵称格式错误').then(_ => {});
       return
     }
     if (username === '' || username.length > 16) {
-      messageApi.warning('账号格式错误');
+      messageApi.warning('账号格式错误').then(_ => {});
       return
     }
     if (password === '' || password.length > 32) {
-      messageApi.warning('密码格式错误');
+      messageApi.warning('密码格式错误').then(_ => {});
       return
     }
     UserRegister(nickname, username, password).then(res => {
       if (res.data.code === 200) {
-        messageApi.success("注册成功")
+        messageApi.success("注册成功").then(_ => {});
         navigate('/login')
       } else {
-        messageApi.warning("该账户已被注册")
+        messageApi.warning("该账户已被注册").then(_ => {});
       }
      
     }).catch(_ => {
-      messageApi.error("网络原因注册失败")
+      messageApi.error("网络原因注册失败").then(_ => {});
     })
     
   }
