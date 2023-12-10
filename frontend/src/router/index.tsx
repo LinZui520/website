@@ -9,6 +9,11 @@ import Index from '../views/Index';
 import Messages from '../views/Messages';
 import NotFind from '../views/NotFind';
 import Article from '../views/Article';
+import IndexAdmin from '../views/admin/IndexAdmin'
+import UserManager from "../views/admin/UserManager";
+import ArticleManager from "../views/admin/ArticleManager";
+import MessageManager from "../views/admin/MessageManager";
+import HomeAdmin from "../views/admin/HomeAdmin";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +52,25 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin',
+    element: <IndexAdmin />,
+    children: [
+      {
+        path: '',
+        element: <HomeAdmin />
+      },
+      {
+        path: 'user',
+        element: <UserManager />,
+      },
+      {
+        path: 'article',
+        element: <ArticleManager />
+      },
+      {
+        path: 'message',
+        element: <MessageManager />
+      }
+    ]
   },
   {
     path: '*',

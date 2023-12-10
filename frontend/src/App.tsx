@@ -50,6 +50,9 @@ const App = () => {
           },
           Message: {
             contentBg: 'white',
+          },
+          Menu: {
+            itemSelectedBg: '#f0f0f0',
           }
         }
       }}
