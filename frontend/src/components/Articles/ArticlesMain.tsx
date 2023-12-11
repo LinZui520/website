@@ -33,7 +33,7 @@ const ArticlesMain = () => {
 
       } 
     }
-    fetchData().then(_ => {})
+    fetchData().then(() => {})
   }, [])
 
   

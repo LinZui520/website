@@ -26,7 +26,7 @@ const Messages = () => {
 
       } 
     }
-    fetchData().then(_ => {})
+    fetchData().then(() => {})
   }, [])
 
   return (

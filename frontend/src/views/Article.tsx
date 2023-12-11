@@ -35,7 +35,7 @@ const Article = () => {
 
       }
     }
-    fetchData().then(_ => {})
+    fetchData().then(() => {})
   }, [id, navigate])
 
   

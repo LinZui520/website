@@ -18,24 +18,24 @@ const Login = () => {
 
   const login = () => {
     if (username === '' || username.length > 16) {
-      messageApi.warning('账号格式错误').then(_ => {});
+      messageApi.warning('账号格式错误').then(() => {});
       return
     }
     if (password === '' || password.length > 32) {
-      messageApi.warning('密码格式错误').then(_ => {});
+      messageApi.warning('密码格式错误').then(() => {});
       return
     }
     UserLogin(username, password).then(res => {
       if (res.data.code === 200) {
         dispatch(setUser(res.data.data.user))
         cookie.save('token', res.data.data.token, {path:"/"})
-        messageApi.success('登录成功').then(_ => {});
+        messageApi.success('登录成功').then(() => {});
         navigate('/')
       } else {
-        messageApi.warning(res.data.msg).then(_ => {})
+        messageApi.warning(res.data.msg).then(() => {})
       }
     }).catch(_ => {
-      messageApi.error('网络问题登录失败').then(_ => {});
+      messageApi.error('网络问题登录失败').then(() => {});
     })
   }
 

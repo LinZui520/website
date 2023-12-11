@@ -4,35 +4,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "./Menu.css"
 
-const variantsDiv = {
-  open: (height = 1000) => ({
-    clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
-    transition: {
-      type: "spring",
-      stiffness: 20,
-      restDelta: 2
-    }
-  }),
-  closed: {
-    clipPath: "circle(30px at 40px 40px)",
-    transition: {
-      delay: 0.5,
-      type: "spring",
-      stiffness: 400,
-      damping: 40
-    }
-  }
-};
-
-const variantsUl = {
-  open: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 }
-  },
-  closed: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 }
-  }
-};
-
 export const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -55,9 +26,34 @@ export const Menu = () => {
       animate={isOpen ? "open" : "closed"}
       className="menu-container"
     >
-      <motion.div className="menu-background" variants={variantsDiv} />
+      <motion.div className="menu-background" variants={{
+        open: (height = 1000) => ({
+          clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
+          transition: {
+            type: "spring",
+            stiffness: 20,
+            restDelta: 2
+          }
+        }),
+        closed: {
+          clipPath: "circle(30px at 40px 40px)",
+          transition: {
+            delay: 0.5,
+            type: "spring",
+            stiffness: 400,
+            damping: 40
+          }
+        }
+      }} />
 
-      <motion.ul variants={variantsUl} style={{pointerEvents: isOpen?'auto':'none'}} className="menu-ul">
+      <motion.ul variants={{
+        open: {
+          transition: { staggerChildren: 0.07, delayChildren: 0.2 }
+        },
+        closed: {
+          transition: { staggerChildren: 0.05, staggerDirection: -1 }
+        }
+      }} style={{pointerEvents: isOpen?'auto':'none'}} className="menu-ul">
         {menu.map(item => 
           <MenuItem key={item.href} item={item} onCloseMenu={() => setIsOpen(!isOpen)}  />
         )}

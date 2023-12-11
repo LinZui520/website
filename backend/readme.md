@@ -9,6 +9,7 @@ $ go get github.com/go-redis/redis
 $ go get github.com/sirupsen/logrus
 $ go get github.com/gin-gonic/gin
 $ go get -u github.com/golang-jwt/jwt/v5
+$ go get -u github.com/gorilla/websocket
 ```
 ### 打包
 ```sh
