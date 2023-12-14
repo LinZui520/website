@@ -17,7 +17,7 @@ interface ArticleData {
 
 const Article = () => {
 
-  const id = useParams()
+  const params = useParams()
   const navigate = useNavigate()
 
   const [article, setArticle] = useState<ArticleData>();
@@ -25,7 +25,7 @@ const Article = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await GetOneArticle(Number(id));
+        const res = await GetOneArticle(Number(params.id));
         if (res.data.code === 200) {
           setArticle(res.data.data)
         } else {
@@ -36,7 +36,7 @@ const Article = () => {
       }
     }
     fetchData().then(() => {})
-  }, [id, navigate])
+  }, [params, navigate])
 
   
   return (
