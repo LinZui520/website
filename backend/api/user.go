@@ -36,3 +36,11 @@ func (UserApi) UserTokenLogin(c *gin.Context) {
 		model.OK(data, "登陆成功", c)
 	}
 }
+func (UserApi) GetAllUser(c *gin.Context) {
+	data, err := userService.GetAllUser(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "查询成功", c)
+	}
+}

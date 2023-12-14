@@ -57,7 +57,7 @@ func (UserService) UserTokenLogin(c *gin.Context) (interface{}, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
 	if err != nil {
-		return struct{}{}, err
+		return nil, errors.New("权限不足")
 	}
 	username := userClaims.Username
 	password := userClaims.Password
@@ -77,4 +77,19 @@ func (UserService) UserTokenLogin(c *gin.Context) (interface{}, error) {
 		User:  user,
 		Token: tokenString,
 	}, nil
+}
+
+func (UserService) GetAllUser(c *gin.Context) ([]model.User, error) {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power == 0 {
+		return nil, errors.New("权限不足")
+	}
+
+	var users []model.User
+	err = global.DB.Find(&users).Error
+	if err != nil {
+		return nil, errors.New("查询用户列表失败")
+	}
+	return users, nil
 }

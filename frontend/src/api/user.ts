@@ -23,3 +23,8 @@ export const UserRegister = (nickname: string, username: string, password: strin
     password,
   }
 })
+
+export const GetAllUser = () => request({
+  url: '/user/list',
+  method: 'get',
+})

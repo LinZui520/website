@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {GetCount} from "../../../api/admin";
 import CountUp from "react-countup";
+import { Statistic } from "antd";
 
 
 const Count = () => {
@@ -28,19 +29,9 @@ const Count = () => {
   return (
     <div style={{paddingTop: '30px'}}>
       <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <span>用户总数</span>
-          <CountUp style={{fontSize: '24px'}} end={CountOfUser} duration={1}/>
-        </div>
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <span>文章总数</span>
-          <CountUp style={{fontSize: '24px'}} end={CountOfArticle} duration={1}/>
-        </div>
-
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <span>留言总数</span>
-          <CountUp style={{fontSize: '24px'}} end={CountOfMessage} duration={1}/>
-        </div>
+        <Statistic title="用户总数" value={CountOfUser} formatter={() => <CountUp end={CountOfUser} separator="," />} />
+        <Statistic title="文章总数" value={CountOfArticle} formatter={() => <CountUp end={CountOfArticle} separator="," />} />
+        <Statistic title="留言总数" value={CountOfMessage} formatter={() => <CountUp end={CountOfMessage} separator="," />} />
       </div>
 
     </div>
