@@ -1,19 +1,19 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
-import Home from '../views/Home';
-import Login from '../views/Login';
-import Register from '../views/Register';
-import Articles from '../views/Articles';
-import Info from '../views/Info';
-import Index from '../views/Index';
-import Messages from '../views/Messages';
-import NotFind from '../views/NotFind';
-import Article from '../views/Article';
-import IndexAdmin from '../views/admin/IndexAdmin'
-import UserManager from "../views/admin/UserManager";
-import ArticleManager from "../views/admin/ArticleManager";
-import MessageManager from "../views/admin/MessageManager";
-import HomeAdmin from "../views/admin/HomeAdmin";
+import Home from '../pages/Home';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
+import Articles from '../pages/Articles';
+import Info from '../pages/Info';
+import Index from '../pages/Index';
+import Messages from '../pages/Messages';
+import NotFind from '../pages/NotFind';
+import Article from '../pages/Article';
+import IndexAdmin from '../pages/admin/IndexAdmin'
+import UserManager from "../pages/admin/UserManager";
+import ArticleManager from "../pages/admin/ArticleManager";
+import MessageManager from "../pages/admin/MessageManager";
+import HomeAdmin from "../pages/admin/HomeAdmin";
 
 const router = createBrowserRouter([
   {
