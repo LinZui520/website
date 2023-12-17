@@ -1,0 +1,3 @@
+# git config --global filter.Password.clean 'sed "/password:[[:space:]]*$/b; /password:.*[0-9].*/! s/password:.*/password: [FILTERED]/g"'
+
+server/settings.yaml filter=Password
