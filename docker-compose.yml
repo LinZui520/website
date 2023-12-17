@@ -17,8 +17,8 @@ services:
     depends_on:
       - mysql
 
-  backend:
-    build: ./backend
+  server:
+    build: ./server
     volumes:
       - ./database/mysql/data/image:/root/website/database/mysql/data/image
     restart: always
@@ -27,21 +27,21 @@ services:
     depends_on:
       - redis
       - mysql
-  frontend:
-    build: ./frontend
+  web:
+    build: ./web
     volumes:
       - ./database/mysql/data/image:/root/website/database/mysql/data/image
-      - ./frontend/build:/root/website/frontend/build
+      - ./web/build:/root/website/web/build
     network_mode: host
     depends_on:
-      - backend
+      - server
   nginx:
     build: ./nginx
     volumes:
       - ./database/mysql/data/image:/root/website/database/mysql/data/image
-      - ./frontend/build:/root/website/frontend/build
+      - ./web/build:/root/website/web/build
     restart: always
     network_mode: host
     depends_on:
-      - frontend
+      - web
 
