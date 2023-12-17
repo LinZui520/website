@@ -25,6 +25,6 @@ system:
   port: 8080
   env: release
   email: yangminghe20@gmail.com
-  password: vtfwsxduoctwvres
+  password:
   directory: ../database/mysql/data/image/
 
