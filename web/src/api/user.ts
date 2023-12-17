@@ -1,12 +1,30 @@
 import request from "../utils/request";
 
-
-export const UserRegister = (username: string, email: string, password: string) => request({
-  url: '/user/register',
+export const UserLogin = (username: string, password: string) => request({
+  url: '/user/login',
   method: 'post',
   data: {
     username,
-    email,
     password,
   }
+})
+
+export const UserTokenLogin = () => request({
+  url: '/user/token',
+  method: 'get',
+})
+
+export const UserRegister = (nickname: string, username: string, password: string) => request({
+  url: '/user/register',
+  method: 'post',
+  data: {
+    nickname,
+    username,
+    password,
+  }
+})
+
+export const GetAllUser = () => request({
+  url: '/user/list',
+  method: 'get',
 })

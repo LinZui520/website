@@ -1,0 +1,73 @@
+.register-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-container .register-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 35px;
+  margin-bottom: 25px;
+}
+
+.register-container .register-input {
+  display: flex;
+  flex-direction: column;
+  height: 35px;
+  margin-bottom: 35px;
+}
+
+.register-container input{
+  position: relative;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #dddddd;
+  width: 100%;
+  z-index: 2;
+}
+
+.register-container label{
+  position: relative;
+  top: -20px;
+  color: #999999;
+  font-size: 16px;
+  transition: all 0.3s ease-out;
+}
+
+.register-container input:focus, 
+.register-container input:valid{
+  outline: none;
+  border-bottom: 1px solid black;
+}
+
+.register-container input:focus + label, 
+.register-container input:valid + label{
+  top: -50px;
+  color: black;
+}
+
+@media screen and (min-width: 980px) {
+  .register-container .register-item,
+  .register-container .register-input {
+    width: 345px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 980px) {
+  .register-container .register-item,
+  .register-container .register-input {
+    width: 345px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .register-container .register-item,
+  .register-container .register-input {
+    width: 45vw;
+  }
+}

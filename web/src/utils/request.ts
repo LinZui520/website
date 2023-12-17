@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 
 const request = (config: any) => {
   const instance = axios.create({

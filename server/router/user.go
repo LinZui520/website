@@ -12,6 +12,9 @@ func UserRouter(router *gin.Engine) {
 	{
 		user.GET("/verify", userApi.UserVerify)
 		user.POST("/register", userApi.UserRegister)
+		user.POST("/login", userApi.UserLogin)
+		user.GET("/token", userApi.UserTokenLogin)
+		user.POST("/email", userApi.UserEmailLogin)
 	}
 
 }

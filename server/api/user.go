@@ -27,3 +27,30 @@ func (UserApi) UserRegister(c *gin.Context) {
 		model.OK(true, "注册成功", c)
 	}
 }
+
+func (UserApi) UserLogin(c *gin.Context) {
+	data, err := userService.UserLogin(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "登录成功", c)
+	}
+}
+
+func (UserApi) UserTokenLogin(c *gin.Context) {
+	data, err := userService.UserTokenLogin(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "登录成功", c)
+	}
+}
+
+func (UserApi) UserEmailLogin(c *gin.Context) {
+	data, err := userService.UserEmailLogin(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "登录成功", c)
+	}
+}
