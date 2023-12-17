@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"server/global"
@@ -14,9 +13,10 @@ type UserService struct{}
 
 func (UserService) UserVerify(c *gin.Context) error {
 	email := c.Query("email")
-	fmt.Println(email)
-	fmt.Println(global.Config.System.Email)
-	fmt.Println(global.Config.System.Password)
+	cachedCode, err := global.Redis.Get(email).Result()
+	if err == nil && cachedCode != "" {
+		return errors.New("该邮箱已发送验证码，请勿重复发送")
+	}
 	code, err := GenerateRandomCode(6)
 	if err != nil {
 		return errors.New("生成验证码失败")
@@ -55,9 +55,5 @@ func (UserService) UserRegister(c *gin.Context) error {
 		Register: time.Now(),
 		Login:    time.Now(),
 	}
-	err = global.DB.Create(&user).Error
-	if err != nil {
-		return errors.New("注册失败")
-	}
-	return nil
+	return global.DB.Create(&user).Error
 }
