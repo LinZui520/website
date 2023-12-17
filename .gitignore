@@ -4,5 +4,7 @@ database/mysql/data/image/*
 database/mysql/data/mysql/*
 nginx/ssl/fullchain.crt
 nginx/ssl/private.pem
-server/*
-web/*
+# server/*
+# web/*
+backend/*
+frontend/*
