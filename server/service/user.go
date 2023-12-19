@@ -47,7 +47,7 @@ func (UserService) UserRegister(c *gin.Context) error {
 	password := c.PostForm("password")
 	hash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 	user := model.User{
-		Avatar:   100000,
+		Avatar:   "default.png",
 		Username: username,
 		Email:    email,
 		Password: string(hash),
@@ -73,14 +73,10 @@ func (UserService) UserLogin(c *gin.Context) (model.UserDTO, error) {
 	if err != nil {
 		return model.UserDTO{}, errors.New("生成token错误")
 	}
-	avatar, err := GetImage(user.Avatar)
-	if err != nil {
-		return model.UserDTO{}, errors.New("获取头像失败")
-	}
 	global.DB.Model(&user).Update("login", time.Now())
 	return model.UserDTO{
 		Id:          user.Id,
-		Avatar:      avatar.Filename,
+		Avatar:      user.Avatar,
 		Username:    user.Username,
 		Email:       user.Email,
 		Power:       user.Power,
@@ -105,14 +101,10 @@ func (UserService) UserTokenLogin(c *gin.Context) (model.UserDTO, error) {
 	if err != nil {
 		return model.UserDTO{}, errors.New("生成token错误")
 	}
-	avatar, err := GetImage(user.Avatar)
-	if err != nil {
-		return model.UserDTO{}, errors.New("获取头像失败")
-	}
 	global.DB.Model(&user).Update("login", time.Now())
 	return model.UserDTO{
 		Id:          user.Id,
-		Avatar:      avatar.Filename,
+		Avatar:      user.Avatar,
 		Username:    user.Username,
 		Email:       user.Email,
 		Power:       user.Power,
@@ -136,14 +128,10 @@ func (UserService) UserEmailLogin(c *gin.Context) (model.UserDTO, error) {
 	if err != nil {
 		return model.UserDTO{}, errors.New("生成token错误")
 	}
-	avatar, err := GetImage(user.Avatar)
-	if err != nil {
-		return model.UserDTO{}, errors.New("获取头像失败")
-	}
 	global.DB.Model(&user).Update("login", time.Now())
 	return model.UserDTO{
 		Id:          user.Id,
-		Avatar:      avatar.Filename,
+		Avatar:      user.Avatar,
 		Username:    user.Username,
 		Email:       user.Email,
 		Power:       user.Power,

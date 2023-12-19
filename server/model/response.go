@@ -6,9 +6,9 @@ import (
 )
 
 type Response struct {
-	Code int    `json:"code"`
-	Data any    `json:"data"`
-	Msg  string `json:"msg"`
+	Code    int    `json:"code"`
+	Data    any    `json:"data"`
+	Message string `json:"message"`
 }
 
 const (
@@ -18,16 +18,16 @@ const (
 
 func Result(code int, data any, msg string, c *gin.Context) {
 	c.JSON(http.StatusOK, Response{
-		Code: code,
-		Data: data,
-		Msg:  msg,
+		Code:    code,
+		Data:    data,
+		Message: msg,
 	})
 }
 
-func OK(data any, msg string, c *gin.Context) {
-	Result(Success, data, msg, c)
+func OK(data any, message string, c *gin.Context) {
+	Result(Success, data, message, c)
 }
 
-func Fail(data any, msg string, c *gin.Context) {
-	Result(Error, data, msg, c)
+func Fail(data any, message string, c *gin.Context) {
+	Result(Error, data, message, c)
 }

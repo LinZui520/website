@@ -14,6 +14,7 @@ func InitRouter() *gin.Engine {
 	router.StaticFS("/image", http.Dir("../database/mysql/data/image"))
 
 	UserRouter(router)
+	ArticleRouter(router)
 
 	return router
 }
