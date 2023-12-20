@@ -4,9 +4,9 @@ import { ConfigProvider } from "antd";
 import cookie from 'react-cookies'
 import { UserTokenLogin } from "./api/user";
 import { setUser } from "./store/user";
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { useEffect } from "react";
-import { useSelector } from 'react-redux';
+
 
 const App = () => {
 
@@ -24,7 +24,7 @@ const App = () => {
               path: "/", 
               expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) 
             });
-            dispatch(setUser(res.data.data.user));
+            dispatch(setUser(res.data.data));
           }
         } catch (_) {
 

@@ -17,6 +17,7 @@
     "axios": "^1.6.2",
     "framer-motion": "^10.16.16",
     "md-editor-rt": "^4.9.0",
+    "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-cookies": "^0.1.1",
     "react-countup": "^6.5.0",
@@ -50,5 +51,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://127.0.0.1:8080"
 }

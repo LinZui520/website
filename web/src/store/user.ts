@@ -5,12 +5,12 @@ export const userSlice = createSlice({
 
   initialState: {
     id: 0,
-    nickname: '',
+    avatar: '',
     username: '',
+    email: '',
     password: '',
     power: 0,
-    creation: '',
-    latest: '',
+    token: '',
   },
   reducers: {
     setUser: (state, action) => {

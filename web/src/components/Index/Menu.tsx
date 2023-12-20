@@ -13,7 +13,8 @@ export const Menu = () => {
     {href: '/', text: '首页'},
     {href: '/articles', text: '博客'},
     {href: '/messages', text: '留言'},
-    user.id === 0 ? {href: '/login', text: '登陆'} : {href: '/info', text: user.nickname},
+    user.power > 0 ? {href: '/admin', text: '管理'} : {href: '/404', text: '404'},
+    user.id === 0 ? {href: '/login', text: '登陆'} : {href: '/info', text: user.username},
   ]
 
   useEffect(() => {
@@ -54,7 +55,8 @@ export const Menu = () => {
           transition: { staggerChildren: 0.05, staggerDirection: -1 }
         }
       }} style={{pointerEvents: isOpen?'auto':'none'}} className="menu-ul">
-        {menu.map(item => 
+        {menu.map(item =>
+          item.text === "404" ? <div key={item.href}></div> :
           <MenuItem key={item.href} item={item} onCloseMenu={() => setIsOpen(!isOpen)}  />
         )}
       </motion.ul>

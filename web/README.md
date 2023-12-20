@@ -1,5 +1,6 @@
 ```shell
 $ npm i @babel/plugin-proposal-private-property-in-object
+$ npm i normalize.css
 $ npm i react-router-dom
 $ npm i antd
 $ npm i react-countup

@@ -1,19 +1,12 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import Home from '../pages/Home';
-import Login from '../pages/Login';
-import Register from '../pages/Register';
-import Articles from '../pages/Articles';
-import Info from '../pages/Info';
 import Index from '../pages/Index';
-import Messages from '../pages/Messages';
 import NotFind from '../pages/NotFind';
-import Article from '../pages/Article';
-import IndexAdmin from '../pages/admin/IndexAdmin'
+import IndexAdmin from "../pages/admin/IndexAdmin";
+import HomeAdmin from "../pages/admin/HomeAdmin";
 import UserManager from "../pages/admin/UserManager";
 import ArticleManager from "../pages/admin/ArticleManager";
-import MessageManager from "../pages/admin/MessageManager";
-import HomeAdmin from "../pages/admin/HomeAdmin";
 
 const router = createBrowserRouter([
   {
@@ -24,30 +17,6 @@ const router = createBrowserRouter([
         path: '',
         element: <Home />,
       },
-      {
-        path: 'articles',
-        element: <Articles />
-      },
-      {
-        path: 'article/:id',
-        element: <Article />
-      },
-      {
-        path: 'messages',
-        element: <Messages />
-      },
-      {
-        path: 'login',
-        element: <Login />
-      },
-      {
-        path: 'register',
-        element: <Register />
-      },
-      {
-        path: 'info',
-        element: <Info />
-      },
     ],
   },
   {
@@ -56,7 +25,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <HomeAdmin />
+        element: <HomeAdmin />,
       },
       {
         path: 'user',
@@ -64,11 +33,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'article',
-        element: <ArticleManager />
-      },
-      {
-        path: 'message',
-        element: <MessageManager />
+        element: <ArticleManager />,
       }
     ]
   },

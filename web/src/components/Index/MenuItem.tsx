@@ -1,7 +1,7 @@
 import { Button, ConfigProvider } from "antd";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import './Menu.css'
+import "./Menu.css"
 
 export const MenuItem = ({ item, onCloseMenu }: any) => {
   const navigate = useNavigate()
