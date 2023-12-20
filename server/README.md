@@ -1,3 +1,34 @@
+### 获取SMTP服务
+
+> 自行搜索如何获取
+
+### 修改配置文件
+
+修改```settings.yaml```文件**system**下的四个```smtp_*```选项
+
+email为发送邮件的邮箱地址
+
+password为获取SMTP服务得到的密钥
+
+host为获取SMTP服务的主机，如```smtp.gmail.com```
+
+port为获取SMTP服务的主机端口，如```google```的端口为**587**
+
+### 修改源代码
+
+修改```./router/index.go```文件
+
+根据文件里面的注释，注释掉```router.StaticFS*```这一行
+
+> 理由在注释里面
+
+
+
+### Server所依赖的第三方包
+
+> 不用理会
+
+
 ```shell
 $ go get github.com/spf13/viper
 $ go get gorm.io/gorm
