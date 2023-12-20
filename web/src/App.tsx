@@ -44,15 +44,15 @@ const App = () => {
         },
         components: {
           Button: {
-            colorLink: "#000000",
+            colorLink: "#1d1d1f",
             colorLinkHover: "#666666",
             colorLinkActive: "#666666",
           },
           Message: {
-            contentBg: 'white',
+            contentBg: '#fbfbfd',
           },
           Menu: {
-            itemSelectedBg: '#f0f0f0',
+            itemSelectedBg: '#fbfbfd',
           }
         }
       }}

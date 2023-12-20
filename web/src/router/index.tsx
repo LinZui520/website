@@ -7,6 +7,7 @@ import IndexAdmin from "../pages/admin/IndexAdmin";
 import HomeAdmin from "../pages/admin/HomeAdmin";
 import UserManager from "../pages/admin/UserManager";
 import ArticleManager from "../pages/admin/ArticleManager";
+import Login from "../pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <Home />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
       },
     ],
   },

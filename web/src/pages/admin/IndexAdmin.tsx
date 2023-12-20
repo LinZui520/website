@@ -44,7 +44,7 @@ const IndexAdmin = () => {
 
   useEffect(() => {
     if (cookie.load('token') === undefined || (user.id !== 0 && user.power === 0)) {
-      // navigate('/');
+      // navigate('/404');
     }
   }, [user, navigate]);
 

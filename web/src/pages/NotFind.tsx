@@ -9,8 +9,9 @@ const NotFind = () => {
       flexDirection: 'column', 
       justifyContent: 'center', 
       fontSize: '2rem',
+      background: '#fbfbfd'
     }}>
-      <span style={{marginBottom: '10vh'}}>404 NotFind</span>
+      <span style={{marginBottom: '10vh', color: '#1d1d1f'}}>404 NotFind</span>
     </div>
   );
 }

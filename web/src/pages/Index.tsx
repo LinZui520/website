@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom"
-import Menu from "../components/Index/Menu";
+import Menu from "../components/index/Menu";
 
 
 const Index = () => {
   return (
-    <div>
+    <div style={{background: '#fbfbfd'}}>
       <Menu />
       <Outlet />
     </div>
