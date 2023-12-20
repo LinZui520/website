@@ -24,13 +24,14 @@ func GenerateRandomCode(length int) (string, error) {
 }
 
 func SendVerificationEmail(email, code string) error {
+	config := global.Config.System
 	message := gomail.NewMessage()
-	message.SetHeader("From", global.Config.System.Email)
+	message.SetHeader("From", config.SMTPEmail)
 	message.SetHeader("To", email)
 	message.SetHeader("Subject", "Email Verification Code")
 	message.SetBody("text/plain", fmt.Sprintf("Your verification code is: %s", code))
 
-	dialer := gomail.NewDialer("smtp.gmail.com", 587, global.Config.System.Email, global.Config.System.Password)
+	dialer := gomail.NewDialer(config.SMTPHost, config.SMTPPort, config.SMTPEmail, config.SMTPPassword)
 
 	return dialer.DialAndSend(message)
 }

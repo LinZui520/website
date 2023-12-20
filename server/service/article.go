@@ -40,7 +40,7 @@ func (ArticleService) DeleteArticle(c *gin.Context) error {
 		return errors.New("未查询到该文章")
 	}
 
-	if userClaims.Id != article.Author && userClaims.Power <= 1 {
+	if userClaims.Id != article.Author && userClaims.Power == 1 {
 		return errors.New("没有权限删除该文章")
 	}
 
@@ -49,9 +49,8 @@ func (ArticleService) DeleteArticle(c *gin.Context) error {
 
 func (ArticleService) GetOneArticle(c *gin.Context) (model.ArticleDTO, error) {
 	var article model.ArticleDTO
-
 	err := global.DB.Table("articles").
-		Select("articles.id as Id, author, username, title, content, `create`, `update`").
+		Select("articles.id as Id, author, username, avatar, title, content, `create`, `update`").
 		Joins("LEFT JOIN users ON articles.author = users.id").
 		Where("articles.id = ?", c.Query("id")).
 		First(&article).Error
@@ -64,7 +63,7 @@ func (ArticleService) GetOneArticle(c *gin.Context) (model.ArticleDTO, error) {
 func (ArticleService) GetAllArticle() ([]model.ArticleDTO, error) {
 	var articles []model.ArticleDTO
 	err := global.DB.Table("articles").
-		Select("articles.id as Id, author, username, title, content, `create`, `update`").
+		Select("articles.id as Id, author, username, avatar, title, content, `create`, `update`").
 		Joins("LEFT JOIN users ON articles.author = users.id").
 		Scan(&articles).Error
 	if err != nil {

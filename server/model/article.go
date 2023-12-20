@@ -14,6 +14,7 @@ type Article struct {
 type ArticleDTO struct {
 	Id       int       `json:"id"`
 	Author   int       `json:"author"`
+	Avatar   string    `json:"avatar"`
 	Username string    `json:"username"`
 	Title    string    `json:"title"`
 	Content  string    `json:"content"`

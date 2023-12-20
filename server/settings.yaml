@@ -24,7 +24,8 @@ system:
   host: 0.0.0.0
   port: 8080
   env: release
-  email: yangminghe20@gmail.com
-  password: [FILTERED]
   directory: ../database/mysql/data/image/
-
+  smtp_email: yangminghe20@gmail.com
+  smtp_password: [FILTERED]
+  smtp_host: smtp.gmail.com
+  smtp_port: 587
