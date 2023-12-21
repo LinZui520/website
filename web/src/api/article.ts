@@ -12,3 +12,12 @@ export const GetOneArticle = (id: number) => request({
     id
   }
 })
+
+export const AddArticle = (title: string, content: string) => request({
+  url: '/article/add',
+  method: 'post',
+  data: {
+    title,
+    content,
+  }
+})

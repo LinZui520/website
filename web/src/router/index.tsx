@@ -13,6 +13,8 @@ import ArticleDelete from "../pages/admin/article/ArticleDelete";
 import Articles from "../pages/Articles";
 import Messages from "../pages/Messages";
 import Info from "../pages/Info";
+import Article from "../pages/Article";
+import Register from "../pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,10 @@ const router = createBrowserRouter([
         element: <Articles />,
       },
       {
+        path: 'article/:id',
+        element: <Article />,
+      },
+      {
         path: 'messages',
         element: <Messages />,
       },
@@ -36,8 +42,12 @@ const router = createBrowserRouter([
         element: <Info />,
       },
       {
-        path: '/login',
+        path: 'login',
         element: <Login />,
+      },
+      {
+        path: 'register',
+        element: <Register />
       },
     ],
   },

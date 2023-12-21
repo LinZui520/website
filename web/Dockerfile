@@ -1,6 +1,6 @@
 FROM node
 
-WORKDIR /root/website/frontend
+WORKDIR /root/website/web
 
 COPY . .
 

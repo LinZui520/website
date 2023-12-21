@@ -14,12 +14,22 @@ export const UserTokenLogin = () => request({
   method: 'get',
 })
 
-export const UserRegister = (nickname: string, username: string, password: string) => request({
+
+export const UserVerify = (email: string) => request({
+  url: '/user/verify',
+  method: 'get',
+  params: {
+    email
+  }
+})
+
+export const UserRegister = (username: string, password: string, email: string, code: string) => request({
   url: '/user/register',
   method: 'post',
   data: {
-    nickname,
     username,
     password,
+    email,
+    code,
   }
 })
