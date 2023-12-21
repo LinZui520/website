@@ -1,16 +1,11 @@
 import { motion } from "framer-motion";
 
 
-const NotFind = () => {
+const Messages = () => {
   return (
-    <div style={{
-      height: '100vh',
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      fontSize: '2rem',
-      background: '#fbfbfd'
+    <div style={{display: 'flex', flexDirection: 'column',
+      justifyContent: 'center', alignItems: 'center',
+      background: '#fbfbfd', height: '100vh', width: '100vw'
     }}>
       <motion.div
         whileHover={{scale: 1.2}}
@@ -26,10 +21,10 @@ const NotFind = () => {
           color: '#1d1d1f', fontSize: '64px'
         }}
       >
-        404 NotFind
+        留言墙
       </motion.div>
     </div>
   );
 }
 
-export default NotFind;
+export default Messages;

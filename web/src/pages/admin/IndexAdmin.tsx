@@ -17,6 +17,14 @@ const items: MenuItem[] = [
   },
   {
     label: '文章管理', key: '/admin/article', icon: <ReadOutlined />,
+    children: [
+      {
+        label: '增加文章', key: '/admin/article/add',
+      },
+      {
+        label: '删除文章', key: '/admin/article/delete',
+      }
+    ]
   },
 ];
 const IndexAdmin = () => {
@@ -38,13 +46,17 @@ const IndexAdmin = () => {
     };
   }, []);
 
+  useEffect(() => {
+    navigate('/admin')
+  }, [navigate]);
+
   const onClick: MenuProps['onClick'] = (e) => {
     navigate(e.key)
   }
 
   useEffect(() => {
     if (cookie.load('token') === undefined || (user.id !== 0 && user.power === 0)) {
-      // navigate('/404');
+      navigate('/404');
     }
   }, [user, navigate]);
 
@@ -58,8 +70,9 @@ const IndexAdmin = () => {
         style={{ width: '20vw' }}
         items={items}
         inlineCollapsed={inlineCollapsed}
-        />
-        <Outlet />
+        // theme="dark"
+      />
+      <Outlet />
     </div>
   );
 }

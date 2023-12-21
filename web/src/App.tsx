@@ -1,6 +1,5 @@
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
-import { ConfigProvider } from "antd";
 import cookie from 'react-cookies'
 import { UserTokenLogin } from "./api/user";
 import { setUser } from "./store/user";
@@ -35,30 +34,8 @@ const App = () => {
   }, [user, dispatch]);
 
 
-  return ( 
-    <ConfigProvider 
-      theme={{
-        token: {
-          colorBgElevated: 'black',
-          colorPrimary: 'black',
-        },
-        components: {
-          Button: {
-            colorLink: "#1d1d1f",
-            colorLinkHover: "#666666",
-            colorLinkActive: "#666666",
-          },
-          Message: {
-            contentBg: '#fbfbfd',
-          },
-          Menu: {
-            itemSelectedBg: '#fbfbfd',
-          }
-        }
-      }}
-    >
-      <RouterProvider router={router} />
-    </ConfigProvider>
+  return (
+    <RouterProvider router={router} />
   );
 }
 

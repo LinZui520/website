@@ -14,5 +14,7 @@ $ npm i @reduxjs/toolkit
 $ npm i react-cookies
 $ npm i @types/react-cookies
 $ npm i framer-motion
-$ npm i md-editor-rt 
+$ npm i md-editor-rt
+$ npm i @vavt/rt-extension
+$ npm i markdown-it-mark
 ```
