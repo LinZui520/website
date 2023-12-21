@@ -10,7 +10,7 @@ const Info = () => {
   const navigate = useNavigate()
   const user = useSelector((state: any) => state.user)
   useEffect(() => {
-    if (cookie.load('token') === undefined || (user.id !== 0 && user.power === 0)) {
+    if (cookie.load('token') === undefined || user.id === 0) {
       navigate('/404');
     }
   }, [user, navigate]);

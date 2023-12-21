@@ -1,9 +1,7 @@
-drop database website;
 create database if not exists website;
 use website;
 
-drop table if exists users;
-create table users (
+create table if not exists users (
     id int auto_increment comment '用户编号',
     avatar varchar(32) comment '头像编号',
     username varchar(32) not null comment '用户名',
