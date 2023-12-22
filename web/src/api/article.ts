@@ -21,3 +21,11 @@ export const AddArticle = (title: string, content: string) => request({
     content,
   }
 })
+
+export const DeleteArticle = (id: number) => request({
+  url: '/article/delete',
+  method: 'delete',
+  params: {
+    id
+  }
+})

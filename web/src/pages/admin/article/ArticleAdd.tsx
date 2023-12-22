@@ -19,25 +19,23 @@ const ArticleAdd = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [messageApi, contextHolder] = message.useMessage()
 
-
-  const showModal = () => {
-    setIsModalOpen(true)
-  };
   const upload = () => {
-    if (title == '') {
+    if (title === '') {
       messageApi.warning("请输入标题").then(() => {})
       return
     }
     AddArticle(title, content).then(res => {
       if (res.data.code === 200) {
         messageApi.success(res.data.message).then(() => {})
+        setTitle('')
+        setContent('')
+        setIsModalOpen(false)
       } else {
         messageApi.error(res.data.message).then(() => {})
       }
     }).catch(() => {
       messageApi.error("网络原因，上传失败").then(() => {})
     })
-    setIsModalOpen(false)
   }
 
 
@@ -65,8 +63,9 @@ const ArticleAdd = () => {
           'save', '-', '=',
           'pageFullscreen', 'fullscreen'
         ]}
-        onSave={showModal}
+        onSave={() => setIsModalOpen(true)}
         onUploadImg={() => {
+
         }}
       />
     </div>

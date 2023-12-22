@@ -1,6 +1,6 @@
 import {motion} from "framer-motion";
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {GetAllArticle} from "../../api/article";
 
 interface Article {
@@ -17,21 +17,27 @@ interface Article {
 const ArticlesMain = () => {
 
   const navigate = useNavigate()
+
   const [articles, setArticles] = useState<Article[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await GetAllArticle();
-        if (res.data.code === 200) {
+  const fetchData = useCallback(async () => {
+    try {
+      const res = await GetAllArticle();
+      if (res.data.code === 200) {
+        if (res.data.data !== null) {
           setArticles(res.data.data)
+        } else {
+          setArticles([])
         }
-      } catch (_) {
-
       }
+    } catch (_) {
+
     }
-    fetchData().then(() => {})
   }, [])
+
+  useEffect(() => {
+    fetchData().then(() => {})
+  }, [fetchData])
 
   return (
     <div style={{
