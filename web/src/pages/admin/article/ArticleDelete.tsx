@@ -1,18 +1,8 @@
 import ArticleTable from "../../../components/admin/article/ArticleTable";
-import {DeleteArticle, GetAllArticle} from "../../../api/article";
+import { DeleteArticle } from "../../../api/article";
 import {message, Modal} from "antd";
-import {useCallback, useEffect, useState } from "react";
-
-interface Article {
-  id: number
-  author: number
-  avatar: string
-  username: string
-  title: string,
-  content: string
-  create: string
-  update: string
-}
+import { useState } from "react";
+import useFetchArticles from "../../../hook/useFetchArticles";
 
 const ArticleDelete = () => {
 
@@ -20,28 +10,7 @@ const ArticleDelete = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage()
 
-  const [articles, setArticles] = useState<Article[]>([]);
-
-  const fetchData = useCallback(async () => {
-    try {
-      const res = await GetAllArticle();
-      if (res.data.code === 200) {
-        if (res.data.data !== null) {
-          setArticles(res.data.data)
-        } else {
-          setArticles([])
-        }
-      }
-    } catch (_) {
-
-    }
-  }, [])
-
-
-  useEffect(() => {
-    fetchData().then(() => {})
-  }, [fetchData])
-
+ const {articles, fetchData} = useFetchArticles()
 
   return (
     <div>

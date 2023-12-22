@@ -1,43 +1,12 @@
 import {motion} from "framer-motion";
 import {useNavigate} from "react-router-dom";
-import {useCallback, useEffect, useState} from "react";
-import {GetAllArticle} from "../../api/article";
-
-interface Article {
-  id: number
-  author: number
-  avatar: string
-  username: string
-  title: string,
-  content: string
-  create: string
-  update: string
-}
+import useFetchArticles from "../../hook/useFetchArticles";
 
 const ArticlesMain = () => {
 
   const navigate = useNavigate()
 
-  const [articles, setArticles] = useState<Article[]>([]);
-
-  const fetchData = useCallback(async () => {
-    try {
-      const res = await GetAllArticle();
-      if (res.data.code === 200) {
-        if (res.data.data !== null) {
-          setArticles(res.data.data)
-        } else {
-          setArticles([])
-        }
-      }
-    } catch (_) {
-
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchData().then(() => {})
-  }, [fetchData])
+  const {articles} = useFetchArticles()
 
   return (
     <div style={{
