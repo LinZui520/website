@@ -33,3 +33,25 @@ export const UserRegister = (username: string, password: string, email: string, 
     code,
   }
 })
+
+
+export const GetAllUser = () => request({
+  url: '/user/list',
+  method: 'get',
+})
+
+export const BlockUser = (id: number) => request({
+  url: '/user/block',
+  method: 'get',
+  params: {
+    id
+  }
+})
+
+export const BoostUser = (id: number) => request({
+  url: '/user/boost',
+  method: 'get',
+  params: {
+    id
+  }
+})

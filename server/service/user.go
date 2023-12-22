@@ -73,6 +73,9 @@ func (UserService) UserLogin(c *gin.Context) (model.UserDTO, error) {
 	if err != nil {
 		return model.UserDTO{}, errors.New("生成token错误")
 	}
+	if user.Power < 0 {
+		return model.UserDTO{}, errors.New("该账号已被封禁")
+	}
 	global.DB.Model(&user).Update("login", time.Now())
 	return model.UserDTO{
 		Id:          user.Id,
@@ -101,6 +104,9 @@ func (UserService) UserTokenLogin(c *gin.Context) (model.UserDTO, error) {
 	if err != nil {
 		return model.UserDTO{}, errors.New("生成token错误")
 	}
+	if user.Power < 0 {
+		return model.UserDTO{}, errors.New("该账号已被封禁")
+	}
 	global.DB.Model(&user).Update("login", time.Now())
 	return model.UserDTO{
 		Id:          user.Id,
@@ -128,6 +134,9 @@ func (UserService) UserEmailLogin(c *gin.Context) (model.UserDTO, error) {
 	if err != nil {
 		return model.UserDTO{}, errors.New("生成token错误")
 	}
+	if user.Power < 0 {
+		return model.UserDTO{}, errors.New("该账号已被封禁")
+	}
 	global.DB.Model(&user).Update("login", time.Now())
 	return model.UserDTO{
 		Id:          user.Id,
@@ -137,4 +146,54 @@ func (UserService) UserEmailLogin(c *gin.Context) (model.UserDTO, error) {
 		Power:       user.Power,
 		TokenString: tokenString,
 	}, nil
+}
+
+func (UserService) GetAllUser(c *gin.Context) ([]model.User, error) {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power <= 0 {
+		return nil, errors.New("权限不足")
+	}
+
+	var users []model.User
+	err = global.DB.Find(&users).Error
+	if err != nil {
+		return nil, errors.New("查询用户列表失败")
+	}
+	return users, nil
+}
+
+func (UserService) BlockUser(c *gin.Context) error {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power <= 1 {
+		return errors.New("权限不足")
+	}
+
+	var user model.User
+	err = global.DB.Where("id = ?", c.Query("id")).First(&user).Error
+	if err != nil {
+		return errors.New("未查询到该用户")
+	}
+	if userClaims.Power <= user.Power {
+		return errors.New("权限不足")
+	}
+	return global.DB.Model(&user).Update("power", -1).Error
+}
+
+func (UserService) BoostUser(c *gin.Context) error {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power <= 0 {
+		return errors.New("权限不足")
+	}
+	var user model.User
+	err = global.DB.Where("id = ?", c.Query("id")).First(&user).Error
+	if err != nil {
+		return errors.New("未查询到该用户")
+	}
+	if userClaims.Power <= user.Power+1 {
+		return errors.New("权限不足")
+	}
+	return global.DB.Model(&user).Update("power", user.Power+1).Error
 }

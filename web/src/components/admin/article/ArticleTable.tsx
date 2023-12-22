@@ -50,9 +50,11 @@ const ArticleTable = ({operate, effect, articles}: any) => {
   ]
 
   return (
-    <div>
-      <Table columns={columns} dataSource={articles.map((article: Article) => ({ ...article, key: article.id }))} bordered />
-    </div>
+    <Table
+      columns={columns}
+      dataSource={articles.map((article: Article) => ({ ...article, key: article.id }))}
+      bordered
+    />
   );
 }
 

@@ -26,6 +26,7 @@ const ArticlesMain = () => {
             display: 'flex', flexDirection: 'column',
             justifyContent: 'flex-start', alignItems: 'center',
             cursor: 'pointer', borderRadius: '25px', padding: '5px 5px',
+            userSelect: 'none',
           }}
         >
           <h1 style={{fontSize: '32px', color: '#1d1d1f', marginBottom: '5vw'}}>{item.title}</h1>

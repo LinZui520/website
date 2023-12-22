@@ -54,3 +54,30 @@ func (UserApi) UserEmailLogin(c *gin.Context) {
 		model.OK(data, "登录成功", c)
 	}
 }
+
+func (UserApi) GetAllUser(c *gin.Context) {
+	data, err := userService.GetAllUser(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "查询成功", c)
+	}
+}
+
+func (UserApi) BlockUser(c *gin.Context) {
+	err := userService.BlockUser(c)
+	if err != nil {
+		model.Fail(false, err.Error(), c)
+	} else {
+		model.OK(true, "封禁成功", c)
+	}
+}
+
+func (UserApi) BoostUser(c *gin.Context) {
+	err := userService.BoostUser(c)
+	if err != nil {
+		model.Fail(false, err.Error(), c)
+	} else {
+		model.OK(true, "提升成功", c)
+	}
+}
