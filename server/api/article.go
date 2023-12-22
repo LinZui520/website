@@ -33,7 +33,7 @@ func (ArticleApi) GetOneArticle(c *gin.Context) {
 	if err != nil {
 		model.Fail(struct{}{}, err.Error(), c)
 	} else if article.Title == "" {
-		model.Fail(struct{}{}, "未查询到该文章", c)
+		model.OK(struct{}{}, "未查询到该文章", c)
 	} else {
 		model.OK(article, "查询成功", c)
 	}
@@ -44,7 +44,7 @@ func (ArticleApi) GetAllArticle(c *gin.Context) {
 	if err != nil {
 		model.Fail(struct{}{}, "查询失败", c)
 	} else if len(list) == 0 {
-		model.Fail(list, "未查询到任何文章", c)
+		model.OK(list, "未查询到任何文章", c)
 	} else {
 		model.OK(list, "查询成功", c)
 	}
