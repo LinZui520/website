@@ -15,6 +15,9 @@ import Messages from "../pages/Messages";
 import Info from "../pages/Info";
 import Article from "../pages/Article";
 import Register from "../pages/Register";
+import ArticleUpdate from "../pages/admin/article/ArticleUpdate";
+import ArticleUpdateById from "../pages/admin/article/ArticleUpdateById";
+import ArticleView from "../pages/admin/article/ArticleView";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +81,18 @@ const router = createBrowserRouter([
           {
             path: 'delete',
             element: <ArticleDelete />,
+          },
+          {
+            path: 'update',
+            element: <ArticleUpdate />,
+          },
+          {
+            path: 'update/:id',
+            element: <ArticleUpdateById />,
+          },
+          {
+            path: 'view',
+            element: <ArticleView />,
           }
         ]
       }

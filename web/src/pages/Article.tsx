@@ -1,40 +1,18 @@
 import { MdPreview } from "md-editor-rt";
-import {useEffect, useState } from "react";
+import { useEffect } from "react";
 import {useNavigate, useParams } from "react-router-dom";
-import { GetOneArticle } from "../api/article";
-
-interface ArticleData {
-  id: number
-  author: number
-  avatar: string
-  username: string
-  title: string,
-  content: string
-  create: string
-  update: string
-}
+import useFetchArticle from "../hook/useFetchArticle";
 
 const Article = () => {
   const params = useParams()
   const navigate = useNavigate()
-
-  const [article, setArticle] = useState<ArticleData>();
+  const {article, status} = useFetchArticle(Number(params.id))
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await GetOneArticle(Number(params.id));
-        if (res.data.code === 200) {
-          setArticle(res.data.data)
-        } else {
-          navigate("/404")
-        }
-      } catch (_) {
-
-      }
+    if (!status) {
+      navigate("/404")
     }
-    fetchData().then(() => {})
-  }, [params, navigate])
+  }, [navigate, status]);
 
 
   return (

@@ -10,7 +10,7 @@ const ArticleDelete = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage()
 
- const {articles, fetchData} = useFetchArticles()
+  const {articles, fetchData} = useFetchArticles()
 
   return (
     <div>

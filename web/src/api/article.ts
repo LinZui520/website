@@ -29,3 +29,13 @@ export const DeleteArticle = (id: number) => request({
     id
   }
 })
+
+export const UpdateArticle = (id: number, title: string, content: string) => request({
+  url: '/article/update',
+  method: 'post',
+  data: {
+    id,
+    title,
+    content,
+  }
+})

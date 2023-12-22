@@ -49,3 +49,12 @@ func (ArticleApi) GetAllArticle(c *gin.Context) {
 		model.OK(list, "查询成功", c)
 	}
 }
+
+func (ArticleApi) UpdateArticle(c *gin.Context) {
+	err := articleService.UpdateArticle(c)
+	if err != nil {
+		model.Fail(false, err.Error(), c)
+	} else {
+		model.OK(true, "更新成功", c)
+	}
+}

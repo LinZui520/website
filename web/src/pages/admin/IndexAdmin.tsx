@@ -23,7 +23,13 @@ const items: MenuItem[] = [
       },
       {
         label: '删除文章', key: '/admin/article/delete',
-      }
+      },
+      {
+        label: '修改文章', key: '/admin/article/update',
+      },
+      {
+        label: '查看文章', key: '/admin/article/view',
+      },
     ]
   },
 ];
@@ -46,9 +52,9 @@ const IndexAdmin = () => {
     };
   }, []);
 
-  useEffect(() => {
-    navigate('/admin')
-  }, [navigate]);
+  // useEffect(() => {
+  //   navigate('/admin')
+  // }, [navigate]);
 
   const onClick: MenuProps['onClick'] = (e) => {
     navigate(e.key)
