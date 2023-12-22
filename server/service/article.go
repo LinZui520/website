@@ -71,3 +71,26 @@ func (ArticleService) GetAllArticle() ([]model.ArticleDTO, error) {
 	}
 	return articles, nil
 }
+
+func (ArticleService) UpdateArticle(c *gin.Context) error {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power <= 0 {
+		return errors.New("权限不足")
+	}
+	var article model.Article
+	err = global.DB.Where("id = ?", c.PostForm("id")).First(&article).Error
+	if err != nil {
+		return errors.New("未查询到该文章")
+	}
+
+	if userClaims.Id != article.Author && userClaims.Power == 1 {
+		return errors.New("没有权限修改该文章")
+	}
+
+	return global.DB.Model(&article).Updates(model.Article{
+		Title:   c.PostForm("title"),
+		Content: c.PostForm("content"),
+		Update:  time.Now(),
+	}).Error
+}
