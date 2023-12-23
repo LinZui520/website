@@ -66,9 +66,8 @@ const IndexAdmin = () => {
     }
   }, [user, navigate]);
 
-  // @ts-ignore
   return (
-    <div style={{display: 'flex', flexDirection: 'row', height: '100vh', width: '100vw'}}>
+    <div className={"flex flex-row h-screen w-screen"}>
       <Menu
         mode="inline"
         defaultSelectedKeys={['/admin']}

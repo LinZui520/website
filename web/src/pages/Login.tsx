@@ -37,65 +37,52 @@ const Login = () => {
       messageApi.error("网络原因，登陆失败").then(() => {})
     })
   }
+
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column',
-      width: '100vw', height: '100vh',
-      justifyContent: 'center', alignItems: 'center'
-    }}>
+    <div className={"flex flex-col justify-center items-center w-screen h-screen"}>
       {contextHolder}
-      <span style={{
-        marginBottom: '30px', fontSize: '32px'
-      }}>登录</span>
+      <span className="mb-[32px] text-[32px]">登录</span>
       <input
         type="text" placeholder="账号" value={username}
+        className={
+          "w-[320px] h-[32px] mb-[32px] border-2 " +
+          "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
+        }
         onChange={(e) => {
           setUsername(e.target.value)
-        }}
-        style={{
-          width: '300px', height: '30px', outline: 'none', marginBottom: '20px',
-          border: "1px solid #999999", borderRadius: '16px', padding: '0 10px',
         }}
       />
       <input
         type="password" placeholder="密码" value={password}
+        className={
+          "w-[320px] h-[32px] mb-[32px] border-2 " +
+          "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
+        }
         onChange={(e) => {
           setPassword(e.target.value)
         }}
-        style={{
-          width: '300px', height: '30px', outline: 'none', marginBottom: '20px',
-          border: "1px solid #999999", borderRadius: '16px', padding: '0 10px',
-        }}
       />
-      <div
-        style={{
-          display: 'flex', flexDirection: 'row',
-          justifyContent: 'space-between', alignItems: 'center',
-          width: '300px', height: '30px', marginBottom: '20px',
-        }}
-      >
+      <div className={"flex flex-row justify-between items-center w-[320px] h-[32px] mb-[32px]"}>
         <motion.div
           whileHover={{scale: 1.2}}
           whileTap={{scale: 0.9}}
-          style={{color: '#1d1d1f', cursor: 'pointer', userSelect: 'none'}}
+          className="text-[#1d1d1f] cursor-pointer select-none"
           onClick={() => navigate("/register")}
         >邮箱登陆
         </motion.div>
         <motion.div
           whileHover={{scale: 1.2}}
           whileTap={{scale: 0.9}}
-          style={{color: '#1d1d1f', cursor: 'pointer', userSelect: 'none'}}
+          className="text-[#1d1d1f] cursor-pointer select-none"
           onClick={() => navigate("/register")}
         >注册账号
         </motion.div>
       </div>
       <motion.div
-        style={{
-          width: '80px', height: '40px', cursor: 'pointer',
-          borderRadius: '25px', background: '#1d1d1f',
-          display: 'flex', justifyContent: 'center', alignItems: 'center',
-          color: '#fbfbfd', userSelect: 'none'
-        }}
+        className={
+          "w-[80px] h-[40px] cursor-pointer bg-[#1d1d1f] text-[#fbfbfd] " +
+          "select-none rounded-[24px] flex justify-center items-center"
+        }
         onClick={login} whileHover={{scale: 1.2}} whileTap={{scale: 0.9}}
       >
         登陆

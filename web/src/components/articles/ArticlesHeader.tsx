@@ -3,11 +3,7 @@ import {motion} from "framer-motion";
 
 const ArticlesHeader = () => {
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column',
-      justifyContent: 'center', alignItems: 'center',
-      width: '100vw', height: '100vh'
-    }}>
+    <div className={"flex flex-col justify-center items-center w-screen h-screen"}>
       <motion.div
         whileHover={{scale: 1.2}}
         whileTap={{scale: 0.9}}
@@ -18,9 +14,7 @@ const ArticlesHeader = () => {
           right: 0,
           bottom: 0,
         }}
-        style={{
-          color: '#1d1d1f', fontSize: '64px',
-        }}
+        className={"text-[64px] text-[#1d1d1f]"}
       >
         博客
       </motion.div>

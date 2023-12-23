@@ -4,7 +4,7 @@ import Menu from "../components/index/Menu";
 
 const Index = () => {
   return (
-    <div style={{background: '#fbfbfd'}}>
+    <div className={"bg-[#fbfbfd]"}>
       <Menu />
       <Outlet />
     </div>

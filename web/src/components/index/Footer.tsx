@@ -5,12 +5,7 @@ const Footer = () => {
 
 
   return (
-    <div style={{
-      width: '100vw', height: '100vh',
-      display: 'flex', flexDirection: 'column',
-      justifyContent: 'center', alignItems: 'center',
-      background: '#1d1d1f',
-    }}>
+    <div className={"bg-[#1d1d1f] w-screen h-screen flex flex-col justify-center items-center"}>
 
       <motion.a
         rel='noopener noreferrer' href='https://beian.miit.gov.cn/' target='_blank'
@@ -23,10 +18,7 @@ const Footer = () => {
           right: 0,
           bottom: 0,
         }}
-        style={{
-          color: '#fbfbfd', textDecoration: 'none',
-          fontSize: '32px', marginBottom: '30px',
-        }}
+        className={"text-[#fbfbfd] no-underline text-[32px] mb-[32px]"}
       >
         赣ICP备2023014673号-1
       </motion.a>
@@ -41,10 +33,7 @@ const Footer = () => {
           right: 0,
           bottom: 0,
         }}
-        style={{
-          color: '#fbfbfd', textDecoration: 'none',
-          fontSize: '32px', marginBottom: '30px',
-        }}
+        className={"text-[#fbfbfd] no-underline text-[32px] mb-[32px]"}
       >
         Copyright ©2023 YangmingHe
       </motion.a>

@@ -10,15 +10,8 @@ const Home = () => {
   }, []);
   
   return (
-    <div style={{background: '#fbfbfd'}}>
-      <div style={{
-        height: '100vh',
-        alignItems: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        fontSize: '2rem'
-      }}>
+    <div>
+      <div className={"flex flex-col justify-center items-center h-screen"}>
         <motion.div
           whileHover={{scale: 1.2}}
           whileTap={{scale: 0.9}}
@@ -29,9 +22,7 @@ const Home = () => {
             right: 0,
             bottom: 0,
           }}
-          style={{
-            color: '#1d1d1f', fontSize: '64px'
-          }}
+          className={"text-[#1d1d1f] text-[64px]"}
         >
           朱贵是混蛋
         </motion.div>

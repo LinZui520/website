@@ -44,10 +44,7 @@ const ArticleUpdateById = () => {
 
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
+    <div className={"flex flex-col"}>
       {contextHolder}
       <Modal title="提交博客" open={isModalOpen} onOk={update} onCancel={() => setIsModalOpen(false)}>
         <Input
@@ -58,7 +55,7 @@ const ArticleUpdateById = () => {
         />
       </Modal>
       <MdEditor
-        style={{height: '100vh'}}
+        className={"h-screen"}
         modelValue={content}
         onChange={setContent}
         toolbars={[

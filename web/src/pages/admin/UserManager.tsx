@@ -126,7 +126,7 @@ const UserManager = () => {
         columns={columns}
         dataSource={users.map((user: User) => ({ ...user, key: user.id }))}
         bordered
-        style={{width: '80vw'}}
+        className={"w-[80vw]"}
       />
     </div>
   );

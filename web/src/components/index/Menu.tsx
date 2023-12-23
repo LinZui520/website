@@ -25,19 +25,10 @@ const MenuItem = ({ item, onCloseMenu }: any) => {
       }}
       whileHover={{ scale: 1.3 }}
       whileTap={{ scale: 0.95 }}
-      style={{
-        zIndex: '999',
-        listStyle: 'none',
-        cursor: 'pointer',
-        display: 'flex',
-        marginBottom: '5vh',
-      }}
+      className={"z-50 list-none cursor-pointer mb-[5vh] select-none"}
     >
       <span
-        style={{
-          color: '#fbfbfd',
-          fontSize: '32px'
-        }}
+        className={"text-[#fbfbfd] text-[32px]"}
         onClick={() => {
           navigate(item.href);
           onCloseMenu();
@@ -72,15 +63,7 @@ export const Menu = () => {
       animate={isOpen ? "open" : "closed"}
     >
       <motion.div
-        style={{
-          zIndex: '998',
-          position: 'fixed',
-          left: '0',
-          top: '0',
-          width: '100vw',
-          height: '100vh',
-          background: '#1d1d1f'
-        }}
+        className={"z-50 fixed left-0 top-0 w-screen h-screen bg-[#1d1d1f]"}
         variants={{
           open: (height = 1024) => ({
             clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
@@ -111,20 +94,11 @@ export const Menu = () => {
             transition: { staggerChildren: 0.05, staggerDirection: -1 }
           }
         }}
-        style={{
-          pointerEvents: isOpen?'auto':'none',
-          zIndex: '999',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'fixed',
-          left: '0',
-          top: '0',
-          width: '100vw',
-          height: '100vh',
-          background: 'transparent',
-        }}
+        className={
+          "z-50 flex flex-col justify-center items-center fixed " +
+          "left-0 top-0 w-screen h-screen " +
+          (isOpen ? "pointer-events-auto" : "pointer-events-none")
+        }
       >
         {menu.map(item =>
           item.text === "404" ? <div key={item.href}></div> :
@@ -132,29 +106,13 @@ export const Menu = () => {
         )}
       </motion.ul>
 
-      {/*-webkit-user-select: none;*/}
-      {/*user-select: none;*/}
-      {/*-moz-user-select: none;*/}
-      {/*-ms-user-select: none;*/}
       <button
-        onClick={() => setIsOpen(!isOpen)} 
-        style={{
-          alignItems: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-          paddingTop: '4px',
-          zIndex: '1000',
-          outline: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          position: 'fixed',
-          top: '10px',
-          left: '10px',
-          width: '60px',
-          height: '60px',
-          borderRadius: '50%',
-          background: 'transparent',
-        }}
+        className={
+          "z-50 flex justify-center items-center " +
+          "outline-none border-none rounded-full cursor-pointer " +
+          "fixed pt-1 top-2.5 left-2.5 w-[60px] h-[60px]"
+        }
+        onClick={() => setIsOpen(!isOpen)}
       >
         <svg width="25" height="25" viewBox="0 0 23 23">
           <motion.path

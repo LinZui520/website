@@ -12,7 +12,7 @@ const Articles = () => {
 
 
   return (
-    <div style={{background: '#fbfbfd'}}>
+    <div>
       <ArticlesHeader />
       <ArticlesMain />
     </div>

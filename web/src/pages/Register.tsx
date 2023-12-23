@@ -64,74 +64,64 @@ const Register = () => {
       justifyContent: 'center', alignItems: 'center'
     }}>
       {contextHolder}
-      <span style={{
-        marginBottom: '30px', fontSize: '32px'
-      }}>注册</span>
+      <span className="mb-[32px] text-[32px]">注册</span>
       <input
         type="text" placeholder="账号" value={username}
+        className={
+          "w-[320px] h-[32px] mb-[32px] border-2 " +
+          "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
+        }
         onChange={(e) => {
           setUsername(e.target.value)
-        }}
-        style={{
-          width: '300px', height: '30px', outline: 'none', marginBottom: '20px',
-          border: "1px solid #999999", borderRadius: '16px', padding: '0 10px',
         }}
       />
       <input
         type="password" placeholder="密码" value={password}
+        className={
+          "w-[320px] h-[32px] mb-[32px] border-2 " +
+          "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
+        }
         onChange={(e) => {
           setPassword(e.target.value)
-        }}
-        style={{
-          width: '300px', height: '30px', outline: 'none', marginBottom: '20px',
-          border: "1px solid #999999", borderRadius: '16px', padding: '0 10px',
         }}
       />
 
       <input
         type="email" placeholder="邮箱" value={email}
+        className={
+          "w-[320px] h-[32px] mb-[32px] border-2 " +
+          "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
+        }
         onChange={(e) => {
           setEmail(e.target.value)
         }}
-        style={{
-          width: '300px', height: '30px', outline: 'none', marginBottom: '20px',
-          border: "1px solid #999999", borderRadius: '16px', padding: '0 10px',
-        }}
       />
 
-      <div
-        style={{
-          display: 'flex', flexDirection: 'row',
-          justifyContent: 'space-between', alignItems: 'center',
-          height: '30px', width: '300px', marginBottom: '20px',
-        }}
-      >
+      <div className={"flex flex-row justify-between items-center h-8 w-80 mb-8"}>
         <input
           type="text" placeholder="验证码" value={code}
+          className={
+            "w-[96px] h-[32px] border-2 border-[#1d1d1f]" +
+            " rounded-[16px] px-[10px] outline-none"
+          }
           onChange={(e) => {
             setCode(e.target.value)
-          }}
-          style={{
-            width: '100px', height: '30px', outline: 'none',
-            border: "1px solid #999999", borderRadius: '16px', padding: '0 10px',
           }}
         />
 
         <motion.div
           whileHover={{scale: 1.1}}
           whileTap={{scale: 0.9}}
-          style={{color: '#1d1d1f', cursor: 'pointer', userSelect: 'none'}}
+          className={"text-[#1d1d1f] cursor-pointer select-none"}
           onClick={verify}
         >获取验证码
         </motion.div>
       </div>
       <motion.div
-        style={{
-          width: '80px', height: '40px', cursor: 'pointer',
-          borderRadius: '25px', background: '#1d1d1f',
-          display: 'flex', justifyContent: 'center', alignItems: 'center',
-          color: '#fbfbfd', userSelect: 'none'
-        }}
+        className={
+          "w-[80px] h-[40px] cursor-pointer bg-[#1d1d1f] text-[#fbfbfd] " +
+          "select-none rounded-[24px] flex justify-center items-center"
+        }
         onClick={register} whileHover={{scale: 1.2}} whileTap={{scale: 0.9}}
       >
         注册

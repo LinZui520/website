@@ -16,14 +16,9 @@ const Article = () => {
 
 
   return (
-    <div
-      style={{
-        width: '100vw', display: 'flex', flexDirection: 'column',
-        alignItems: 'center', background: '#fbfbfd'
-      }}
-    >
+    <div className={"flex flex-col items-center w-screen"}>
       <MdPreview
-        style={{width: '80vw', maxWidth: '800px', background: '#fbfbfd'}}
+        className={"bg-[#fbfbfd] min-h-screen w-[80vw] max-w-[800px]"}
         modelValue={article ? article.content: ""}
       />
     </div>
