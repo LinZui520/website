@@ -63,7 +63,7 @@ func (ArticleService) GetOneArticle(c *gin.Context) (model.ArticleDTO, error) {
 func (ArticleService) GetAllArticle() ([]model.ArticleDTO, error) {
 	var articles []model.ArticleDTO
 	err := global.DB.Table("articles").
-		Select("articles.id as Id, author, username, avatar, title, content, `create`, `update`").
+		Select("articles.id as Id, author, username, avatar, title, `create`, `update`").
 		Joins("LEFT JOIN users ON articles.author = users.id").
 		Scan(&articles).Error
 	if err != nil {

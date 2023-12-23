@@ -12,7 +12,9 @@ func main() {
 	global.DB = core.InitMySQL()
 	global.Redis = core.InitRedis()
 
-	if router.InitRouter().Run(global.Config.System.Address()) != nil {
-		global.Log.Fatalf("server运行失败")
+	err := router.InitRouter().Run(global.Config.System.Address())
+
+	if err != nil {
+		global.Log.Fatalf("server运行失败 %s", err)
 	}
 }

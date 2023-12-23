@@ -1,33 +1,51 @@
-import {motion} from "framer-motion";
+import {motion, useInView} from "framer-motion";
+import {useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import useFetchArticles from "../../hook/useFetchArticles";
 
-const ArticlesMain = () => {
 
+const Article = ({item}: any) => {
   const navigate = useNavigate()
+  const ref = useRef(null)
+  const isInView = useInView(ref)
+
+  return (
+    <motion.div
+      key={item.id}
+      ref={ref}
+      onClick={() => navigate('/article/' + item.id)}
+      whileHover={{scale: 1.1}}
+      whileTap={{scale: 0.9}}
+      initial={"hidden"}
+      animate={isInView ? "visible" : "hidden"}
+      variants={{
+        hidden: {opacity: 0, scale: 0},
+        visible: {opacity: 1, scale: 1},
+      }}
+      transition={{duration: 1}}
+      className={
+        "border-2 border-white w-[90vw] h-[45vw] m-[5vw] " +
+        "max-w-[600px] max-h-[300px]  " +
+        "flex flex-col justify-center items-center " +
+        "cursor-pointer select-none rounded-[25px] p-[5px]"
+      }
+    >
+      <h1 className={"text-[28px] text-[#fbfbfd] mb-[2vw]"}>{item.title}</h1>
+      <div className={"text-[14px] text-[#fbfbfd]"}>作者：{item.username}</div>
+      <div className={"text-[14px] text-[#fbfbfd]"}>发表时间：{new Date(item.create).toLocaleString()}</div>
+    </motion.div>
+  );
+}
+
+const ArticlesMain = () => {
 
   const {articles} = useFetchArticles()
 
+
   return (
-    <div className={"w-screen bg-[#1d1d1f] min-h-screen flex flex-wrap justify-evenly items-center"}>
+    <div className={"w-screen bg-[#1d1d1f] min-h-screen flex flex-col justify-evenly items-center"}>
       {articles.map(item =>
-        <motion.div
-          key={item.id}
-          onClick={() => navigate('/article/' + item.id)}
-          whileHover={{scale: 1.2}}
-          whileTap={{scale: 0.9}}
-          className={
-            "bg-[#fbfbfd] w-[30vw] h-[40vw] m-[5vw] " +
-            "max-w-[300px] max-h-[400px] min-w-[240px] min-h-[320px] " +
-            "flex flex-col justify-start items-center " +
-            "cursor-pointer select-none rounded-[25px] p-[5px]"
-          }
-        >
-          <h1 className={"text-[32px] text-[#1d1d1f] mb-[5vw]"}>{item.title}</h1>
-          <div className={"text-[32px] text-[#1d1d1f] mb-[5vw]"}>作者：{item.username}</div>
-          <div className={"text-[24px] text-[#1d1d1f]"}>发表时间：</div>
-          <div className={"text-[24px] text-[#1d1d1f]"}>{new Date(item.create).toLocaleString()}</div>
-        </motion.div>
+        <Article key={item.id} item={item} />
       )}
     </div>
   );

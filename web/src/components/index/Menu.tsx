@@ -28,7 +28,7 @@ const MenuItem = ({ item, onCloseMenu }: any) => {
       className={"z-50 list-none cursor-pointer mb-[5vh] select-none"}
     >
       <span
-        className={"text-[#fbfbfd] text-[32px]"}
+        className={"text-[#fbfbfd] text-[36px]"}
         onClick={() => {
           navigate(item.href);
           onCloseMenu();
@@ -110,7 +110,7 @@ export const Menu = () => {
         className={
           "z-50 flex justify-center items-center " +
           "outline-none border-none rounded-full cursor-pointer " +
-          "fixed pt-1 top-2.5 left-2.5 w-[60px] h-[60px]"
+          "fixed pt-[4px] top-[10px] left-[10px] w-[60px] h-[60px]"
         }
         onClick={() => setIsOpen(!isOpen)}
       >
