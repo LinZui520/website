@@ -1,37 +1,56 @@
-import {useState} from "react";
-import {Modal} from "antd";
-import useFetchArticles from "../../../hook/useFetchArticles";
-import ArticleTable from "../../../components/admin/article/ArticleTable";
-import {useNavigate} from "react-router-dom";
-
+import useFetchArticle from "../../../hook/useFetchArticle";
+import {useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {message} from "antd";
+import {UpdateArticle} from "../../../api/article";
+import ArticleMarkDown from "../../../components/admin/article/ArticleMarkDown";
 
 const ArticleUpdate = () => {
-
-  const [id, setId] = useState(0);
+  const params = useParams()
   const navigate = useNavigate()
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const {article, status} = useFetchArticle(Number(params.id))
 
-  const {articles} = useFetchArticles()
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [messageApi, contextHolder] = message.useMessage()
+
+
+  useEffect(() => {
+    if (!status) {
+      navigate("/404")
+    }
+    setTitle(article === undefined ? '' : article.title)
+    setContent(article === undefined ? '' : article.content)
+  }, [article, navigate, status]);
+
+
+  const update = () => {
+    if (title === '') {
+      messageApi.warning("请输入标题").then(() => {})
+      return
+    }
+    UpdateArticle(Number(params.id), title, content).then(res => {
+      if (res.data.code === 200) {
+        messageApi.success(res.data.message).then(() => {})
+        setIsModalOpen(false)
+      } else {
+        messageApi.error(res.data.message).then(() => {})
+      }
+    }).catch(() => {
+      messageApi.error("网络原因，更新失败").then(() => {})
+    })
+  }
 
 
   return (
     <div>
-      <Modal
-        title="确定修改该文章？"
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        onOk={() => {
-          navigate('/admin/article/update/' + id)
-        }}
-      >
-      </Modal>
-      <ArticleTable
-        operate={"修改"}
-        articles={articles}
-        effect={(id: number) => {
-          setIsModalOpen(true)
-          setId(id)
-        }}
+      <ArticleMarkDown
+        title={title} setTitle={setTitle}
+        content={content} setContent={setContent}
+        isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}
+        modalTitle={"更新文章"} contextHolder={contextHolder}
+        operate={update}
       />
     </div>
   );

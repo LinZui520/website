@@ -1,16 +1,10 @@
-import { MdEditor, config } from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
 import {useState} from 'react';
-import MarkExtension from 'markdown-it-mark';
-import '@vavt/rt-extension/lib/asset/style.css';
-import {Input, message, Modal} from 'antd';
+import {message} from 'antd';
 import {AddArticle} from "../../../api/article";
+import ArticleMarkDown from "../../../components/admin/article/ArticleMarkDown";
 
-config({
-  markdownItConfig(md) {
-    md.use(MarkExtension);
-  }
-})
+
 
 const ArticleAdd = () => {
 
@@ -38,32 +32,14 @@ const ArticleAdd = () => {
     })
   }
 
-
   return (
-    <div className={"flex flex-col"}>
-      {contextHolder}
-      <Modal title="提交博客" open={isModalOpen} onOk={upload} onCancel={() => setIsModalOpen(false)}>
-        <Input
-          placeholder="文章标题" value={title}
-          onChange={(e) => {
-            setTitle(e.target.value)
-          }}
-        />
-      </Modal>
-      <MdEditor
-        className={"h-screen"}
-        modelValue={content}
-        onChange={setContent}
-        toolbars={[
-          'sub', 'sup', '-',
-          'image', '-',
-          'save', '-', '=',
-          'pageFullscreen', 'fullscreen'
-        ]}
-        onSave={() => setIsModalOpen(true)}
-        onUploadImg={() => {
-
-        }}
+    <div>
+      <ArticleMarkDown
+        title={title} setTitle={setTitle}
+        content={content} setContent={setContent}
+        isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}
+        modalTitle={"提交文章"} contextHolder={contextHolder}
+        operate={upload}
       />
     </div>
   );

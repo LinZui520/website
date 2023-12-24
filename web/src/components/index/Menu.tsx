@@ -25,17 +25,16 @@ const MenuItem = ({ item, onCloseMenu }: any) => {
       }}
       whileHover={{ scale: 1.3 }}
       whileTap={{ scale: 0.95 }}
-      className={"z-50 list-none cursor-pointer mb-[5vh] select-none"}
+      className={
+        "z-50 list-none cursor-pointer mb-[5vh] select-none " +
+        "text-[#fbfbfd] text-[36px]"
+      }
+      onClick={() => {
+        navigate(item.href);
+        onCloseMenu();
+      }}
     >
-      <span
-        className={"text-[#fbfbfd] text-[36px]"}
-        onClick={() => {
-          navigate(item.href);
-          onCloseMenu();
-        }}
-      >
-        {item.text}
-      </span>
+      {item.text}
     </motion.li>
   );
 };
@@ -49,7 +48,7 @@ export const Menu = () => {
     {href: '/', text: '首页'},
     {href: '/articles', text: '博客'},
     {href: '/messages', text: '留言'},
-    user.power > 0 ? {href: '/admin', text: '管理'} : {href: '/404', text: '404'},
+    user.power > 0 ? {href: '/admin', text: '管理'} : null,
     user.id === 0 ? {href: '/login', text: '登陆'} : {href: '/info', text: user.username},
   ]
 
@@ -101,12 +100,14 @@ export const Menu = () => {
         }
       >
         {menu.map(item =>
-          item.text === "404" ? <div key={item.href}></div> :
+          item === null ? null :
           <MenuItem key={item.href} item={item} onCloseMenu={() => setIsOpen(!isOpen)}  />
         )}
       </motion.ul>
 
-      <button
+      <motion.button
+        whileHover={{ scale: 1.2 }}
+        whileTap={{ scale: 0.9 }}
         className={
           "z-50 flex justify-center items-center " +
           "outline-none border-none rounded-full cursor-pointer " +
@@ -148,7 +149,7 @@ export const Menu = () => {
             }}
           />
         </svg>
-      </button>
+      </motion.button>
     </motion.nav>
   );
 };

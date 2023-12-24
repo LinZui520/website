@@ -10,7 +10,7 @@ interface Article {
   create: string
   update: string
 }
-const ArticleTable = ({operate, effect, articles}: any) => {
+const ArticleTable = ({operate, articles}: any) => {
 
   const columns: ColumnsType<Article> = [
     {
@@ -38,14 +38,20 @@ const ArticleTable = ({operate, effect, articles}: any) => {
       title: '操作',
       key: 'action',
       fixed: 'right',
-      render: record => <Button
-        type="link"
-        onClick={() => {
-          effect(record.id)
-        }}
-      >
-        {operate}
-      </Button>
+      render: record => Object.keys(operate).map((key: string) => {
+        const callback = operate[key] as (id: number) => void;
+        return (
+          <Button
+            key={key}
+            type="link"
+            onClick={() => {
+              callback(record.id)
+            }}
+          >
+            {key}
+          </Button>
+        );
+      })
     },
   ]
 

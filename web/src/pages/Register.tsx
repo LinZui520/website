@@ -109,15 +109,15 @@ const Register = () => {
           }}
         />
 
-        <motion.div
+        <motion.button
           whileHover={{scale: 1.1}}
           whileTap={{scale: 0.9}}
           className={"text-[#1d1d1f] cursor-pointer select-none"}
           onClick={verify}
         >获取验证码
-        </motion.div>
+        </motion.button>
       </div>
-      <motion.div
+      <motion.button
         className={
           "w-[80px] h-[40px] cursor-pointer bg-[#1d1d1f] text-[#fbfbfd] " +
           "select-none rounded-[24px] flex justify-center items-center"
@@ -125,7 +125,7 @@ const Register = () => {
         onClick={register} whileHover={{scale: 1.2}} whileTap={{scale: 0.9}}
       >
         注册
-      </motion.div>
+      </motion.button>
 
     </div>
   );

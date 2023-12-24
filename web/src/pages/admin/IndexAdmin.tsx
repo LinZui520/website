@@ -22,13 +22,7 @@ const items: MenuItem[] = [
         label: '增加文章', key: '/admin/article/add',
       },
       {
-        label: '删除文章', key: '/admin/article/delete',
-      },
-      {
-        label: '修改文章', key: '/admin/article/update',
-      },
-      {
-        label: '查看文章', key: '/admin/article/view',
+        label: '管理文章', key: '/admin/article/manager',
       },
     ]
   },
