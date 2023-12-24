@@ -64,8 +64,9 @@ const Register = () => {
       justifyContent: 'center', alignItems: 'center'
     }}>
       {contextHolder}
-      <span className="mb-[32px] text-[32px]">注册</span>
-      <input
+      <motion.span drag whileHover={{scale: 1.1}} className="mb-[32px] text-[32px] select-none">注册</motion.span>
+      <motion.input
+        drag whileFocus={{scale: 1.1}}
         type="text" placeholder="账号" value={username}
         className={
           "w-[320px] h-[32px] mb-[32px] border-2 " +
@@ -75,7 +76,8 @@ const Register = () => {
           setUsername(e.target.value)
         }}
       />
-      <input
+      <motion.input
+        drag whileFocus={{scale: 1.1}}
         type="password" placeholder="密码" value={password}
         className={
           "w-[320px] h-[32px] mb-[32px] border-2 " +
@@ -86,7 +88,8 @@ const Register = () => {
         }}
       />
 
-      <input
+      <motion.input
+        drag whileFocus={{scale: 1.1}}
         type="email" placeholder="邮箱" value={email}
         className={
           "w-[320px] h-[32px] mb-[32px] border-2 " +
@@ -98,7 +101,8 @@ const Register = () => {
       />
 
       <div className={"flex flex-row justify-between items-center h-8 w-80 mb-8"}>
-        <input
+        <motion.input
+          drag whileFocus={{scale: 1.1}}
           type="text" placeholder="验证码" value={code}
           className={
             "w-[96px] h-[32px] border-2 border-[#1d1d1f]" +

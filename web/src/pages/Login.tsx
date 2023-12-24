@@ -41,8 +41,9 @@ const Login = () => {
   return (
     <div className={"flex flex-col justify-center items-center w-screen h-screen"}>
       {contextHolder}
-      <span className="mb-[32px] text-[32px]">登录</span>
-      <input
+      <motion.span drag whileHover={{scale: 1.1}} className="mb-[32px] text-[32px] select-none">登录</motion.span>
+      <motion.input
+        drag whileFocus={{scale: 1.1}}
         type="text" placeholder="账号" value={username}
         className={
           "w-[320px] h-[32px] mb-[32px] border-2 " +
@@ -52,7 +53,8 @@ const Login = () => {
           setUsername(e.target.value)
         }}
       />
-      <input
+      <motion.input
+        drag whileFocus={{scale: 1.1}}
         type="password" placeholder="密码" value={password}
         className={
           "w-[320px] h-[32px] mb-[32px] border-2 " +

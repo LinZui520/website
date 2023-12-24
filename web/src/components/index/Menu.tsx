@@ -106,8 +106,8 @@ export const Menu = () => {
       </motion.ul>
 
       <motion.button
-        whileHover={{ scale: 1.2 }}
-        whileTap={{ scale: 0.9 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.8 }}
         className={
           "z-50 flex justify-center items-center " +
           "outline-none border-none rounded-full cursor-pointer " +
