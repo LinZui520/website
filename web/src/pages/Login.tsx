@@ -70,7 +70,7 @@ const Login = () => {
           whileTap={{scale: 0.9}}
           className="text-[#1d1d1f] cursor-pointer select-none"
           onClick={() => navigate("/register")}
-        >邮箱登陆
+        >邮箱登录
         </motion.button>
         <motion.button
           whileHover={{scale: 1.2}}
@@ -87,7 +87,7 @@ const Login = () => {
         }
         onClick={login} whileHover={{scale: 1.2}} whileTap={{scale: 0.9}}
       >
-        登陆
+        登录
       </motion.button>
     </div>
   );
