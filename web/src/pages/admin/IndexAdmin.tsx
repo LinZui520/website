@@ -46,9 +46,9 @@ const IndexAdmin = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   navigate('/admin')
-  // }, [navigate]);
+  useEffect(() => {
+    navigate('/admin')
+  }, [navigate]);
 
   const onClick: MenuProps['onClick'] = (e) => {
     navigate(e.key)

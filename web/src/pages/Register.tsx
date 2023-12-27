@@ -2,7 +2,8 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {motion} from "framer-motion";
 import {UserRegister, UserVerify} from "../api/user";
-import { message } from "antd";
+import {message} from "antd";
+import Captcha from "../components/index/Captcha";
 
 const Register = () => {
 
@@ -11,22 +12,8 @@ const Register = () => {
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
   const navigate = useNavigate()
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage()
-  const verify = () => {
-    if (email === '') {
-      messageApi.warning("邮箱格式错误").then(() => {})
-      return
-    }
-    UserVerify(email).then(res => {
-      if (res.data.code === 200) {
-        messageApi.success(res.data.message).then(() => {})
-      } else {
-        messageApi.error(res.data.message).then(() => {})
-      }
-    }).catch(() => {
-      messageApi.error("网络原因，验证码发送失败").then(() => {})
-    })
-  }
 
   const register = () => {
     if (username === '' || username.length > 16) {
@@ -64,6 +51,26 @@ const Register = () => {
       justifyContent: 'center', alignItems: 'center'
     }}>
       {contextHolder}
+
+      <Captcha
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        verify={async (data: any) => {
+          const res = await UserVerify(email, data.x, data.y, data.duration)
+          if (res.data.code === 200) {
+            messageApi.success(res.data.message).then(() => {})
+          } else {
+            if (res.data.message === "我一眼就看出你不是人") {
+              return Promise.reject()
+            } else {
+              messageApi.warning(res.data.message).then(() => {})
+            }
+          }
+          setIsModalOpen(false)
+          return Promise.resolve()
+        }}
+      />
+
       <motion.span drag whileHover={{scale: 1.1}} className="mb-[32px] text-[32px] select-none">注册</motion.span>
       <motion.input
         drag whileFocus={{scale: 1.1}}
@@ -117,7 +124,13 @@ const Register = () => {
           whileHover={{scale: 1.1}}
           whileTap={{scale: 0.9}}
           className={"text-[#1d1d1f] cursor-pointer select-none"}
-          onClick={verify}
+          onClick={() => {
+            if (email === '') {
+              messageApi.warning("邮箱格式错误").then(() => {})
+              return
+            }
+            setIsModalOpen(true)
+          }}
         >获取验证码
         </motion.button>
       </div>

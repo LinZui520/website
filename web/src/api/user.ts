@@ -15,11 +15,14 @@ export const UserTokenLogin = () => request({
 })
 
 
-export const UserVerify = (email: string) => request({
+export const UserVerify = (email: string, x: number, y: number, duration: number) => request({
   url: '/user/verify',
-  method: 'get',
-  params: {
-    email
+  method: 'post',
+  data: {
+    email,
+    x,
+    y,
+    duration,
   }
 })
 
