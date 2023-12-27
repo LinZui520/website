@@ -13,7 +13,7 @@ func VerifySliderCaptcha(c *gin.Context) error {
 	y, _ := strconv.Atoi(c.PostForm("y"))
 	duration, _ := strconv.Atoi(c.PostForm("duration"))
 	length, _ := strconv.Atoi(c.PostForm("length"))
-	if x != 260 || y == 0 || duration < 100 || length < 100 {
+	if x != 260 || y == 0 || duration < 100 || length < 10 {
 		return errors.New("我一眼就看出你不是人")
 	}
 	trail := make([][2]int, length)
@@ -29,19 +29,19 @@ func VerifySliderCaptcha(c *gin.Context) error {
 
 		if i > 0 {
 			distance[i] = calculateDistance(trail[i-1], trail[i])
-			if distance[i] > 10 {
+			if distance[i] > 50 {
 				exception++
 			}
 		}
 
 		if i > 1 {
 			accelerations := (distance[i] - distance[i-1]) / 1
-			if accelerations < -5 || accelerations > 5 {
+			if accelerations < -20 || accelerations > 20 {
 				exception++
 			}
 		}
 	}
-	if exception > 5 || trail[length-1][0]-trail[0][0] < 260 {
+	if exception > 3 || trail[length-1][0]-trail[0][0] < 260 {
 		return errors.New("我一眼就看出你不是人")
 	}
 	return nil
