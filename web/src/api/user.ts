@@ -15,7 +15,7 @@ export const UserTokenLogin = () => request({
 })
 
 
-export const UserVerify = (email: string, x: number, y: number, duration: number) => request({
+export const UserVerify = (email: string, x: number, y: number, duration: number, trail: number[][], length: number) => request({
   url: '/user/verify',
   method: 'post',
   data: {
@@ -23,6 +23,8 @@ export const UserVerify = (email: string, x: number, y: number, duration: number
     x,
     y,
     duration,
+    trail,
+    length,
   }
 })
 

@@ -56,7 +56,7 @@ const Register = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         verify={async (data: any) => {
-          const res = await UserVerify(email, data.x, data.y, data.duration)
+          const res = await UserVerify(email, data.x, data.y, data.duration, data.trail, data.trail.length)
           if (res.data.code === 200) {
             messageApi.success(res.data.message).then(() => {})
           } else {

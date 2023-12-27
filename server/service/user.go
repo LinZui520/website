@@ -6,7 +6,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"server/global"
 	"server/model"
-	"strconv"
 	"time"
 )
 
@@ -14,11 +13,9 @@ type UserService struct{}
 
 func (UserService) UserVerify(c *gin.Context) error {
 	email := c.PostForm("email")
-	x, _ := strconv.Atoi(c.PostForm("x"))
-	y, _ := strconv.Atoi(c.PostForm("y"))
-	duration, _ := strconv.Atoi(c.PostForm("duration"))
-	if x != 260 || y == 0 || duration <= 100 {
-		return errors.New("我一眼就看出你不是人")
+	err := VerifySliderCaptcha(c)
+	if err != nil {
+		return err
 	}
 	cachedCode, err := global.Redis.Get(email).Result()
 	if err == nil && cachedCode != "" {
