@@ -56,18 +56,22 @@ const Register = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         verify={async (data: any) => {
-          const res = await UserVerify(email, data.x, data.y, data.duration, data.trail, data.trail.length)
-          if (res.data.code === 200) {
-            messageApi.success(res.data.message).then(() => {})
-          } else {
+          try {
+            const res = await UserVerify(email, data.x, data.y, data.duration, data.trail, data.trail.length)
             if (res.data.message === "我一眼就看出你不是人") {
               return Promise.reject()
+            }
+            if (res.data.code === 200) {
+              messageApi.success(res.data.message).then(() => {})
             } else {
               messageApi.warning(res.data.message).then(() => {})
             }
+            setIsModalOpen(false)
+            return Promise.resolve()
+          } catch (_) {
+            messageApi.warning("网络原因，验证失败").then(() => {})
+            return Promise.reject()
           }
-          setIsModalOpen(false)
-          return Promise.resolve()
         }}
       />
 
