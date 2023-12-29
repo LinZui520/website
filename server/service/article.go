@@ -65,6 +65,7 @@ func (ArticleService) GetAllArticle() ([]model.ArticleDTO, error) {
 	err := global.DB.Table("articles").
 		Select("articles.id as Id, author, username, avatar, title, `create`, `update`").
 		Joins("LEFT JOIN users ON articles.author = users.id").
+		Order("`update` desc").
 		Scan(&articles).Error
 	if err != nil {
 		return nil, errors.New("查询文章失败")
