@@ -1,21 +1,16 @@
 import { motion } from "framer-motion";
 import {useSelector} from "react-redux";
-import {useEffect} from "react";
 import cookie from "react-cookies";
-import {useNavigate} from "react-router-dom";
+import NotFind from "./NotFind";
 
 
 const Info = () => {
 
-  const navigate = useNavigate()
   const user = useSelector((state: any) => state.user)
-  useEffect(() => {
-    if (cookie.load('token') === undefined || user.id === 0) {
-      navigate('/404');
-    }
-  }, [user, navigate]);
+
 
   return (
+    (cookie.load('token') === undefined || user.id === 0) ? <NotFind /> :
     <div className={"flex flex-col justify-center items-center bg-[#fbfbfd] h-screen w-screen"}>
       <motion.div
         whileHover={{scale: 1.2}}

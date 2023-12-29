@@ -90,13 +90,8 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <Navigate to="/404" />
-  },
-  {
-    path: '/404',
     element: <NotFind />
-  }
-  
+  },
 ]);
 
 export default router;

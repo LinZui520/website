@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { UserOutlined, HomeOutlined, ReadOutlined } from '@ant-design/icons';
 import cookie from "react-cookies";
+import NotFind from "../NotFind";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -54,17 +55,14 @@ const IndexAdmin = () => {
     navigate(e.key)
   }
 
-  useEffect(() => {
-    if (cookie.load('token') === undefined || (user.id !== 0 && user.power === 0)) {
-      navigate('/404');
-    }
-  }, [user, navigate]);
 
   return (
+    (cookie.load('token') === undefined || (user.id !== 0 && user.power === 0)) ? <NotFind /> :
     <div className={"flex flex-row h-screen w-screen"}>
       <Menu
         mode="inline"
         defaultSelectedKeys={['/admin']}
+        defaultOpenKeys={['/admin/article']}
         onClick={onClick}
         style={{ width: '20vw' }}
         items={items}

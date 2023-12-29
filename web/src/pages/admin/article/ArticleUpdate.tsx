@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {message} from "antd";
 import {UpdateArticle} from "../../../api/article";
 import ArticleMarkDown from "../../../components/admin/article/ArticleMarkDown";
+import NotFind from "../../NotFind";
 
 const ArticleUpdate = () => {
   const params = useParams()
@@ -17,9 +18,6 @@ const ArticleUpdate = () => {
 
 
   useEffect(() => {
-    if (!status) {
-      navigate("/404")
-    }
     setTitle(article === undefined ? '' : article.title)
     setContent(article === undefined ? '' : article.content)
   }, [article, navigate, status]);
@@ -44,15 +42,14 @@ const ArticleUpdate = () => {
 
 
   return (
-    <div>
-      <ArticleMarkDown
-        title={title} setTitle={setTitle}
-        content={content} setContent={setContent}
-        isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}
-        modalTitle={"更新文章"} contextHolder={contextHolder}
-        operate={update}
-      />
-    </div>
+    !status ? <NotFind /> :
+    <ArticleMarkDown
+      title={title} setTitle={setTitle}
+      content={content} setContent={setContent}
+      isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}
+      modalTitle={"更新文章"} contextHolder={contextHolder}
+      operate={update}
+    />
   );
 }
 
