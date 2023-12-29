@@ -50,7 +50,7 @@ func verifyTrajectoryLength(trail [][2]float64, length int) bool {
 			exception++
 		}
 	}
-	if exception > 4 || trail[length-1][0]-trail[0][0] < 256 {
+	if exception > 4 || trail[length-1][0]-trail[0][0] < 256 || trail[length-1][0]-trail[0][0] > 512 {
 		return false
 	}
 	return true
