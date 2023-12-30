@@ -83,9 +83,7 @@ const Register = () => {
           "w-[320px] h-[32px] mb-[32px] border-2 " +
           "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
         }
-        onChange={(e) => {
-          setUsername(e.target.value)
-        }}
+        onChange={(e) => setUsername(e.target.value)}
       />
       <motion.input
         drag whileFocus={{scale: 1.1}}
@@ -94,9 +92,7 @@ const Register = () => {
           "w-[320px] h-[32px] mb-[32px] border-2 " +
           "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
         }
-        onChange={(e) => {
-          setPassword(e.target.value)
-        }}
+        onChange={(e) => setPassword(e.target.value)}
       />
 
       <motion.input
@@ -106,9 +102,7 @@ const Register = () => {
           "w-[320px] h-[32px] mb-[32px] border-2 " +
           "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
         }
-        onChange={(e) => {
-          setEmail(e.target.value)
-        }}
+        onChange={(e) => setEmail(e.target.value)}
       />
 
       <div className={"flex flex-row justify-between items-center h-8 w-80 mb-8"}>
@@ -119,9 +113,7 @@ const Register = () => {
             "w-[96px] h-[32px] border-2 border-[#1d1d1f]" +
             " rounded-[16px] px-[10px] outline-none"
           }
-          onChange={(e) => {
-            setCode(e.target.value)
-          }}
+          onChange={(e) => setCode(e.target.value)}
         />
 
         <motion.button

@@ -5,7 +5,7 @@ const Messages = () => {
   return (
     <div className={"flex flex-col justify-center items-center h-screen"}>
       <motion.div
-        className={"text-[#1d1d1f] text-[64px]"}
+        className={"text-[#1d1d1f] text-[64px] flex flex-col justify-center items-center h-screen"}
         whileHover={{scale: 1.2}}
         whileTap={{scale: 0.9}}
         drag
@@ -16,7 +16,8 @@ const Messages = () => {
           bottom: 0,
         }}
       >
-        留言墙
+        <span>留言墙</span>
+        <span>(敬请期待)</span>
       </motion.div>
     </div>
   );

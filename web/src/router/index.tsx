@@ -16,6 +16,9 @@ import Article from "../pages/Article";
 import Register from "../pages/Register";
 import ArticleUpdate from "../pages/admin/article/ArticleUpdate";
 import ManagerArticle from "../pages/admin/article/ManagerArticle";
+import ClassTwentyOne from "../pages/memories/ClassTwentyOne";
+import IndexMemories from "../pages/memories/IndexMemories";
+import HomeMemories from "../pages/memories/HomeMemories";
 
 const router = createBrowserRouter([
   {
@@ -87,6 +90,24 @@ const router = createBrowserRouter([
         ]
       }
     ]
+  },
+  {
+    path: '/memories',
+    element: <IndexMemories />,
+    children: [
+      {
+        path: '',
+        element: <HomeMemories />,
+      },
+      {
+        path: '*',
+        element: <HomeMemories />,
+      },
+      {
+        path: '21',
+        element: <ClassTwentyOne />
+      }
+    ],
   },
   {
     path: '*',
