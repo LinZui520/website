@@ -2,11 +2,12 @@ import { motion } from "framer-motion";
 import {useSelector} from "react-redux";
 import cookie from "react-cookies";
 import NotFind from "./NotFind";
+import { RootState } from "../store";
 
 
 const Info = () => {
 
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: RootState) => state.user)
 
 
   return (

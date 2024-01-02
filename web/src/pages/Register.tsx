@@ -5,6 +5,13 @@ import {UserRegister, UserVerify} from "../api/user";
 import {message} from "antd";
 import Captcha from "../components/index/Captcha";
 
+export interface CaptchaData {
+  x: number;
+  y: number;
+  duration: number;
+  trail: [number, number][];
+}
+
 const Register = () => {
 
   const [username, setUsername] = useState('')
@@ -45,17 +52,13 @@ const Register = () => {
   }
 
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column',
-      width: '100vw', height: '100vh',
-      justifyContent: 'center', alignItems: 'center'
-    }}>
+    <div className={"flex flex-col justify-center items-center h-screen w-screen"}>
       {contextHolder}
 
       <Captcha
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        verify={async (data: any) => {
+        verify={async (data: CaptchaData) => {
           try {
             const res = await UserVerify(email, data.x, data.y, data.duration, data.trail, data.trail.length)
             if (res.data.message === "我一眼就看出你不是人") {

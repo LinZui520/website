@@ -1,8 +1,15 @@
 import SliderCaptcha from "rc-slider-captcha";
 import {Modal} from "antd";
+import React from "react";
+import { CaptchaData } from "../../pages/Register";
 
-const Captcha = ({isModalOpen, setIsModalOpen, verify}: any) => {
+interface CaptchaProps {
+  isModalOpen: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  verify: (data: CaptchaData) => Promise<void>;
+}
 
+const Captcha: React.FC<CaptchaProps> = ({isModalOpen, setIsModalOpen, verify}) => {
 
   return (
     <Modal
@@ -12,7 +19,7 @@ const Captcha = ({isModalOpen, setIsModalOpen, verify}: any) => {
       footer={false}
       centered
       width={368}
-      style={{ maxWidth: '100%' }}
+      className={"max-w-[100%]"}
     >
       <SliderCaptcha
         mode="slider"

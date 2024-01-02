@@ -5,6 +5,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { UserOutlined, HomeOutlined, ReadOutlined } from '@ant-design/icons';
 import cookie from "react-cookies";
 import NotFind from "../NotFind";
+import { RootState } from "../../store";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -32,7 +33,7 @@ const IndexAdmin = () => {
 
   const navigate = useNavigate()
   const [inlineCollapsed, setInlineCollapsed] = useState(false);
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: RootState) => state.user)
 
   const screenWidthThreshold = 768;
 
@@ -64,7 +65,7 @@ const IndexAdmin = () => {
         defaultSelectedKeys={['/admin']}
         defaultOpenKeys={['/admin/article']}
         onClick={onClick}
-        style={{ width: '20vw' }}
+        className={"w-[20vw]"}
         items={items}
         inlineCollapsed={inlineCollapsed}
         // theme="dark"

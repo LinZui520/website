@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from "react";
 import {GetAllUser} from "../api/user";
 
-interface User {
+export interface User {
   id: number,
   avatar: string,
   username: string,

@@ -26,16 +26,16 @@ const Main = () => {
         transition={{ type: 'tween' }}
       >
         <motion.div
-          className={"bg-amber-600 h-screen w-screen text-[32px] flex justify-center items-center"}
-          initial={{opacity: 0}}
-          whileInView={{opacity: 1}}
+          className={"h-screen w-[100vw] text-[32px] flex justify-center items-center"}
+          initial={{opacity: 0, x: 512}}
+          whileInView={{opacity: 1, x: 0}}
           transition={{duration: 1,type: 'tween'}}
         >
           这里记录了67个小duedue的故事
         </motion.div>
 
         <motion.div
-          className={"bg-amber-200 h-screen w-screen text-[32px] flex justify-center items-center"}
+          className={"h-screen w-screen text-[32px] flex justify-center items-center"}
           initial={{opacity: 0}}
           whileInView={{opacity: 1}}
           transition={{duration: 1,type: 'tween'}}

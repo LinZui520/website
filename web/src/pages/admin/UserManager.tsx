@@ -1,19 +1,8 @@
-import useFetchUsers from "../../hook/useFetchUsers";
+import useFetchUsers, { User } from "../../hooks/useFetchUsers";
 import {ColumnsType} from "antd/es/table";
 import {Button, message, Modal, Table} from "antd";
 import {BlockUser, BoostUser} from "../../api/user";
 import {useState} from "react";
-
-interface User {
-  id: number,
-  avatar: string,
-  username: string,
-  email: string,
-  password: string,
-  power: number,
-  register: string,
-  login: string,
-}
 
 const UserManager = () => {
 

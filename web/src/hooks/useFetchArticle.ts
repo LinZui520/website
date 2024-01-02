@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from "react";
 import {GetOneArticle} from "../api/article";
 
-interface Article {
+export interface Article {
   id: number
   author: number
   avatar: string

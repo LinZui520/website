@@ -2,6 +2,7 @@ import {config, MdEditor} from "md-editor-rt";
 import MarkExtension from "markdown-it-mark";
 import '@vavt/rt-extension/lib/asset/style.css';
 import {Input, Modal} from "antd";
+import React, { ReactNode } from "react";
 
 
 config({
@@ -10,13 +11,25 @@ config({
   }
 })
 
-const ArticleMarkDown = (
+interface ArticleMarkDownProps {
+  title: string;
+  setTitle: (value: string) => void;
+  content: string;
+  setContent: (value: string) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: (value: boolean) => void;
+  modalTitle: string;
+  contextHolder: ReactNode;
+  operate: () => void;
+}
+
+const ArticleMarkDown: React.FC<ArticleMarkDownProps> = (
   {
     title, setTitle,
     content, setContent,
     isModalOpen, setIsModalOpen,
     modalTitle, contextHolder, operate
-  }: any) => {
+  }) => {
 
   return (
     <div>

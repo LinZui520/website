@@ -1,16 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { GetAllArticle } from '../api/article';
-
-interface Article {
-  id: number
-  author: number
-  avatar: string
-  username: string
-  title: string,
-  content: string
-  create: string
-  update: string
-}
+import { Article } from './useFetchArticle';
 
 const useFetchArticles = () => {
   const [articles, setArticles] = useState<Article[]>([])

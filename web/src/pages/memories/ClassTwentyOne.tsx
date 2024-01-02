@@ -8,6 +8,7 @@ const ClassTwentyOne = () => {
     <div>
       <Header />
       <Main />
+      <div className={"h-screen"} />
     </div>
   );
 }

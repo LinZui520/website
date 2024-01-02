@@ -1,6 +1,5 @@
 import {motion} from "framer-motion";
 
-
 const ArticlesHeader = () => {
   return (
     <div className={"flex flex-col justify-center items-center w-screen h-screen"}>

@@ -1,10 +1,9 @@
-import useFetchArticles from "../../../hook/useFetchArticles";
+import useFetchArticles from "../../../hooks/useFetchArticles";
 import ArticleTable from "../../../components/admin/article/ArticleTable";
 import {useNavigate} from "react-router-dom";
 import {message, Modal} from "antd";
 import {useState} from "react";
 import {DeleteArticle} from "../../../api/article";
-
 
 
 const ManagerArticle = () => {

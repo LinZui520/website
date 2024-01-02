@@ -1,9 +1,15 @@
 import { motion } from "framer-motion";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../store";
 
-const MenuItem = ({ item, onCloseMenu }: any) => {
+interface MenuItemProps {
+  item: { href: string; text: string };
+  onCloseMenu: () => void;
+}
+
+const MenuItem: React.FC<MenuItemProps> = ({ item, onCloseMenu }) => {
   const navigate = useNavigate()
   return (
     <motion.li
@@ -42,7 +48,7 @@ const MenuItem = ({ item, onCloseMenu }: any) => {
 export const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: RootState) => state.user);
 
   const menu = [
     {href: '/', text: '首页'},

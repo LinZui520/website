@@ -1,16 +1,14 @@
 import {Button, Table} from "antd";
 import { ColumnsType } from "antd/es/table";
-interface Article {
-  id: number
-  author: number
-  avatar: string
-  username: string
-  title: string,
-  content: string
-  create: string
-  update: string
+import { Article } from "../../../hooks/useFetchArticle";
+import React from "react";
+
+interface ArticleTableProps {
+  operate: {[key: string]: (id: number) => void};
+  articles: Article[];
 }
-const ArticleTable = ({operate, articles}: any) => {
+
+const ArticleTable: React.FC<ArticleTableProps> = ({operate, articles}) => {
 
   const columns: ColumnsType<Article> = [
     {

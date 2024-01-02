@@ -1,6 +1,8 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-const request = (config: any) => {
+interface RequestConfig extends AxiosRequestConfig {}
+
+const request = (config: RequestConfig): Promise<AxiosResponse> => {
   const instance = axios.create({
     baseURL: '/api',
     timeout: 10000,
@@ -8,9 +10,9 @@ const request = (config: any) => {
       'Content-Type': 'multipart/form-data',
       'Accept': 'application/json',
     }
-  })
+  });
 
-  return instance(config)
-}
+  return instance(config);
+};
 
-export default request
+export default request;

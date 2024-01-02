@@ -5,12 +5,12 @@ import { UserTokenLogin } from "./api/user";
 import { setUser } from "./store/user";
 import {useDispatch, useSelector} from 'react-redux';
 import { useEffect } from "react";
-
+import {RootState} from "./store";
 
 const App = () => {
 
   const dispatch = useDispatch()
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: RootState) => state.user)
 
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const App = () => {
         } 
       } 
     }
-    fetchData().then(_ => {})
+    fetchData().then(() => {})
   }, [user, dispatch]);
 
 

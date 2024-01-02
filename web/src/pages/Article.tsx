@@ -1,6 +1,6 @@
 import { MdPreview } from "md-editor-rt";
 import { useParams } from "react-router-dom";
-import useFetchArticle from "../hook/useFetchArticle";
+import useFetchArticle from "../hooks/useFetchArticle";
 import NotFind from "./NotFind";
 
 const Article = () => {

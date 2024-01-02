@@ -4,8 +4,6 @@ import {message} from 'antd';
 import {AddArticle} from "../../../api/article";
 import ArticleMarkDown from "../../../components/admin/article/ArticleMarkDown";
 
-
-
 const ArticleAdd = () => {
 
   const [title, setTitle] = useState('')
