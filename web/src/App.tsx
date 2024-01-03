@@ -1,41 +1,32 @@
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
-import cookie from 'react-cookies'
-import { UserTokenLogin } from "./api/user";
-import { setUser } from "./store/user";
-import {useDispatch, useSelector} from 'react-redux';
-import { useEffect } from "react";
-import {RootState} from "./store";
+import zhCN from "antd/locale/zh_CN";
+import { ConfigProvider, theme } from "antd";
+import useUserAuthentication from "./hooks/user/useUserAuthentication";
 
 const App = () => {
 
-  const dispatch = useDispatch()
-  const user = useSelector((state: RootState) => state.user)
+  const isUserAuthenticationFinished = useUserAuthentication();
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (cookie.load('token') !== undefined && user.id === 0 ) {
-        try {
-          const res = await UserTokenLogin();
-          if (res.data.code === 200) {
-            cookie.save('token', res.data.data.token, { 
-              path: "/", 
-              expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) 
-            });
-            dispatch(setUser(res.data.data));
-          }
-        } catch (_) {
-
-        } 
-      } 
-    }
-    fetchData().then(() => {})
-  }, [user, dispatch]);
-
+  if (!isUserAuthenticationFinished) {
+    return <div />;
+  }
 
   return (
-    <RouterProvider router={router} />
+    <ConfigProvider
+      locale={zhCN}
+      theme={{
+        components: {
+          Button: {
+            primaryColor: '#1677ff',
+          }
+        },
+        algorithm: theme.defaultAlgorithm, // 默认算法
+      }}
+
+    >
+      <RouterProvider router={router} />
+    </ConfigProvider>
   );
 }
 

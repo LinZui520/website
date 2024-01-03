@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from "react";
-import {GetOneArticle} from "../api/article";
+import {GetOneArticle} from "../../api/article";
 
 export interface Article {
   id: number

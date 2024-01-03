@@ -1,6 +1,6 @@
 import {motion} from "framer-motion";
 import {useNavigate} from "react-router-dom";
-import useFetchArticles from "../../hooks/useFetchArticles";
+import useFetchArticles from "../../hooks/article/useFetchArticles";
 import React from "react";
 
 const ArticlesMain = () => {

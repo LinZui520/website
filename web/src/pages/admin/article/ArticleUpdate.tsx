@@ -1,4 +1,4 @@
-import useFetchArticle from "../../../hooks/useFetchArticle";
+import useFetchArticle from "../../../hooks/article/useFetchArticle";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {message} from "antd";

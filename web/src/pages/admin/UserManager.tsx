@@ -1,4 +1,4 @@
-import useFetchUsers, { User } from "../../hooks/useFetchUsers";
+import useFetchUsers, { User } from "../../hooks/user/useFetchUsers";
 import {ColumnsType} from "antd/es/table";
 import {Button, message, Modal, Table} from "antd";
 import {BlockUser, BoostUser} from "../../api/user";

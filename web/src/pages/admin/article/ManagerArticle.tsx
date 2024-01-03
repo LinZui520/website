@@ -1,62 +1,64 @@
-import useFetchArticles from "../../../hooks/useFetchArticles";
-import ArticleTable from "../../../components/admin/article/ArticleTable";
-import {useNavigate} from "react-router-dom";
-import {message, Modal} from "antd";
-import {useState} from "react";
-import {DeleteArticle} from "../../../api/article";
+import {Button, Modal, Table} from "antd";
+import React from "react";
+import {ColumnsType} from "antd/es/table";
+import {Article} from "../../../hooks/article/useFetchArticle";
+import useManageArticle from "../../../hooks/article/useManageArticle";
 
 
 const ManagerArticle = () => {
 
-  const navigate = useNavigate()
-  const {articles, fetchData} = useFetchArticles()
+  const {
+    isModalOpen,
+    setIsModalOpen,
+    title,
+    articles,
+    manage,
+    contextHolder,
+    handleDelete,
+    handleUpdate,
+    handleView,
+  } = useManageArticle();
 
-
-  const operate: {[key: string]: (id: number) => void} = {
-    '删除': (id: number) => {
-      setManager(() => () => {
-        DeleteArticle(id).then(res => {
-          if (res.data.code === 200) {
-            messageApi.success(res.data.message).then(() => {
-            })
-            fetchData().then(() => {
-            })
-            setIsModalOpen(false)
-          } else {
-            messageApi.error(res.data.message).then(() => {
-            })
-          }
-        }).catch(() => {
-          messageApi.error("网络原因，删除失败").then(() => {
-          })
-        })
-      })
-      setTitle("确定删除该文章？")
-      setIsModalOpen(true)
+  const columns: ColumnsType<Article> = [
+    {
+      title: '文章编号',
+      dataIndex: 'id',
+      key: 'id',
     },
-
-    '修改': (id: number) => {
-      setManager(() => () =>
-        navigate('/admin/article/update/' + id)
-      )
-      setTitle("确定修改该文章？")
-      setIsModalOpen(true)
+    {
+      title: '作者',
+      dataIndex: 'username',
+      key: 'username',
     },
-
-    '查看': (id: number) => {
-      setManager(() => () => {
-        navigate('/article/' + id)
-      })
-      setTitle("确定查看该文章？")
-      setIsModalOpen(true)
+    {
+      title: '标题',
+      dataIndex: 'title',
+      key: 'title',
     },
-  }
+    {
+      title: '创建时间',
+      dataIndex: 'create',
+      key: 'create',
+      render: text => <span>{new Date(text).toLocaleString()}</span>,
+    },
+    {
+      title: '操作',
+      key: 'action',
+      fixed: 'right',
+      render: record => <div>
+        <Button type="link" onClick={() => handleDelete(record.id)}>
+          删除
+        </Button>
+        <Button type="link" onClick={() => handleUpdate(record.id)}>
+          修改
+        </Button>
+        <Button type="link" onClick={() => handleView(record.id)}>
+          查看
+        </Button>
+      </div>
+    },
+  ]
 
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [title, setTitle] = useState("")
-  const [manager, setManager] = useState<() => void>(() => () => {});
-  const [messageApi, contextHolder] = message.useMessage()
 
   return (
     <div>
@@ -65,13 +67,14 @@ const ManagerArticle = () => {
         title={title}
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
-        onOk={() => manager()}
+        onOk={() => manage()}
       >
       </Modal>
 
-      <ArticleTable
-        operate={operate}
-        articles={articles}
+      <Table
+        columns={columns}
+        dataSource={articles.map((article: Article) => ({ ...article, key: article.id }))}
+        bordered
       />
     </div>
   );

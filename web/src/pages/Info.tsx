@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import {useSelector} from "react-redux";
-import cookie from "react-cookies";
 import NotFind from "./NotFind";
 import { RootState } from "../store";
 
@@ -11,7 +10,7 @@ const Info = () => {
 
 
   return (
-    (cookie.load('token') === undefined || user.id === 0) ? <NotFind /> :
+    user.id === 0 ? <NotFind /> :
     <div className={"flex flex-col justify-center items-center bg-[#fbfbfd] h-screen w-screen"}>
       <motion.div
         whileHover={{scale: 1.2}}

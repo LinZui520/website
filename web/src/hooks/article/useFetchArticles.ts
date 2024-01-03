@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { GetAllArticle } from '../api/article';
+import { GetAllArticle } from '../../api/article';
 import { Article } from './useFetchArticle';
 
 const useFetchArticles = () => {

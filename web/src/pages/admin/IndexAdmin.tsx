@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { UserOutlined, HomeOutlined, ReadOutlined } from '@ant-design/icons';
-import cookie from "react-cookies";
 import NotFind from "../NotFind";
 import { RootState } from "../../store";
 
@@ -58,7 +57,7 @@ const IndexAdmin = () => {
 
 
   return (
-    (cookie.load('token') === undefined || (user.id !== 0 && user.power === 0)) ? <NotFind /> :
+    user.power === 0 ? <NotFind /> :
     <div className={"flex flex-row h-screen w-screen"}>
       <Menu
         mode="inline"
