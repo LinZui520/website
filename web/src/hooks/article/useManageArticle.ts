@@ -12,9 +12,9 @@ const useManageArticle = () => {
   const [manage, setManage] = useState<() => void>(() => () => {});
   const [messageApi, contextHolder] = message.useMessage();
 
-  const handleDelete = (recordId: number) => {
+  const handleDelete = (id: number) => {
     setManage(() => () => {
-      DeleteArticle(recordId).then(res => {
+      DeleteArticle(id).then(res => {
         if (res.data.code === 200) {
           messageApi.success(res.data.message).then(() => {});
           fetchData().then(() => {});
@@ -30,18 +30,18 @@ const useManageArticle = () => {
     setIsModalOpen(true);
   };
 
-  const handleUpdate = (recordId: number) => {
+  const handleUpdate = (id: number) => {
     setManage(() => () => {
-      navigate(`/admin/article/update/${recordId}`);
+      navigate(`/admin/article/update/${id}`);
       setIsModalOpen(false);
     });
     setTitle("确定修改该文章？");
     setIsModalOpen(true);
   };
 
-  const handleView = (recordId: number) => {
+  const handleView = (id: number) => {
     setManage(() => () => {
-      navigate(`/article/${recordId}`);
+      navigate(`/article/${id}`);
       setIsModalOpen(false);
     });
     setTitle("确定查看该文章？");

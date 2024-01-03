@@ -21,30 +21,20 @@ const ManagerArticle = () => {
 
   const columns: ColumnsType<Article> = [
     {
-      title: '文章编号',
-      dataIndex: 'id',
-      key: 'id',
+      title: '文章编号', dataIndex: 'id', key: 'id'
     },
     {
-      title: '作者',
-      dataIndex: 'username',
-      key: 'username',
+      title: '作者', dataIndex: 'username', key: 'username'
     },
     {
-      title: '标题',
-      dataIndex: 'title',
-      key: 'title',
+      title: '标题', dataIndex: 'title', key: 'title'
     },
     {
-      title: '创建时间',
-      dataIndex: 'create',
-      key: 'create',
+      title: '创建时间', dataIndex: 'create', key: 'create',
       render: text => <span>{new Date(text).toLocaleString()}</span>,
     },
     {
-      title: '操作',
-      key: 'action',
-      fixed: 'right',
+      title: '操作', key: 'action', fixed: 'right',
       render: record => <div>
         <Button type="link" onClick={() => handleDelete(record.id)}>
           删除
