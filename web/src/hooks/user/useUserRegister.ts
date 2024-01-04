@@ -68,7 +68,7 @@ const useUserRegister = () => {
       messageApi.warning("网络原因，验证失败").then(() => {})
       return Promise.reject()
     }
-  },[])
+  },[email, messageApi])
 
   return {
     username,
