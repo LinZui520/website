@@ -98,6 +98,7 @@ func (UserService) UserTokenLogin(c *gin.Context) (model.UserDTO, error) {
 	if err != nil {
 		return model.UserDTO{}, errors.New("token解析失败")
 	}
+
 	username := userClaims.Username
 	password := userClaims.Password
 	global.DB.Where("username = ?", username).First(&user)
@@ -200,4 +201,32 @@ func (UserService) BoostUser(c *gin.Context) error {
 		return errors.New("权限不足")
 	}
 	return global.DB.Model(&user).Update("power", user.Power+1).Error
+}
+
+func (UserService) UserSecurity(c *gin.Context) error {
+	email := c.PostForm("email")
+	code := c.PostForm("code")
+
+	cachedCode, err := global.Redis.Get(email).Result()
+	if err != nil {
+		return errors.New("该邮箱未发送验证码或验证码已过期")
+	}
+	if code != cachedCode {
+		global.Redis.Del(email)
+		return errors.New("验证码错误，请重新获取")
+	}
+	username := c.PostForm("username")
+	password := c.PostForm("password")
+	hash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+	var user model.User
+	err = global.DB.Where("username = ?", username).Where("email = ?", email).First(&user).Error
+	if err != nil {
+		return errors.New("用户名或邮箱错误")
+	}
+	err = global.DB.Model(&user).Update("password", string(hash)).Error
+	if err != nil {
+		return errors.New("更新密码失败")
+	}
+	global.Redis.Del(email)
+	return nil
 }

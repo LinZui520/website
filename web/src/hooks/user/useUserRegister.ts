@@ -1,8 +1,9 @@
-import {useCallback, useState} from "react";
+import {useCallback, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {message} from "antd";
 import {UserRegister, UserVerify} from "../../api/user";
 import {CaptchaData} from "../../pages/Register";
+import {ActionType} from "rc-slider-captcha";
 
 
 const useUserRegister = () => {
@@ -13,6 +14,34 @@ const useUserRegister = () => {
   const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage()
+  const actionRef = useRef<ActionType>();
+
+  const fetchCode = () => {
+    if (email === '') {
+      messageApi.warning("邮箱格式错误").then(() => {})
+      return
+    }
+    setIsModalOpen(true)
+  }
+
+  const verify = useCallback(async (data: CaptchaData) => {
+    try {
+      const res = await UserVerify(email, data.x, data.y, data.duration, data.trail, data.trail.length)
+      if (res.data.message === "我一眼就看出你不是人") {
+        return Promise.reject()
+      }
+      if (res.data.code === 200) {
+        messageApi.success(res.data.message).then(() => {})
+      } else {
+        messageApi.warning(res.data.message).then(() => {})
+      }
+      setIsModalOpen(false)
+      return Promise.resolve()
+    } catch (_) {
+      messageApi.warning("网络原因，验证失败").then(() => {})
+      return Promise.reject()
+    }
+  },[email, messageApi])
 
   const register = () => {
     if (username === '' || username.length > 16) {
@@ -43,32 +72,6 @@ const useUserRegister = () => {
     })
   }
 
-  const fetchCode = () => {
-    if (email === '') {
-      messageApi.warning("邮箱格式错误").then(() => {})
-      return
-    }
-    setIsModalOpen(true)
-  }
-
-  const verify = useCallback(async (data: CaptchaData) => {
-    try {
-      const res = await UserVerify(email, data.x, data.y, data.duration, data.trail, data.trail.length)
-      if (res.data.message === "我一眼就看出你不是人") {
-        return Promise.reject()
-      }
-      if (res.data.code === 200) {
-        messageApi.success(res.data.message).then(() => {})
-      } else {
-        messageApi.warning(res.data.message).then(() => {})
-      }
-      setIsModalOpen(false)
-      return Promise.resolve()
-    } catch (_) {
-      messageApi.warning("网络原因，验证失败").then(() => {})
-      return Promise.reject()
-    }
-  },[email, messageApi])
 
   return {
     username,
@@ -79,8 +82,11 @@ const useUserRegister = () => {
     setEmail,
     code,
     setCode,
+    actionRef,
     isModalOpen,
     setIsModalOpen,
+    navigate,
+    messageApi,
     contextHolder,
     fetchCode,
     verify,

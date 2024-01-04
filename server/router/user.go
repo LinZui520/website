@@ -18,6 +18,7 @@ func UserRouter(router *gin.Engine) {
 		user.GET("/list", userApi.GetAllUser)
 		user.GET("/block", userApi.BlockUser)
 		user.GET("/boost", userApi.BoostUser)
+		user.POST("security", userApi.UserSecurity)
 	}
 
 }

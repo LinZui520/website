@@ -14,6 +14,8 @@ const useUserLogin = () => {
   const dispatch = useDispatch()
   const [messageApi, contextHolder] = message.useMessage()
 
+  const navigateSecurity = () => navigate("/security")
+
   const navigateRegister = () => navigate("/register")
 
   const login = () => {
@@ -47,6 +49,7 @@ const useUserLogin = () => {
     password,
     setPassword,
     contextHolder,
+    navigateSecurity,
     navigateRegister,
     login
   }

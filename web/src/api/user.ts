@@ -60,3 +60,14 @@ export const BoostUser = (id: number) => request({
     id
   }
 })
+
+export const UserSecurity = (username: string, password: string, email: string, code: string) => request({
+  url: '/user/security',
+  method: 'post',
+  data: {
+    username,
+    password,
+    email,
+    code,
+  }
+})

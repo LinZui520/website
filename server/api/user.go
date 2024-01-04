@@ -81,3 +81,12 @@ func (UserApi) BoostUser(c *gin.Context) {
 		model.OK(true, "提升成功", c)
 	}
 }
+
+func (UserApi) UserSecurity(c *gin.Context) {
+	err := userService.UserSecurity(c)
+	if err != nil {
+		model.Fail(false, err.Error(), c)
+	} else {
+		model.OK(true, "更新成功", c)
+	}
+}

@@ -1,15 +1,8 @@
 import {motion} from "framer-motion";
+import useUserSecurity from "../hooks/user/useUserSecurity";
 import Captcha from "../components/index/Captcha";
-import useUserRegister from "../hooks/user/useUserRegister";
 
-export interface CaptchaData {
-  x: number;
-  y: number;
-  duration: number;
-  trail: [number, number][];
-}
-
-const Register = () => {
+const Security = () => {
 
   const {
     username,
@@ -26,11 +19,12 @@ const Register = () => {
     contextHolder,
     fetchCode,
     verify,
-    register
-  } = useUserRegister()
+    security
+  } = useUserSecurity()
+
 
   return (
-    <div className={"flex flex-col justify-center items-center h-screen w-screen"}>
+    <div className={"flex flex-col justify-center items-center w-screen h-screen"}>
       {contextHolder}
 
       <Captcha
@@ -41,7 +35,7 @@ const Register = () => {
       />
 
       <motion.span drag whileHover={{scale: 1.1}} className="mb-[32px] text-[32px] select-none">
-        注册
+        找回密码
       </motion.span>
       <motion.input
         drag whileFocus={{scale: 1.1}}
@@ -54,7 +48,7 @@ const Register = () => {
       />
       <motion.input
         drag whileFocus={{scale: 1.1}}
-        type="password" placeholder="密码" value={password}
+        type="password" placeholder="新密码" value={password}
         className={
           "w-[320px] h-[32px] mb-[32px] border-2 " +
           "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
@@ -97,13 +91,12 @@ const Register = () => {
           "w-[80px] h-[40px] cursor-pointer bg-[#1d1d1f] text-[#fbfbfd] " +
           "select-none rounded-[24px] flex justify-center items-center"
         }
-        onClick={register} whileHover={{scale: 1.2}} whileTap={{scale: 0.9}}
+        onClick={security} whileHover={{scale: 1.2}} whileTap={{scale: 0.9}}
       >
-        注册
+        更新
       </motion.button>
-
     </div>
   );
 }
 
-export default Register;
+export default Security;

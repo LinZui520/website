@@ -35,7 +35,7 @@ const Footer = () => {
         }}
         className={"text-[#fbfbfd] no-underline text-[32px] mb-[32px]"}
       >
-        Copyright ©2023 YangmingHe
+        Copyright ©2023-2024 YangmingHe
       </motion.a>
 
     </div>

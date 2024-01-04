@@ -8,6 +8,7 @@ const Login = () => {
     password,
     setPassword,
     contextHolder,
+    navigateSecurity,
     navigateRegister,
     login
   } = useUserLogin()
@@ -15,7 +16,9 @@ const Login = () => {
   return (
     <div className={"flex flex-col justify-center items-center w-screen h-screen"}>
       {contextHolder}
-      <motion.span drag whileHover={{scale: 1.1}} className="mb-[32px] text-[32px] select-none">登录</motion.span>
+      <motion.span drag whileHover={{scale: 1.1}} className="mb-[32px] text-[32px] select-none">
+        登录
+      </motion.span>
       <motion.input
         drag whileFocus={{scale: 1.1}}
         type="text" placeholder="账号" value={username}
@@ -39,7 +42,7 @@ const Login = () => {
           whileHover={{scale: 1.2}}
           whileTap={{scale: 0.9}}
           className="text-[#1d1d1f] cursor-pointer select-none"
-          onClick={navigateRegister}
+          onClick={navigateSecurity}
         >找回密码
         </motion.button>
         <motion.button

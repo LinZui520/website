@@ -1,15 +1,16 @@
-import SliderCaptcha from "rc-slider-captcha";
+import SliderCaptcha, {ActionType} from "rc-slider-captcha";
 import {Modal} from "antd";
 import React from "react";
 import { CaptchaData } from "../../pages/Register";
 
 interface CaptchaProps {
+  actionRef: React.MutableRefObject<ActionType | undefined>;
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   verify: (data: CaptchaData) => Promise<void>;
 }
 
-const Captcha: React.FC<CaptchaProps> = React.memo(({isModalOpen, setIsModalOpen, verify}) => {
+const Captcha: React.FC<CaptchaProps> = React.memo(({actionRef, isModalOpen, setIsModalOpen, verify}) => {
 
   return (
     <Modal
@@ -22,6 +23,7 @@ const Captcha: React.FC<CaptchaProps> = React.memo(({isModalOpen, setIsModalOpen
       className={"max-w-[100%]"}
     >
       <SliderCaptcha
+        actionRef={actionRef}
         mode="slider"
         className={"rounded-3xl"}
         tipText={{

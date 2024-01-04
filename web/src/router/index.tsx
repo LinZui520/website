@@ -19,6 +19,7 @@ import ManagerArticle from "../pages/admin/article/ManagerArticle";
 import ClassTwentyOne from "../pages/memories/ClassTwentyOne";
 import IndexMemories from "../pages/memories/IndexMemories";
 import HomeMemories from "../pages/memories/HomeMemories";
+import Security from "../pages/Security";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
         path: 'register',
         element: <Register />
       },
+      {
+        path: 'security',
+        element: <Security />
+      }
     ],
   },
   {
