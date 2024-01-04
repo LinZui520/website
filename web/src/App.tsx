@@ -6,13 +6,11 @@ import useUserAuthentication from "./hooks/user/useUserAuthentication";
 
 const App = () => {
 
-  const isUserAuthenticationFinished = useUserAuthentication();
+  const isHookFinished = useUserAuthentication();
 
-  if (!isUserAuthenticationFinished) {
-    return <div />;
-  }
 
   return (
+    !isHookFinished ? <div /> :
     <ConfigProvider
       locale={zhCN}
       theme={{
@@ -25,7 +23,7 @@ const App = () => {
       }}
 
     >
-      <RouterProvider router={router} />
+      <RouterProvider router={router}/>
     </ConfigProvider>
   );
 }
