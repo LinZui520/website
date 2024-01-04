@@ -1,11 +1,8 @@
-import 'md-editor-rt/lib/style.css';
-import {useState} from 'react';
-import {message} from 'antd';
-import {AddArticle} from "../../../api/article";
-import ArticleMarkDown from "../../../components/admin/article/ArticleMarkDown";
+import {useState} from "react";
+import {message} from "antd";
+import {AddArticle} from "../../api/article";
 
-const ArticleAdd = () => {
-
+const useUploadArticle = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -30,17 +27,17 @@ const ArticleAdd = () => {
     })
   }
 
-  return (
-    <div>
-      <ArticleMarkDown
-        title={title} setTitle={setTitle}
-        content={content} setContent={setContent}
-        isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}
-        modalTitle={"提交文章"} contextHolder={contextHolder}
-        operate={upload}
-      />
-    </div>
-  );
+  return {
+    title,
+    setTitle,
+    content,
+    setContent,
+    isModalOpen,
+    setIsModalOpen,
+    contextHolder,
+    upload,
+  }
+
 }
 
-export default ArticleAdd;
+export default useUploadArticle;

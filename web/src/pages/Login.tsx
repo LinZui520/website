@@ -1,42 +1,16 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { UserLogin } from "../api/user";
-import { setUser } from "../store/user";
-import cookie from 'react-cookies'
 import { motion } from "framer-motion";
-import {message} from "antd";
+import useUserLogin from "../hooks/user/useUserLogin";
 const Login = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const [messageApi, contextHolder] = message.useMessage()
 
-  const login = () => {
-    if (username === '' || username.length > 16) {
-      messageApi.warning("用户名格式错误").then(() => {})
-      return
-    }
-    if (password === '' || password.length > 32) {
-      messageApi.warning("密码格式错误").then(() => {})
-      return
-    }
-    UserLogin(username, password).then(res => {
-      if (res.data.code === 200) {
-        cookie.save('token', res.data.data.token, {
-          path: "/",
-          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-        });
-        dispatch(setUser(res.data.data));
-        navigate('/')
-      } else {
-        messageApi.error(res.data.message).then(() => {})
-      }
-    }).catch(() => {
-      messageApi.error("网络原因，登陆失败").then(() => {})
-    })
-  }
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    contextHolder,
+    navigateRegister,
+    login
+  } = useUserLogin()
 
   return (
     <div className={"flex flex-col justify-center items-center w-screen h-screen"}>
@@ -65,14 +39,14 @@ const Login = () => {
           whileHover={{scale: 1.2}}
           whileTap={{scale: 0.9}}
           className="text-[#1d1d1f] cursor-pointer select-none"
-          onClick={() => navigate("/register")}
-        >邮箱登录
+          onClick={navigateRegister}
+        >找回密码
         </motion.button>
         <motion.button
           whileHover={{scale: 1.2}}
           whileTap={{scale: 0.9}}
           className="text-[#1d1d1f] cursor-pointer select-none"
-          onClick={() => navigate("/register")}
+          onClick={navigateRegister}
         >注册账号
         </motion.button>
       </div>

@@ -6,12 +6,12 @@ import useManageUser from "../../hooks/user/useManageUser";
 const UserManager = () => {
 
   const {
+    title,
     isModalOpen,
     setIsModalOpen,
-    title,
-    users,
     manage,
     contextHolder,
+    users,
     handleBlock,
     handleBoost,
   } = useManageUser();

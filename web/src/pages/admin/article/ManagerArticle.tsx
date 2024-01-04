@@ -8,12 +8,12 @@ import useManageArticle from "../../../hooks/article/useManageArticle";
 const ManagerArticle = () => {
 
   const {
+    title,
     isModalOpen,
     setIsModalOpen,
-    title,
-    articles,
     manage,
     contextHolder,
+    articles,
     handleDelete,
     handleUpdate,
     handleView,

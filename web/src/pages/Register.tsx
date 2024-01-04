@@ -1,9 +1,6 @@
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {motion} from "framer-motion";
-import {UserRegister, UserVerify} from "../api/user";
-import {message} from "antd";
 import Captcha from "../components/index/Captcha";
+import useUserRegister from "../hooks/user/useUserRegister";
 
 export interface CaptchaData {
   x: number;
@@ -14,42 +11,22 @@ export interface CaptchaData {
 
 const Register = () => {
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [email, setEmail] = useState('')
-  const [code, setCode] = useState('')
-  const navigate = useNavigate()
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage()
-
-  const register = () => {
-    if (username === '' || username.length > 16) {
-      messageApi.warning("用户名格式错误").then(() => {})
-      return
-    }
-    if (password === '' || password.length > 32) {
-      messageApi.warning("密码格式错误").then(() => {})
-      return
-    }
-    if (email === '' || email.length > 32) {
-      messageApi.warning("邮箱格式错误").then(() => {})
-      return
-    }
-    if (code === '') {
-      messageApi.warning("验证码格式错误").then(() => {})
-      return
-    }
-    UserRegister(username, password, email, code).then(res => {
-      if (res.data.code === 200) {
-        messageApi.success(res.data.message).then(() => {})
-        navigate('/login')
-      } else {
-        messageApi.error(res.data.message).then(() => {})
-      }
-    }).catch(_ => {
-      messageApi.success("网络原因，注册失败").then(() => {})
-    })
-  }
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    email,
+    setEmail,
+    code,
+    setCode,
+    isModalOpen,
+    setIsModalOpen,
+    contextHolder,
+    fetchCode,
+    verify,
+    register
+  } = useUserRegister()
 
   return (
     <div className={"flex flex-col justify-center items-center h-screen w-screen"}>
@@ -58,24 +35,7 @@ const Register = () => {
       <Captcha
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        verify={async (data: CaptchaData) => {
-          try {
-            const res = await UserVerify(email, data.x, data.y, data.duration, data.trail, data.trail.length)
-            if (res.data.message === "我一眼就看出你不是人") {
-              return Promise.reject()
-            }
-            if (res.data.code === 200) {
-              messageApi.success(res.data.message).then(() => {})
-            } else {
-              messageApi.warning(res.data.message).then(() => {})
-            }
-            setIsModalOpen(false)
-            return Promise.resolve()
-          } catch (_) {
-            messageApi.warning("网络原因，验证失败").then(() => {})
-            return Promise.reject()
-          }
-        }}
+        verify={verify}
       />
 
       <motion.span drag whileHover={{scale: 1.1}} className="mb-[32px] text-[32px] select-none">注册</motion.span>
@@ -123,13 +83,7 @@ const Register = () => {
           whileHover={{scale: 1.1}}
           whileTap={{scale: 0.9}}
           className={"text-[#1d1d1f] cursor-pointer select-none"}
-          onClick={() => {
-            if (email === '') {
-              messageApi.warning("邮箱格式错误").then(() => {})
-              return
-            }
-            setIsModalOpen(true)
-          }}
+          onClick={fetchCode}
         >获取验证码
         </motion.button>
       </div>

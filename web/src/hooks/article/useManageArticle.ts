@@ -49,12 +49,12 @@ const useManageArticle = () => {
   };
 
   return {
+    title,
     isModalOpen,
     setIsModalOpen,
-    title,
-    articles,
     manage,
     contextHolder,
+    articles,
     handleDelete,
     handleUpdate,
     handleView,

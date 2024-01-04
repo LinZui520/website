@@ -8,7 +8,7 @@ import HomeAdmin from "../pages/admin/HomeAdmin";
 import UserManager from "../pages/admin/UserManager";
 import ArticleManager from "../pages/admin/ArticleManager";
 import Login from "../pages/Login";
-import ArticleAdd from "../pages/admin/article/ArticleAdd";
+import ArticleUpload from "../pages/admin/article/ArticleUpload";
 import Articles from "../pages/Articles";
 import Messages from "../pages/Messages";
 import Info from "../pages/Info";
@@ -76,8 +76,8 @@ const router = createBrowserRouter([
             element: <Navigate to="/404" />
           },
           {
-            path: 'add',
-            element: <ArticleAdd />,
+            path: 'upload',
+            element: <ArticleUpload />,
           },
           {
             path: 'manager',

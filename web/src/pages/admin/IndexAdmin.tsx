@@ -20,7 +20,7 @@ const items: MenuItem[] = [
     label: '文章管理', key: '/admin/article', icon: <ReadOutlined />,
     children: [
       {
-        label: '增加文章', key: '/admin/article/add',
+        label: '增加文章', key: '/admin/article/upload',
       },
       {
         label: '管理文章', key: '/admin/article/manager',

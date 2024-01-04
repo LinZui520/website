@@ -48,12 +48,12 @@ const useManageUser = () => {
   };
 
   return {
+    title,
     isModalOpen,
     setIsModalOpen,
-    title,
-    users,
     manage,
     contextHolder,
+    users,
     handleBlock,
     handleBoost,
   };

@@ -9,7 +9,7 @@ interface CaptchaProps {
   verify: (data: CaptchaData) => Promise<void>;
 }
 
-const Captcha: React.FC<CaptchaProps> = ({isModalOpen, setIsModalOpen, verify}) => {
+const Captcha: React.FC<CaptchaProps> = React.memo(({isModalOpen, setIsModalOpen, verify}) => {
 
   return (
     <Modal
@@ -34,6 +34,6 @@ const Captcha: React.FC<CaptchaProps> = ({isModalOpen, setIsModalOpen, verify}) 
       />
     </Modal>
   );
-}
+})
 
 export default Captcha;

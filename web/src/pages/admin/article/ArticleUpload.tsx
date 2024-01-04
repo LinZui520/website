@@ -1,11 +1,10 @@
+import 'md-editor-rt/lib/style.css';
 import ArticleMarkDown from "../../../components/admin/article/ArticleMarkDown";
-import NotFind from "../../NotFind";
-import useUpdateArticle from "../../../hooks/article/useUpdateArticle";
+import useUploadArticle from "../../../hooks/article/useUploadArticle";
 
-const ArticleUpdate = () => {
+const ArticleUpload = () => {
 
   const {
-    status,
     title,
     setTitle,
     content,
@@ -13,20 +12,18 @@ const ArticleUpdate = () => {
     isModalOpen,
     setIsModalOpen,
     contextHolder,
-    update
-  } = useUpdateArticle()
-
+    upload
+  } = useUploadArticle()
 
   return (
-    !status ? <NotFind /> :
     <ArticleMarkDown
       title={title} setTitle={setTitle}
       content={content} setContent={setContent}
       isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}
-      modalTitle={"更新文章"} contextHolder={contextHolder}
-      operate={update}
+      modalTitle={"提交文章"} contextHolder={contextHolder}
+      operate={upload}
     />
   );
 }
 
-export default ArticleUpdate;
+export default ArticleUpload;
