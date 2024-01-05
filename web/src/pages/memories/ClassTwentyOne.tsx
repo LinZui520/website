@@ -1,6 +1,7 @@
 import Header from "../../components/memories/21/Header";
 import Main from "../../components/memories/21/Main";
 import useHandleWheel from "../../hooks/useHandleWheel";
+import React from "react";
 
 
 const ClassTwentyOne = () => {
@@ -11,7 +12,6 @@ const ClassTwentyOne = () => {
     <div onWheel={handleWheel}>
       <Header />
       <Main />
-      <div className={"h-screen"} />
     </div>
   );
 }
