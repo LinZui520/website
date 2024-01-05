@@ -1,8 +1,9 @@
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import {useRef, useState} from "react";
+import FirstImage from "../../../assets/image/21/Screenshot_20240105_233337.png"
 
 
-const Header = () => {
+const Second = () => {
 
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -14,7 +15,6 @@ const Header = () => {
 
   const windowWidth = window.innerWidth;
 
-
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setScale(1 + 3 * latest)
   })
@@ -25,42 +25,40 @@ const Header = () => {
       <div
         className={
           "h-[50vh] w-[90vw] max-w-[1024px] text-[32px] " +
-          "sticky top-[50vh] select-none flex flex-row justify-evenly"
+          "sticky top-[50vh] select-none flex flex-row justify-between"
         }
       >
         <div>
           <motion.div
             initial={{scale: 1, x: 0}}
-            animate={{scale: scale, x: (1 - scale) * windowWidth / 3}}
-          >高三21班
-          </motion.div>
-        </div>
-
-        <div>
-          <motion.div
-            initial={{scale: 1, y: 0}}
-            animate={{scale: scale, y: (1 - scale) * windowWidth}}
-          >SixtySeven
+            animate={{scale: scale, x: (1 - scale) * windowWidth / 2}}
+          >我们离高考越来越近，
           </motion.div>
         </div>
 
         <div>
           <motion.div
             initial={{scale: 1, x: 0}}
-            animate={{scale: scale, x: (scale - 1) * windowWidth / 3}}
-          >独家记忆
+            animate={{scale: scale, x: (scale - 1) * windowWidth / 2}}
+          >近到可以听到他的心跳。
           </motion.div>
         </div>
+
       </div>
+
       <motion.div
-        className={"h-screen w-screen flex flex-col justify-center items-center text-[32px]"}
-        initial={{scale: 1}}
-        whileInView={{scale: scale / 4}}
+        className={"h-screen w-screen flex justify-center items-center"}
+        initial={{scale: 0, opacity: 0}}
+        whileInView={{scale: 1, opacity: 1}}
       >
-      海内存知己 天涯若比邻
+        <img
+          className={"h-[80vw] w-[80vw] max-h-[516px] max-w-[516px] rounded-[16px] overflow-hidden"}
+          src={FirstImage}
+          alt={""}
+        />
       </motion.div>
     </div>
   );
 }
 
-export default Header;
+export default Second;

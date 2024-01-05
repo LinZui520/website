@@ -13,12 +13,14 @@ const useHandleWheel = () => {
 
     const windowHeight = window.innerHeight;
 
+    const currentScroll = window.scrollY;
+
     const targetScroll = e.deltaY > 0
-      ? (Math.round(window.scrollY / windowHeight) + 1) * windowHeight
-      : (Math.round(window.scrollY / windowHeight) - 1) * windowHeight
+      ? (Math.round(currentScroll / windowHeight) + 1) * windowHeight
+      : (Math.round(currentScroll / windowHeight) - 1) * windowHeight
 
     scroll.scrollTo(targetScroll, {
-      duration: 500,
+      duration: 618,
       smooth: 'easeInQuint',
     });
 

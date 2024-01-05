@@ -1,7 +1,8 @@
 import Header from "../../components/memories/21/Header";
-import Main from "../../components/memories/21/Main";
+import First from "../../components/memories/21/First";
 import useHandleWheel from "../../hooks/useHandleWheel";
 import React from "react";
+import Second from "../../components/memories/21/Second";
 
 
 const ClassTwentyOne = () => {
@@ -11,7 +12,8 @@ const ClassTwentyOne = () => {
   return (
     <div onWheel={handleWheel}>
       <Header />
-      <Main />
+      <First />
+      <Second />
     </div>
   );
 }
