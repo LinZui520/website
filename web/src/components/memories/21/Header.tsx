@@ -13,6 +13,7 @@ const Header = () => {
   const [scale, setScale] = useState(1)
 
   const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
 
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -21,11 +22,11 @@ const Header = () => {
 
   return (
     <div ref={ref} className={"h-[200vh] w-screen flex flex-col items-center overflow-clip"}>
-      <div className={"h-[50vh] w-screen"}/>
+      <div className={"h-[47vh] w-screen"}/>
       <div
         className={
           "h-[50vh] w-[90vw] max-w-[1024px] text-[32px] " +
-          "sticky top-[50vh] select-none flex flex-row justify-evenly"
+          "sticky top-[47vh] select-none flex flex-row justify-evenly"
         }
       >
         <div>
@@ -39,7 +40,7 @@ const Header = () => {
         <div>
           <motion.div
             initial={{scale: 1, y: 0}}
-            animate={{scale: scale, y: (1 - scale) * windowWidth}}
+            animate={{scale: scale, y: (1 - scale) * windowHeight / 3}}
           >SixtySeven
           </motion.div>
         </div>
@@ -52,12 +53,13 @@ const Header = () => {
           </motion.div>
         </div>
       </div>
+      <div className={"h-[3vh] w-screen"}/>
       <motion.div
-        className={"h-screen w-screen flex flex-col justify-center items-center text-[32px]"}
-        initial={{scale: 1}}
-        whileInView={{scale: scale / 4}}
+        className={"h-screen w-screen select-none flex flex-col justify-center items-center text-[32px]"}
+        initial={{scale: 0.5}}
+        whileInView={{scale: scale / 7 * 2}}
       >
-      海内存知己 天涯若比邻
+        海内存知己 天涯若比邻
       </motion.div>
     </div>
   );

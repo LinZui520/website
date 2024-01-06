@@ -1,7 +1,5 @@
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import {useRef, useState} from "react";
-import SeatingChart from '../../../assets/image/21/Screenshot_20231230_213346.png'
-import Countdown from '../../../assets/image/21/Screenshot_20240105_201236.png'
 
 const First = () => {
 
@@ -38,10 +36,11 @@ const First = () => {
           className={"h-screen w-screen flex justify-center items-center"}
           initial={{scale: 0, opacity: 0}}
           whileInView={{scale: 1, opacity: 1}}
+          viewport={{once: true}}
         >
           <img
             className={"h-[40vw] w-[80vw] max-h-[356px] max-w-[712px] rounded-[16px] overflow-hidden"}
-            src={SeatingChart}
+            src={process.env.PUBLIC_URL + "/memories/21/Screenshot_20231230_213346.png"}
             alt={""}
           />
         </motion.div>
@@ -57,10 +56,11 @@ const First = () => {
           className={"h-screen w-screen flex justify-center items-center"}
           initial={{scale: 0, opacity: 0}}
           whileInView={{scale: 1, opacity: 1}}
+          viewport={{once: true}}
         >
           <img
             className={"h-[80vw] w-[50vw] max-h-[712px] max-w-[440px] rounded-[16px] overflow-hidden"}
-            src={Countdown}
+            src={process.env.PUBLIC_URL + "/memories/21/Screenshot_20240105_201236.png"}
             alt={""}
           />
         </motion.div>
