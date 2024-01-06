@@ -1,6 +1,6 @@
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import {useRef, useState} from "react";
-
+import FirstImage from "../../../assets/image/memories/21/Screenshot_20240105_233337.png";
 
 const Second = () => {
 
@@ -53,7 +53,7 @@ const Second = () => {
       >
         <img
           className={"h-[80vw] w-[80vw] max-h-[516px] max-w-[516px] rounded-[16px] overflow-hidden"}
-          src={process.env.PUBLIC_URL + "/memories/21/Screenshot_20240105_233337.png"}
+          src={FirstImage}
           alt={""}
         />
       </motion.div>

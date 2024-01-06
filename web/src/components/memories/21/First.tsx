@@ -1,5 +1,7 @@
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import {useRef, useState} from "react";
+import FirstImage from "../../../assets/image/memories/21/Screenshot_20231230_213346.png";
+import SecondImage from "../../../assets/image/memories/21/Screenshot_20240105_201236.png"
 
 const First = () => {
 
@@ -40,7 +42,7 @@ const First = () => {
         >
           <img
             className={"h-[40vw] w-[80vw] max-h-[356px] max-w-[712px] rounded-[16px] overflow-hidden"}
-            src={process.env.PUBLIC_URL + "/memories/21/Screenshot_20231230_213346.png"}
+            src={FirstImage}
             alt={""}
           />
         </motion.div>
@@ -60,7 +62,7 @@ const First = () => {
         >
           <img
             className={"h-[80vw] w-[50vw] max-h-[712px] max-w-[440px] rounded-[16px] overflow-hidden"}
-            src={process.env.PUBLIC_URL + "/memories/21/Screenshot_20240105_201236.png"}
+            src={SecondImage}
             alt={""}
           />
         </motion.div>
