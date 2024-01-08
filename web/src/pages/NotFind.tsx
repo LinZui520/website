@@ -9,12 +9,7 @@ const NotFind = () => {
         whileHover={{scale: 1.2}}
         whileTap={{scale: 0.9}}
         drag
-        dragConstraints={{
-          top: -0,
-          left: -0,
-          right: 0,
-          bottom: 0,
-        }}
+        dragConstraints={{top: -0, left: -0, right: 0, bottom: 0}}
       >
         404 NotFind
       </motion.div>
