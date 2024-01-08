@@ -25,7 +25,7 @@ const Header = () => {
       <div className={"h-[47vh] w-screen"}/>
       <div
         className={
-          "h-[50vh] w-[90vw] max-w-[1024px] text-[32px] " +
+          "h-[50vh] w-[90vw] max-w-[1024px] text-[16px] lg:text-[32px] " +
           "sticky top-[47vh] select-none flex flex-row justify-evenly"
         }
       >
@@ -55,7 +55,10 @@ const Header = () => {
       </div>
       <div className={"h-[3vh] w-screen"}/>
       <motion.div
-        className={"h-screen w-screen select-none flex flex-col justify-center items-center text-[32px]"}
+        className={
+          "h-screen w-screen select-none text-[16px] lg:text-[32px] " +
+          "flex flex-col justify-center items-center"
+        }
         initial={{scale: 0.5}}
         whileInView={{scale: scale / 7 * 2}}
       >

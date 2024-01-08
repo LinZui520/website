@@ -27,7 +27,7 @@ const First = () => {
         transition={{type: 'tween'}}
       >
         <motion.div
-          className={"h-screen w-screen text-[32px] select-none flex justify-center items-center"}
+          className={"h-screen w-screen text-[16px] lg:text-[32px] select-none flex justify-center items-center"}
           initial={{opacity: 0, scale: 0.5}}
           whileInView={{opacity: 1, scale: 1}}
         >
@@ -41,14 +41,14 @@ const First = () => {
           viewport={{once: true}}
         >
           <img
-            className={"h-[40vw] w-[80vw] max-h-[356px] max-w-[712px] rounded-[16px] overflow-hidden"}
+            className={"h-[30vw] w-[60vw] max-h-[356px] max-w-[712px] rounded-[16px] overflow-hidden"}
             src={FirstImage}
             alt={""}
           />
         </motion.div>
 
         <motion.div
-          className={"h-screen w-screen text-[32px] select-none flex justify-center items-center"}
+          className={"h-screen w-screen text-[16px] lg:text-[32px] select-none flex justify-center items-center"}
           initial={{opacity: 0, scale: 0.5}}
           whileInView={{opacity: 1, scale: 1}}
         >

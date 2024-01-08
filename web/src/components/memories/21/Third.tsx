@@ -28,7 +28,7 @@ const Third = () => {
         transition={{type: 'tween'}}
       >
         <motion.div
-          className={"h-screen w-screen text-[32px] select-none flex justify-center items-center"}
+          className={"h-screen w-screen text-[16px] lg:text-[32px] select-none flex justify-center items-center"}
           initial={{opacity: 0, scale: 0.5}}
           whileInView={{opacity: 1, scale: 1}}
         >
@@ -42,14 +42,14 @@ const Third = () => {
           viewport={{once: true}}
         >
           <img
-            className={"h-[80vw] w-[80vw] max-h-[512px] max-w-[512px] rounded-[16px] overflow-hidden"}
+            className={"h-[60vw] w-[60vw] max-h-[512px] max-w-[512px] rounded-[16px] overflow-hidden"}
             src={FirstImage}
             alt={""}
           />
         </motion.div>
 
         <motion.div
-          className={"h-screen w-screen text-[32px] select-none flex justify-center items-center"}
+          className={"h-screen w-screen text-[16px] lg:text-[32px] select-none flex justify-center items-center"}
           initial={{opacity: 0, scale: 0.5}}
           whileInView={{opacity: 1, scale: 1}}
         >
@@ -62,7 +62,7 @@ const Third = () => {
           viewport={{once: true}}
         >
           <img
-            className={"h-[80vw] w-[80vw] max-h-[512px] max-w-[512px] rounded-[16px] overflow-hidden"}
+            className={"h-[60vw] w-[60vw] max-h-[512px] max-w-[512px] rounded-[16px] overflow-hidden"}
             src={SecondImage}
             alt={""}
           />

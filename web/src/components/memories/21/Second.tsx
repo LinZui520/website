@@ -23,15 +23,15 @@ const Second = () => {
       <div className={"h-[50vh] w-screen"}/>
       <div
         className={
-          "h-[50vh] w-[90vw] max-w-[1024px] text-[32px] " +
-          "sticky top-[50vh] select-none flex flex-row justify-between"
+          "h-[50vh] w-[90vw] max-w-[1024px] text-[16px] lg:text-[32px] " +
+          "sticky top-[50vh] select-none flex flex-row justify-evenly"
         }
       >
         <div>
           <motion.div
             initial={{scale: 1, x: 0}}
             animate={{scale: scale, x: (1 - scale) * windowWidth / 2}}
-          >我们离高考越来越近，
+          >我们离高考越来越近
           </motion.div>
         </div>
 
@@ -39,7 +39,7 @@ const Second = () => {
           <motion.div
             initial={{scale: 1, x: 0}}
             animate={{scale: scale, x: (scale - 1) * windowWidth / 2}}
-          >近到可以听到他的心跳。
+          >近到可以听到他的心跳
           </motion.div>
         </div>
 
@@ -52,7 +52,7 @@ const Second = () => {
         viewport={{once: true}}
       >
         <img
-          className={"h-[80vw] w-[80vw] max-h-[516px] max-w-[516px] rounded-[16px] overflow-hidden"}
+          className={"h-[60vw] w-[60vw] max-h-[516px] max-w-[516px] rounded-[16px] overflow-hidden"}
           src={FirstImage}
           alt={""}
         />

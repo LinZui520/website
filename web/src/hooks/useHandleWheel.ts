@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useState} from "react";
-import { animateScroll as scroll } from 'react-scroll';
 
 const useHandleWheel = () => {
 
@@ -19,10 +18,11 @@ const useHandleWheel = () => {
       ? (Math.round(currentScroll / windowHeight) + 1) * windowHeight
       : (Math.round(currentScroll / windowHeight) - 1) * windowHeight
 
-    scroll.scrollTo(targetScroll, {
-      duration: 618,
-      smooth: 'easeInQuint',
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth',
     });
+
 
     setTimeout(() => {
       setIsScrolling(false);

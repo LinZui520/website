@@ -33,7 +33,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, onCloseMenu }) => {
       whileTap={{ scale: 0.95 }}
       className={
         "z-50 list-none cursor-pointer mb-[5vh] select-none " +
-        "text-[#fbfbfd] text-[36px]"
+        "text-[#fbfbfd] text-[24px] lg:text-[36px]"
       }
       onClick={() => {
         navigate(item.href);

@@ -17,5 +17,4 @@ $ npm i framer-motion
 $ npm i md-editor-rt
 $ npm i @vavt/rt-extension
 $ npm i markdown-it-mark
-$ npm i react-scroll
 ```

@@ -32,7 +32,7 @@ const useManageArticle = () => {
 
   const handleUpdate = (id: number) => {
     setManage(() => () => {
-      navigate(`/admin/article/update/${id}`);
+      navigate('/admin/article/update/' + id);
       setIsModalOpen(false);
     });
     setTitle("确定修改该文章？");
@@ -41,7 +41,7 @@ const useManageArticle = () => {
 
   const handleView = (id: number) => {
     setManage(() => () => {
-      navigate(`/article/${id}`);
+      navigate('/article/' + id);
       setIsModalOpen(false);
     });
     setTitle("确定查看该文章？");

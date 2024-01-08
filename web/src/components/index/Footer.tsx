@@ -13,7 +13,7 @@ const Footer = () => {
         whileTap={{scale: 0.9}}
         drag
         dragConstraints={{top: -0, left: -0, right: 0, bottom: 0}}
-        className={"text-[#fbfbfd] no-underline text-[32px] mb-[32px]"}
+        className={"text-[#fbfbfd] no-underline text-[16px] lg:text-[32px] mb-[32px]"}
       >
         赣ICP备2023014673号-1
       </motion.a>
@@ -23,7 +23,7 @@ const Footer = () => {
         whileTap={{scale: 0.9}}
         drag
         dragConstraints={{top: -0, left: -0, right: 0, bottom: 0}}
-        className={"text-[#fbfbfd] no-underline text-[32px] mb-[32px]"}
+        className={"text-[#fbfbfd] no-underline text-[16px] lg:text-[32px] mb-[32px]"}
       >
         Copyright ©2023-2024 YangmingHe
       </motion.a>

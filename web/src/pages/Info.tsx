@@ -17,7 +17,7 @@ const Info = () => {
         whileTap={{scale: 0.9}}
         drag
         dragConstraints={{top: -0, left: -0, right: 0, bottom: 0}}
-        className={"text-[#1d1d1f] text-[54px]"}
+        className={"text-[#1d1d1f] text-[32px] lg:text-[64px]"}
       >
         {user.username}
       </motion.div>
