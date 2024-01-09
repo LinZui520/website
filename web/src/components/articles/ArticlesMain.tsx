@@ -26,13 +26,13 @@ const ArticlesMain = () => {
             "cursor-pointer select-none rounded-[25px] p-[5px]"
           }
         >
-          <h1 className={"text-[16px] lg:text-[32px] text-[#fbfbfd] mb-[2vw]"}>
+          <h1 className={"text-[16px] lg:text-[24px] text-[#fbfbfd] mb-[2vw]"}>
             {item.title}
           </h1>
           <div className={"flex flex-col items-center"}>
-            <div className={"text-[8px] lg:text-[16px] text-[#fbfbfd]"}>作者：{item.username}</div>
+            <div className={"text-[8px] lg:text-[12px] text-[#fbfbfd]"}>作者：{item.username}</div>
             <div
-              className={"text-[8px] lg:text-[16px] text-[#fbfbfd]"}>发表时间：{new Date(item.create).toLocaleString()}
+              className={"text-[8px] lg:text-[12px] text-[#fbfbfd]"}>发表时间：{new Date(item.create).toLocaleString()}
             </div>
           </div>
         </motion.div>
