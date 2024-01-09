@@ -22,15 +22,19 @@ const ArticlesMain = () => {
           className={
             "border-2 border-white w-[90vw] h-[45vw] m-[5vw] " +
             "max-w-[600px] max-h-[300px]  " +
-            "flex flex-col justify-center items-center " +
+            "flex flex-col justify-evenly items-center " +
             "cursor-pointer select-none rounded-[25px] p-[5px]"
           }
         >
-          <h1 className={"text-[28px] text-[#fbfbfd] mb-[2vw]"}>
+          <h1 className={"text-[16px] lg:text-[32px] text-[#fbfbfd] mb-[2vw]"}>
             {item.title}
           </h1>
-          <div className={"text-[14px] text-[#fbfbfd]"}>作者：{item.username}</div>
-          <div className={"text-[14px] text-[#fbfbfd]"}>发表时间：{new Date(item.create).toLocaleString()}</div>
+          <div className={"flex flex-col items-center"}>
+            <div className={"text-[8px] lg:text-[16px] text-[#fbfbfd]"}>作者：{item.username}</div>
+            <div
+              className={"text-[8px] lg:text-[16px] text-[#fbfbfd]"}>发表时间：{new Date(item.create).toLocaleString()}
+            </div>
+          </div>
         </motion.div>
       )}
     </div>
