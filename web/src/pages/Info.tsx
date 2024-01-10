@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import {useSelector} from "react-redux";
 import NotFind from "./NotFind";
-import { RootState } from "../store";
+import { RootState } from "../redux";
 
 
 const Info = () => {

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { UserOutlined, HomeOutlined, ReadOutlined } from '@ant-design/icons';
 import NotFind from "../NotFind";
-import { RootState } from "../../store";
+import { RootState } from "../../redux";
 
 type MenuItem = Required<MenuProps>['items'][number];
 

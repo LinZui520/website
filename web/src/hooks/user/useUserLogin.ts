@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import {message} from "antd";
 import {UserLogin} from "../../api/user";
 import cookie from "react-cookies";
-import {setUser} from "../../store/user";
+import {setUser} from "../../redux/user";
 
 
 const useUserLogin = () => {

@@ -1,8 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-interface RequestConfig extends AxiosRequestConfig {}
-
-const request = (config: RequestConfig): Promise<AxiosResponse> => {
+const request = (config: AxiosRequestConfig): Promise<AxiosResponse> => {
   const instance = axios.create({
     baseURL: '/api',
     timeout: 10000,

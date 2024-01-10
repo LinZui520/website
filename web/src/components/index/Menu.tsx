@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import React, {useEffect, useState} from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../store";
+import { RootState } from "../../redux";
 
 interface MenuItemProps {
   item: { href: string; text: string };

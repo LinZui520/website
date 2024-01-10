@@ -1,9 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../store";
+import {RootState} from "../../redux";
 import {useCallback, useEffect, useState} from "react";
 import cookie from "react-cookies";
 import {UserTokenLogin} from "../../api/user";
-import {setUser} from "../../store/user";
+import {setUser} from "../../redux/user";
 
 
 const useUserAuthentication = () => {
