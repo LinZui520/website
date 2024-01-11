@@ -1,13 +1,12 @@
 import { Menu, MenuProps } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import { UserOutlined, HomeOutlined, ReadOutlined } from '@ant-design/icons';
 import NotFind from "../NotFind";
 import { RootState } from "../../redux";
 
 type MenuItem = Required<MenuProps>['items'][number];
-
 
 const items: MenuItem[] = [
   {
@@ -28,11 +27,13 @@ const items: MenuItem[] = [
     ]
   },
 ];
+
 const IndexAdmin = () => {
 
   const navigate = useNavigate()
   const [inlineCollapsed, setInlineCollapsed] = useState(false);
   const user = useSelector((state: RootState) => state.user)
+  const [selectedKey, setSelectedKey] = useState(window.location.pathname)
 
   const screenWidthThreshold = 768;
 
@@ -47,23 +48,29 @@ const IndexAdmin = () => {
     };
   }, []);
 
-  useEffect(() => {
-    navigate('/admin')
-  }, [navigate]);
-
-  const onClick: MenuProps['onClick'] = (e) => {
+  const onSelect: MenuProps['onSelect'] = (e) => {
     navigate(e.key)
+    setSelectedKey(e.key)
   }
 
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    if (pathname.includes('/admin/article/update')) {
+      setSelectedKey('/admin/article/manager')
+      return
+    }
+    setSelectedKey(pathname)
+  }, [pathname]);
 
   return (
     user.power === 0 ? <NotFind /> :
     <div className={"flex flex-row h-screen w-screen"}>
       <Menu
         mode="inline"
-        defaultSelectedKeys={['/admin']}
+        selectedKeys={[selectedKey]}
         defaultOpenKeys={['/admin/article']}
-        onClick={onClick}
+        onSelect={onSelect}
         className={"w-[20vw]"}
         items={items}
         inlineCollapsed={inlineCollapsed}
