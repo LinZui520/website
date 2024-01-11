@@ -1,11 +1,10 @@
-import React, {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useState, WheelEventHandler} from "react";
 
-const useHandleWheel = () => {
+const useHandleWheelScroll = () => {
 
   const [isScrolling, setIsScrolling] = useState(false);
 
-  const handleWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
-
+  const handleWheel: WheelEventHandler<HTMLDivElement> = useCallback((e) => {
     if (isScrolling) return;
 
     setIsScrolling(true);
@@ -23,11 +22,9 @@ const useHandleWheel = () => {
       behavior: 'smooth',
     });
 
-
     setTimeout(() => {
       setIsScrolling(false);
     }, 500);
-
   }, [isScrolling]);
 
   useEffect(() => {
@@ -44,4 +41,4 @@ const useHandleWheel = () => {
   };
 };
 
-export default useHandleWheel;
+export default useHandleWheelScroll;
