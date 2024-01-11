@@ -1,5 +1,4 @@
 import {Button, Modal, Table} from "antd";
-import React from "react";
 import {ColumnsType} from "antd/es/table";
 import {Article} from "../../../hooks/article/useFetchArticle";
 import useManageArticle from "../../../hooks/article/useManageArticle";

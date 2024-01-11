@@ -1,7 +1,6 @@
 import Header from "../../components/memories/21/Header";
 import First from "../../components/memories/21/First";
 import useHandleWheel from "../../hooks/useHandleWheel";
-import React from "react";
 import Second from "../../components/memories/21/Second";
 import Third from "../../components/memories/21/Third";
 

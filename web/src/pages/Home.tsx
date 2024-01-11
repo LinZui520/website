@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import {useEffect} from 'react';
 import Footer from '../components/index/Footer';
 import {motion} from "framer-motion";
 import Header from "../components/memories/21/Header";

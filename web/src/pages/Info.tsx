@@ -11,7 +11,7 @@ const Info = () => {
 
   return (
     user.id === 0 ? <NotFind /> :
-    <div className={"flex flex-col justify-center items-center bg-[#fbfbfd] h-screen w-screen"}>
+    <div className={"flex flex-col justify-center items-center h-screen w-screen"}>
       <motion.div
         whileHover={{scale: 1.2}}
         whileTap={{scale: 0.9}}
