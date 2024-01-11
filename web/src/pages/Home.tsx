@@ -5,18 +5,20 @@ import Header from "../components/memories/21/Header";
 import First from "../components/memories/21/First";
 import Second from "../components/memories/21/Second";
 import Third from "../components/memories/21/Third";
-import useHandleWheel from "../hooks/useHandleWheel";
+import useHandleWheelScroll from "../hooks/useHandleWheelScroll";
+import useHandleTouchScroll from "../hooks/useHandleTouchScroll";
 
 const Home = () => {
 
-  const {handleWheel} = useHandleWheel()
+  const {handleTouch} = useHandleTouchScroll()
+  const {handleWheel} = useHandleWheelScroll()
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   return (
-    <div  onWheel={handleWheel}>
+    <div onTouchMove={handleTouch} onWheel={handleWheel}>
       <div className={"flex flex-col justify-center items-center h-screen"}>
         <motion.div
           whileHover={{scale: 1.2}}

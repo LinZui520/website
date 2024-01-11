@@ -1,16 +1,18 @@
 import Header from "../../components/memories/21/Header";
 import First from "../../components/memories/21/First";
-import useHandleWheel from "../../hooks/useHandleWheel";
+import useHandleWheelScroll from "../../hooks/useHandleWheelScroll";
 import Second from "../../components/memories/21/Second";
 import Third from "../../components/memories/21/Third";
+import useHandleTouchScroll from "../../hooks/useHandleTouchScroll";
 
 
 const ClassTwentyOne = () => {
 
-  const {handleWheel} = useHandleWheel()
+  const {handleTouch} = useHandleTouchScroll()
+  const {handleWheel} = useHandleWheelScroll()
 
   return (
-    <div onWheel={handleWheel}>
+    <div onTouchMove={handleTouch} onWheel={handleWheel}>
       <Header />
       <First />
       <Second />
