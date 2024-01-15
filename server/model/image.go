@@ -1,6 +1,10 @@
 package model
 
+import "time"
+
 type Image struct {
-	ID       int    `json:"id"`
-	Filename string `json:"filename"`
+	Id       int       `json:"id"`
+	Author   int       `json:"author"`
+	Filename string    `json:"filename"`
+	Create   time.Time `json:"create"`
 }
