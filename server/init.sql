@@ -1,8 +1,6 @@
-drop database website;
 create database if not exists website;
 use website;
 
-drop table if exists users;
 create table users (
     id int auto_increment comment '用户编号',
     avatar varchar(32) comment '头像编号',
@@ -25,6 +23,15 @@ create table if not exists articles (
     content longtext null comment '内容',
     `create` datetime not null comment '创建时间',
     `update` datetime not null comment '最近更新时间',
+    primary key (id),
+    foreign key (author) references users(id)
+) AUTO_INCREMENT=100000;
+
+create table if not exists images (
+    id int auto_increment comment '图片编号',
+    author int null comment '作者编号',
+    filename varchar(64) not null comment '文件名',
+    `create` datetime not null comment '创建时间',
     primary key (id),
     foreign key (author) references users(id)
 ) AUTO_INCREMENT=100000;

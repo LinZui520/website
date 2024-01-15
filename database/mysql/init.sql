@@ -26,3 +26,12 @@ create table if not exists articles (
     primary key (id),
     foreign key (author) references users(id)
 ) AUTO_INCREMENT=100000;
+
+create table if not exists images (
+    id int auto_increment comment '图片编号',
+    author int null comment '作者编号',
+    filename varchar(64) not null comment '文件名',
+    `create` datetime not null comment '创建时间',
+    primary key (id),
+    foreign key (author) references users(id)
+) AUTO_INCREMENT=100000;
