@@ -1,8 +1,11 @@
-import {config, MdEditor} from "md-editor-rt";
+import {config, MdEditor, NormalToolbar} from "md-editor-rt";
 import MarkExtension from "markdown-it-mark";
 import '@vavt/rt-extension/lib/asset/style.css';
 import {Input, Modal} from "antd";
-import React, { ReactNode } from "react";
+import {FileImageFilled} from '@ant-design/icons';
+import React, { ReactNode, useState } from "react";
+import ImageList from "./ImageList";
+import useFetchImagesByAuthor from "../../../hooks/image/useFetchImagesByAuthor";
 
 
 config({
@@ -10,6 +13,7 @@ config({
     md.use(MarkExtension);
   }
 })
+
 
 interface ArticleMarkDownProps {
   title: string;
@@ -33,6 +37,9 @@ const ArticleMarkDown: React.FC<ArticleMarkDownProps> = (
     uploadImage
   }) => {
 
+  const [isImageModalOpen, setImageModalOpen] = useState(false);
+  const { images, fetchData } = useFetchImagesByAuthor()
+
   return (
     <div>
       {contextHolder}
@@ -44,15 +51,28 @@ const ArticleMarkDown: React.FC<ArticleMarkDownProps> = (
           }}
         />
       </Modal>
+      <ImageList
+        isModalOpen={isImageModalOpen}
+        setIsModalOpen={setImageModalOpen}
+        images={images}
+      />
       <MdEditor
         className={"h-screen"}
         modelValue={content}
         onChange={setContent}
+        defToolbars={[
+          <NormalToolbar
+            title={"我的图片"}
+            trigger={<FileImageFilled />}
+            onClick={() => fetchData().then(() => setImageModalOpen(true))}
+          />
+        ]}
         toolbars={[
           'sub', 'sup', '-',
           'image', '-',
-          'save', '-', '=',
-          'pageFullscreen', 'fullscreen'
+          'save', '-',
+          0, '-',
+          '=', 'pageFullscreen', 'fullscreen'
         ]}
         onSave={() => setIsModalOpen(true)}
         onUploadImg={uploadImage}

@@ -8,7 +8,7 @@ export const UploadImage = (image: any) => request({
   }
 })
 
-export const GetAddImage = () => request({
+export const GetAllImage = () => request({
   url: '/image/list',
   method: 'get',
 })

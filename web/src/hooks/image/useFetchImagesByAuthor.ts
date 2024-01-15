@@ -1,20 +1,13 @@
 import {useCallback, useEffect, useState} from "react"
-import {GetAllImage} from "../../api/image";
+import {GetImageByAuthor} from "../../api/image";
+import {Image} from "./useFetchImages";
 
-
-export interface Image {
-  id: number
-  author: number
-  filename: string
-  create: string
-}
-
-const useFetchImage = () => {
+const useFetchImagesByAuthor = () => {
   const [images, setImages] = useState<Image[]>([])
 
   const fetchData = useCallback(async () => {
     try {
-      const res = await GetAllImage();
+      const res = await GetImageByAuthor();
       if (res.data.code === 200) {
         setImages(res.data.data !== null ? res.data.data : []);
       } else {
@@ -35,4 +28,4 @@ const useFetchImage = () => {
   }
 }
 
-export default useFetchImage
+export default useFetchImagesByAuthor;
