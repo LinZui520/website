@@ -1,4 +1,4 @@
-import {Button, Modal, Table} from "antd";
+import {Button, Modal, Table, Image as IMAGE} from "antd";
 import {ColumnsType} from "antd/es/table";
 import {Image} from "../../hooks/image/useFetchImages";
 import useManagerImage from "../../hooks/image/useManagerImage";
@@ -13,7 +13,8 @@ const ImageManager = () => {
     manage,
     contextHolder,
     images,
-    handleDelete
+    handleDelete,
+    handleCopy
   } = useManagerImage();
 
   const columns: ColumnsType<Image> = [
@@ -24,14 +25,8 @@ const ImageManager = () => {
       title: '用户', dataIndex: 'author', key: 'author'
     },
     {
-      title: '图片地址', dataIndex: 'filename', key: 'url',
-      render: text => <span>
-        {"https://www.zhuguishihundan.cn/image/"+text}
-      </span>
-    },
-    {
       title: '预览图', dataIndex: 'filename', key: 'filename',
-      render: text => <img
+      render: text => <IMAGE
         src={"/image/"+text} alt={text}
         className={"max-w-[80px] max-h-[80px] object-contain"}
       />
@@ -45,6 +40,11 @@ const ImageManager = () => {
       render: record => <div>
         <Button type="link" onClick={() => handleDelete(record.id)}>
           删除
+        </Button>
+        <Button type="link" onClick={() =>
+          handleCopy("https://www.zhuguishihundan.cn/image/"+record.filename)
+        }>
+          复制图片URL
         </Button>
       </div>
     },

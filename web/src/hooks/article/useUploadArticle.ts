@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {message} from "antd";
 import {AddArticle} from "../../api/article";
+import useUploadImage from "../image/useUploadImage";
 
 const useUploadArticle = () => {
   const [title, setTitle] = useState('')
@@ -27,6 +28,8 @@ const useUploadArticle = () => {
     })
   }
 
+  const { uploadImage } = useUploadImage(messageApi)
+
   return {
     title,
     setTitle,
@@ -36,6 +39,7 @@ const useUploadArticle = () => {
     setIsModalOpen,
     contextHolder,
     upload,
+    uploadImage
   }
 
 }

@@ -3,7 +3,6 @@ import MarkExtension from "markdown-it-mark";
 import '@vavt/rt-extension/lib/asset/style.css';
 import {Input, Modal} from "antd";
 import React, { ReactNode } from "react";
-import {UploadImage} from "../../../api/image";
 
 
 config({
@@ -22,6 +21,7 @@ interface ArticleMarkDownProps {
   modalTitle: string;
   contextHolder: ReactNode;
   operate: () => void;
+  uploadImage: (files: Array<File>) => void;
 }
 
 const ArticleMarkDown: React.FC<ArticleMarkDownProps> = (
@@ -29,7 +29,8 @@ const ArticleMarkDown: React.FC<ArticleMarkDownProps> = (
     title, setTitle,
     content, setContent,
     isModalOpen, setIsModalOpen,
-    modalTitle, contextHolder, operate
+    modalTitle, contextHolder, operate,
+    uploadImage
   }) => {
 
   return (
@@ -54,13 +55,7 @@ const ArticleMarkDown: React.FC<ArticleMarkDownProps> = (
           'pageFullscreen', 'fullscreen'
         ]}
         onSave={() => setIsModalOpen(true)}
-        onUploadImg={(files) => {
-          UploadImage(files[0]).then(res => {
-            console.log(res.data)
-          }).catch(err => {
-            console.log(err)
-          })
-        }}
+        onUploadImg={uploadImage}
       />
     </div>
   );

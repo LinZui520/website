@@ -13,7 +13,8 @@ const ArticleUpdate = () => {
     isModalOpen,
     setIsModalOpen,
     contextHolder,
-    update
+    update,
+    uploadImage,
   } = useUpdateArticle()
 
 
@@ -25,6 +26,7 @@ const ArticleUpdate = () => {
       isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}
       modalTitle={"更新文章"} contextHolder={contextHolder}
       operate={update}
+      uploadImage={uploadImage}
     />
   );
 }

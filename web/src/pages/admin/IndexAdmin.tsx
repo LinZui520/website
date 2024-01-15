@@ -74,7 +74,7 @@ const IndexAdmin = () => {
         selectedKeys={[selectedKey]}
         defaultOpenKeys={['/admin/article']}
         onSelect={onSelect}
-        className={"w-[20vw]"}
+        className={"w-[20vw] select-none"}
         items={items}
         inlineCollapsed={inlineCollapsed}
         // theme="dark"

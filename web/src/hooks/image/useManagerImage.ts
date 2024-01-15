@@ -30,6 +30,13 @@ const useManagerImage = () => {
     setIsModalOpen(true);
   };
 
+  const handleCopy = (url: string) => {
+    navigator.clipboard.writeText(url).then(() => {
+      messageApi.success("复制成功").then(() => {});
+    }).catch(() => {
+      messageApi.error("复制失败").then(() => {});
+    })
+  }
 
   return {
     title,
@@ -39,6 +46,7 @@ const useManagerImage = () => {
     contextHolder,
     images,
     handleDelete,
+    handleCopy
   }
 }
 

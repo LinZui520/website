@@ -12,7 +12,8 @@ const ArticleUpload = () => {
     isModalOpen,
     setIsModalOpen,
     contextHolder,
-    upload
+    upload,
+    uploadImage
   } = useUploadArticle()
 
   return (
@@ -22,6 +23,7 @@ const ArticleUpload = () => {
       isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}
       modalTitle={"提交文章"} contextHolder={contextHolder}
       operate={upload}
+      uploadImage={uploadImage}
     />
   );
 }

@@ -3,6 +3,7 @@ import {message} from "antd";
 import { UpdateArticle } from "../../api/article";
 import {useNavigate, useParams} from "react-router-dom";
 import useFetchArticle from "./useFetchArticle";
+import useUploadImage from "../image/useUploadImage";
 
 const useUpdateArticle = () => {
   const params = useParams()
@@ -37,6 +38,8 @@ const useUpdateArticle = () => {
     })
   }
 
+  const { uploadImage } = useUploadImage(messageApi)
+
   return {
     status,
     title,
@@ -47,6 +50,7 @@ const useUpdateArticle = () => {
     setIsModalOpen,
     contextHolder,
     update,
+    uploadImage
   }
 }
 

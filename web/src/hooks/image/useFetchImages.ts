@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from "react"
-import {GetImagesByAuthor} from "../../api/image";
+import {GetAddImage} from "../../api/image";
 
 
 export interface Image {
@@ -10,11 +10,11 @@ export interface Image {
 }
 
 const useFetchImage = () => {
-  const [images, setImages] = useState<Image[]>()
+  const [images, setImages] = useState<Image[]>([])
 
   const fetchData = useCallback(async () => {
     try {
-      const res = await GetImagesByAuthor();
+      const res = await GetAddImage();
       if (res.data.code === 200) {
         setImages(res.data.data !== null ? res.data.data : []);
       } else {
