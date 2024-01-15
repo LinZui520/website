@@ -11,7 +11,8 @@ func ImageRouter(router *gin.Engine) {
 	image := router.Group("api/image")
 	{
 		image.POST("/upload", imageApi.UploadImage)
-		image.GET("/get", imageApi.GetImagesByAuthor)
+		image.GET("/list", imageApi.GetAllImage)
+		image.GET("/get", imageApi.GetImageByAuthor)
 		image.DELETE("/delete", imageApi.DeleteImage)
 	}
 

@@ -37,7 +37,7 @@ func (ImageService) UploadImage(c *gin.Context) (model.Image, error) {
 	return image, global.DB.Create(&image).Error
 }
 
-func (ImageService) GetImagesByAuthor(c *gin.Context) ([]model.Image, error) {
+func (ImageService) GetAllImage(c *gin.Context) ([]model.Image, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
 	if err != nil || userClaims.Power <= 0 {
@@ -45,9 +45,17 @@ func (ImageService) GetImagesByAuthor(c *gin.Context) ([]model.Image, error) {
 	}
 
 	var images []model.Image
-	if userClaims.Power > 1 {
-		return images, global.DB.Find(&images).Error
+	return images, global.DB.Find(&images).Error
+}
+
+func (ImageService) GetImageByAuthor(c *gin.Context) ([]model.Image, error) {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power <= 0 {
+		return nil, errors.New("权限不足")
 	}
+
+	var images []model.Image
 	return images, global.DB.Where("author = ?", userClaims.Id).Find(&images).Error
 }
 

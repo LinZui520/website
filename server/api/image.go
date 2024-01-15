@@ -19,8 +19,17 @@ func (ImageApi) UploadImage(c *gin.Context) {
 	}
 }
 
-func (ImageApi) GetImagesByAuthor(c *gin.Context) {
-	data, err := imageService.GetImagesByAuthor(c)
+func (ImageApi) GetAllImage(c *gin.Context) {
+	data, err := imageService.GetAllImage(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "获取成功", c)
+	}
+}
+
+func (ImageApi) GetImageByAuthor(c *gin.Context) {
+	data, err := imageService.GetImageByAuthor(c)
 	if err != nil {
 		model.Fail(data, err.Error(), c)
 	} else {
