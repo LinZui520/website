@@ -63,6 +63,10 @@ func (ImageService) DeleteImage(c *gin.Context) error {
 	if err != nil {
 		return errors.New("未查询到该图片")
 	}
+	if userClaims.Id != image.Author && userClaims.Power == 1 {
+		return errors.New("没有权限删除该图片")
+	}
+
 	err = os.Remove(global.Config.System.Directory + image.Filename)
 	if err != nil {
 		return errors.New("图片删除失败")
