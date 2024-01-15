@@ -1,6 +1,6 @@
 import request from "../utils/request";
 
-export const UploadImage = (image: any) => request({
+export const UploadImage = (image: File) => request({
   url: '/image/upload',
   method: 'post',
   data: {
