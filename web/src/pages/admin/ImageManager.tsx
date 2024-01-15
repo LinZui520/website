@@ -64,7 +64,7 @@ const ImageManager = () => {
 
       <Table
         columns={columns}
-        dataSource={images}
+        dataSource={images.map((image: Image) => ({ ...image, key: image.id }))}
         bordered
         className={"w-[80vw]"}
       />
