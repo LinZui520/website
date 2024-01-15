@@ -1,8 +1,8 @@
-import { Menu, MenuProps } from "antd";
-import { useEffect, useState } from "react";
+import {Menu, MenuProps} from "antd";
+import {useEffect, useState} from "react";
 import { useSelector } from "react-redux";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import { UserOutlined, HomeOutlined, ReadOutlined } from '@ant-design/icons';
+import {UserOutlined, HomeOutlined, ReadOutlined, FileImageOutlined} from '@ant-design/icons';
 import NotFind from "../NotFind";
 import { RootState } from "../../redux";
 
@@ -26,6 +26,9 @@ const items: MenuItem[] = [
       },
     ]
   },
+  {
+    label: '图片管理', key: '/admin/image', icon: <FileImageOutlined />,
+  }
 ];
 
 const IndexAdmin = () => {

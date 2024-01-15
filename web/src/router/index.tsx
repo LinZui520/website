@@ -20,6 +20,7 @@ import ClassTwentyOne from "../pages/memories/ClassTwentyOne";
 import IndexMemories from "../pages/memories/IndexMemories";
 import HomeMemories from "../pages/memories/HomeMemories";
 import Security from "../pages/Security";
+import ImageManager from "../pages/admin/ImageManager";
 
 const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
             element: <ArticleUpdate />,
           },
         ]
+      },
+      {
+        path: 'image',
+        element: <ImageManager />
       }
     ]
   },
