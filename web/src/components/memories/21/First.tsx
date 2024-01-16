@@ -2,6 +2,7 @@ import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import {useRef, useState} from "react";
 import FirstImage from "../../../assets/image/memories/21/Screenshot_20231230_213346.png";
 import SecondImage from "../../../assets/image/memories/21/Screenshot_20240105_201236.png"
+import TypingEffect from "../../index/TypingEffect";
 
 const First = () => {
 
@@ -31,7 +32,7 @@ const First = () => {
           initial={{opacity: 0, scale: 0.5}}
           whileInView={{opacity: 1, scale: 1}}
         >
-          一切从这张座位表说起
+          <TypingEffect text={"一切从这张座位表说起"} speed={128} waitTime={2048} />
         </motion.div>
 
         <motion.div
@@ -52,7 +53,7 @@ const First = () => {
           initial={{opacity: 0, scale: 0.5}}
           whileInView={{opacity: 1, scale: 1}}
         >
-          或从曾经的倒计时说起
+          <TypingEffect text={"或从曾经的倒计时说起"} speed={128} waitTime={2048} />
         </motion.div>
         <motion.div
           className={"h-screen w-screen flex justify-center items-center"}

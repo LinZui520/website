@@ -63,7 +63,7 @@ const Header = () => {
         initial={{scale: 0.5}}
         whileInView={{scale: scale / 7 * 2}}
       >
-        <TypingEffect text={"海内存知己 天涯若比邻"} speed={128} waitTime={2048} />
+        <TypingEffect text={"海内存知己，天涯若比邻"} speed={128} waitTime={2048} />
       </motion.div>
     </div>
   );

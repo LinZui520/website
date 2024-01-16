@@ -2,6 +2,7 @@ import {useRef, useState} from "react";
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import FirstImage from "../../../assets/image/memories/21/Screenshot_20240106_184201.png";
 import SecondImage from "../../../assets/image/memories/21/Screenshot_20240106_184233.png"
+import TypingEffect from "../../index/TypingEffect";
 
 
 const Third = () => {
@@ -32,7 +33,7 @@ const Third = () => {
           initial={{opacity: 0, scale: 0.5}}
           whileInView={{opacity: 1, scale: 1}}
         >
-          那么多天的奋斗，我们有了质的飞跃
+          <TypingEffect text={"那么多天的奋斗，我们有了质的飞跃"} speed={128} waitTime={2048} />
         </motion.div>
 
         <motion.div
@@ -53,7 +54,7 @@ const Third = () => {
           initial={{opacity: 0, scale: 0.5}}
           whileInView={{opacity: 1, scale: 1}}
         >
-          我们可不是为了成为别人的陪衬而来到这里
+          <TypingEffect text={"我们可不是为了成为别人的陪衬而来到这里"} speed={128} waitTime={2048} />
         </motion.div>
         <motion.div
           className={"h-screen w-screen flex justify-center items-center"}
