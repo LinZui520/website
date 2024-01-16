@@ -27,13 +27,13 @@ const useHandleWheelScroll = () => {
     }, 500);
   }, [isScrolling]);
 
-  const handleWheelWithPreventDefault = (e: WheelEvent) => e.preventDefault()
+  const handleWheelWithPreventDefault = useCallback((e: WheelEvent) => e.preventDefault(), [])
 
   useEffect(() => {
-    document.addEventListener('wheel', handleWheelWithPreventDefault, { passive: false });
+    window.addEventListener('wheel', handleWheelWithPreventDefault, { passive: false });
 
-    return () => document.removeEventListener('wheel', handleWheelWithPreventDefault);
-  }, [handleWheel]);
+    return () => window.removeEventListener('wheel', handleWheelWithPreventDefault);
+  }, [handleWheel, handleWheelWithPreventDefault]);
 
 
   return {
