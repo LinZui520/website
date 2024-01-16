@@ -6,6 +6,7 @@ import First from "../components/memories/21/First";
 import Second from "../components/memories/21/Second";
 import Third from "../components/memories/21/Third";
 import useHandleWheelScroll from "../hooks/useHandleWheelScroll";
+import TypingEffect from "../components/index/TypingEffect";
 
 const Home = () => {
 
@@ -25,7 +26,7 @@ const Home = () => {
           dragConstraints={{top: 0, left: 0, right: 0, bottom: 0}}
           className={"text-[#1d1d1f] text-[32px] lg:text-[64px]"}
         >
-          朱贵是混蛋
+          <TypingEffect text={"朱贵是混蛋"} speed={128} waitTime={2048} />
         </motion.div>
       </div>
 

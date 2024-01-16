@@ -7,10 +7,10 @@ import { RootState } from "../../redux";
 interface MenuItemProps {
   item: { href: string; text: string };
   onCloseMenu: () => void;
+  navigate: (path: string) => void;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, onCloseMenu }) => {
-  const navigate = useNavigate()
+const MenuItem: React.FC<MenuItemProps> = ({ item, onCloseMenu, navigate }) => {
   return (
     <motion.li
       variants={{
@@ -46,8 +46,9 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, onCloseMenu }) => {
 };
 
 export const Menu = () => {
-  const [isOpen, setIsOpen] = useState(false);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate()
   const user = useSelector((state: RootState) => state.user);
 
   const menu = [
@@ -107,7 +108,11 @@ export const Menu = () => {
       >
         {menu.map(item =>
           item === null ? null :
-          <MenuItem key={item.href} item={item} onCloseMenu={() => setIsOpen(!isOpen)}  />
+          <MenuItem
+            key={item.href} item={item}
+            onCloseMenu={() => setIsOpen(!isOpen)}
+            navigate={navigate}
+          />
         )}
       </motion.ul>
 
