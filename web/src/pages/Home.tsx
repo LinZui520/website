@@ -7,9 +7,11 @@ import Second from "../components/memories/21/Second";
 import Third from "../components/memories/21/Third";
 import useHandleWheelScroll from "../hooks/useHandleWheelScroll";
 import TypingEffect from "../components/index/TypingEffect";
+import useHandleTouchScroll from "../hooks/useHandleTouchScroll";
 
 const Home = () => {
 
+  const {handleTouch} = useHandleTouchScroll()
   const {handleWheel} = useHandleWheelScroll()
 
   useEffect(() => {
@@ -17,7 +19,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div onWheel={handleWheel}>
+    <div className={"touch-none"} onTouchMove={handleTouch} onWheel={handleWheel}>
       <div className={"flex flex-col justify-center items-center h-screen"}>
         <motion.div
           whileHover={{scale: 1.2}}

@@ -12,7 +12,7 @@ const ClassTwentyOne = () => {
   const {handleWheel} = useHandleWheelScroll()
 
   return (
-    <div onTouchMove={handleTouch} onWheel={handleWheel}>
+    <div className={"touch-none"} onTouchMove={handleTouch} onWheel={handleWheel}>
       <Header />
       <First />
       <Second />

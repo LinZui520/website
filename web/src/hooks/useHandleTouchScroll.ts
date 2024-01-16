@@ -1,4 +1,4 @@
-import {TouchEventHandler, useCallback, useEffect, useState} from "react";
+import {TouchEventHandler, useCallback, useState} from "react";
 
 
 const useHandleTouchScroll = () => {
@@ -36,13 +36,6 @@ const useHandleTouchScroll = () => {
     }, 500);
   }, [isScrolling, prevTouchY])
 
-  useEffect(() => {
-    const handleTouchWithPreventDefault = (e: TouchEvent) => e.preventDefault();
-
-    window.addEventListener('touchmove', handleTouchWithPreventDefault, { passive: false });
-
-    return () => window.removeEventListener('touchmove', handleTouchWithPreventDefault);
-  }, [handleTouch]);
 
   return {
     handleTouch
