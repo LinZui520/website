@@ -1,6 +1,7 @@
 import {motion} from "framer-motion";
 import {useNavigate} from "react-router-dom";
 import useFetchArticles from "../../hooks/article/useFetchArticles";
+import React from "react";
 
 const ArticlesMain = () => {
 
@@ -20,19 +21,30 @@ const ArticlesMain = () => {
           transition={{duration: 0.5}}
           className={
             "border-2 border-white w-[90vw] h-[45vw] m-[5vw] " +
-            "max-w-[600px] max-h-[300px]  " +
-            "flex flex-col justify-evenly items-center " +
-            "cursor-pointer select-none rounded-[25px] p-[5px]"
+            "max-w-[600px] max-h-[300px] flex flex-col " +
+            "cursor-pointer select-none rounded-[25px]"
           }
         >
-          <h1 className={"text-[16px] lg:text-[24px] text-[#fbfbfd] mb-[2vw]"}>
-            {item.title}
-          </h1>
-          <div className={"flex flex-col items-center"}>
-            <div className={"text-[8px] lg:text-[12px] text-[#fbfbfd]"}>作者：{item.username}</div>
-            <div
-              className={"text-[8px] lg:text-[12px] text-[#fbfbfd]"}>发表时间：{new Date(item.create).toLocaleString()}
+          <div className={"flex flex-row items-center w-[100%] mt-[16px]"}>
+            <img
+              src={"https://www.zhuguishihundan.cn/image/" + item.avatar} alt={""}
+              className={"w-[32px] h-[32px] lg:w-[64px] lg:h-[64px] " +
+                "object-contain rounded-full select-none ml-[16px] mr-[16px]"}
+            />
+            <div className={"flex flex-col justify-center"}>
+              <div className={"text-[12px] lg:text-[24px] text-[#fbfbfd]"}>
+                {item.username}
+              </div>
+              <div className={"text-[8px] lg:text-[16px] text-[#fbfbfd]"}>
+                {new Date(item.create).toLocaleString()}
+              </div>
             </div>
+          </div>
+
+          <div className={"flex flex-auto flex-col justify-center items-center w-[100%]"}>
+            <h1 className={"text-[16px] lg:text-[24px] text-[#fbfbfd]"}>
+              {item.title}
+            </h1>
           </div>
         </motion.div>
       )}

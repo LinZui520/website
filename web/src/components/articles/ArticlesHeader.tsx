@@ -1,4 +1,5 @@
 import {motion} from "framer-motion";
+import TypingEffect from "../index/TypingEffect";
 
 const ArticlesHeader = () => {
   return (
@@ -10,7 +11,7 @@ const ArticlesHeader = () => {
         dragConstraints={{top: -0, left: -0, right: 0, bottom: 0}}
         className={"text-[32px] lg:text-[64px] text-[#1d1d1f]"}
       >
-        博客
+        <TypingEffect text={"博客"} speed={256} waitTime={2048} />
       </motion.div>
     </div>
   );
