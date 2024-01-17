@@ -71,3 +71,11 @@ export const UserSecurity = (username: string, password: string, email: string, 
     code,
   }
 })
+
+export const UploadAvatar = (avatar: File) => request({
+  url: '/user/avatar',
+  method: 'post',
+  data: {
+    avatar,
+  }
+})
