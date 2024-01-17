@@ -25,7 +25,7 @@ interface ArticleMarkDownProps {
   modalTitle: string;
   contextHolder: ReactNode;
   operate: () => void;
-  uploadImage: (files: Array<File>) => void;
+  uploadImage: (files: File[], callback: (urls: string[]) => void) => void;
 }
 
 const ArticleMarkDown: React.FC<ArticleMarkDownProps> = (
@@ -62,6 +62,7 @@ const ArticleMarkDown: React.FC<ArticleMarkDownProps> = (
         onChange={setContent}
         defToolbars={[
           <NormalToolbar
+            key={"我的图片"}
             title={"我的图片"}
             trigger={<FileImageFilled />}
             onClick={() => fetchData().then(() => setImageModalOpen(true))}

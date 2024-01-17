@@ -3,16 +3,18 @@ import {UploadImage} from "../../api/image";
 
 const useUploadImage = (messageApi:  MessageInstance) => {
 
-  const uploadImage = (files: Array<File>) => {
-    UploadImage(files[0]).then(res => {
+  const uploadImage = async (files: File[], callback: (urls: string[]) => void) => {
+    try {
+      const res = await UploadImage(files[0])
       if (res.data.code === 200) {
         messageApi.success(res.data.message).then(() => {})
+        callback(["https://zhuguishihundan.cn/image/" + res.data.data.filename])
       } else {
         messageApi.error(res.data.message).then(() => {})
       }
-    }).catch(() => {
+    } catch (_) {
       messageApi.error("网络原因，上传图片失败").then(() => {})
-    })
+    }
   }
 
   return {
