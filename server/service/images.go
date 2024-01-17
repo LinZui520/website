@@ -25,14 +25,14 @@ func (ImageService) UploadImage(c *gin.Context) (model.Image, error) {
 	if err != nil {
 		return image, errors.New("图片读取失败")
 	}
-	name := strconv.FormatInt(time.Now().UnixNano(), 16) + ".png"
+	filename := strconv.FormatInt(time.Now().UnixNano(), 16) + ".png"
 	directory := global.Config.System.Directory
-	err = c.SaveUploadedFile(file, directory+name)
+	err = c.SaveUploadedFile(file, directory+filename)
 	if err != nil {
 		return image, errors.New("图片保存失败")
 	}
 	image.Author = userClaims.Id
-	image.Filename = name
+	image.Filename = filename
 	image.Create = time.Now()
 	return image, global.DB.Create(&image).Error
 }

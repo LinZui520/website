@@ -4,8 +4,10 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"os"
 	"server/global"
 	"server/model"
+	"strconv"
 	"time"
 )
 
@@ -229,4 +231,36 @@ func (UserService) UserSecurity(c *gin.Context) error {
 	}
 	global.Redis.Del(email)
 	return nil
+}
+
+func (UserService) UploadAvatar(c *gin.Context) (string, error) {
+	var user model.User
+
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power < 0 {
+		return "", errors.New("权限不足")
+	}
+	err = global.DB.Where("id = ?", userClaims.Id).First(&user).Error
+	if err != nil {
+		return "", errors.New("未查询到该用户")
+	}
+
+	file, err := c.FormFile("avatar")
+	if err != nil {
+		return "", errors.New("图片读取失败")
+	}
+	filename := strconv.FormatInt(time.Now().UnixNano(), 16) + ".png"
+	directory := global.Config.System.Directory
+	err = c.SaveUploadedFile(file, directory+filename)
+	if err != nil {
+		return "", errors.New("图片保存失败")
+	}
+	if user.Avatar != "default.png" {
+		err = os.Remove(directory + user.Avatar)
+		if err != nil {
+			return "", errors.New("删除旧头像失败")
+		}
+	}
+	return filename, global.DB.Model(&user).Update("avatar", filename).Error
 }

@@ -90,3 +90,12 @@ func (UserApi) UserSecurity(c *gin.Context) {
 		model.OK(true, "更新成功", c)
 	}
 }
+
+func (UserApi) UploadAvatar(c *gin.Context) {
+	filename, err := userService.UploadAvatar(c)
+	if err != nil {
+		model.Fail("", err.Error(), c)
+	} else {
+		model.OK(filename, "更新成功", c)
+	}
+}
