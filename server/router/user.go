@@ -20,6 +20,7 @@ func UserRouter(router *gin.Engine) {
 		user.GET("/boost", userApi.BoostUser)
 		user.POST("/security", userApi.UserSecurity)
 		user.POST("/avatar", userApi.UploadAvatar)
+		user.GET("/count", userApi.UserCount)
 	}
 
 }

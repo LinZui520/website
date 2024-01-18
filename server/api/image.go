@@ -45,3 +45,12 @@ func (ImageApi) DeleteImage(c *gin.Context) {
 		model.OK(true, "删除成功", c)
 	}
 }
+
+func (ImageApi) ImageCount(c *gin.Context) {
+	data, err := imageService.ImageCount(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "查询成功", c)
+	}
+}

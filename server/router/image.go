@@ -14,6 +14,7 @@ func ImageRouter(router *gin.Engine) {
 		image.GET("/list", imageApi.GetAllImage)
 		image.GET("/get", imageApi.GetImageByAuthor)
 		image.DELETE("/delete", imageApi.DeleteImage)
+		image.GET("/count", imageApi.ImageCount)
 	}
 
 }

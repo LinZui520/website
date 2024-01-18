@@ -58,3 +58,12 @@ func (ArticleApi) UpdateArticle(c *gin.Context) {
 		model.OK(true, "更新成功", c)
 	}
 }
+
+func (ArticleApi) ArticleCount(c *gin.Context) {
+	data, err := articleService.ArticleCount(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "查询成功", c)
+	}
+}

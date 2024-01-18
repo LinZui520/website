@@ -264,3 +264,17 @@ func (UserService) UploadAvatar(c *gin.Context) (string, error) {
 	}
 	return filename, global.DB.Model(&user).Update("avatar", filename).Error
 }
+
+func (UserService) UserCount(c *gin.Context) (int64, error) {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power <= 0 {
+		return 0, errors.New("权限不足")
+	}
+	var count int64
+	err = global.DB.Model(&model.User{}).Count(&count).Error
+	if err != nil {
+		return 0, errors.New("查询用户数失败")
+	}
+	return count, nil
+}

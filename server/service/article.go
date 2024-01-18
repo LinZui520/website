@@ -95,3 +95,17 @@ func (ArticleService) UpdateArticle(c *gin.Context) error {
 		Update:  time.Now(),
 	}).Error
 }
+
+func (ArticleService) ArticleCount(c *gin.Context) (int64, error) {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power <= 0 {
+		return 0, errors.New("权限不足")
+	}
+	var count int64
+	err = global.DB.Model(&model.Article{}).Count(&count).Error
+	if err != nil {
+		return 0, errors.New("查询文章数失败")
+	}
+	return count, nil
+}

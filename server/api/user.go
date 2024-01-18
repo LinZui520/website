@@ -99,3 +99,12 @@ func (UserApi) UploadAvatar(c *gin.Context) {
 		model.OK(filename, "更新成功", c)
 	}
 }
+
+func (UserApi) UserCount(c *gin.Context) {
+	data, err := userService.UserCount(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "查询成功", c)
+	}
+}
