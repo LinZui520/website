@@ -50,6 +50,15 @@ func (ArticleApi) GetAllArticle(c *gin.Context) {
 	}
 }
 
+func (ArticleApi) GetArticleByAuthor(c *gin.Context) {
+	data, err := articleService.GetArticleByAuthor(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "获取成功", c)
+	}
+}
+
 func (ArticleApi) UpdateArticle(c *gin.Context) {
 	err := articleService.UpdateArticle(c)
 	if err != nil {

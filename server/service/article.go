@@ -73,6 +73,26 @@ func (ArticleService) GetAllArticle() ([]model.ArticleDTO, error) {
 	return articles, nil
 }
 
+func (ArticleService) GetArticleByAuthor(c *gin.Context) ([]model.ArticleDTO, error) {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power <= 0 {
+		return nil, errors.New("权限不足")
+	}
+
+	var articles []model.ArticleDTO
+	err = global.DB.Table("articles").
+		Select("articles.id as Id, author, username, avatar, title, `create`, `update`").
+		Joins("LEFT JOIN users ON articles.author = users.id").
+		Order("`create` desc").
+		Where("articles.author = ?", userClaims.Id).
+		Scan(&articles).Error
+	if err != nil {
+		return nil, errors.New("查询文章失败")
+	}
+	return articles, nil
+}
+
 func (ArticleService) UpdateArticle(c *gin.Context) error {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)

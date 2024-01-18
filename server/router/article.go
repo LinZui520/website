@@ -14,6 +14,7 @@ func ArticleRouter(router *gin.Engine) {
 		article.DELETE("/delete", articleApi.DeleteArticle)
 		article.GET("/get", articleApi.GetOneArticle)
 		article.GET("/list", articleApi.GetAllArticle)
+		article.GET("/author", articleApi.GetArticleByAuthor)
 		article.POST("/update", articleApi.UpdateArticle)
 		article.GET("/count", articleApi.ArticleCount)
 	}
