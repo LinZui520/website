@@ -1,12 +1,16 @@
 import { message } from "antd";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { DeleteArticle } from "../../api/article";
+import { RootState } from "../../redux";
 import useFetchArticles from "./useFetchArticles";
+import useFetchArticlesByAuthor from "./useFetchArticlesByAuthor";
 
 const useManageArticle = () => {
   const navigate = useNavigate();
-  const {articles, fetchData} = useFetchArticles()
+  const user = useSelector((state: RootState) => state.user)
+  const {articles, fetchData} = (() => user.power >= 2 ? useFetchArticles : useFetchArticlesByAuthor)()();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [manage, setManage] = useState<() => void>(() => () => {});

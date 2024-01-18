@@ -2,7 +2,6 @@ import {useCallback, useEffect, useState} from "react";
 import { ImageCount } from "../../api/image";
 
 const useFetchImageCount = () => {
-
   const [imageCount, setImageCount] = useState<number>(0);
 
   const count = useCallback(async () => {
