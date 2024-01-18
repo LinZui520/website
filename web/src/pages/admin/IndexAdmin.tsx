@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {UserOutlined, HomeOutlined, ReadOutlined, FileImageOutlined, RollbackOutlined} from '@ant-design/icons';
 import { RootState } from "../../redux";
+import NotFind from "../NotFind";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -75,6 +76,7 @@ const IndexAdmin = () => {
 
 
   return (
+    user.id === 0 ? <NotFind /> :
     <div className={"flex flex-row h-screen w-screen"}>
       <Menu
         mode="inline"
