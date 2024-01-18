@@ -34,7 +34,6 @@ const useFetchUsers = () => {
   }, [fetchData]);
 
   return { users, fetchData: fetchData };
-
 }
 
 

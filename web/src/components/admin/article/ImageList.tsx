@@ -2,7 +2,7 @@ import {Button, Image as IMAGE, Modal, Table} from "antd";
 import React from "react";
 import {Image} from "../../../hooks/image/useFetchImages";
 import {ColumnsType} from "antd/es/table";
-import useManagerImage from "../../../hooks/image/useManagerImage";
+import useManageImage from "../../../hooks/image/useManageImage";
 
 interface ImageListProps {
   isModalOpen: boolean;
@@ -15,7 +15,7 @@ const ImageList: React.FC<ImageListProps> = ({isModalOpen, setIsModalOpen, image
   const {
     contextHolder,
     handleCopy,
-  } = useManagerImage()
+  } = useManageImage()
 
   const columns: ColumnsType<Image> = [
     {

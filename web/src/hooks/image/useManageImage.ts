@@ -1,11 +1,15 @@
 import {useState} from "react";
 import {message} from "antd";
-import useFetchImage from "./useFetchImages";
 import {DeleteImage} from "../../api/image";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux";
+import useFetchImagesByAuthor from "./useFetchImagesByAuthor";
+import useFetchImages from "./useFetchImages";
 
 
-const useManagerImage = () => {
-  const {images, fetchData} = useFetchImage()
+const useManageImage = () => {
+  const user = useSelector((state: RootState) => state.user)
+  const {images, fetchData} = (() => user.power >= 2 ? useFetchImages : useFetchImagesByAuthor)()();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [manage, setManage] = useState<() => void>(() => () => {});
@@ -39,6 +43,7 @@ const useManagerImage = () => {
   }
 
   return {
+    user,
     title,
     isModalOpen,
     setIsModalOpen,
@@ -50,4 +55,4 @@ const useManagerImage = () => {
   }
 }
 
-export default useManagerImage;
+export default useManageImage;

@@ -16,7 +16,6 @@ const useFetchArticle = (id: number) => {
   const [status, setStatus] = useState(true)
   const [article, setArticle] = useState<Article>();
 
-
   const fetchData = useCallback(async () => {
     try {
       const res = await GetOneArticle(id);

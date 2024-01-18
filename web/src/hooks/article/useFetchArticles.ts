@@ -5,7 +5,6 @@ import { Article } from './useFetchArticle';
 const useFetchArticles = () => {
   const [articles, setArticles] = useState<Article[]>([])
 
-
   const fetchData = useCallback(async () => {
     try {
       const res = await GetAllArticle();

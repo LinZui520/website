@@ -30,7 +30,7 @@ const UserManager = () => {
       title: '头像', dataIndex: 'avatar', key: 'avatar',
       render: text => <img
         src={"https://www.zhuguishihundan.cn/image/" + text} alt={""}
-        className={"w-[32px] h-[32px] object-contain rounded-full select-none"}
+        className={"max-w-[32px] max-h-[32px] object-contain rounded-full select-none"}
       />
     },
     {

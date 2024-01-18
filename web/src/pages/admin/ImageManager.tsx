@@ -1,15 +1,13 @@
 import {Button, Modal, Table, Image as IMAGE} from "antd";
 import {ColumnsType} from "antd/es/table";
 import {Image} from "../../hooks/image/useFetchImages";
-import useManagerImage from "../../hooks/image/useManagerImage";
+import useManageImage from "../../hooks/image/useManageImage";
 import NotFind from "../NotFind";
-import {useSelector} from "react-redux";
-import {RootState} from "../../redux";
-
 
 const ImageManager = () => {
 
   const {
+    user,
     title,
     isModalOpen,
     setIsModalOpen,
@@ -18,7 +16,7 @@ const ImageManager = () => {
     images,
     handleDelete,
     handleCopy
-  } = useManagerImage();
+  } = useManageImage();
 
   const columns: ColumnsType<Image> = [
     {
@@ -52,8 +50,6 @@ const ImageManager = () => {
       </div>
     },
   ]
-
-  const user = useSelector((state: RootState) => state.user)
 
   return (
     user.power <= 0 ? <div className={"w-[80vw]"}><NotFind /></div> :
