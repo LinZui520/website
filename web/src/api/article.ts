@@ -39,3 +39,8 @@ export const UpdateArticle = (id: number, title: string, content: string) => req
     content,
   }
 })
+
+export const ArticleCount = () => request({
+  url: '/article/count',
+  method: 'get'
+})

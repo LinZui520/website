@@ -2,13 +2,16 @@ import {Menu, MenuProps} from "antd";
 import {useEffect, useState} from "react";
 import { useSelector } from "react-redux";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import {UserOutlined, HomeOutlined, ReadOutlined, FileImageOutlined} from '@ant-design/icons';
+import {UserOutlined, HomeOutlined, ReadOutlined, FileImageOutlined, RollbackOutlined} from '@ant-design/icons';
 import NotFind from "../NotFind";
 import { RootState } from "../../redux";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 const items: MenuItem[] = [
+  {
+    label: '返回', key: '/', icon: <RollbackOutlined />,
+  },
   {
     label: '主页', key: '/admin', icon: <HomeOutlined />,
   },

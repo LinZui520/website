@@ -25,3 +25,8 @@ export const DeleteImage = (id: number) => request({
     id
   }
 })
+
+export const ImageCount = () => request({
+  url: '/image/count',
+  method: 'get'
+})

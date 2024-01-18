@@ -79,3 +79,8 @@ export const UploadAvatar = (avatar: File) => request({
     avatar,
   }
 })
+
+export const UserCount = () => request({
+  url: '/user/count',
+  method: 'get',
+})

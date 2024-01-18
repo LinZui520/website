@@ -1,18 +1,30 @@
-import {motion} from "framer-motion";
+import CountUp from "react-countup";
+import useFetchUserCount from "../../hooks/user/useFetchUserCount";
+import useFetchArticleCount from "../../hooks/article/useFetchArticleCount";
+import useFetchImageCount from "../../hooks/image/useFetchImageCount";
 
+const Statistic = ({title, count}: {title: string, count: number}) => {
+  return (
+    <div className={"flex flex-row items-center text-[#1d1d1f] text-[16px]"}>
+      <span>{title}：</span>
+      <CountUp end={count} separator=","/>
+    </div>
+  );
+}
 
 const HomeAdmin = () => {
+
+  const { userCount } = useFetchUserCount()
+  const { articleCount } = useFetchArticleCount()
+  const { imageCount } = useFetchImageCount()
+
   return (
-    <div className={"flex flex-col justify-center items-center bg-[#fbfbfd] h-screen w-[80vw]"}>
-      <motion.div
-        whileHover={{scale: 1.2}}
-        whileTap={{scale: 0.9}}
-        drag
-        dragConstraints={{top: -100, left: -100, right: 100, bottom: 100}}
-        className={"text-[#1d1d1f] text-[32px] lg:text-[64px]"}
-      >
-        首页
-      </motion.div>
+    <div className={"flex flex-col justify-around items-center bg-[#fbfbfd] h-screen w-[80vw]"}>
+      <div className={"flex flex-col lg:flex-row justify-evenly items-center w-[80vw] select-none"}>
+        <Statistic title={"用户总数"} count={userCount} />
+        <Statistic title={"文章总数"} count={articleCount} />
+        <Statistic title={"图片总数"} count={imageCount} />
+      </div>
     </div>
   );
 }
