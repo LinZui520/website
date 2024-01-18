@@ -21,6 +21,7 @@ import IndexMemories from "../pages/memories/IndexMemories";
 import HomeMemories from "../pages/memories/HomeMemories";
 import Security from "../pages/Security";
 import ImageManager from "../pages/admin/ImageManager";
+import MessageManager from "../pages/admin/MessageManager";
 
 const router = createBrowserRouter([
   {
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
       {
         path: 'image',
         element: <ImageManager />
+      },
+      {
+        path: 'message',
+        element: <MessageManager />
       }
     ]
   },

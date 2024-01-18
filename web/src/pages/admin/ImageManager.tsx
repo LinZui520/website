@@ -23,7 +23,7 @@ const ImageManager = () => {
       title: '图片编号', dataIndex: 'id', key: 'id'
     },
     {
-      title: '用户', dataIndex: 'author', key: 'author'
+      title: '用户编号', dataIndex: 'author', key: 'author'
     },
     {
       title: '预览图', dataIndex: 'filename', key: 'filename',

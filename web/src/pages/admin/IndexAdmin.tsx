@@ -2,7 +2,10 @@ import {Menu, MenuProps} from "antd";
 import {useEffect, useState} from "react";
 import { useSelector } from "react-redux";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import {UserOutlined, HomeOutlined, ReadOutlined, FileImageOutlined, RollbackOutlined} from '@ant-design/icons';
+import {
+  UserOutlined, HomeOutlined, ReadOutlined,
+  FileImageOutlined, RollbackOutlined, MessageOutlined
+} from '@ant-design/icons';
 import { RootState } from "../../redux";
 import NotFind from "../NotFind";
 
@@ -71,6 +74,9 @@ const IndexAdmin = () => {
     {
       label: '图片管理', key: '/admin/image', icon: <FileImageOutlined />,
       disabled: user.power <= 0,
+    },
+    {
+      label: '留言管理', key: '/admin/message', icon: <MessageOutlined />,
     }
   ];
 
