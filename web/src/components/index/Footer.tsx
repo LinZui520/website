@@ -1,33 +1,70 @@
 import { motion } from "framer-motion";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux";
+import React from "react";
+import {useNavigate} from "react-router-dom";
+import Timer from "./Timer";
 
 
 const Footer = () => {
 
+  const user = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate()
+
+  const menu = [
+    {href: '/', text: '首页'},
+    {href: '/articles', text: '博客'},
+    {href: '/messages', text: '留言'},
+    user.power > 0 ? {href: '/admin', text: '管理'} : null,
+    user.id === 0 ? {href: '/login', text: '登录'} : {href: '/info', text: user.username},
+  ]
 
   return (
-    <div className={"bg-[#1d1d1f] w-screen h-screen flex flex-col justify-center items-center"}>
-
-      <motion.a
-        rel='noopener noreferrer' href='https://beian.miit.gov.cn/' target='_blank'
-        whileHover={{scale: 1.2}}
-        whileTap={{scale: 0.9}}
-        drag
-        dragConstraints={{top: -0, left: -0, right: 0, bottom: 0}}
-        className={"text-[#fbfbfd] no-underline text-[16px] lg:text-[32px] mb-[32px]"}
+    <div className={"bg-[#1d1d1f] w-screen h-screen flex flex-col justify-around items-center"}>
+      <motion.ul
+        variants={{
+          open: {transition: {staggerChildren: 0.07, delayChildren: 0.2}},
+          closed: {transition: {staggerChildren: 0.05, staggerDirection: -1}}
+        }}
+        className={"flex flex-col justify-center items-center"}
       >
-        赣ICP备2023014673号-1
-      </motion.a>
-      <motion.a
-        rel='noopener noreferrer' href='https://github.com/LinZui520/website' target='_blank'
-        whileHover={{scale: 1.2}}
-        whileTap={{scale: 0.9}}
-        drag
-        dragConstraints={{top: -0, left: -0, right: 0, bottom: 0}}
-        className={"text-[#fbfbfd] no-underline text-[16px] lg:text-[32px] mb-[32px]"}
-      >
-        Copyright ©2023-2024 YangmingHe
-      </motion.a>
+        {menu.map(item =>
+          item === null ? null :
+          <motion.li
+            variants={{
+              open: {y: 0, opacity: 1, transition: {y: {stiffness: 1000, velocity: -100}}},
+              closed: {y: 50, opacity: 0, transition: {y: {stiffness: 1000}}}
+            }}
+            whileHover={{scale: 1.3}} whileTap={{scale: 0.95}}
+            className={"cursor-pointer mb-[5vh] select-none text-[#fbfbfd] text-[24px] lg:text-[36px]"}
+            key={item.href} onClick={() => navigate(item.href)}
+          >
+            {item.text}
+          </motion.li>
+        )}
+      </motion.ul>
 
+      <div className={"w-screen flex flex-col lg:flex-row justify-between select-none"}>
+        <div className={"text-[#fbfbfd] text-[8px] lg:text-[16px] ml-[32px]"}>
+          网站运行时间：<Timer />
+        </div>
+
+        <div className={"flex flex-col lg:flex-row justify-between"}>
+          <a
+            rel='noopener noreferrer' href='https://beian.miit.gov.cn/' target='_blank'
+            className={"text-[#fbfbfd] text-[8px] lg:text-[16px] ml-[32px]"}
+          >
+            赣ICP备2023014673号-1
+          </a>
+          <a
+            rel='noopener noreferrer' href='https://github.com/LinZui520/website' target='_blank'
+            className={"text-[#fbfbfd] text-[8px] lg:text-[16px] mr-[32px] ml-[32px]"}
+          >
+            Copyright ©2023-2024 Yangming He
+          </a>
+        </div>
+
+      </div>
     </div>
   );
 }
