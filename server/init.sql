@@ -35,3 +35,12 @@ create table if not exists images (
     primary key (id),
     foreign key (author) references users(id)
 ) AUTO_INCREMENT=100000;
+
+create table if not exists messages (
+    id int auto_increment comment '消息编号',
+    author int not null comment '发送者编号',
+    content varchar(256) not null comment '内容',
+    `create` datetime not null comment '创建时间',
+    primary key (id),
+    foreign key (author) references users(id)
+) AUTO_INCREMENT=100000;
