@@ -42,7 +42,7 @@ export const Menu = () => {
     {href: '/', text: '首页'},
     {href: '/articles', text: '博客'},
     {href: '/messages', text: '留言'},
-    user.power > 0 ? {href: '/admin', text: '管理'} : null,
+    user.id !== 0 ? {href: '/admin', text: '管理'} : null,
     user.id === 0 ? {href: '/login', text: '登录'} : {href: '/info', text: user.username},
   ]
 

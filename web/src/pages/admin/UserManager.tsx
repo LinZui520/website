@@ -2,6 +2,9 @@ import { User } from "../../hooks/user/useFetchUsers";
 import {ColumnsType} from "antd/es/table";
 import {Button, Modal, Table} from "antd";
 import useManageUser from "../../hooks/user/useManageUser";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux";
+import NotFind from "../NotFind";
 
 const UserManager = () => {
 
@@ -15,6 +18,8 @@ const UserManager = () => {
     handleBlock,
     handleBoost,
   } = useManageUser();
+
+  const user = useSelector((state: RootState) => state.user)
 
 
   const columns: ColumnsType<User> = [
@@ -59,7 +64,8 @@ const UserManager = () => {
   ]
 
   return (
-    <div>
+    user.power <= 1 ? <div className={"w-[80vw]"}><NotFind /></div> :
+    <div className={"w-[80vw]"}>
       {contextHolder}
       <Modal
         title={title}
