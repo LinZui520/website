@@ -23,7 +23,6 @@ const Message = () => {
 
       if (index >= messages.length) return setIndex(0)
 
-      console.log(index)
       screenRef.current?.push(
         <StyledBullet
           className={"select-none"}
@@ -50,10 +49,7 @@ const Message = () => {
           "w-[320px] h-[48px] mb-[32px] border-2 " +
           "border-[#888888] rounded-full px-[10px] outline-none z-10"
         }
-        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-          if (e.key !== 'Enter') return
-          uploadMessage(bullet)
-        }}
+        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' ? uploadMessage(bullet) : null}
       />
     </div>
   );

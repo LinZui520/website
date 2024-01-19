@@ -10,7 +10,7 @@ import ArticleManager from "../pages/admin/ArticleManager";
 import Login from "../pages/Login";
 import ArticleUpload from "../pages/admin/article/ArticleUpload";
 import Articles from "../pages/Articles";
-import Messages from "../pages/Message";
+import Message from "../pages/Message";
 import Info from "../pages/Info";
 import Article from "../pages/Article";
 import Register from "../pages/Register";
@@ -41,8 +41,8 @@ const router = createBrowserRouter([
         element: <Article />,
       },
       {
-        path: 'messages',
-        element: <Messages />,
+        path: 'message',
+        element: <Message />,
       },
       {
         path: 'info',
