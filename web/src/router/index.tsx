@@ -22,6 +22,7 @@ import HomeMemories from "../pages/memories/HomeMemories";
 import Security from "../pages/Security";
 import ImageManager from "../pages/admin/ImageManager";
 import MessageManager from "../pages/admin/MessageManager";
+import Chat from "../pages/Chat";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
         element: <Message />,
       },
       {
+        path: 'chat',
+        element: <Chat />
+      },
+      {
         path: 'info',
         element: <Info />,
       },
@@ -59,7 +64,7 @@ const router = createBrowserRouter([
       {
         path: 'security',
         element: <Security />
-      }
+      },
     ],
   },
   {
