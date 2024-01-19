@@ -256,11 +256,12 @@ func (UserService) UploadAvatar(c *gin.Context) (string, error) {
 	if err != nil {
 		return "", errors.New("图片保存失败")
 	}
-	if user.Avatar != "default.png" {
-		err = os.Remove(directory + user.Avatar)
-		if err != nil {
-			return "", errors.New("删除旧头像失败")
-		}
+	if user.Avatar == "default.png" {
+		return filename, global.DB.Model(&user).Update("avatar", filename).Error
+	}
+	err = os.Remove(directory + user.Avatar)
+	if err != nil {
+		return "", errors.New("删除旧头像失败")
 	}
 	return filename, global.DB.Model(&user).Update("avatar", filename).Error
 }
