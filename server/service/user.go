@@ -279,3 +279,19 @@ func (UserService) UserCount(c *gin.Context) (int64, error) {
 	}
 	return count, nil
 }
+
+func (UserService) UpdateUsername(c *gin.Context) error {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil {
+		return errors.New("token解析失败")
+	}
+
+	username := c.PostForm("username")
+	var user model.User
+	err = global.DB.Where("id = ?", userClaims.Id).First(&user).Error
+	if err != nil {
+		return errors.New("未查询到该用户")
+	}
+	return global.DB.Model(&user).Update("username", username).Error
+}

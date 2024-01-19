@@ -108,3 +108,12 @@ func (UserApi) UserCount(c *gin.Context) {
 		model.OK(data, "查询成功", c)
 	}
 }
+
+func (UserApi) UpdateUsername(c *gin.Context) {
+	err := userService.UpdateUsername(c)
+	if err != nil {
+		model.Fail(false, err.Error(), c)
+	} else {
+		model.OK(true, "更新成功", c)
+	}
+}
