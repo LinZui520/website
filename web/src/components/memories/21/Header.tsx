@@ -1,7 +1,5 @@
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import {useRef, useState} from "react";
-import TypingEffect from "../../index/TypingEffect";
-
 
 const Header = () => {
 
@@ -63,7 +61,7 @@ const Header = () => {
         initial={{scale: 0.5}}
         whileInView={{scale: scale / 7 * 2}}
       >
-        <TypingEffect text={"海内存知己，天涯若比邻"} speed={128} waitTime={2048} />
+        海内存知己，天涯若比邻
       </motion.div>
     </div>
   );
