@@ -45,7 +45,7 @@ func (ImageService) GetAllImage(c *gin.Context) ([]model.Image, error) {
 	}
 
 	var images []model.Image
-	return images, global.DB.Find(&images).Error
+	return images, global.DB.Order("id DESC").Find(&images).Error
 }
 
 func (ImageService) GetImageByAuthor(c *gin.Context) ([]model.Image, error) {
@@ -56,7 +56,7 @@ func (ImageService) GetImageByAuthor(c *gin.Context) ([]model.Image, error) {
 	}
 
 	var images []model.Image
-	return images, global.DB.Where("author = ?", userClaims.Id).Find(&images).Error
+	return images, global.DB.Order("id DESC").Where("author = ?", userClaims.Id).Find(&images).Error
 }
 
 func (ImageService) DeleteImage(c *gin.Context) error {
