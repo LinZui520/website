@@ -79,18 +79,17 @@ func dispatchConversation(ws *websocket.Conn) error {
 	if err != nil {
 		return err
 	}
+
 	var mutex sync.Mutex
-	for _, conversation := range conversations {
-		conversationJSON, err := json.Marshal(conversation)
-		if err != nil {
-			return err
-		}
-		mutex.Lock()
-		err = ws.WriteMessage(websocket.TextMessage, conversationJSON)
-		mutex.Unlock()
-		if err != nil {
-			return err
-		}
+	conversationsJSON, err := json.Marshal(conversations)
+	if err != nil {
+		return err
+	}
+	mutex.Lock()
+	err = ws.WriteMessage(websocket.TextMessage, conversationsJSON)
+	mutex.Unlock()
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -105,9 +104,9 @@ func subscribeConversation(ws *websocket.Conn) {
 	}()
 	var mutex sync.Mutex
 	channel := subscriber.Channel()
-	for msg := range channel {
+	for conversation := range channel {
 		mutex.Lock()
-		err := ws.WriteMessage(websocket.TextMessage, []byte(msg.Payload))
+		err := ws.WriteMessage(websocket.TextMessage, []byte(conversation.Payload))
 		mutex.Unlock()
 		if err != nil {
 			return
