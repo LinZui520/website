@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"server/global"
 	"server/model"
-	"sync"
 	"time"
 )
 
@@ -44,12 +43,9 @@ func (ConversationService) Chat(c *gin.Context) {
 	}
 
 	go subscribeConversation(ws)
-	var mutex sync.Mutex
 
 	for {
-		mutex.Lock()
 		_, msg, err := ws.ReadMessage()
-		mutex.Unlock()
 		if err != nil {
 			break
 		}
@@ -80,14 +76,11 @@ func dispatchConversation(ws *websocket.Conn) error {
 		return err
 	}
 
-	var mutex sync.Mutex
 	conversationsJSON, err := json.Marshal(conversations)
 	if err != nil {
 		return err
 	}
-	mutex.Lock()
 	err = ws.WriteMessage(websocket.TextMessage, conversationsJSON)
-	mutex.Unlock()
 	if err != nil {
 		return err
 	}
@@ -102,12 +95,9 @@ func subscribeConversation(ws *websocket.Conn) {
 			return
 		}
 	}()
-	var mutex sync.Mutex
 	channel := subscriber.Channel()
 	for conversation := range channel {
-		mutex.Lock()
 		err := ws.WriteMessage(websocket.TextMessage, []byte(conversation.Payload))
-		mutex.Unlock()
 		if err != nil {
 			return
 		}
