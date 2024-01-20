@@ -17,6 +17,7 @@ func InitRouter() *gin.Engine {
 	ArticleRouter(router)
 	ImageRouter(router)
 	MessageRouter(router)
+	ConversationRouter(router)
 
 	return router
 }
