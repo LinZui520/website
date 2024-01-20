@@ -1,7 +1,8 @@
 import SliderCaptcha, {ActionType} from "rc-slider-captcha";
 import {Modal} from "antd";
 import React from "react";
-import { CaptchaData } from "../../pages/Register";
+import { CaptchaData } from "../../hooks/user/useUserRegister";
+
 
 interface CaptchaProps {
   actionRef: React.MutableRefObject<ActionType | undefined>;

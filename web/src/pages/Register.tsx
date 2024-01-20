@@ -2,13 +2,6 @@ import {motion} from "framer-motion";
 import Captcha from "../components/index/Captcha";
 import useUserRegister from "../hooks/user/useUserRegister";
 
-export interface CaptchaData {
-  x: number;
-  y: number;
-  duration: number;
-  trail: [number, number][];
-}
-
 const Register = () => {
 
   const {

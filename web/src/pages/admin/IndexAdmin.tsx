@@ -21,14 +21,10 @@ const IndexAdmin = () => {
   const screenWidthThreshold = 768;
 
   useEffect(() => {
-    const handleResize = () => {
-      setInlineCollapsed(window.innerWidth <= screenWidthThreshold);
-    };
-    handleResize();
+    const handleResize = () => setInlineCollapsed(window.innerWidth <= screenWidthThreshold);
+
     window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const onSelect: MenuProps['onSelect'] = (e) => {
@@ -39,10 +35,7 @@ const IndexAdmin = () => {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    if (pathname.includes('/admin/article/update')) {
-      setSelectedKey('/admin/article/manager')
-      return
-    }
+    if (pathname.includes('/admin/article/update')) return setSelectedKey('/admin/article/manager')
     setSelectedKey(pathname)
   }, [pathname]);
 

@@ -2,9 +2,14 @@ import {useCallback, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {message} from "antd";
 import {UserRegister, UserVerify} from "../../api/user";
-import {CaptchaData} from "../../pages/Register";
 import {ActionType} from "rc-slider-captcha";
 
+export interface CaptchaData {
+  x: number;
+  y: number;
+  duration: number;
+  trail: [number, number][];
+}
 
 const useUserRegister = () => {
   const [username, setUsername] = useState('')

@@ -5,7 +5,6 @@ import cookie from "react-cookies";
 import {UserTokenLogin} from "../../api/user";
 import {setUser} from "../../redux/user";
 
-
 const useUserAuthentication = () => {
   const dispatch = useDispatch()
   const user = useSelector((state: RootState) => state.user)
