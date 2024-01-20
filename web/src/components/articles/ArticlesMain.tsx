@@ -27,7 +27,7 @@ const ArticlesMain = () => {
         >
           <div className={"flex flex-row items-center w-[100%] mt-[16px]"}>
             <img
-              src={"https://www.zhuguishihundan.cn/image/" + item.avatar} alt={""}
+              src={`${window.location.origin}/image/${item.avatar}`} alt={""}
               className={"w-[32px] h-[32px] lg:w-[64px] lg:h-[64px] " +
                 "object-contain rounded-full select-none ml-[16px] mr-[16px]"}
             />

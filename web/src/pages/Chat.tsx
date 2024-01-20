@@ -58,7 +58,7 @@ const Chat = () => {
                   (user.id === conversation.author ? "flex-row-reverse" : "flex-row")
                 }>
                 <img
-                  src={"https://www.zhuguishihundan.cn/image/" + conversation.avatar} alt={""}
+                  src={`${window.location.origin}/image/${conversation.avatar}`} alt={""}
                   className={"w-[24px] h-[24px] lg:w-[48px] lg:h-[48px] object-contain rounded-full select-none"}
                 />
                 <div className={"ml-[8px] mr-[8px] lg:ml-[16px] lg:mr-[16px]"}>

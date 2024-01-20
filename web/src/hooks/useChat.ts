@@ -16,7 +16,7 @@ const useChat = () => {
   const [conversation, setConversation] = useState("")
 
   useEffect(() => {
-    const ws = new WebSocket("ws://www.zhuguishihundan.cn/api/conversation/chat")
+    const ws = new WebSocket(`ws://${window.location.hostname}/api/conversation/chat`)
     ws.onopen = () => {
 
     };

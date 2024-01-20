@@ -23,7 +23,7 @@ const MessageManager = () => {
     {
       title: '头像', dataIndex: 'avatar', key: 'avatar',
       render: text => <img
-        src={"https://www.zhuguishihundan.cn/image/" + text} alt={""}
+        src={`${window.location.origin}/image/${text}`} alt={""}
         className={"max-w-[32px] max-h-[32px] object-contain rounded-full select-none"}
       />
     },

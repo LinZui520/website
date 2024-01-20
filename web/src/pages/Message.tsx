@@ -26,7 +26,7 @@ const Message = () => {
       screenRef.current?.push(
         <StyledBullet
           className={"select-none"}
-          head={"https://www.zhuguishihundan.cn/image/" + messages[index].avatar}
+          head={`${window.location.origin}/image/${messages[index].avatar}`}
           msg={messages[index].content}
           backgroundColor={'#fbfbfd'}
           size="large"

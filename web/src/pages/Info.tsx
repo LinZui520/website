@@ -16,7 +16,7 @@ const Info = () => {
     user.id === 0 ? <NotFind /> :
     <div className={"flex flex-row justify-center items-center h-screen w-screen"}>
       <motion.img
-        src={"https://www.zhuguishihundan.cn/image/" + user.avatar} alt={""}
+        src={`${window.location.origin}/image/${user.avatar}`} alt={""}
         whileHover={{scale: 1.2}} whileTap={{scale: 0.9}}
         className={"w-[32px] h-[32px] lg:w-[64px] lg:h-[64px] object-contain rounded-full mr-[16px] select-none"}
         onClick={() => {

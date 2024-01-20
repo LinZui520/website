@@ -8,7 +8,7 @@ const useUploadImage = (messageApi:  MessageInstance) => {
       const res = await UploadImage(files[0])
       if (res.data.code === 200) {
         messageApi.success(res.data.message).then(() => {})
-        callback(["https://zhuguishihundan.cn/image/" + res.data.data.filename])
+        callback([`${window.location.origin}/image/${res.data.data.filename}`])
       } else {
         messageApi.error(res.data.message).then(() => {})
       }

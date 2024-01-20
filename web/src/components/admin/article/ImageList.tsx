@@ -29,7 +29,7 @@ const ImageList: React.FC<ImageListProps> = ({isModalOpen, setIsModalOpen, image
       title: '操作', key: 'action', fixed: 'right',
       render: record => <div>
         <Button type="link" onClick={() =>
-          handleCopy("https://www.zhuguishihundan.cn/image/"+record.filename)
+          handleCopy(`${window.location.origin}/image/${record.filename}`)
         }>
           复制图片URL
         </Button>

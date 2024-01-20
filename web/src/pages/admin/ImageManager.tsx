@@ -43,7 +43,7 @@ const ImageManager = () => {
           删除
         </Button>
         <Button type="link" onClick={() =>
-          handleCopy("https://www.zhuguishihundan.cn/image/"+record.filename)
+          handleCopy(`${window.location.origin}/image/${record.filename}`)
         }>
           复制图片URL
         </Button>
