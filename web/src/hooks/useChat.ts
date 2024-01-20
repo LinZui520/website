@@ -16,9 +16,9 @@ const useChat = () => {
   const [conversation, setConversation] = useState("")
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080/api/conversation/chat")
+    const ws = new WebSocket("ws://www.zhuguishihundan.cn/api/conversation/chat")
     ws.onopen = () => {
-      console.log('WebSocket连接已打开');
+
     };
 
     ws.onmessage = (event) => {
@@ -31,7 +31,7 @@ const useChat = () => {
     };
 
     ws.onclose = () => {
-      console.log('WebSocket连接已关闭');
+      return setConversation("已断开连接")
     };
 
     setWebSocket(ws);
