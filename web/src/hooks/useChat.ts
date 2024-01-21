@@ -18,7 +18,7 @@ const useChat = () => {
   const [state, setState] = useState('')
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://${window.location.hostname}:8080/api/conversation/chat`)
+    const ws = new WebSocket(`ws://${window.location.hostname}/api/conversation/chat`)
     ws.onopen = () => {
       return setState("已连接")
     };
