@@ -8,10 +8,19 @@ import (
 	"net/http"
 	"server/global"
 	"server/model"
+	"sync"
 	"time"
 )
 
-type ConversationService struct{}
+type ConversationService struct {
+	Count int
+	Mutex sync.Mutex
+}
+
+type Message struct {
+	Type string
+	Data any
+}
 
 var upgrade = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -19,7 +28,7 @@ var upgrade = websocket.Upgrader{
 	},
 }
 
-func (ConversationService) Chat(c *gin.Context) {
+func (cs *ConversationService) Chat(c *gin.Context) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
 	if err != nil || userClaims.Power < 0 {
@@ -30,8 +39,26 @@ func (ConversationService) Chat(c *gin.Context) {
 	if err != nil {
 		return
 	}
+
+	cs.Mutex.Lock()
+	cs.Count++
+	cs.Mutex.Unlock()
+	err = publishWebSocketCount(cs, ws)
+	if err != nil {
+		return
+	}
+
 	defer func(ws *websocket.Conn) {
-		err := ws.Close()
+		cs.Mutex.Lock()
+		cs.Count--
+		cs.Mutex.Unlock()
+
+		err = publishWebSocketCount(cs, ws)
+		if err != nil {
+			return
+		}
+
+		err = ws.Close()
 		if err != nil {
 			return
 		}
@@ -76,11 +103,15 @@ func dispatchConversation(ws *websocket.Conn) error {
 		return err
 	}
 
-	conversationsJSON, err := json.Marshal(conversations)
+	message := Message{
+		Type: "conversations",
+		Data: conversations,
+	}
+	messageJSON, err := json.Marshal(message)
 	if err != nil {
 		return err
 	}
-	err = ws.WriteMessage(websocket.TextMessage, conversationsJSON)
+	err = ws.WriteMessage(websocket.TextMessage, messageJSON)
 	if err != nil {
 		return err
 	}
@@ -105,11 +136,37 @@ func subscribeConversation(ws *websocket.Conn) {
 }
 
 func publishConversation(conversation model.ConversationDTO) error {
-	conversationJSON, err := json.Marshal(conversation)
+	message := Message{
+		Type: "conversation",
+		Data: conversation,
+	}
+	messageJSON, err := json.Marshal(message)
 	if err != nil {
 		return err
 	}
-	err = global.Redis.Publish("conversation", conversationJSON).Err()
+	err = global.Redis.Publish("conversation", messageJSON).Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func publishWebSocketCount(cs *ConversationService, ws *websocket.Conn) error {
+	cs.Mutex.Lock()
+	defer cs.Mutex.Unlock()
+	message := Message{
+		Type: "count",
+		Data: cs.Count,
+	}
+	messageJSON, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	err = global.Redis.Publish("conversation", messageJSON).Err()
+	if err != nil {
+		return err
+	}
+	err = ws.WriteMessage(websocket.TextMessage, messageJSON)
 	if err != nil {
 		return err
 	}
