@@ -7,6 +7,8 @@ import React, {useLayoutEffect, useRef, useState} from "react";
 const Chat = () => {
 
   const {
+    state,
+    count,
     conversations,
     conversation,
     setConversation,
@@ -43,39 +45,43 @@ const Chat = () => {
 
   return (
     user.id === 0 ? <NotFind /> :
-    <div className={"h-screen w-screen flex flex-col items-center"}>
-      <div ref={ref} className={"bg-[#f2f2f2] h-[90vh] w-[90vw] max-w-[1024px] overflow-auto"}>
-        <ul
-          className={"flex flex-col justify-center pl-[8px] pr-[8px] lg:pl-[16px] lg:pr-[16px]"}
+      <div className={"h-screen w-screen flex flex-col items-center"}>
+        <div
+          className={"bg-[#f2f2f2] h-[5vh] w-[90vw] max-w-[1024px] text-[#9f9f9f] text-[12px] lg:text-[24px] flex flex-row justify-evenly items-center"}
         >
-          <span className={"w-auto h-[48px] text-[#9f9f9f] text-[12px] lg:text-[24px] flex flex-col justify-center items-center"}>
-            欢迎来到聊天室~
-          </span>
-          {conversations.map(conversation => (
-            <li
-              key={conversation.id}
-              className={"flex justify-start items-start mb-[16px] mt-[16px] " +
-                (user.id === conversation.author ? "flex-row-reverse" : "flex-row")
-              }>
-              <img
-                src={`${window.location.origin}/image/${conversation.avatar}`} alt={""}
-                className={"w-[24px] h-[24px] lg:w-[48px] lg:h-[48px] object-contain rounded-full select-none"}
-              />
-              <div className={"ml-[8px] mr-[8px] lg:ml-[16px] lg:mr-[16px]"}>
-                <div
-                  className={"flex text-[#9f9f9f] " +
-                    (user.id === conversation.author ? "flex-row-reverse" : "flex-row")
-                  }
-                >
+          <span>当前状态：{state}</span>
+          <span>欢迎来到聊天室~</span>
+          <span>当前在线人数：{count}</span>
+        </div>
+        <div ref={ref} className={"bg-[#f2f2f2] h-[85vh] w-[90vw] max-w-[1024px] overflow-auto"}>
+          <ul
+            className={"flex flex-col justify-center pl-[8px] pr-[8px] lg:pl-[16px] lg:pr-[16px]"}
+          >
+            {conversations.map(conversation => (
+              <li
+                key={conversation.id}
+                className={"flex justify-start items-start mb-[16px] mt-[16px] " +
+                  (user.id === conversation.author ? "flex-row-reverse" : "flex-row")
+                }>
+                <img
+                  src={`${window.location.origin}/image/${conversation.avatar}`} alt={""}
+                  className={"w-[24px] h-[24px] lg:w-[48px] lg:h-[48px] object-contain rounded-full select-none"}
+                />
+                <div className={"ml-[8px] mr-[8px] lg:ml-[16px] lg:mr-[16px]"}>
+                  <div
+                    className={"flex text-[#9f9f9f] " +
+                      (user.id === conversation.author ? "flex-row-reverse" : "flex-row")
+                    }
+                  >
                 <span className={"text-[12px] lg:text-[24px] select-none"}>
                   {conversation.username}
                 </span>
-                  <span
-                    className={"text-[12px] lg:text-[24px] ml-[8px] mr-[8px] lg:ml-[16px] lg:mr-[16px] select-none"}>
+                    <span
+                      className={"text-[12px] lg:text-[24px] ml-[8px] mr-[8px] lg:ml-[16px] lg:mr-[16px] select-none"}>
                   {new Date(conversation.create).toLocaleString()}
                 </span>
-                </div>
-                <div className={"flex " + (user.id === conversation.author ? "flex-row-reverse" : "flex-row")}>
+                  </div>
+                  <div className={"flex " + (user.id === conversation.author ? "flex-row-reverse" : "flex-row")}>
                 <span
                   className={
                     "text-[12px] lg:text-[24px] inline-block " +
@@ -85,26 +91,26 @@ const Chat = () => {
                 >
                   {conversation.content}
                 </span>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+              </li>
+            ))}
+          </ul>
+        </div>
 
 
-      <div className={"h-[10vh] w-[90vw] max-w-[1024px] bg-[#f2f2f2] flex flex-col justify-center items-center"}>
-        <input
-          className={
-            "w-[72vw] max-w-[819px] h-[4vh] lg:h-[8vh] border-2 " +
-            "border-[#888888] rounded-[32px] px-[10px] outline-none"
-          }
-          type="text" placeholder="聊个天吧~（文明用语）~（回车发送）"
-          value={conversation} onChange={(e) => setConversation(e.target.value)}
-          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' ? sendConversation() : null}
-        />
+        <div className={"h-[10vh] w-[90vw] max-w-[1024px] bg-[#f2f2f2] flex flex-col justify-center items-center"}>
+          <input
+            className={
+              "w-[72vw] max-w-[819px] h-[4vh] lg:h-[8vh] border-2 " +
+              "border-[#888888] rounded-[32px] px-[10px] outline-none"
+            }
+            type="text" placeholder="聊个天吧~（文明用语）~（回车发送）"
+            value={conversation} onChange={(e) => setConversation(e.target.value)}
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' ? sendConversation() : null}
+          />
+        </div>
       </div>
-    </div>
   );
 }
 
