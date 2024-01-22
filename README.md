@@ -40,6 +40,5 @@ $ git clone git@github.com:LinZui520/website.git
 然后```website```启动🫡
 
 ```sh
-$ docker-compose build
 $ docker-compose up -d
 ```
