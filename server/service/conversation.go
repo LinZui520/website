@@ -17,9 +17,21 @@ type ConversationService struct {
 	Mutex sync.Mutex
 }
 
-type Message struct {
+type SendMessage struct {
+	Type string `json:"type"`
+	Data any    `json:"data"`
+}
+
+type ReceiveMessage struct {
 	Type string
-	Data any
+	Data struct {
+		Id       int
+		Author   int
+		Avatar   string
+		Username string
+		Content  string
+		Create   time.Time
+	}
 }
 
 var upgrade = websocket.Upgrader{
@@ -40,18 +52,14 @@ func (cs *ConversationService) Chat(c *gin.Context) {
 		return
 	}
 
-	cs.Mutex.Lock()
-	cs.Count++
-	cs.Mutex.Unlock()
+	cs.incrementConnectionCount()
 	err = publishWebSocketCount(cs, ws)
 	if err != nil {
 		return
 	}
 
 	defer func(ws *websocket.Conn) {
-		cs.Mutex.Lock()
-		cs.Count--
-		cs.Mutex.Unlock()
+		cs.decrementConnectionCount()
 
 		err = publishWebSocketCount(cs, ws)
 		if err != nil {
@@ -74,20 +82,31 @@ func (cs *ConversationService) Chat(c *gin.Context) {
 	for {
 		_, msg, err := ws.ReadMessage()
 		if err != nil {
-			break
+			return
 		}
-		var content struct{ Content string }
-		err = json.Unmarshal(msg, &content)
+		var message ReceiveMessage
+		err = json.Unmarshal(msg, &message)
 		if err != nil {
 			return
 		}
-		conversation, err := uploadConversation(userClaims.Id, content.Content)
-		if err != nil {
-			return
-		}
-		err = publishConversation(conversation)
-		if err != nil {
-			return
+		if message.Type == "increment" {
+			conversation, err := uploadConversation(*userClaims, message)
+			if err != nil {
+				return
+			}
+			err = publishConversation(conversation)
+			if err != nil {
+				return
+			}
+		} else if message.Type == "decrement" {
+			id, err := deleteConversation(message)
+			if err != nil {
+				continue
+			}
+			err = withdrawConversation(id)
+			if err != nil {
+				return
+			}
 		}
 	}
 
@@ -103,7 +122,7 @@ func dispatchConversation(ws *websocket.Conn) error {
 		return err
 	}
 
-	message := Message{
+	message := SendMessage{
 		Type: "conversations",
 		Data: conversations,
 	}
@@ -135,8 +154,29 @@ func subscribeConversation(ws *websocket.Conn) {
 	}
 }
 
+func uploadConversation(userClaims model.UserClaims, message ReceiveMessage) (model.ConversationDTO, error) {
+	conversation := model.Conversation{
+		Author:  userClaims.Id,
+		Content: message.Data.Content,
+		Create:  time.Now(),
+	}
+	err := global.DB.Create(&conversation).Error
+	if err != nil {
+		return model.ConversationDTO{}, errors.New("上传失败")
+	}
+	conversationDTO := model.ConversationDTO{
+		Id:       conversation.Id,
+		Author:   conversation.Author,
+		Avatar:   message.Data.Avatar,
+		Username: message.Data.Username,
+		Content:  message.Data.Content,
+		Create:   conversation.Create,
+	}
+	return conversationDTO, nil
+}
+
 func publishConversation(conversation model.ConversationDTO) error {
-	message := Message{
+	message := SendMessage{
 		Type: "conversation",
 		Data: conversation,
 	}
@@ -151,10 +191,50 @@ func publishConversation(conversation model.ConversationDTO) error {
 	return nil
 }
 
+func deleteConversation(message ReceiveMessage) (int, error) {
+	var conversation model.Conversation
+	if time.Now().Sub(message.Data.Create).Minutes() > 3 {
+		return 0, errors.New("时间超过3分钟")
+	}
+	err := global.DB.Where("id = ?", message.Data.Id).Delete(&conversation).Error
+	if err != nil {
+		return 0, err
+	}
+	return message.Data.Id, nil
+}
+
+func withdrawConversation(id int) error {
+	message := SendMessage{
+		Type: "decrement",
+		Data: id,
+	}
+	messageJSON, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	err = global.Redis.Publish("conversation", messageJSON).Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cs *ConversationService) incrementConnectionCount() {
+	cs.Mutex.Lock()
+	defer cs.Mutex.Unlock()
+	cs.Count++
+}
+
+func (cs *ConversationService) decrementConnectionCount() {
+	cs.Mutex.Lock()
+	defer cs.Mutex.Unlock()
+	cs.Count--
+}
+
 func publishWebSocketCount(cs *ConversationService, ws *websocket.Conn) error {
 	cs.Mutex.Lock()
 	defer cs.Mutex.Unlock()
-	message := Message{
+	message := SendMessage{
 		Type: "count",
 		Data: cs.Count,
 	}
@@ -171,26 +251,4 @@ func publishWebSocketCount(cs *ConversationService, ws *websocket.Conn) error {
 		return err
 	}
 	return nil
-}
-
-func uploadConversation(author int, content string) (model.ConversationDTO, error) {
-	conversation := model.Conversation{
-		Author:  author,
-		Content: content,
-		Create:  time.Now(),
-	}
-	err := global.DB.Create(&conversation).Error
-	if err != nil {
-		return model.ConversationDTO{}, errors.New("上传失败")
-	}
-	var conversationDTO model.ConversationDTO
-	err = global.DB.Table("conversations").
-		Select("conversations.id as Id, author, avatar, username, content, `create`").
-		Joins("LEFT JOIN users ON conversations.author = users.id").
-		Where("conversations.id = ?", conversation.Id).
-		First(&conversationDTO).Error
-	if err != nil {
-		return model.ConversationDTO{}, errors.New("未查询到该对话")
-	}
-	return conversationDTO, nil
 }
