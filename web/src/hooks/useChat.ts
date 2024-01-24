@@ -28,9 +28,9 @@ const useChat = () => {
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
       if (message === null) return
-      if (message.type === "conversations") return setConversations(message.data)
+      if (message.type === "conversations") return message.data === null ? setConversations([]): setConversations(message.data)
       if (message.type === "count") return setCount(message.data)
-      if (message.type === "decrement") return setConversations(prevConversations => prevConversations.filter(conversation => conversation.id !== message.data.id))
+      if (message.type === "decrement") return setConversations(prevConversations => prevConversations.filter(conversation => conversation.id !== message.data))
       return setConversations((prevConversations) => [...prevConversations, message.data]);
     };
 
@@ -45,9 +45,12 @@ const useChat = () => {
     webSocket.send(JSON.stringify({
       type: 'increment',
       data: {
+        id: 0,
+        author: user.id,
         avatar: user.avatar,
         username: user.username,
         content: conversation,
+        create: new Date()
       }
     }))
     setConversation("")
@@ -66,7 +69,7 @@ const useChat = () => {
         avatar: lastConversation.avatar,
         username: lastConversation.username,
         content: lastConversation.content,
-        create: lastConversation.create,
+        create: lastConversation.create
       }
     }))
   }
