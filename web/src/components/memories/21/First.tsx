@@ -61,7 +61,7 @@ const First = () => {
           viewport={{once: true}}
         >
           <img
-            className={"h-[80vw] w-[50vw] max-h-[712px] max-w-[440px] rounded-[16px] overflow-hidden"}
+            className={"h-[75vw] w-[50vw] max-h-[660px] max-w-[440px] rounded-[16px] overflow-hidden"}
             src={SecondImage}
             alt={""}
           />

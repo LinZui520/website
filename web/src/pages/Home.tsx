@@ -8,6 +8,7 @@ import Third from "../components/memories/21/Third";
 import useHandleWheelScroll from "../hooks/useHandleWheelScroll";
 import TypingEffect from "../components/index/TypingEffect";
 import useHandleTouchScroll from "../hooks/useHandleTouchScroll";
+import Fourth from '../components/memories/21/Fourth';
 
 const Home = () => {
 
@@ -32,10 +33,11 @@ const Home = () => {
         </motion.div>
       </div>
 
-      <Header/>
-      <First/>
-      <Second/>
-      <Third/>
+      <Header />
+      <First />
+      <Second />
+      <Third />
+      <Fourth />
 
       <Footer/>
     </div>
