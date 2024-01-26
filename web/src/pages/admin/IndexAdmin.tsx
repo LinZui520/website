@@ -76,7 +76,7 @@ const IndexAdmin = () => {
 
   return (
     user.id === 0 ? <NotFind /> :
-    <div className={"flex flex-row h-screen w-screen"}>
+    <div className={"flex flex-row min-h-screen w-screen"}>
       <Menu
         mode="inline"
         selectedKeys={[selectedKey]}
