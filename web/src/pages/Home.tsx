@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Footer from '../components/index/Footer';
 import {motion} from "framer-motion";
 import Header from "../components/memories/21/Header";
@@ -13,7 +13,7 @@ import Fourth from '../components/memories/21/Fourth';
 const Home = () => {
 
   const {handleTouch} = useHandleTouchScroll()
-  const {handleWheel} = useHandleWheelScroll()
+  const {handleWheel, ScrollDown} = useHandleWheelScroll()
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,15 +29,42 @@ const Home = () => {
           dragConstraints={{top: 0, left: 0, right: 0, bottom: 0}}
           className={"text-[#1d1d1f] text-[32px] lg:text-[64px]"}
         >
-          <TypingEffect text={"朱贵是混蛋"} speed={128} waitTime={2048} />
+          朱贵是混蛋
         </motion.div>
+        <span className={"text-[#888888] text-[7px] lg:text-[14px]"}>
+          &#47; * <TypingEffect text={"一 个 简 约 风 格 的 网 站"} speed={128} waitTime={2048}/> * &#47;
+        </span>
+
+        <motion.button
+          className={"sticky top-[100vh] select-none"}
+          onClick={ScrollDown} whileHover={{scale: 1.2}} whileTap={{scale: 0.9}}
+          animate={{
+            y: [0, -20, 0],
+            transition: {
+              duration: 1,
+              repeat: Infinity,
+              repeatType: 'mirror',
+            },
+          }}
+        >
+          <svg
+            viewBox="0 0 23 23"
+            className={"w-[25px] h-[25px] lg:w-[50px] lg:h-[50px]"}
+          >
+            <motion.path
+              fill="transparent" strokeWidth="3" stroke="black" strokeLinecap="round"
+              d="M2 2.5 L11.5 12 M11.5 12 L20 2.5"
+            />
+          </svg>
+        </motion.button>
+
       </div>
 
-      <Header />
-      <First />
-      <Second />
-      <Third />
-      <Fourth />
+      <Header/>
+      <First/>
+      <Second/>
+      <Third/>
+      <Fourth/>
 
       <Footer/>
     </div>

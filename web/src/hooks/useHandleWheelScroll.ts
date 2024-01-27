@@ -27,6 +27,13 @@ const useHandleWheelScroll = () => {
     }, 500);
   }, [isScrolling]);
 
+  const ScrollDown = () => window.scrollTo({
+      top: (Math.round(window.scrollY / window.innerHeight) + 1) * window.innerHeight,
+      behavior: 'smooth',
+    });
+
+
+
   const handleWheelWithPreventDefault = useCallback((e: WheelEvent) => e.preventDefault(), [])
 
   useEffect(() => {
@@ -38,6 +45,7 @@ const useHandleWheelScroll = () => {
 
   return {
     handleWheel,
+    ScrollDown
   };
 };
 

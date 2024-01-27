@@ -40,7 +40,7 @@ const Header = () => {
           <motion.div
             initial={{scale: 1, y: 0}}
             animate={{scale: scale, y: (1 - scale) * windowHeight / 3}}
-          >SixtySeven
+          >六十七
           </motion.div>
         </div>
 
