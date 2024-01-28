@@ -15,18 +15,15 @@ const Fourth = () => {
       >
         我们听过的午觉唤醒曲
       </motion.div>
-      <motion.div
-        className={"h-screen w-screen flex justify-center items-center"}
-        initial={{scale: 0, opacity: 0}}
-        whileInView={{scale: 1, opacity: 1}}
-        viewport={{once: true}}
-      >
-        <img
+      <div className={"h-screen w-screen flex justify-center items-center"}>
+        <motion.img
           className={"h-[71vw] w-[59vw] max-h-[568px] max-w-[470px] rounded-[16px] overflow-hidden"}
-          src={FirstImage}
-          alt={""}
+          src={FirstImage} alt={""}
+          initial={{scale: 0, opacity: 0}}
+          whileInView={{scale: 1, opacity: 1}}
+          viewport={{once: true}}
         />
-      </motion.div>
+      </div>
 
       <motion.div
         className={"h-screen w-screen text-[16px] lg:text-[32px] select-none flex justify-center items-center"}
@@ -36,31 +33,27 @@ const Fourth = () => {
         阴云密布，抑或晴空万里
       </motion.div>
 
-      <motion.div
-        className={"h-screen w-screen flex justify-center items-center"}
-        initial={{scale: 0, opacity: 0}}
-        whileInView={{scale: 1, opacity: 1}}
-        viewport={{once: true}}
-      >
-        <img
+      <div className={"h-screen w-screen flex justify-center items-center"}>
+        <motion.img
           className={"h-[60vw] w-[60vw] max-h-[500px] max-w-[500px] rounded-[16px] overflow-hidden"}
-          src={SecondImage}
-          alt={""}
+          src={SecondImage} alt={""}
+          initial={{scale: 1, opacity: 1, x: -600}}
+          whileInView={{scale: 1, opacity: 1, x: 0}}
+          transition={{ease: "easeOut", duration: 0.618}}
+          viewport={{once: true}}
         />
-      </motion.div>
+      </div>
 
-      <motion.div
-        className={"h-screen w-screen flex justify-center items-center"}
-        initial={{scale: 0, opacity: 0}}
-        whileInView={{scale: 1, opacity: 1}}
-        viewport={{once: true}}
-      >
-        <img
+      <div className={"h-screen w-screen flex justify-center items-center"}>
+        <motion.img
           className={"h-[60vw] w-[60vw] max-h-[500px] max-w-[500px] rounded-[16px] overflow-hidden"}
-          src={ThirdImage}
-          alt={""}
+          src={ThirdImage} alt={""}
+          initial={{scale: 1, opacity: 1, x: 600}}
+          whileInView={{scale: 1, opacity: 1, x: 0}}
+          transition={{ease: "easeOut", duration: 0.618}}
+          viewport={{once: true}}
         />
-      </motion.div>
+      </div>
 
 
     </div>

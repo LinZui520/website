@@ -34,18 +34,15 @@ const First = () => {
           一切从这张座位表说起
         </motion.div>
 
-        <motion.div
-          className={"h-screen w-screen flex justify-center items-center"}
-          initial={{scale: 0, opacity: 0}}
-          whileInView={{scale: 1, opacity: 1}}
-          viewport={{once: true}}
-        >
-          <img
+        <div className={"h-screen w-screen flex justify-center items-center"}>
+          <motion.img
             className={"h-[30vw] w-[60vw] max-h-[356px] max-w-[712px] rounded-[16px] overflow-hidden"}
-            src={FirstImage}
-            alt={""}
+            src={FirstImage} alt={""}
+            initial={{scale: 0, opacity: 0}}
+            whileInView={{scale: 1, opacity: 1}}
+            viewport={{once: true}}
           />
-        </motion.div>
+        </div>
 
         <motion.div
           className={"h-screen w-screen text-[16px] lg:text-[32px] select-none flex justify-center items-center"}
@@ -54,18 +51,15 @@ const First = () => {
         >
           或从曾经的倒计时说起
         </motion.div>
-        <motion.div
-          className={"h-screen w-screen flex justify-center items-center"}
-          initial={{scale: 0, opacity: 0}}
-          whileInView={{scale: 1, opacity: 1}}
-          viewport={{once: true}}
-        >
-          <img
+        <div className={"h-screen w-screen flex justify-center items-center"}>
+          <motion.img
             className={"h-[75vw] w-[50vw] max-h-[660px] max-w-[440px] rounded-[16px] overflow-hidden"}
-            src={SecondImage}
-            alt={""}
+            src={SecondImage} alt={""}
+            initial={{scale: 0, opacity: 0}}
+            whileInView={{scale: 1, opacity: 1}}
+            viewport={{once: true}}
           />
-        </motion.div>
+        </div>
       </motion.div>
     </div>
   );

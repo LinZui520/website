@@ -31,6 +31,7 @@ const Second = () => {
           <motion.div
             initial={{scale: 1, x: 0}}
             animate={{scale: scale, x: (1 - scale) * windowWidth / 2}}
+            transition={{ease: "easeOut", duration: 0.618}}
           >我们离高考越来越近
           </motion.div>
         </div>
@@ -39,24 +40,22 @@ const Second = () => {
           <motion.div
             initial={{scale: 1, x: 0}}
             animate={{scale: scale, x: (scale - 1) * windowWidth / 2}}
+            transition={{ease: "easeOut", duration: 0.618}}
           >近到可以听到他的心跳
           </motion.div>
         </div>
 
       </div>
 
-      <motion.div
-        className={"h-screen w-screen flex justify-center items-center"}
-        initial={{scale: 0, opacity: 0}}
-        whileInView={{scale: 1, opacity: 1}}
-        viewport={{once: true}}
-      >
-        <img
+      <div className={"h-screen w-screen flex justify-center items-center"}>
+        <motion.img
           className={"h-[60vw] w-[60vw] max-h-[516px] max-w-[516px] rounded-[16px] overflow-hidden"}
-          src={FirstImage}
-          alt={""}
+          src={FirstImage} alt={""}
+          initial={{scale: 0, opacity: 0}}
+          whileInView={{scale: 1, opacity: 1}}
+          viewport={{once: true}}
         />
-      </motion.div>
+      </div>
     </div>
   );
 }

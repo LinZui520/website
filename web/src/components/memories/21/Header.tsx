@@ -32,6 +32,7 @@ const Header = () => {
           <motion.div
             initial={{scale: 1, x: 0}}
             animate={{scale: scale, x: (1 - scale) * windowWidth / 3}}
+            transition={{ease: "easeOut", duration: 0.618}}
           >高三21班
           </motion.div>
         </div>
@@ -40,6 +41,7 @@ const Header = () => {
           <motion.div
             initial={{scale: 1, y: 0}}
             animate={{scale: scale, y: (1 - scale) * windowHeight / 3}}
+            transition={{ease: "easeOut", duration: 0.618}}
           >六十七
           </motion.div>
         </div>
@@ -48,6 +50,7 @@ const Header = () => {
           <motion.div
             initial={{scale: 1, x: 0}}
             animate={{scale: scale, x: (scale - 1) * windowWidth / 3}}
+            transition={{ease: "easeOut", duration: 0.618}}
           >独家记忆
           </motion.div>
         </div>
