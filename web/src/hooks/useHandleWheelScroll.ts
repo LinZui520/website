@@ -32,16 +32,13 @@ const useHandleWheelScroll = () => {
       behavior: 'smooth',
     });
 
-
-
-  const handleWheelWithPreventDefault = useCallback((e: WheelEvent) => e.preventDefault(), [])
-
   useEffect(() => {
+    const handleWheelWithPreventDefault = (e: WheelEvent) => e.preventDefault()
+
     window.addEventListener('wheel', handleWheelWithPreventDefault, { passive: false });
 
     return () => window.removeEventListener('wheel', handleWheelWithPreventDefault);
-  }, [handleWheel, handleWheelWithPreventDefault]);
-
+  }, [handleWheel]);
 
   return {
     handleWheel,

@@ -56,16 +56,16 @@ const Header = () => {
         </div>
       </div>
       <div className={"h-[3vh] w-screen"}/>
-      <motion.div
-        className={
-          "h-screen w-screen select-none text-[16px] lg:text-[32px] " +
-          "flex flex-col justify-center items-center"
-        }
-        initial={{scale: 0.5}}
-        whileInView={{scale: scale / 7 * 2}}
-      >
-        海内存知己，天涯若比邻
-      </motion.div>
+      <div className={"h-screen w-screen flex flex-col justify-center items-center"}>
+        <motion.span
+          initial={{scale: 0.3}}
+          whileInView={{scale: scale / 7 * 3}}
+          transition={{ease: "easeOut", duration: 0.618}}
+          className={"select-none text-[16px] lg:text-[32px]"}
+        >
+          海内存知己，天涯若比邻
+        </motion.span>
+      </div>
     </div>
   );
 }

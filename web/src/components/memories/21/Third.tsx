@@ -27,13 +27,16 @@ const Third = () => {
         }}
         transition={{type: 'tween'}}
       >
-        <motion.div
-          className={"h-screen w-screen text-[16px] lg:text-[32px] select-none flex justify-center items-center"}
-          initial={{opacity: 0, scale: 0.5}}
-          whileInView={{opacity: 1, scale: 1}}
-        >
-          那么多天的奋斗，我们有了质的飞跃
-        </motion.div>
+        <div className={"h-screen w-screen flex justify-center items-center"}>
+          <motion.span
+            initial={{opacity: 0, scale: 0.3}}
+            whileInView={{opacity: 1, scale: 1}}
+            transition={{ease: "easeOut", duration: 0.618}}
+            className={"text-[16px] lg:text-[32px] select-none"}
+          >
+            那么多天的奋斗，我们有了质的飞跃
+          </motion.span>
+        </div>
 
         <div className={"h-screen w-screen flex justify-center items-center"}>
           <motion.img
@@ -42,16 +45,20 @@ const Third = () => {
             initial={{scale: 0, opacity: 0}}
             whileInView={{scale: 1, opacity: 1}}
             viewport={{once: true}}
+            transition={{ease: "easeOut", duration: 0.618}}
           />
         </div>
 
-        <motion.div
-          className={"h-screen w-screen text-[16px] lg:text-[32px] select-none flex justify-center items-center"}
-          initial={{opacity: 0, scale: 0.5}}
-          whileInView={{opacity: 1, scale: 1}}
-        >
-          我们可不是为了成为别人的陪衬而来到这里
-        </motion.div>
+        <div className={"h-screen w-screen flex justify-center items-center"}>
+          <motion.span
+            initial={{opacity: 0, scale: 0.3}}
+            whileInView={{opacity: 1, scale: 1}}
+            transition={{ease: "easeOut", duration: 0.618}}
+            className={"text-[16px] lg:text-[32px] select-none"}
+          >
+            我们可不是为了成为别人的陪衬而来到这里
+          </motion.span>
+        </div>
         <div className={"h-screen w-screen flex justify-center items-center"}>
           <motion.img
             className={"h-[60vw] w-[60vw] max-h-[512px] max-w-[512px] rounded-[16px] overflow-hidden"}
@@ -59,6 +66,7 @@ const Third = () => {
             initial={{scale: 0, opacity: 0}}
             whileInView={{scale: 1, opacity: 1}}
             viewport={{once: true}}
+            transition={{ease: "easeOut", duration: 0.618}}
           />
         </div>
       </motion.div>

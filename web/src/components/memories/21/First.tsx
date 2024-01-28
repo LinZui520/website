@@ -26,13 +26,16 @@ const First = () => {
         }}
         transition={{type: 'tween'}}
       >
-        <motion.div
-          className={"h-screen w-screen text-[16px] lg:text-[32px] select-none flex justify-center items-center"}
-          initial={{opacity: 0, scale: 0.5}}
-          whileInView={{opacity: 1, scale: 1}}
-        >
-          一切从这张座位表说起
-        </motion.div>
+        <div className={"h-screen w-screen flex justify-center items-center"}>
+          <motion.span
+            initial={{opacity: 0, scale: 0.3}}
+            whileInView={{opacity: 1, scale: 1}}
+            transition={{ease: "easeOut", duration: 0.618}}
+            className={"text-[16px] lg:text-[32px] select-none"}
+          >
+            一切从这张座位表说起
+          </motion.span>
+        </div>
 
         <div className={"h-screen w-screen flex justify-center items-center"}>
           <motion.img
@@ -40,17 +43,21 @@ const First = () => {
             src={FirstImage} alt={""}
             initial={{scale: 0, opacity: 0}}
             whileInView={{scale: 1, opacity: 1}}
+            transition={{ease: "easeOut", duration: 0.618}}
             viewport={{once: true}}
           />
         </div>
 
-        <motion.div
-          className={"h-screen w-screen text-[16px] lg:text-[32px] select-none flex justify-center items-center"}
-          initial={{opacity: 0, scale: 0.5}}
-          whileInView={{opacity: 1, scale: 1}}
-        >
-          或从曾经的倒计时说起
-        </motion.div>
+        <div className={"h-screen w-screen text-[16px flex justify-center items-center"}>
+          <motion.span
+            initial={{opacity: 0, scale: 0.3}}
+            whileInView={{opacity: 1, scale: 1}}
+            transition={{ease: "easeOut", duration: 0.618}}
+            className={"text-[16px] lg:text-[32px] select-none"}
+          >
+            或从曾经的倒计时说起
+          </motion.span>
+        </div>
         <div className={"h-screen w-screen flex justify-center items-center"}>
           <motion.img
             className={"h-[75vw] w-[50vw] max-h-[660px] max-w-[440px] rounded-[16px] overflow-hidden"}
@@ -58,6 +65,7 @@ const First = () => {
             initial={{scale: 0, opacity: 0}}
             whileInView={{scale: 1, opacity: 1}}
             viewport={{once: true}}
+            transition={{ease: "easeOut", duration: 0.618}}
           />
         </div>
       </motion.div>

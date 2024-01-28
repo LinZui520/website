@@ -32,7 +32,8 @@ const Second = () => {
             initial={{scale: 1, x: 0}}
             animate={{scale: scale, x: (1 - scale) * windowWidth / 2}}
             transition={{ease: "easeOut", duration: 0.618}}
-          >我们离高考越来越近
+          >
+            我们离高考越来越近
           </motion.div>
         </div>
 
@@ -41,7 +42,8 @@ const Second = () => {
             initial={{scale: 1, x: 0}}
             animate={{scale: scale, x: (scale - 1) * windowWidth / 2}}
             transition={{ease: "easeOut", duration: 0.618}}
-          >近到可以听到他的心跳
+          >
+            近到可以听到他的心跳
           </motion.div>
         </div>
 
@@ -54,6 +56,7 @@ const Second = () => {
           initial={{scale: 0, opacity: 0}}
           whileInView={{scale: 1, opacity: 1}}
           viewport={{once: true}}
+          transition={{ease: "easeOut", duration: 0.618}}
         />
       </div>
     </div>
