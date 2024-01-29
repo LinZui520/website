@@ -12,6 +12,7 @@ const Fourth = () => {
         <motion.span
           initial={{opacity: 0, scale: 0.3}}
           whileInView={{opacity: 1, scale: 1}}
+          viewport={{once: true}}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] select-none"}
         >
@@ -33,6 +34,7 @@ const Fourth = () => {
         <motion.span
           initial={{opacity: 0, scale: 0.3}}
           whileInView={{opacity: 1, scale: 1}}
+          viewport={{once: true}}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] select-none"}
         >
@@ -46,8 +48,8 @@ const Fourth = () => {
           src={SecondImage} alt={""}
           initial={{scale: 0, opacity: 0, x: -128}}
           whileInView={{scale: 1, opacity: 1, x: 0}}
-          transition={{ease: "easeOut", duration: 0.618}}
           viewport={{once: true}}
+          transition={{ease: "easeOut", duration: 0.618}}
         />
       </div>
 
@@ -57,8 +59,8 @@ const Fourth = () => {
           src={ThirdImage} alt={""}
           initial={{scale: 0, opacity: 0, x: 128}}
           whileInView={{scale: 1, opacity: 1, x: 0}}
-          transition={{ease: "easeOut", duration: 0.618}}
           viewport={{once: true}}
+          transition={{ease: "easeOut", duration: 0.618}}
         />
       </div>
 

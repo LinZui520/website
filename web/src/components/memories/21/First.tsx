@@ -30,6 +30,7 @@ const First = () => {
           <motion.span
             initial={{opacity: 0, scale: 0.3}}
             whileInView={{opacity: 1, scale: 1}}
+            viewport={{once: true}}
             transition={{ease: "easeOut", duration: 0.618}}
             className={"text-[16px] lg:text-[32px] select-none"}
           >
@@ -43,8 +44,8 @@ const First = () => {
             src={FirstImage} alt={""}
             initial={{scale: 0, opacity: 0}}
             whileInView={{scale: 1, opacity: 1}}
-            transition={{ease: "easeOut", duration: 0.618}}
             viewport={{once: true}}
+            transition={{ease: "easeOut", duration: 0.618}}
           />
         </div>
 
@@ -52,6 +53,7 @@ const First = () => {
           <motion.span
             initial={{opacity: 0, scale: 0.3}}
             whileInView={{opacity: 1, scale: 1}}
+            viewport={{once: true}}
             transition={{ease: "easeOut", duration: 0.618}}
             className={"text-[16px] lg:text-[32px] select-none"}
           >
