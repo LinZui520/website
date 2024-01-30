@@ -1,8 +1,8 @@
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import FirstImage from "../../../assets/image/memories/21/Screenshot_20240105_233337.png";
 
-const Second = () => {
+const Second = React.memo(() => {
 
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -61,6 +61,6 @@ const Second = () => {
       </div>
     </div>
   );
-}
+})
 
 export default Second;

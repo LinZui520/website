@@ -1,10 +1,10 @@
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import FirstImage from "../../../assets/image/memories/21/2024-01-30-16-04-38.png"
 import SecondImage from "../../../assets/image/memories/21/2024-01-30-16-05-38.png";
 import ThirdImage from "../../../assets/image/memories/21/2024-01-30-16-06-38.png"
 
-const Fifth = () => {
+const Fifth = React.memo(() => {
 
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -84,6 +84,6 @@ const Fifth = () => {
       </div>
     </div>
   );
-}
+})
 
 export default Fifth;
