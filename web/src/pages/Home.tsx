@@ -9,6 +9,7 @@ import useHandleWheelScroll from "../hooks/useHandleWheelScroll";
 import TypingEffect from "../components/index/TypingEffect";
 import useHandleTouchScroll from "../hooks/useHandleTouchScroll";
 import Fourth from '../components/memories/21/Fourth';
+import Fifth from "../components/memories/21/Fifth";
 
 const Home = () => {
 
@@ -66,6 +67,7 @@ const Home = () => {
       <Second/>
       <Third/>
       <Fourth/>
+      <Fifth />
 
       <Footer/>
     </div>
