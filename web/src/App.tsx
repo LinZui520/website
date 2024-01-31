@@ -3,11 +3,15 @@ import router from "./router";
 import zhCN from "antd/locale/zh_CN";
 import { ConfigProvider, theme } from "antd";
 import useUserAuthentication from "./hooks/user/useUserAuthentication";
+import { useEffect } from "react";
 
 const App = () => {
 
   const isHookFinished = useUserAuthentication();
-
+  
+  useEffect(() => {
+    console.log("啊 你真吃啊")
+  }, [])
 
   return (
     !isHookFinished ? <div /> :

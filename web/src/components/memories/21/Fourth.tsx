@@ -62,6 +62,7 @@ const Fourth = React.memo(() => {
           // whileInView={{scale: 1, opacity: 1, x: 0}}
           // viewport={{once: true}}
           animate={{
+            scale: value > 0.75 ? 2 * (2 - 2 * value) : 2 * (2 * value - 1),
             opacity: 2 * (2 * value - 1)
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -75,6 +76,7 @@ const Fourth = React.memo(() => {
           // initial={{scale: 0, opacity: 0, x: 128}}
           // whileInView={{scale: 1, opacity: 1, x: 0}}
           animate={{
+            scale: value > 0.75 ? 2 * (2 * value - 1.5) : 0,
             opacity: 2 * (2 * value - 1.5)
           }}
           viewport={{once: true}}

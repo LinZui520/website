@@ -23,7 +23,7 @@ const Fifth = React.memo(() => {
       <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0"}>
         <motion.span
           animate={{
-            y: -36 * 2 * value + 'px',
+            y: -48 * 2 * value + 'px',
             opacity: 1 - 2 * value
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -35,6 +35,7 @@ const Fifth = React.memo(() => {
           className={"h-[31vw] w-[50vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
           src={FirstImage} alt={""}
           animate={{
+            scale: 1 - 2 * value,
             opacity: 1 - 2 * value
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -44,7 +45,7 @@ const Fifth = React.memo(() => {
       <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0"}>
         <motion.span
           animate={{
-            y: 36 * 2 * (0.5 - value) + 'px',
+            y: 48 * 2 * (0.5 - value) + 'px',
             opacity: value > 0.5 ? 2 - 2 * value : 2 * value
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -56,6 +57,7 @@ const Fifth = React.memo(() => {
           className={"h-[31vw] w-[50vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
           src={SecondImage} alt={""}
           animate={{
+            scale: value > 0.5 ? 2 - 2 * value : 2 * value,
             opacity: value > 0.5 ? 2 - 2 * value : 2 * value
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -65,7 +67,7 @@ const Fifth = React.memo(() => {
       <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0"}>
         <motion.span
           animate={{
-            y: 36 * 2 * (1 - value) + 'px',
+            y: 48 * 2 * (1 - value) + 'px',
             opacity: 2 * value - 1
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -77,6 +79,7 @@ const Fifth = React.memo(() => {
           className={"h-[31vw] w-[50vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
           src={ThirdImage} alt={""}
           animate={{
+            scale: 2 * value - 1,
             opacity: 2 * value - 1
           }}
           transition={{ease: "easeOut", duration: 0.618}}
