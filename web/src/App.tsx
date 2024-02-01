@@ -1,7 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import zhCN from "antd/locale/zh_CN";
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider } from "antd";
 import useUserAuthentication from "./hooks/user/useUserAuthentication";
 import { useEffect } from "react";
 
@@ -20,12 +20,10 @@ const App = () => {
       theme={{
         components: {
           Button: {
-            primaryColor: '#1677ff',
+            primaryColor: '#1677ff'
           }
-        },
-        algorithm: theme.defaultAlgorithm, // 默认算法
+        }
       }}
-
     >
       <RouterProvider router={router}/>
     </ConfigProvider>

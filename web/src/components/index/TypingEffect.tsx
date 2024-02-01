@@ -6,7 +6,7 @@ interface TypingEffectProps {
   waitTime: number;
 }
 
-const TypingEffect: React.FC<TypingEffectProps> = ({ text, speed, waitTime }) => {
+const TypingEffect: React.FC<TypingEffectProps> = React.memo(({ text, speed, waitTime }) => {
 
   const [displayText, setDisplayText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,6 +23,6 @@ const TypingEffect: React.FC<TypingEffectProps> = ({ text, speed, waitTime }) =>
   }, [currentIndex, text, speed, waitTime, finish]);
 
   return <span>{displayText}</span>
-}
+})
 
 export default TypingEffect;
