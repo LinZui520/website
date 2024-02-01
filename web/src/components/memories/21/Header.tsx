@@ -9,15 +9,12 @@ const Header = React.memo(() => {
     offset: ["start start", "end end"]
   })
 
-  const [scale, setScale] = useState(1)
-
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
 
+  const [value, setValue] = useState(0)
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setScale(1 + 3 * latest)
-  })
+  useMotionValueEvent(scrollYProgress, "change", (latest) => setValue(latest))
 
   return (
     <div ref={ref} className={"h-[200vh] w-screen flex flex-col items-center overflow-clip"}>
@@ -30,8 +27,7 @@ const Header = React.memo(() => {
       >
         <div>
           <motion.div
-            initial={{scale: 1, x: 0}}
-            animate={{scale: scale, x: (1 - scale) * windowWidth / 3}}
+            animate={{scale: 1 + 3 * value, x: -windowWidth * value}}
             transition={{ease: "easeOut", duration: 0.618}}
           >高三21班
           </motion.div>
@@ -39,8 +35,7 @@ const Header = React.memo(() => {
 
         <div>
           <motion.div
-            initial={{scale: 1, y: 0}}
-            animate={{scale: scale, y: (1 - scale) * windowHeight / 3}}
+            animate={{scale: 1 + 3 * value, y: -windowHeight * value}}
             transition={{ease: "easeOut", duration: 0.618}}
           >六十七
           </motion.div>
@@ -48,18 +43,20 @@ const Header = React.memo(() => {
 
         <div>
           <motion.div
-            initial={{scale: 1, x: 0}}
-            animate={{scale: scale, x: (scale - 1) * windowWidth / 3}}
+            animate={{scale: 1 + 3 * value, x: windowWidth * value}}
             transition={{ease: "easeOut", duration: 0.618}}
           >独家记忆
           </motion.div>
         </div>
       </div>
       <div className={"h-[3vh] w-screen"}/>
-      <div className={"h-screen w-screen flex flex-col justify-center items-center"}>
+      <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0"}>
         <motion.span
-          initial={{scale: 0.3}}
-          whileInView={{scale: scale / 7 * 3}}
+          animate={{
+            scale: 3 / 2,
+            y: (1 - value) * 128 + 'px',
+            opacity: value
+          }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"select-none text-[16px] lg:text-[32px]"}
         >

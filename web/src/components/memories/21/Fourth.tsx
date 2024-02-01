@@ -58,9 +58,6 @@ const Fourth = React.memo(() => {
         <motion.img
           className={"h-[60vw] w-[60vw] max-h-[500px] max-w-[500px] rounded-[16px] overflow-hidden"}
           src={SecondImage} alt={""}
-          // initial={{scale: 0, opacity: 0, x: -128}}
-          // whileInView={{scale: 1, opacity: 1, x: 0}}
-          // viewport={{once: true}}
           animate={{
             scale: value > 0.75 ? 2 * (2 - 2 * value) : 2 * (2 * value - 1),
             opacity: 2 * (2 * value - 1)
@@ -73,8 +70,6 @@ const Fourth = React.memo(() => {
         <motion.img
           className={"h-[60vw] w-[60vw] max-h-[500px] max-w-[500px] rounded-[16px] overflow-hidden"}
           src={ThirdImage} alt={""}
-          // initial={{scale: 0, opacity: 0, x: 128}}
-          // whileInView={{scale: 1, opacity: 1, x: 0}}
           animate={{
             scale: value > 0.75 ? 2 * (2 * value - 1.5) : 0,
             opacity: 2 * (2 * value - 1.5)

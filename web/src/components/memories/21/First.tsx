@@ -12,16 +12,14 @@ const First = React.memo(() => {
   })
   const [value, setValue] = useState(0)
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setValue(latest * window.innerWidth * 3)
-  })
+  useMotionValueEvent(scrollYProgress, "change", (latest) => setValue(latest))
 
   return (
     <div ref={ref} className={"h-[400vh] w-screen overflow-clip"}>
       <motion.div
         className={"h-screen w-[400vw] sticky top-0 flex flex-row"}
         animate={{
-          x: -value + "px",
+          x: -value * window.innerWidth * 3 + "px",
         }}
         transition={{type: 'tween'}}
       >
