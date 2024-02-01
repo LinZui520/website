@@ -32,7 +32,7 @@ const Fifth = React.memo(() => {
           我们认真地（抱怨着）跑操
         </motion.span>
         <motion.img
-          className={"h-[31vw] w-[50vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
+          className={"h-[37vw] w-[60vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
           src={FirstImage} alt={""}
           animate={{
             scale: 1 - 2 * value,
@@ -54,7 +54,7 @@ const Fifth = React.memo(() => {
           透过这窗户，我们憧憬着外面的世界
         </motion.span>
         <motion.img
-          className={"h-[31vw] w-[50vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
+          className={"h-[37vw] w-[60vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
           src={SecondImage} alt={""}
           animate={{
             scale: value > 0.5 ? 2 - 2 * value : 2 * value,
@@ -76,7 +76,7 @@ const Fifth = React.memo(() => {
           心中有信念，眼里有方向，脚下有力量
         </motion.span>
         <motion.img
-          className={"h-[31vw] w-[50vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
+          className={"h-[37vw] w-[60vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
           src={ThirdImage} alt={""}
           animate={{
             scale: 2 * value - 1,
