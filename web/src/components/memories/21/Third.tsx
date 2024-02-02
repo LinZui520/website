@@ -1,7 +1,7 @@
 import {useRef, useState} from "react";
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
-import FirstImage from "../../../assets/image/memories/21/Screenshot_20240106_184201.png";
-import SecondImage from "../../../assets/image/memories/21/Screenshot_20240106_184233.png"
+import FirstImage from "../../../assets/image/memories/21/2024-01-06-18-42-01.png";
+import SecondImage from "../../../assets/image/memories/21/2024-01-06-18-42-33.png"
 import React from "react";
 
 

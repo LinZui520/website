@@ -1,6 +1,6 @@
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import React, {useRef, useState} from "react";
-import FirstImage from "../../../assets/image/memories/21/Screenshot_20240105_233337.png";
+import FirstImage from "../../../assets/image/memories/21/2024-01-05-23-33-37.png";
 
 const Second = React.memo(() => {
 

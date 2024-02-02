@@ -1,10 +1,10 @@
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import React, {useRef, useState} from "react";
-import FirstImage from "../../../assets/image/memories/21/2024-2-2-14-58-28.jpg";
-import SecondImage from "../../../assets/image/memories/21/2024-2-2-14-59-28.jpg"
-import ThirdImage from "../../../assets/image/memories/21/2024-2-2-15-01-28.jpg"
-import FourthImage from "../../../assets/image/memories/21/2024-2-2-15-02-28.jpg"
-import FifthImage from "../../../assets/image/memories/21/2024-2-2-15-03-28.jpg"
+import FirstImage from "../../../assets/image/memories/21/2024-02-02-14-58-28.jpg";
+import SecondImage from "../../../assets/image/memories/21/2024-02-02-14-59-28.jpg"
+import ThirdImage from "../../../assets/image/memories/21/2024-02-02-15-01-28.jpg"
+import FourthImage from "../../../assets/image/memories/21/2024-02-02-15-02-28.jpg"
+import FifthImage from "../../../assets/image/memories/21/2024-02-02-15-03-28.jpg"
 
 const Sixth = React.memo(() => {
 

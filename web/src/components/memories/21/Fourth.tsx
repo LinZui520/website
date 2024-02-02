@@ -1,5 +1,5 @@
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
-import FirstImage from "../../../assets/image/memories/21/Screenshot_20240125_184942.png"
+import FirstImage from "../../../assets/image/memories/21/2024-01-25-18-49-42.png"
 import SecondImage from "../../../assets/image/memories/21/2024-01-27 15-14-34.png";
 import ThirdImage from "../../../assets/image/memories/21/2024-01-27 15-15-25.png"
 import React, {useRef, useState} from "react";
