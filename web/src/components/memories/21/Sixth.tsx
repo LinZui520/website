@@ -19,14 +19,15 @@ const Sixth = React.memo(() => {
 
 
   return (
-    <div ref={ref} className={"w-screen h-[500vh] flex flex-col justify-center items-center"}>
-      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0"}>
+    <div ref={ref} className={"w-screen h-[500vh]"}>
+      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
-            opacity: 4 * (0.25 - value)
+            opacity: 4 * (0.25 - value),
+            x: -96 * 4 * value
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw]"}
+          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw] overflow-hidden"}
         >
           偶尔，我们也会悠闲地晒晒太阳，聊聊天。
         </motion.span>
@@ -41,13 +42,14 @@ const Sixth = React.memo(() => {
         />
       </div>
 
-      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
-            opacity: value > 0.25 ? 4 * (0.5 - value) : 4 * value
+            opacity: value > 0.25 ? 4 * (0.5 - value) : 4 * value,
+            x: -96 * 4 * (value - 0.25)
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw]"}
+          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw] overflow-hidden"}
         >
           当然，有时也会有着迷茫的小眼神。
         </motion.span>
@@ -62,13 +64,14 @@ const Sixth = React.memo(() => {
         />
       </div>
 
-      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
-            opacity: value > 0.5 ? 4 * (0.75 - value) : 4 * (value - 0.25)
+            opacity: value > 0.5 ? 4 * (0.75 - value) : 4 * (value - 0.25),
+            x: -96 * 4 * (value - 0.5)
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw]"}
+          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw]overflow-hidden "}
         >
           老师，你在拍谁？
         </motion.span>
@@ -83,13 +86,14 @@ const Sixth = React.memo(() => {
         />
       </div>
 
-      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
-            opacity: value > 0.75 ? 4 * (1 - value) : 4 * (value - 0.5)
+            opacity: value > 0.75 ? 4 * (1 - value) : 4 * (value - 0.5),
+            x: -96 * 4 * (value - 0.75)
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw]"}
+          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw] overflow-hidden"}
         >
           陈华同学，你怎么了？
         </motion.span>
@@ -104,13 +108,14 @@ const Sixth = React.memo(() => {
         />
       </div>
 
-      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
-            opacity: 4 * (value - 0.75)
+            opacity: 4 * (value - 0.75),
+            x: -96 * 4 * (value - 1)
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw]"}
+          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw] overflow-hidden"}
         >
           儒雅的贺彧颀同学。
         </motion.span>

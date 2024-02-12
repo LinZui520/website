@@ -10,6 +10,7 @@ import TypingEffect from "../components/index/TypingEffect";
 import useHandleTouchScroll from "../hooks/useHandleTouchScroll";
 import Fourth from '../components/memories/21/Fourth';
 import Fifth from "../components/memories/21/Fifth";
+import Sixth from "../components/memories/21/Sixth";
 
 const Home = () => {
 
@@ -62,14 +63,15 @@ const Home = () => {
 
       </div>
 
-      <Header/>
-      <First/>
-      <Second/>
-      <Third/>
-      <Fourth/>
+      <Header />
+      <First />
+      <Second />
+      <Third />
+      <Fourth />
       <Fifth />
+      <Sixth />
 
-      <Footer/>
+      <Footer />
     </div>
   );
 }
