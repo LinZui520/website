@@ -6,7 +6,7 @@ import ThirdImage from "../../../assets/image/memories/21/2024-02-02-15-01-28.jp
 import FourthImage from "../../../assets/image/memories/21/2024-02-02-15-02-28.jpg"
 import FifthImage from "../../../assets/image/memories/21/2024-02-02-15-03-28.jpg"
 
-const Sixth = React.memo(() => {
+const Sixth = () => {
 
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -131,6 +131,6 @@ const Sixth = React.memo(() => {
       </div>
     </div>
   );
-})
+}
 
-export default Sixth
+export default React.memo(Sixth);

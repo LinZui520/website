@@ -3,7 +3,7 @@ import React, {useRef, useState} from "react";
 import FirstImage from "../../../assets/image/memories/21/2023-12-30-21-33-46.png";
 import SecondImage from "../../../assets/image/memories/21/2024-01-05-20-12-36.png"
 
-const First = React.memo(() => {
+const First = () => {
 
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -70,6 +70,6 @@ const First = React.memo(() => {
       </motion.div>
     </div>
   );
-})
+}
 
-export default First;
+export default React.memo(First);

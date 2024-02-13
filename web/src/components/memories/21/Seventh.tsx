@@ -1,6 +1,6 @@
 import React from "react"
 
-const Seventh = React.memo(() => {
+const Seventh = () => {
   return (
     <div className="w-screen h-[1000vh]" >
       <div className="w-screen h-screen flex flex-col justify-center items-center" >
@@ -17,7 +17,7 @@ const Seventh = React.memo(() => {
       <div className="w-screen h-screen" >10</div>
     
     </div>
-  )
-})
+  );
+}
 
-export default Seventh
+export default React.memo(Seventh);

@@ -11,6 +11,7 @@ import useHandleTouchScroll from "../hooks/useHandleTouchScroll";
 import Fourth from '../components/memories/21/Fourth';
 import Fifth from "../components/memories/21/Fifth";
 import Sixth from "../components/memories/21/Sixth";
+import SixthNext from "../components/memories/21/SixthNext";
 
 const Home = () => {
 
@@ -63,6 +64,7 @@ const Home = () => {
 
       </div>
 
+      <SixthNext />
       <Header />
       <First />
       <Second />

@@ -4,7 +4,7 @@ import SecondImage from "../../../assets/image/memories/21/2024-01-27 15-14-34.p
 import ThirdImage from "../../../assets/image/memories/21/2024-01-27 15-15-25.png"
 import React, {useRef, useState} from "react";
 
-const Fourth = React.memo(() => {
+const Fourth = () => {
 
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -84,6 +84,6 @@ const Fourth = React.memo(() => {
 
     </div>
   );
-})
+}
 
-export default Fourth;
+export default React.memo(Fourth);

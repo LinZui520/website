@@ -1,7 +1,7 @@
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import React, {useRef, useState} from "react";
 
-const Header = React.memo(() => {
+const Header = () => {
 
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -57,6 +57,6 @@ const Header = React.memo(() => {
       </div>
     </div>
   );
-})
+}
 
-export default Header;
+export default React.memo(Header);

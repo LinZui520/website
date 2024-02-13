@@ -5,7 +5,7 @@ import SecondImage from "../../../assets/image/memories/21/2024-01-06-18-42-33.p
 import React from "react";
 
 
-const Third = React.memo(() => {
+const Third = () => {
 
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -75,6 +75,6 @@ const Third = React.memo(() => {
       </motion.div>
     </div>
   );
-})
+}
 
-export default Third;
+export default React.memo(Third);
