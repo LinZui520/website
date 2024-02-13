@@ -59,7 +59,7 @@ const First = React.memo(() => {
         </div>
         <div className={"h-screen w-screen flex justify-center items-center"}>
           <motion.img
-            className={"h-[75vw] w-[50vw] max-h-[660px] max-w-[440px] rounded-[16px] overflow-hidden"}
+            className={"h-[75vw] w-[50vw] max-h-[600px] max-w-[400px] rounded-[16px] overflow-hidden"}
             src={SecondImage} alt={""}
             initial={{scale: 0, opacity: 0}}
             whileInView={{scale: 1, opacity: 1}}

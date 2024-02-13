@@ -18,38 +18,30 @@ const Header = React.memo(() => {
 
   return (
     <div ref={ref} className={"h-[200vh] w-screen flex flex-col items-center overflow-clip"}>
-      <div className={"h-[47vh] w-screen"}/>
       <div
         className={
-          "h-[50vh] w-[90vw] max-w-[1024px] text-[16px] lg:text-[32px] " +
-          "sticky top-[47vh] select-none flex flex-row justify-evenly"
+          "h-[100vh] w-[90vw] max-w-[1024px] text-[16px] lg:text-[32px] " +
+          "sticky top-0 select-none flex flex-row justify-evenly items-center"
         }
       >
-        <div>
-          <motion.div
-            animate={{scale: 1 + 3 * value, x: -windowWidth * value}}
-            transition={{ease: "easeOut", duration: 0.618}}
-          >高三21班
-          </motion.div>
-        </div>
+        <motion.div
+          animate={{scale: 1 + 3 * value, x: -windowWidth * value}}
+          transition={{ease: "easeOut", duration: 0.618}}
+        >高三21班
+        </motion.div>
 
-        <div>
-          <motion.div
-            animate={{scale: 1 + 3 * value, y: -windowHeight * value}}
-            transition={{ease: "easeOut", duration: 0.618}}
-          >六十七
-          </motion.div>
-        </div>
+        <motion.div
+          animate={{scale: 1 + 3 * value, y: -windowHeight * value}}
+          transition={{ease: "easeOut", duration: 0.618}}
+        >六十七
+        </motion.div>
 
-        <div>
-          <motion.div
-            animate={{scale: 1 + 3 * value, x: windowWidth * value}}
-            transition={{ease: "easeOut", duration: 0.618}}
-          >独家记忆
-          </motion.div>
-        </div>
+        <motion.div
+          animate={{scale: 1 + 3 * value, x: windowWidth * value}}
+          transition={{ease: "easeOut", duration: 0.618}}
+        >独家记忆
+        </motion.div>
       </div>
-      <div className={"h-[3vh] w-screen"}/>
       <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0"}>
         <motion.span
           animate={{
