@@ -64,7 +64,6 @@ const Home = () => {
 
       </div>
 
-      <SixthNext />
       <Header />
       <First />
       <Second />
