@@ -1,19 +1,41 @@
-import React from "react"
-import FirstImage from "../../../assets/image/memories/21/2024-02-15-16-12-55.png"
-import SecondImage from "../../../assets/image/memories/21/2024-02-15-16-13-55.png"
-import ThirdImage from "../../../assets/image/memories/21/2024-02-15-16-14-55.png"
-import FourthImage from "../../../assets/image/memories/21/2024-02-15-16-15-55.png"
-import FifthImage from "../../../assets/image/memories/21/2024-02-15-16-16-55.png"
-import SixthImage from "../../../assets/image/memories/21/2024-02-15-16-17-55.png"
-import SeventhImage from "../../../assets/image/memories/21/2024-02-15-18-12-55.png"
-import EighthImage from "../../../assets/image/memories/21/2024-02-15-16-19-55.png"
+import React, {useRef, useState} from "react";
+import {motion, useMotionValueEvent, useScroll} from "framer-motion";
+import FirstImage from "../../../assets/image/memories/21/2024-02-15-16-12-55.png";
+import SecondImage from "../../../assets/image/memories/21/2024-02-15-16-13-55.png";
+import ThirdImage from "../../../assets/image/memories/21/2024-02-15-16-14-55.png";
+import FourthImage from "../../../assets/image/memories/21/2024-02-15-16-15-55.png";
+import FifthImage from "../../../assets/image/memories/21/2024-02-15-16-16-55.png";
+import SixthImage from "../../../assets/image/memories/21/2024-02-15-16-17-55.png";
+import SeventhImage from "../../../assets/image/memories/21/2024-02-15-18-12-55.png";
+import EighthImage from "../../../assets/image/memories/21/2024-02-15-16-19-55.png";
 import NinthImage from "../../../assets/image/memories/21/2024-02-15-16-20-55.png"
 
 const Seventh = () => {
+
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end end"]
+  })
+
+  const [value, setValue] = useState(0)
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setValue(latest)
+  })
+
   return (
-    <div className="w-screen h-[1000vh]" >
-      <div className="w-screen h-screen flex flex-col justify-center items-center" >
-        我自横刀向天笑
+    <div ref={ref} className={"w-screen h-[1000vh]"} >
+      <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0 overflow-hidden" }>
+        <motion.img
+        className="h-[600vw] w-[600vw] max-h-[600px] max-w-[600px] rounded-[16px] overflow-hidden"
+        src={FirstImage} alt={""}
+        style={{ scaleX: scrollYProgress }}
+        animate={{
+          opacity: 4 * (0.25 - value)
+        }}
+        transition={{ease: "easeOut", duration: 0.618}}
+        />
       </div>
       <div className="w-screen h-screen" >2</div>
       <div className="w-screen h-screen" >3</div>
