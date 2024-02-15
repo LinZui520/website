@@ -22,7 +22,7 @@ const Second = () => {
       <div
         className={
           "h-[100vh] w-[90vw] max-w-[1024px] text-[16px] lg:text-[32px] " +
-          "sticky top-0 select-none flex flex-row justify-evenly items-center"
+          "sticky top-0 select-none flex flex-row justify-evenly items-center overflow-hidden"
         }
       >
         <div>
@@ -46,7 +46,7 @@ const Second = () => {
         </div>
       </div>
 
-      <div className={"h-screen w-screen flex justify-center items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.img
           className={"h-[60vw] w-[60vw] max-h-[516px] max-w-[516px] rounded-[16px] overflow-hidden"}
           src={FirstImage} alt={""}

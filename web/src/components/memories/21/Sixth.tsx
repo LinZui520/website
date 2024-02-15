@@ -71,7 +71,7 @@ const Sixth = () => {
             x: -96 * 4 * (value - 0.5)
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw]overflow-hidden "}
+          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw] overflow-hidden "}
         >
           老师，你在拍谁？
         </motion.span>

@@ -28,7 +28,7 @@ const Third = () => {
         }}
         transition={{type: 'tween'}}
       >
-        <div className={"h-screen w-screen flex justify-center items-center"}>
+        <div className={"h-screen w-screen flex justify-center items-center overflow-hidden"}>
           <motion.span
             initial={{opacity: 0, scale: 0.3}}
             whileInView={{opacity: 1, scale: 1}}
@@ -40,7 +40,7 @@ const Third = () => {
           </motion.span>
         </div>
 
-        <div className={"h-screen w-screen flex justify-center items-center"}>
+        <div className={"h-screen w-screen flex justify-center items-center overflow-hidden"}>
           <motion.img
             className={"h-[60vw] w-[60vw] max-h-[512px] max-w-[512px] rounded-[16px] overflow-hidden"}
             src={FirstImage} alt={""}
@@ -51,7 +51,7 @@ const Third = () => {
           />
         </div>
 
-        <div className={"h-screen w-screen flex justify-center items-center"}>
+        <div className={"h-screen w-screen flex justify-center items-center overflow-hidden"}>
           <motion.span
             initial={{opacity: 0, scale: 0.3}}
             whileInView={{opacity: 1, scale: 1}}
@@ -62,7 +62,7 @@ const Third = () => {
             我们可不是为了成为别人的陪衬而来到这里
           </motion.span>
         </div>
-        <div className={"h-screen w-screen flex justify-center items-center"}>
+        <div className={"h-screen w-screen flex justify-center items-center overflow-hidden"}>
           <motion.img
             className={"h-[60vw] w-[60vw] max-h-[512px] max-w-[512px] rounded-[16px] overflow-hidden"}
             src={SecondImage} alt={""}

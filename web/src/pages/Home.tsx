@@ -29,7 +29,7 @@ const Home = () => {
 
   return (
     <div className={"touch-none"} onTouchMove={handleTouch} onWheel={handleWheel}>
-      <div className={"flex flex-col justify-center items-center h-screen w-screen"}>
+      <div className={"h-screen w-screen flex flex-col justify-center items-center"}>
         <motion.div
           whileHover={{scale: 1.2}}
           whileTap={{scale: 0.9}}

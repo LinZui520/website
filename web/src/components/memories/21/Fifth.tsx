@@ -20,7 +20,7 @@ const Fifth = () => {
 
   return (
     <div ref={ref} className={"h-[300vh] w-screen"}>
-      <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
             y: -48 * 2 * value + 'px',
@@ -42,7 +42,7 @@ const Fifth = () => {
         />
       </div>
 
-      <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
             y: 48 * 2 * (0.5 - value) + 'px',
@@ -64,7 +64,7 @@ const Fifth = () => {
         />
       </div>
 
-      <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
             y: 48 * 2 * (1 - value) + 'px',

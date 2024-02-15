@@ -20,7 +20,7 @@ const Fourth = () => {
 
   return (
     <div ref={ref} className="h-[500vh] w-[100vw] flex flex-col justify-center items-center overflow-clip">
-      <div className={"h-screen w-screen flex justify-center items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
             y: -128 * 4 * value + 'px',
@@ -32,7 +32,7 @@ const Fourth = () => {
           我们听过的午觉唤醒曲
         </motion.span>
       </div>
-      <div className={"h-screen w-screen flex justify-center items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.img
           className={"h-[71vw] w-[59vw] max-h-[568px] max-w-[470px] rounded-[16px] overflow-hidden"}
           src={FirstImage} alt={""}
@@ -44,7 +44,7 @@ const Fourth = () => {
         />
       </div>
 
-      <div className={"h-screen w-screen flex justify-center items-center sticky top-0 bottom-0"}>
+      <div className={"h-screen w-screen flex justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
             y: -128 * 4 * (value - 0.5) + 'px',

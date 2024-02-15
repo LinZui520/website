@@ -23,7 +23,7 @@ const First = () => {
         }}
         transition={{type: 'tween'}}
       >
-        <div className={"h-screen w-screen flex justify-center items-center"}>
+        <div className={"h-screen w-screen flex justify-center items-center overflow-hidden"}>
           <motion.span
             initial={{opacity: 0, scale: 0.3}}
             whileInView={{opacity: 1, scale: 1}}
@@ -35,7 +35,7 @@ const First = () => {
           </motion.span>
         </div>
 
-        <div className={"h-screen w-screen flex justify-center items-center"}>
+        <div className={"h-screen w-screen flex justify-center items-center overflow-hidden"}>
           <motion.img
             className={"h-[30vw] w-[60vw] max-h-[356px] max-w-[712px] rounded-[16px] overflow-hidden"}
             src={FirstImage} alt={""}
@@ -46,7 +46,7 @@ const First = () => {
           />
         </div>
 
-        <div className={"h-screen w-screen text-[16px flex justify-center items-center"}>
+        <div className={"h-screen w-screen text-[16px flex justify-center items-center overflow-hidden"}>
           <motion.span
             initial={{opacity: 0, scale: 0.3}}
             whileInView={{opacity: 1, scale: 1}}
@@ -57,7 +57,7 @@ const First = () => {
             或从曾经的倒计时说起
           </motion.span>
         </div>
-        <div className={"h-screen w-screen flex justify-center items-center"}>
+        <div className={"h-screen w-screen flex justify-center items-center overflow-hidden"}>
           <motion.img
             className={"h-[75vw] w-[50vw] max-h-[600px] max-w-[400px] rounded-[16px] overflow-hidden"}
             src={SecondImage} alt={""}
