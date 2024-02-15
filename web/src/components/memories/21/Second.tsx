@@ -21,7 +21,7 @@ const Second = () => {
     <div ref={ref} className={"h-[200vh] w-screen flex flex-col items-center overflow-clip"}>
       <div
         className={
-          "h-[100vh] w-[90vw] max-w-[1024px] text-[16px] lg:text-[32px] " +
+          "h-[100vh] w-[100vw] text-[16px] lg:text-[32px] " +
           "sticky top-0 select-none flex flex-row justify-evenly items-center overflow-hidden"
         }
       >

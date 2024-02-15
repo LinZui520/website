@@ -19,8 +19,7 @@ const SixthNext = () => {
 
   return (
     <div ref={ref} className={"h-[300vh] w-screen"}>
-      <div
-        className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
+      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.img
           className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={FirstImage} alt={""}
@@ -41,8 +40,7 @@ const SixthNext = () => {
         />
       </div>
 
-      <div
-        className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
+      <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.img
           className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={ThirdImage} alt={""}
