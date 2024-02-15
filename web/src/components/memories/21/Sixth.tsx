@@ -33,7 +33,7 @@ const Sixth = () => {
         </motion.span>
 
         <motion.img
-          className={"h-[100vw] w-[62vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
+          className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={FirstImage} alt={""}
           animate={{
             opacity: 4 * (0.25 - value)
@@ -55,7 +55,7 @@ const Sixth = () => {
         </motion.span>
 
         <motion.img
-          className={"h-[100vw] w-[62vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
+          className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={SecondImage} alt={""}
           animate={{
             opacity: value > 0.25 ? 4 * (0.5 - value) : 4 * value
@@ -77,7 +77,7 @@ const Sixth = () => {
         </motion.span>
 
         <motion.img
-          className={"h-[100vw] w-[62vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
+          className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={ThirdImage} alt={""}
           animate={{
             opacity: value > 0.5 ? 4 * (0.75 - value) : 4 * (value - 0.25)
@@ -99,7 +99,7 @@ const Sixth = () => {
         </motion.span>
 
         <motion.img
-          className={"h-[100vw] w-[62vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
+          className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={FourthImage} alt={""}
           animate={{
             opacity: value > 0.75 ? 4 * (1 - value) : 4 * (value - 0.5)
@@ -121,7 +121,7 @@ const Sixth = () => {
         </motion.span>
 
         <motion.img
-          className={"h-[100vw] w-[62vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
+          className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={FifthImage} alt={""}
           animate={{
             opacity: 4 * (value - 0.75)

@@ -71,6 +71,7 @@ const Home = () => {
       <Fourth />
       <Fifth />
       <Sixth />
+      <SixthNext />
 
       <Footer />
     </div>
