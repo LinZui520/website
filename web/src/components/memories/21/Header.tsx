@@ -20,7 +20,7 @@ const Header = () => {
     <div ref={ref} className={"h-[200vh] w-screen flex flex-col items-center overflow-clip"}>
       <div
         className={
-          "h-[100vh] w-[100vw] text-[16px] lg:text-[32px] " +
+          "w-screen h-screen text-[16px] lg:text-[32px] " +
           "sticky top-0 select-none flex flex-row justify-evenly items-center overflow-hidden"
         }
       >
@@ -42,7 +42,7 @@ const Header = () => {
         >独家记忆
         </motion.div>
       </div>
-      <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
+      <div className={"w-screen h-screen flex flex-col justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
             scale: 3 / 2,

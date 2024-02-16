@@ -24,7 +24,7 @@ const SixthNext = () => {
           className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={FirstImage} alt={""}
           animate={{
-            x: -windowWidth * 2 * value + 'px',
+            x: -windowWidth * value + 'px',
             opacity: 2 * (0.5 - value)
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -33,7 +33,7 @@ const SixthNext = () => {
           className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={SecondImage} alt={""}
           animate={{
-            x: windowWidth * 2 * value + 'px',
+            x: windowWidth * value + 'px',
             opacity: 2 * (0.5 - value)
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -47,7 +47,7 @@ const SixthNext = () => {
           animate={{
             scale: value > 0.5 ? 1 : 2 * value,
             opacity: value > 0.5 ? 1 : 2 * value,
-            x: value > 0.5 ? -windowWidth * 2 * (value - 0.5) : 0
+            x: value > 0.5 ? -windowWidth * (value - 0.5) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
@@ -56,10 +56,10 @@ const SixthNext = () => {
           animate={{
             scale: value > 0.5 ? 1 : 2 * value,
             opacity: value > 0.5 ? 1 : 2 * value,
-            x: value > 0.5 ? windowWidth * 2 * (value - 0.5) : 0
+            x: value > 0.5 ? windowWidth * (value - 0.5) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw] overflow-hidden"}
+          className={"text-[16px] lg:text-[32px] w-[31vw] select-none mb-[5vw] overflow-hidden"}
         >
           酷酷的、帅帅的刘峰高同学。
         </motion.span>
@@ -82,7 +82,7 @@ const SixthNext = () => {
             opacity: 2 * (value - 0.5)
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] w-[10vw] select-none mb-[5vw] overflow-hidden"}
+          className={"text-[16px] lg:text-[32px] w-[31vw] select-none mb-[5vw] overflow-hidden"}
         >
           此时，很安静的贺清同学。
         </motion.span>
