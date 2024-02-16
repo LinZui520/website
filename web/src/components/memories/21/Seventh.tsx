@@ -18,6 +18,8 @@ const Seventh = () => {
     offset: ["start start", "end end"]
   })
 
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
   const [value, setValue] = useState(0)
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -28,13 +30,14 @@ const Seventh = () => {
     <div ref={ref} className={"w-screen h-[1000vh]"} >
       <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0 overflow-hidden" }>
         <motion.img
-        className="h-[60vw] w-[60vw] max-h-[600px] max-w-[600px] rounded-[16px] overflow-hidden"
-        src={FirstImage} alt={""}
-        style={{ scaleX: scrollYProgress }}
-        animate={{
-          opacity: 4 * (0.25 - value)
-        }}
-        transition={{ease: "easeOut", duration: 0.618}}
+          className="h-[60vw] w-[60vw] max-h-[300px] max-w-[300px] rounded-[16px] overflow-hidden"
+          src={FirstImage} alt={""}
+          animate={{
+            opacity: 9 * (1 / 9 - value),
+            scale: 9 * (1 / 9 - value),
+            x: -9 * value * windowWidth + 'px'
+          }}
+          transition={{ease: "easeOut", duration: 0.618}}
         />
       </div>
       
