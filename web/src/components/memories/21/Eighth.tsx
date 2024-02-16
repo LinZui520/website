@@ -32,8 +32,8 @@ const Eighth = () => {
         className={"w-screen h-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
-            x: -windowWidth / 2 * 6 * value + 'px',
-            opacity: 6 * (1 / 6 - value)
+            x: value < 1 / 6 ? -windowWidth / 2 * 6 * value + 'px' : -windowWidth / 2,
+            opacity: value < 1 / 6 ? 6 * (1 / 6 - value) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none mb-[5vw] overflow-hidden"}
@@ -44,8 +44,8 @@ const Eighth = () => {
           className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={FirstImage} alt={""}
           animate={{
-            x: windowWidth / 2 * 6 * value + 'px',
-            opacity: 6 * (1 / 6 - value)
+            x: value < 1 / 6 ? windowWidth / 2 * 6 * value + 'px' : windowWidth / 2,
+            opacity: value < 1 / 6 ? 6 * (1 / 6 - value) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
@@ -56,8 +56,8 @@ const Eighth = () => {
         <motion.span
           animate={{
             scale: value > 1 / 6 ? 1 : 6 * value,
-            opacity: value > 1 / 6 ? 6 * (2 / 6 - value) : 6 * value,
-            y: value > 1 / 6 ? -windowHeight / 2 * 6 * (value - 1 / 6) : 0
+            opacity: value > 1 / 6 ? (value < 2 / 6 ? 6 * (2 / 6 - value) : 0) : 6 * value,
+            y: value > 1 / 6 ? (value < 2 / 6 ? -windowHeight / 2 * 6 * (value - 1 / 6) : -windowHeight / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] max-w-[100vw] select-none mb-[5vw] overflow-hidden"}
@@ -71,8 +71,8 @@ const Eighth = () => {
             src={SecondImage} alt={""}
             animate={{
               scale: value > 1 / 6 ? 1 : 6 * value,
-              opacity: value > 1 / 6 ? 6 * (2 / 6 - value) : 6 * value,
-              x: value > 1 / 6 ? -windowWidth / 2 * 6 * (value - 1 / 6) : 0
+              opacity: value > 1 / 6 ? (value < 2 / 6 ? 6 * (2 / 6 - value) : 0) : 6 * value,
+              x: value > 1 / 6 ? (value < 2 / 6 ? -windowWidth / 2 * 6 * (value - 1 / 6) : -windowWidth / 2) : 0
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -82,8 +82,8 @@ const Eighth = () => {
             src={ThirdImage} alt={""}
             animate={{
               scale: value > 1 / 6 ? 1 : 6 * value,
-              opacity: value > 1 / 6 ? 6 * (2 / 6 - value) : 6 * value,
-              x: value > 1 / 6 ? windowWidth / 2 * 6 * (value - 1 / 6) : 0
+              opacity: value > 1 / 6 ? (value < 2 / 6 ? 6 * (2 / 6 - value) : 0) : 6 * value,
+              x: value > 1 / 6 ? (value < 2 / 6 ? windowWidth / 2 * 6 * (value - 1 / 6) : windowWidth / 2) : 0
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -95,8 +95,8 @@ const Eighth = () => {
         <motion.span
           animate={{
             scale: value > 2 / 6 ? 1 : 6 * (value - 1 / 6),
-            opacity: value > 2 / 6 ? 6 * (3 / 6 - value) : 6 * (value - 1 / 6),
-            y: value > 2 / 6 ? -windowHeight / 2 * 6 * (value - 2 / 6) : 0
+            opacity: value > 2 / 6 ? (value < 3 / 6 ? 6 * (3 / 6 - value) : 0) : 6 * (value - 1 / 6),
+            y: value > 2 / 6 ? (value < 3 / 6 ? -windowHeight / 2 * 6 * (value - 2 / 6) : -windowHeight / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] max-w-[90vw] select-none mb-[5vw] overflow-hidden"}
@@ -110,8 +110,8 @@ const Eighth = () => {
             src={FourthImage} alt={""}
             animate={{
               scale: value > 2 / 6 ? 1 : 6 * (value - 1 / 6),
-              opacity: value > 2 / 6 ? 6 * (3 / 6 - value) : 6 * (value - 1 / 6),
-              x: value > 2 / 6 ? -windowWidth / 2 * 6 * (value - 2 / 6) : 0
+              opacity: value > 2 / 6 ? (value < 3 / 6 ? 6 * (3 / 6 - value) : 0) : 6 * (value - 1 / 6),
+              x: value > 2 / 6 ? (value < 3 / 6 ? -windowWidth / 2 * 6 * (value - 2 / 6) : -windowWidth / 2) : 0
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -121,8 +121,8 @@ const Eighth = () => {
             src={FifthImage} alt={""}
             animate={{
               scale: value > 2 / 6 ? 1 : 6 * (value - 1 / 6),
-              opacity: value > 2 / 6 ? 6 * (3 / 6 - value) : 6 * (value - 1 / 6),
-              x: value > 2 / 6 ? windowWidth / 2 * 6 * (value - 2 / 6) : 0
+              opacity: value > 2 / 6 ? (value < 3 / 6 ? 6 * (3 / 6 - value) : 0) : 6 * (value - 1 / 6),
+              x: value > 2 / 6 ? (value < 3 / 6 ? windowWidth / 2 * 6 * (value - 2 / 6) : windowWidth / 2) : 0
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -136,8 +136,8 @@ const Eighth = () => {
           src={SixthImage} alt={""}
           animate={{
             scale: value > 3 / 6 ? 1 : 6 * (value - 2 / 6),
-            opacity: value > 3 / 6 ? 6 * (4 / 6 - value) : 6 * (value - 2 / 6),
-            x: value > 3 / 6 ? -windowWidth / 2 * 6 * (value - 3 / 6) : 0
+            opacity: value > 3 / 6 ? (value < 4 / 6 ? 6 * (4 / 6 - value) : 0) : 6 * (value - 2 / 6),
+            x: value > 3 / 6 ? (value < 4 / 6 ? -windowWidth / 2 * 6 * (value - 3 / 6) : -windowWidth / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
@@ -145,8 +145,8 @@ const Eighth = () => {
         <motion.span
           animate={{
             scale: value > 3 / 6 ? 1 : 6 * (value - 2 / 6),
-            opacity: value > 3 / 6 ? 6 * (4 / 6 - value) : 6 * (value - 2 / 6),
-            x: value > 3 / 6 ? windowWidth / 2 * 6 * (value - 3 / 6) : 0
+            opacity: value > 3 / 6 ? (value < 4 / 6 ? 6 * (4 / 6 - value) : 0) : 6 * (value - 2 / 6),
+            x: value > 3 / 6 ? (value < 4 / 6 ? windowWidth / 2 * 6 * (value - 3 / 6) : windowWidth / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none mb-[5vw] overflow-hidden"}
@@ -160,8 +160,8 @@ const Eighth = () => {
         <motion.span
           animate={{
             scale: value > 4 / 6 ? 1 : 6 * (value - 3 / 6),
-            opacity: value > 4 / 6 ? 6 * (5 / 6 - value) : 6 * (value - 3 / 6),
-            y: value > 4 / 6 ? -windowHeight / 2 * 6 * (value - 4 / 6) : 0
+            opacity: value > 4 / 6 ? (value < 5 / 6 ? 6 * (5 / 6 - value) : 0) : 6 * (value - 3 / 6),
+            y: value > 4 / 6 ? (value < 5 / 6 ? -windowHeight / 2 * 6 * (value - 4 / 6) : -windowHeight / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] max-w-[90vw] select-none mb-[5vw] overflow-hidden"}
@@ -175,8 +175,8 @@ const Eighth = () => {
             src={SeventhImage} alt={""}
             animate={{
               scale: value > 4 / 6 ? 1 : 6 * (value - 3 / 6),
-              opacity: value > 4 / 6 ? 6 * (5 / 6 - value) : 6 * (value - 3 / 6),
-              x: value > 4 / 6 ? -windowWidth / 2 * 6 * (value - 4 / 6) : 0
+              opacity: value > 4 / 6 ? (value < 5 / 6 ? 6 * (5 / 6 - value) : 0) : 6 * (value - 3 / 6),
+              x: value > 4 / 6 ? (value < 5 / 6 ? -windowWidth / 2 * 6 * (value - 4 / 6) : -windowWidth / 2) : 0
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -186,8 +186,8 @@ const Eighth = () => {
             src={EighthImage} alt={""}
             animate={{
               scale: value > 4 / 6 ? 1 : 6 * (value - 3 / 6),
-              opacity: value > 4 / 6 ? 6 * (5 / 6 - value) : 6 * (value - 3 / 6),
-              x: value > 4 / 6 ? windowWidth / 2 * 6 * (value - 4 / 6) : 0
+              opacity: value > 4 / 6 ? (value < 5 / 6 ? 6 * (5 / 6 - value) : 0) : 6 * (value - 3 / 6),
+              x: value > 4 / 6 ? (value < 5 / 6 ? windowWidth / 2 * 6 * (value - 4 / 6) : windowWidth / 2) : 0
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -199,8 +199,8 @@ const Eighth = () => {
         <motion.span
           animate={{
             scale: value > 5 / 6 ? 1 : 6 * (value - 4 / 6),
-            opacity: value > 5 / 6 ? 6 * (1 - value) : 6 * (value - 4 / 6),
-            x: value > 5 / 6 ? -windowWidth / 2 * 6 * (value - 5 / 6) : 0
+            opacity: value > 5 / 6 ? (value < 1 ? 6 * (1 - value) : 0) : 6 * (value - 4 / 6),
+            x: value > 5 / 6 ? (value < 1 ? -windowWidth / 2 * 6 * (value - 5 / 6) : -windowWidth / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none mb-[5vw] overflow-hidden"}
@@ -212,8 +212,8 @@ const Eighth = () => {
           src={NinthImage} alt={""}
           animate={{
             scale: value > 5 / 6 ? 1 : 6 * (value - 4 / 6),
-            opacity: value > 5 / 6 ? 6 * (1 - value) : 6 * (value - 4 / 6),
-            x: value > 5 / 6 ? windowWidth / 2 * 6 * (value - 5 / 6) : 0
+            opacity: value > 5 / 6 ? (value < 1 ? 6 * (1 - value) : 0) : 6 * (value - 4 / 6),
+            x: value > 5 / 6 ? (value < 1 ? windowWidth / 2 * 6 * (value - 5 / 6) : windowWidth / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
@@ -225,16 +225,16 @@ const Eighth = () => {
           className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={TenthImage} alt={""}
           animate={{
-            scale: 6 * (value - 5 / 6),
-            opacity: 6 * (value - 5 / 6)
+            scale: value > 5 / 6 ? 6 * (value - 5 / 6) : 0,
+            opacity: value > 5 / 6 ? 6 * (value - 5 / 6) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
 
         <motion.span
           animate={{
-            scale: 6 * (value - 5 / 6),
-            opacity: 6 * (value - 5 / 6)
+            scale: value > 5 / 6 ? 6 * (value - 5 / 6) : 0,
+            opacity: value > 5 / 6 ? 6 * (value - 5 / 6) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none mb-[5vw] overflow-hidden"}
