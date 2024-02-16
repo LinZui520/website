@@ -28,7 +28,7 @@ const Seventh = () => {
     <div ref={ref} className={"w-screen h-[1000vh]"} >
       <div className={"h-screen w-screen flex flex-col justify-center items-center sticky top-0 bottom-0 overflow-hidden" }>
         <motion.img
-        className="h-[600vw] w-[600vw] max-h-[600px] max-w-[600px] rounded-[16px] overflow-hidden"
+        className="h-[60vw] w-[60vw] max-h-[600px] max-w-[600px] rounded-[16px] overflow-hidden"
         src={FirstImage} alt={""}
         style={{ scaleX: scrollYProgress }}
         animate={{
@@ -37,6 +37,7 @@ const Seventh = () => {
         transition={{ease: "easeOut", duration: 0.618}}
         />
       </div>
+      
       <div className="w-screen h-screen" >2</div>
       <div className="w-screen h-screen" >3</div>
       <div className="w-screen h-screen" >4</div>
