@@ -58,6 +58,7 @@ const Seventh = () => {
           src={SecondImage} alt={""}
           animate={{
             opacity: 9 * value,
+            scale: 9 * value,
             y: (9 * value - 1) * windowHeight + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -66,6 +67,7 @@ const Seventh = () => {
         <motion.span 
           animate={{
               opacity: 9 * value,
+              scale: 9 * value,
              y: -(9 * value - 1) * windowHeight + 'px'
             }}
             transition={{ease: "easeOut", duration: 0.618}}
@@ -74,14 +76,36 @@ const Seventh = () => {
         </motion.span>
       </div>
 
-      <div className="w-screen h-screen" >3</div>
-      <div className="w-screen h-screen" >4</div>
-      <div className="w-screen h-screen" >5</div>
-      <div className="w-screen h-screen" >6</div>
-      <div className="w-screen h-screen" >7</div>
-      <div className="w-screen h-screen" >8</div>
-      <div className="w-screen h-screen" >9</div>
-      <div className="w-screen h-screen" >10</div>
+      <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
+      <motion.img 
+          className={"h-[30vw] w-[30vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
+          src={SecondImage} alt={""}
+          animate={{
+            opacity: 9 * value,
+            scale: 9 * value,
+            y: (9 * value - 2) * windowHeight + 'px'
+          }}
+          transition={{ease: "easeOut", duration: 0.618}}
+        />
+
+        <motion.span 
+          animate={{
+              opacity: 9 * value,
+              scale: 9 * value,
+             y: -(9 * value - 2) * windowHeight + 'px'
+            }}
+            transition={{ease: "easeOut", duration: 0.618}}
+            className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}>
+        难兄难弟
+        </motion.span>
+      </div>
+      <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">4</div>
+      <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">5</div>
+      <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">6</div>
+      <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">7</div>
+      <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">8</div>
+      <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">9</div>
+      <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">10</div>
     
     </div>
   );
