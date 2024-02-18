@@ -36,7 +36,7 @@ const Eighth = () => {
             opacity: value < 1 / 6 ? 6 * (1 / 6 - value) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none mb-[5vw] overflow-hidden"}
+          className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none overflow-hidden"}
         >
           吃辣条，一个人。
         </motion.span>
@@ -94,8 +94,8 @@ const Eighth = () => {
         className={"w-screen h-screen flex flex-col justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
-            scale: value > 2 / 6 ? 1 : 6 * (value - 1 / 6),
-            opacity: value > 2 / 6 ? (value < 3 / 6 ? 6 * (3 / 6 - value) : 0) : 6 * (value - 1 / 6),
+            scale: value > 2 / 6 ? 1 : (value > 1 / 6 ? 6 * (value - 1 / 6) :0),
+            opacity: value > 2 / 6 ? (value < 3 / 6 ? 6 * (3 / 6 - value) : 0) : (value > 1 / 6 ? 6 * (value - 1 / 6) :0),
             y: value > 2 / 6 ? (value < 3 / 6 ? -windowHeight / 2 * 6 * (value - 2 / 6) : -windowHeight / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -109,8 +109,8 @@ const Eighth = () => {
             className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
             src={FourthImage} alt={""}
             animate={{
-              scale: value > 2 / 6 ? 1 : 6 * (value - 1 / 6),
-              opacity: value > 2 / 6 ? (value < 3 / 6 ? 6 * (3 / 6 - value) : 0) : 6 * (value - 1 / 6),
+              scale: value > 2 / 6 ? 1 : (value > 1 / 6 ? 6 * (value - 1 / 6) :0),
+              opacity: value > 2 / 6 ? (value < 3 / 6 ? 6 * (3 / 6 - value) : 0) : (value > 1 / 6 ? 6 * (value - 1 / 6) :0),
               x: value > 2 / 6 ? (value < 3 / 6 ? -windowWidth / 2 * 6 * (value - 2 / 6) : -windowWidth / 2) : 0
             }}
             transition={{ease: "easeOut", duration: 0.618}}
@@ -120,8 +120,8 @@ const Eighth = () => {
             className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
             src={FifthImage} alt={""}
             animate={{
-              scale: value > 2 / 6 ? 1 : 6 * (value - 1 / 6),
-              opacity: value > 2 / 6 ? (value < 3 / 6 ? 6 * (3 / 6 - value) : 0) : 6 * (value - 1 / 6),
+              scale: value > 2 / 6 ? 1 : (value > 1 / 6 ? 6 * (value - 1 / 6) :0),
+              opacity: value > 2 / 6 ? (value < 3 / 6 ? 6 * (3 / 6 - value) : 0) : (value > 1 / 6 ? 6 * (value - 1 / 6) :0),
               x: value > 2 / 6 ? (value < 3 / 6 ? windowWidth / 2 * 6 * (value - 2 / 6) : windowWidth / 2) : 0
             }}
             transition={{ease: "easeOut", duration: 0.618}}
@@ -135,8 +135,8 @@ const Eighth = () => {
           className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={SixthImage} alt={""}
           animate={{
-            scale: value > 3 / 6 ? 1 : 6 * (value - 2 / 6),
-            opacity: value > 3 / 6 ? (value < 4 / 6 ? 6 * (4 / 6 - value) : 0) : 6 * (value - 2 / 6),
+            scale: value > 3 / 6 ? 1 : (value > 2 / 6 ? 6 * (value - 2 / 6) : 0),
+            opacity: value > 3 / 6 ? (value < 4 / 6 ? 6 * (4 / 6 - value) : 0) : (value > 2 / 6 ? 6 * (value - 2 / 6) : 0),
             x: value > 3 / 6 ? (value < 4 / 6 ? -windowWidth / 2 * 6 * (value - 3 / 6) : -windowWidth / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -144,12 +144,12 @@ const Eighth = () => {
 
         <motion.span
           animate={{
-            scale: value > 3 / 6 ? 1 : 6 * (value - 2 / 6),
-            opacity: value > 3 / 6 ? (value < 4 / 6 ? 6 * (4 / 6 - value) : 0) : 6 * (value - 2 / 6),
+            scale: value > 3 / 6 ? 1 : (value > 2 / 6 ? 6 * (value - 2 / 6) : 0),
+            opacity: value > 3 / 6 ? (value < 4 / 6 ? 6 * (4 / 6 - value) : 0) : (value > 2 / 6 ? 6 * (value - 2 / 6) : 0),
             x: value > 3 / 6 ? (value < 4 / 6 ? windowWidth / 2 * 6 * (value - 3 / 6) : windowWidth / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none mb-[5vw] overflow-hidden"}
+          className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none overflow-hidden"}
         >
           没有什么比找到试卷更令人开心的了，终于可以来个正脸了。
         </motion.span>
@@ -159,8 +159,8 @@ const Eighth = () => {
         className={"w-screen h-screen flex flex-col justify-center items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
-            scale: value > 4 / 6 ? 1 : 6 * (value - 3 / 6),
-            opacity: value > 4 / 6 ? (value < 5 / 6 ? 6 * (5 / 6 - value) : 0) : 6 * (value - 3 / 6),
+            scale: value > 4 / 6 ? 1 : (value > 3 / 6 ? 6 * (value - 3 / 6) : 0),
+            opacity: value > 4 / 6 ? (value < 5 / 6 ? 6 * (5 / 6 - value) : 0) : (value > 3 / 6 ? 6 * (value - 3 / 6) : 0),
             y: value > 4 / 6 ? (value < 5 / 6 ? -windowHeight / 2 * 6 * (value - 4 / 6) : -windowHeight / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -174,8 +174,8 @@ const Eighth = () => {
             className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
             src={SeventhImage} alt={""}
             animate={{
-              scale: value > 4 / 6 ? 1 : 6 * (value - 3 / 6),
-              opacity: value > 4 / 6 ? (value < 5 / 6 ? 6 * (5 / 6 - value) : 0) : 6 * (value - 3 / 6),
+              scale: value > 4 / 6 ? 1 : (value > 3 / 6 ? 6 * (value - 3 / 6) : 0),
+              opacity: value > 4 / 6 ? (value < 5 / 6 ? 6 * (5 / 6 - value) : 0) : (value > 3 / 6 ? 6 * (value - 3 / 6) : 0),
               x: value > 4 / 6 ? (value < 5 / 6 ? -windowWidth / 2 * 6 * (value - 4 / 6) : -windowWidth / 2) : 0
             }}
             transition={{ease: "easeOut", duration: 0.618}}
@@ -185,8 +185,8 @@ const Eighth = () => {
             className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
             src={EighthImage} alt={""}
             animate={{
-              scale: value > 4 / 6 ? 1 : 6 * (value - 3 / 6),
-              opacity: value > 4 / 6 ? (value < 5 / 6 ? 6 * (5 / 6 - value) : 0) : 6 * (value - 3 / 6),
+              scale: value > 4 / 6 ? 1 : (value > 3 / 6 ? 6 * (value - 3 / 6) : 0),
+              opacity: value > 4 / 6 ? (value < 5 / 6 ? 6 * (5 / 6 - value) : 0) : (value > 3 / 6 ? 6 * (value - 3 / 6) : 0),
               x: value > 4 / 6 ? (value < 5 / 6 ? windowWidth / 2 * 6 * (value - 4 / 6) : windowWidth / 2) : 0
             }}
             transition={{ease: "easeOut", duration: 0.618}}
@@ -198,12 +198,12 @@ const Eighth = () => {
         className={"w-screen h-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.span
           animate={{
-            scale: value > 5 / 6 ? 1 : 6 * (value - 4 / 6),
-            opacity: value > 5 / 6 ? (value < 1 ? 6 * (1 - value) : 0) : 6 * (value - 4 / 6),
+            scale: value > 5 / 6 ? 1 : (value > 4 / 6 ? 6 * (value - 4 / 6) : 0),
+            opacity: value > 5 / 6 ? (value < 1 ? 6 * (1 - value) : 0) : (value > 4 / 6 ? 6 * (value - 4 / 6) : 0),
             x: value > 5 / 6 ? (value < 1 ? -windowWidth / 2 * 6 * (value - 5 / 6) : -windowWidth / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none mb-[5vw] overflow-hidden"}
+          className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none overflow-hidden"}
         >
           这是证据
         </motion.span>
@@ -211,8 +211,8 @@ const Eighth = () => {
           className={"h-[50vw] w-[31vw] max-h-[500px] max-w-[309px] rounded-[16px] overflow-hidden"}
           src={NinthImage} alt={""}
           animate={{
-            scale: value > 5 / 6 ? 1 : 6 * (value - 4 / 6),
-            opacity: value > 5 / 6 ? (value < 1 ? 6 * (1 - value) : 0) : 6 * (value - 4 / 6),
+            scale: value > 5 / 6 ? 1 : (value > 4 / 6 ? 6 * (value - 4 / 6) : 0),
+            opacity: value > 5 / 6 ? (value < 1 ? 6 * (1 - value) : 0) : (value > 4 / 6 ? 6 * (value - 4 / 6) : 0),
             x: value > 5 / 6 ? (value < 1 ? windowWidth / 2 * 6 * (value - 5 / 6) : windowWidth / 2) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
@@ -237,7 +237,7 @@ const Eighth = () => {
             opacity: value > 5 / 6 ? 6 * (value - 5 / 6) : 0
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none mb-[5vw] overflow-hidden"}
+          className={"text-[16px] lg:text-[32px] max-w-[31vw] select-none overflow-hidden"}
         >
           “老师，你知道这块玻璃的尺寸吗？”朱昊做坏事了。
         </motion.span>
