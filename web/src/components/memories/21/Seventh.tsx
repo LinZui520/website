@@ -19,7 +19,7 @@ const Seventh = () => {
     offset: ["start start", "end end"]
   })
 
-  const windowWidth = window.innerWidth;
+  //const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
   const [value, setValue] = useState(0)
 
