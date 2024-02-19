@@ -48,8 +48,9 @@ const Seventh = () => {
             y: -9 * value * windowHeight + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
-          className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}>
-        有时候，挺无奈的，挺惆怅的……这图片是不是可以代表我们的心情？
+          className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
+        >
+          有时候，挺无奈的，挺惆怅的……这图片是不是可以代表我们的心情？
         </motion.span>
       </div>
 
@@ -72,8 +73,9 @@ const Seventh = () => {
              y: -(9 * value - 1) * windowHeight + 'px'
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}>
-        贺阳明同学说：“错的不是我，而是整个世界。”怪默写喽！注：此图不是他的杰作
+            className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
+        >
+          贺阳明同学说：“错的不是我，而是整个世界。”怪默写喽！注：此图不是他的杰作
         </motion.span>
       </div>
 
@@ -91,13 +93,14 @@ const Seventh = () => {
 
         <motion.span 
           animate={{
-              opacity: 9 * value -1,
-              scale: 9 * value -1,
-             y: -(9 * value - 2) * windowHeight + 'px'
-            }}
-            transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}>
-        难兄难弟
+            opacity: 9 * value -1,
+            scale: 9 * value -1,
+            y: -(9 * value - 2) * windowHeight + 'px'
+          }}
+          transition={{ease: "easeOut", duration: 0.618}}
+          className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
+        >
+          难兄难弟
         </motion.span>
       </div>
 
@@ -115,13 +118,14 @@ const Seventh = () => {
 
         <motion.span 
           animate={{
-              opacity: 9 * value -2,
-              scale: 9 * value -2,
-             y: -(9 * value - 3) * windowHeight + 'px'
-            }}
-            transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}>
-        感觉孤单
+            opacity: 9 * value -2,
+            scale: 9 * value -2,
+            y: -(9 * value - 3) * windowHeight + 'px'
+          }}
+          transition={{ease: "easeOut", duration: 0.618}}
+          className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
+        >
+          感觉孤单
         </motion.span>
       </div>
       <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
@@ -138,13 +142,14 @@ const Seventh = () => {
 
         <motion.span 
           animate={{
-              opacity: 9 * value -3,
-              scale: 9 * value -3,
-             y: -(9 * value - 4) * windowHeight + 'px'
-            }}
-            transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}>
-        快来找错别字！
+            opacity: 9 * value -3,
+            scale: 9 * value -3,
+            y: -(9 * value - 4) * windowHeight + 'px'
+          }}
+          transition={{ease: "easeOut", duration: 0.618}}
+          className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
+        >
+          快来找错别字！
         </motion.span>
       </div>
 
@@ -188,13 +193,14 @@ const Seventh = () => {
 
         <motion.span 
           animate={{
-              opacity: 9 * value -6,
-              scale: 9 * value -6,
-             y: -(9 * value - 7) * windowHeight + 'px'
-            }}
-            transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}>
-        李明志同学，出镜率特别高，不信，你们看！
+            opacity: 9 * value -6,
+            scale: 9 * value -6,
+            y: -(9 * value - 7) * windowHeight + 'px'
+          }}
+          transition={{ease: "easeOut", duration: 0.618}}
+          className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
+        >
+          李明志同学，出镜率特别高，不信，你们看！
         </motion.span>
       </div>
 
@@ -212,13 +218,14 @@ const Seventh = () => {
 
         <motion.span 
           animate={{
-              opacity: 9 * value -7,
-              scale: 9 * value -7,
-             y: -(9 * value - 8) * windowHeight + 'px'
-            }}
-            transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}>
-        评人家的作文
+            opacity: 9 * value -7,
+            scale: 9 * value -7,
+            y: -(9 * value - 8) * windowHeight + 'px'
+          }}
+          transition={{ease: "easeOut", duration: 0.618}}
+          className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
+        >
+          评人家的作文
         </motion.span>
       </div>
 
@@ -236,13 +243,14 @@ const Seventh = () => {
 
         <motion.span 
           animate={{
-              opacity: 9 * value -8,
-              scale: 9 * value -8,
-             y: -(9 * value - 9) * windowHeight + 'px'
-            }}
-            transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}>
-        被人家评作文
+            opacity: 9 * value -8,
+            scale: 9 * value -8,
+            y: -(9 * value - 9) * windowHeight + 'px'
+          }}
+          transition={{ease: "easeOut", duration: 0.618}}
+          className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
+        >
+          被人家评作文
         </motion.span>
       </div>
     
