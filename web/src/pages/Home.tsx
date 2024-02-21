@@ -76,6 +76,7 @@ const Home = () => {
       <SixthNext />
       <Seventh />
       <Eighth />
+      
 
       <Footer />
     </div>
