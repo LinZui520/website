@@ -41,7 +41,7 @@ const Message = () => {
 
 
   return (
-    <div ref={screenElRef} className={"flex flex-col justify-center items-center h-screen w-screen"}>
+    <div ref={screenElRef} className={"flex flex-col-reverse items-center h-screen w-screen"}>
       <input
         placeholder="留下点什么啦~ （回车发送）"
         value={bullet} onChange={(e) => setBullet(e.target.value)}
