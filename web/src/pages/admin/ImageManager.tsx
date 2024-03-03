@@ -66,6 +66,7 @@ const ImageManager = () => {
         columns={columns}
         dataSource={images.map((image: Image) => ({ ...image, key: image.id }))}
         bordered
+        scroll={{y: '80vh'}}
         className={"w-[80vw]"}
       />
     </div>

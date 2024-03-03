@@ -62,6 +62,7 @@ const MessageManager = () => {
         columns={columns}
         dataSource={messages.map((message: Message) => ({ ...message, key: message.id }))}
         bordered
+        scroll={{y: '80vh'}}
         className={"w-[80vw]"}
       />
     </div>

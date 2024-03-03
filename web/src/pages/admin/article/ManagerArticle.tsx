@@ -63,6 +63,7 @@ const ManagerArticle = () => {
       <Table
         columns={columns}
         dataSource={articles.map((article: Article) => ({ ...article, key: article.id }))}
+        scroll={{y: '80vh'}}
         bordered
       />
     </div>
