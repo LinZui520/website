@@ -22,7 +22,7 @@ const MessageManager = () => {
     },
     {
       title: '头像', dataIndex: 'avatar', key: 'avatar',
-      render: text => <img
+      render: (text: string) => <img
         src={`${window.location.origin}/image/${text}`} alt={""}
         className={"max-w-[32px] max-h-[32px] object-contain rounded-full select-none"}
       />
@@ -35,11 +35,11 @@ const MessageManager = () => {
     },
     {
       title: '创建时间', dataIndex: 'create', key: 'create',
-      render: text => <span>{new Date(text).toLocaleString()}</span>,
+      render: (text: string) => <span>{new Date(text).toLocaleString()}</span>,
     },
     {
       title: '操作', key: 'action', fixed: 'right',
-      render: record => <div>
+      render: (record: Message) => <div>
         <Button type="link" onClick={() => handleDelete(record.id)}>
           删除
         </Button>

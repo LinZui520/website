@@ -28,7 +28,7 @@ const UserManager = () => {
     },
     {
       title: '头像', dataIndex: 'avatar', key: 'avatar',
-      render: text => <img
+      render: (text: string) => <img
         src={`${window.location.origin}/image/${text}`} alt={""}
         className={"max-w-[32px] max-h-[32px] object-contain rounded-full select-none"}
       />
@@ -41,17 +41,17 @@ const UserManager = () => {
     },
     {
       title: '权限', dataIndex: 'power', key: 'power',
-      render: text => text < 0 ? <span>人下人</span> :
+      render: (text: number) => text < 0 ? <span>人下人</span> :
         text === 0 ? <span>普通用户</span> :
           text === 1 ? <span>管理员</span> : <span>超级管理员</span>
     },
     {
       title: '最近登陆时间', dataIndex: 'login', key: 'login',
-      render: text => <span>{new Date(text).toLocaleString()}</span>,
+      render: (text: string) => <span>{new Date(text).toLocaleString()}</span>,
     },
     {
       title: '操作', key: 'action', fixed: 'right',
-      render: record => <div>
+      render: (record: User) => <div>
         <Button type="link" onClick={() => handleBlock(record.id)}>
           封禁
         </Button>

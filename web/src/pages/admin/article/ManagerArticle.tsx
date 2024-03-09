@@ -30,11 +30,11 @@ const ManagerArticle = () => {
     },
     {
       title: '创建时间', dataIndex: 'create', key: 'create',
-      render: text => <span>{new Date(text).toLocaleString()}</span>,
+      render: (text: string) => <span>{new Date(text).toLocaleString()}</span>,
     },
     {
       title: '操作', key: 'action', fixed: 'right',
-      render: record => <div>
+      render: (record: Article) => <div>
         <Button type="link" onClick={() => handleDelete(record.id)}>
           删除
         </Button>

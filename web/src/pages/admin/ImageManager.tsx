@@ -27,18 +27,18 @@ const ImageManager = () => {
     },
     {
       title: '预览图', dataIndex: 'filename', key: 'filename',
-      render: text => <IMAGE
+      render: (text: string) => <IMAGE
         src={"/image/"+text} alt={text}
         className={"max-w-[80px] max-h-[80px] object-contain"}
       />
     },
     {
       title: '创建时间', dataIndex: 'create', key: 'create',
-      render: text => <span>{new Date(text).toLocaleString()}</span>,
+      render: (text: string) => <span>{new Date(text).toLocaleString()}</span>,
     },
     {
       title: '操作', key: 'action', fixed: 'right',
-      render: record => <div>
+      render: (record: Image) => <div>
         <Button type="link" onClick={() => handleDelete(record.id)}>
           删除
         </Button>

@@ -20,7 +20,7 @@
     "markdown-it-mark": "^4.0.0",
     "md-editor-rt": "^4.9.0",
     "normalize.css": "^8.0.1",
-    "rc-bullets-ts": "^1.3.2",
+    "rc-bullets-ts": "^1.4.0",
     "rc-slider-captcha": "^1.3.0",
     "react": "^18.2.0",
     "react-cookies": "^0.1.1",
