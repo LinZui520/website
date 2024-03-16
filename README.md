@@ -2,7 +2,7 @@
 
 边学习边搭建自己的个人网站
 
-### 依赖
+#### 依赖
 
 ```docker``` 和 ```docker-compose```
 
@@ -27,7 +27,7 @@ $ pacman -S docker docker-compose
 $ systemctl enable docker
 ```
 
-### 部署 
+#### 部署 
 
 ```sh
 $ git clone git@github.com:LinZui520/website.git
@@ -42,3 +42,23 @@ $ git clone git@github.com:LinZui520/website.git
 ```sh
 $ docker-compose up -d
 ```
+
+### 代码提交规范
+
+feat: 新增功能
+
+fix: 修复功能
+
+docs: 更新文档
+
+style: 代码格式变更
+
+refactor: 代码重构，非新增功能，非修改功能
+
+perf: 性能优化
+
+test: 增加测试用例
+
+chore: 构建过程或辅助工具的变动
+
+revert: 代码回退
