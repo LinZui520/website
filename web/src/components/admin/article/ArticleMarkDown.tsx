@@ -2,7 +2,7 @@ import {config, MdEditor, NormalToolbar} from "md-editor-rt";
 import MarkExtension from "markdown-it-mark";
 import '@vavt/rt-extension/lib/asset/style.css';
 import {Input, Modal} from "antd";
-import {FileImageFilled} from '@ant-design/icons';
+import {FileImageOutlined} from '@ant-design/icons';
 import React, { ReactNode, useState } from "react";
 import ImageList from "./ImageList";
 import useFetchImagesByAuthor from "../../../hooks/image/useFetchImagesByAuthor";
@@ -64,15 +64,14 @@ const ArticleMarkDown: React.FC<ArticleMarkDownProps> = (
           <NormalToolbar
             key={"我的图片"}
             title={"我的图片"}
-            trigger={<FileImageFilled />}
+            trigger={<FileImageOutlined />}
             onClick={() => fetchData().then(() => setImageModalOpen(true))}
           />
         ]}
         toolbars={[
           'sub', 'sup', '-',
-          'image', '-',
+          'link', 'image', 0, '-',
           'save', '-',
-          0, '-',
           '=', 'pageFullscreen', 'fullscreen'
         ]}
         onSave={() => setIsModalOpen(true)}
