@@ -2,6 +2,7 @@ import BulletScreen, { StyledBullet } from "rc-bullets-ts";
 import React, {useEffect, useRef, useState } from "react";
 import useFetchMessages from "../hooks/message/useFetchMessages";
 import useUploadMessage from "../hooks/message/useUploadMessage";
+import {motion} from "framer-motion";
 
 const Message = () => {
 
@@ -20,6 +21,8 @@ const Message = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (messages.length === 0) return
+
+      if (index === 0) messages.sort(() => 0.5 - Math.random())
 
       if (index >= messages.length) return setIndex(0)
 
@@ -42,15 +45,29 @@ const Message = () => {
 
   return (
     <div ref={screenElRef} className={"flex flex-col-reverse items-center h-screen w-screen"}>
-      <input
-        placeholder="留下点什么啦~ （回车发送）"
-        value={bullet} onChange={(e) => setBullet(e.target.value)}
-        className={
-          "w-[320px] h-[48px] mb-[32px] border-2 " +
-          "border-[#888888] rounded-full px-[10px] outline-none z-10"
-        }
-        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' ? uploadMessage(bullet) : null}
-      />
+      <div className={"flex flex-row items-center justify-center mb-[32px]"}>
+        <motion.input
+          placeholder="留下点什么啦~ "
+          value={bullet} onChange={(e) => setBullet(e.target.value)}
+          className={
+            "w-[320px] h-[48px] border-2 mr-[32px] " +
+            "border-[#888888] rounded-full px-[10px] outline-none z-10"
+          }
+          whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} whileFocus={{scale: 1.1}}
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' ? uploadMessage(bullet) : null}
+        />
+
+        <motion.button
+          className={
+            "w-[48px] h-[48px] cursor-pointer border-[#888888] border-2 bg-[#fbfbfd] text-[#888888] " +
+            "select-none rounded-[24px] z-10 flex justify-center items-center"
+          }
+          onClick={() => uploadMessage(bullet)} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
+        >
+          留言
+        </motion.button>
+      </div>
+
     </div>
   );
 }
