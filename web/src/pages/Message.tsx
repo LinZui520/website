@@ -44,13 +44,15 @@ const Message = () => {
 
 
   return (
-    <div ref={screenElRef} className={"flex flex-col-reverse items-center h-screen w-screen"}>
-      <div className={"flex flex-row items-center justify-center mb-[32px]"}>
+    <div className={"flex flex-col items-center h-screen w-screen"}>
+      <div ref={screenElRef} className={"w-screen h-calc-32"}></div>
+
+      <div className={"w-screen h-[128px] flex flex-row items-center justify-center"}>
         <motion.input
           placeholder="留下点什么啦~ "
           value={bullet} onChange={(e) => setBullet(e.target.value)}
           className={
-            "w-[320px] h-[48px] border-2 mr-[32px] " +
+            "max-w-[60vw] w-[320px] h-[48px] border-2 mr-[32px] " +
             "border-[#888888] rounded-full px-[10px] outline-none z-10"
           }
           whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} whileFocus={{scale: 1.1}}
