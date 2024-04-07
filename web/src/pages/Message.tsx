@@ -62,7 +62,7 @@ const Message = () => {
         <motion.button
           className={
             "w-[48px] h-[48px] cursor-pointer border-[#888888] border-2 bg-[#fbfbfd] text-[#888888] " +
-            "select-none rounded-[24px] z-10 flex justify-center items-center"
+            "select-none rounded-full z-10 flex justify-center items-center"
           }
           onClick={() => uploadMessage(bullet)} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}
         >
