@@ -3,7 +3,7 @@ use website;
 
 create table if not exists users (
     id int auto_increment comment '用户编号',
-    avatar varchar(32) comment '头像编号',
+    avatar varchar(32) default "default.png" comment '头像',
     username varchar(32) not null comment '用户名',
     email varchar(32) not null comment '邮箱',
     password varchar(64) not null comment '密码',
