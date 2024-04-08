@@ -13,34 +13,47 @@ const Message = () => {
   const [index, setIndex] = useState(0)
   const uploadMessage = useUploadMessage(fetchData, setBullet)
 
+  const pushMessage = () => {
+    if (messages.length === 0) return
+
+    if (index === 0) messages.sort(() => 0.5 - Math.random())
+
+    if (index >= messages.length) return setIndex(0)
+
+    screenRef.current?.push(
+      <StyledBullet
+        className={"select-none"}
+        head={`${window.location.origin}/image/${messages[index].avatar}`}
+        msg={messages[index].content}
+        backgroundColor={'#fbfbfd'}
+        size="large"
+      />, {}
+    );
+
+    setIndex(index + 1)
+  }
 
   useEffect(() => {
     screenRef.current = new BulletScreen(screenElRef.current, {duration: 16})
   }, [])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (messages.length === 0) return
+    let interval: NodeJS.Timeout
 
-      if (index === 0) messages.sort(() => 0.5 - Math.random())
+    const handleVisibilityChange = () => {
+      if (document.hidden) clearInterval(interval)
+      else interval = setInterval(pushMessage, 2048)
+    }
 
-      if (index >= messages.length) return setIndex(0)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
-      screenRef.current?.push(
-        <StyledBullet
-          className={"select-none"}
-          head={`${window.location.origin}/image/${messages[index].avatar}`}
-          msg={messages[index].content}
-          backgroundColor={'#fbfbfd'}
-          size="large"
-        />, {}
-      );
+    interval = setInterval(pushMessage, 2048)
 
-      setIndex(index + 1)
-    }, 2048);
-
-    return () => clearInterval(interval);
-  }, [messages, index])
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }
+  }, [messages, index, pushMessage])
 
 
   return (
