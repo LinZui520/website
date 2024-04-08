@@ -22,6 +22,12 @@ port为获取SMTP服务的主机端口，如```google```的端口为**587**
 
 > 理由在注释里面
 
+### 修改用户默认头像
+
+修改`website/database/mysql/data/image/default.png`
+
+图片必须取这个名字
+
 
 
 ### Server所依赖的第三方包
