@@ -1,6 +1,5 @@
 clean.sh
 run.sh
-database/mysql/data/image/*
 database/mysql/data/mysql/*
 nginx/ssl/fullchain.crt
 nginx/ssl/private.pem
