@@ -1,5 +1,5 @@
 import BulletScreen, { StyledBullet } from "rc-bullets-ts";
-import React, {useEffect, useRef, useState } from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import useFetchMessages from "../hooks/message/useFetchMessages";
 import useUploadMessage from "../hooks/message/useUploadMessage";
 import {motion} from "framer-motion";
@@ -13,7 +13,7 @@ const Message = () => {
   const [index, setIndex] = useState(0)
   const uploadMessage = useUploadMessage(fetchData, setBullet)
 
-  const pushMessage = () => {
+  const pushMessage = useCallback(() => {
     if (messages.length === 0) return
 
     if (index === 0) messages.sort(() => 0.5 - Math.random())
@@ -31,7 +31,7 @@ const Message = () => {
     );
 
     setIndex(index + 1)
-  }
+  },[index, messages])
 
   useEffect(() => {
     screenRef.current = new BulletScreen(screenElRef.current, {duration: 16})
