@@ -261,7 +261,7 @@ func (UserService) UploadAvatar(c *gin.Context) (string, error) {
 	}
 	err = os.Remove(directory + user.Avatar)
 	if err != nil {
-		return "", errors.New("删除旧头像失败")
+		global.Log.Warnln("删除旧图片失败", user.Avatar)
 	}
 	return filename, global.DB.Model(&user).Update("avatar", filename).Error
 }

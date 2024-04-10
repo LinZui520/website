@@ -77,7 +77,7 @@ func (ImageService) DeleteImage(c *gin.Context) error {
 
 	err = os.Remove(global.Config.System.Directory + image.Filename)
 	if err != nil {
-		return errors.New("图片删除失败")
+		global.Log.Warnln("删除旧图片失败", image.Filename)
 	}
 	return global.DB.Where("id = ?", image.Id).Delete(&image).Error
 }
