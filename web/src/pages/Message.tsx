@@ -60,7 +60,7 @@ const Message = () => {
     <div className={"flex flex-col items-center h-screen w-screen"}>
       <div className={"h-[10vh]"}/>
 
-      <div ref={screenElRef} className={"w-screen h-calc-32"} />
+      <div ref={screenElRef} className={"w-screen h-calc-32 overflow-x-clip"} />
 
       <div className={"w-screen h-[128px] flex flex-row items-center justify-center"}>
         <motion.input
