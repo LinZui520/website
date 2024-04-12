@@ -5,6 +5,7 @@ import { User } from "./useFetchUsers";
 const useGetUserInfo = (username: string) => {
 
   const [userInfo, setUserInfo] = useState<User>({id: 0, avatar: '', username: '', email: '', password: '', power: -1, register: '', login: ''})
+  const [isGetUserInfoFinished, setIsGetUserInfoFinished] = useState(false)
 
   const fetchData = useCallback(async () => {
     try {
@@ -21,10 +22,10 @@ const useGetUserInfo = (username: string) => {
 
 
   useEffect(() => {
-    fetchData().then(() => {});
+    fetchData().then(() => setIsGetUserInfoFinished(true));
   }, [fetchData]);
 
-  return { userInfo };
+  return { userInfo, isGetUserInfoFinished };
 }
 
 export default useGetUserInfo;
