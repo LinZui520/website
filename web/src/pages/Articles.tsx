@@ -3,22 +3,26 @@ import ArticlesMain from "../components/articles/ArticlesMain";
 import ArticlesHeader from "../components/articles/ArticlesHeader";
 import Footer from '../components/index/Footer';
 import useFetchArticles from "../hooks/article/useFetchArticles";
+import { useLocation } from "react-router-dom";
 
 const Articles = () => {
 
-  const {articles} = useFetchArticles()
+  const { articles, isLoaded } = useFetchArticles()
+
+  const location = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    if (isLoaded) window.scrollTo(0, 0);
+  }, [location, isLoaded]);
 
 
   return (
-    <div>
+    !isLoaded ? <div /> :
+    <>
       <ArticlesHeader />
       <ArticlesMain articles={articles}/>
       <Footer />
-    </div>
+    </>
   );
 }
 

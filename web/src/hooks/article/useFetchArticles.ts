@@ -4,6 +4,7 @@ import { Article } from './useFetchArticle';
 
 const useFetchArticles = () => {
   const [articles, setArticles] = useState<Article[]>([])
+  const [isLoaded, setIsLoaded] = useState(false)
 
   const fetchData = useCallback(async () => {
     try {
@@ -19,10 +20,10 @@ const useFetchArticles = () => {
   }, []);
 
   useEffect(() => {
-    fetchData().then(() => {});
+    fetchData().then(() => setIsLoaded(true));
   }, [fetchData]);
 
-  return { articles, fetchData: fetchData };
+  return { articles, fetchData: fetchData, isLoaded };
 };
 
 export default useFetchArticles;

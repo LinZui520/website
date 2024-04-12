@@ -1,4 +1,4 @@
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Article } from "../../hooks/article/useFetchArticle";
@@ -10,6 +10,7 @@ interface ArticlesMainProps {
 const ArticlesMain: React.FC<ArticlesMainProps> = ({ articles }) => {
 
   const navigate = useNavigate()
+  const location = useLocation();
 
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
 
@@ -27,7 +28,7 @@ const ArticlesMain: React.FC<ArticlesMainProps> = ({ articles }) => {
 
 
   return (
-    <div className={"w-screen bg-[#fbfbfd] min-h-screen p-[64px] flex flex-col justify-evenly items-center overflow-clip"}>
+    <div className={"w-screen bg-[#fbfbfd] p-[64px] flex flex-col justify-evenly items-center overflow-clip"}>
       {articles.map(item =>
         <div
           key={item.id}
@@ -69,7 +70,7 @@ const ArticlesMain: React.FC<ArticlesMainProps> = ({ articles }) => {
                 transition={{duration: 0.5}}
                 src={`${window.location.origin}/image/${item.avatar}`}
                 alt={""} title={item.username}
-                onClick={() => navigate('/info/' + item.username)}
+                onClick={() => location.pathname !== '/info/' + item.username && navigate('/info/' + item.username)}
                 className={
                   "w-[32px] h-[32px] lg:w-[64px] lg:h-[64px] " +
                   "object-contain rounded-full select-none ml-[16px] mr-[16px] cursor-pointer"
