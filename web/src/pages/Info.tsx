@@ -2,10 +2,12 @@ import { motion } from "framer-motion";
 import {useSelector} from "react-redux";
 import NotFind from "./NotFind";
 import { RootState } from "../redux";
-import React, { useRef } from "react";
+import React, {useEffect, useRef} from "react";
 import useUploadAvatar from "../hooks/user/useUploadAvatar";
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import useGetUserInfo from "../hooks/user/useGetUserInfo";
+import useFetchUserInfoArticles from "../hooks/article/useFetchUserInfoArticles";
+import ArticlesMain from "../components/articles/ArticlesMain";
 
 
 const Info = () => {
@@ -19,10 +21,22 @@ const Info = () => {
 
   const { uploadAvatar } = useUploadAvatar()
 
+  const { articles, isLoaded, fetchData } = useFetchUserInfoArticles(userInfo.id);
+  useEffect(() => {
+    fetchData(userInfo.id).then(() => {});
+  }, [isGetUserInfoFinished, fetchData]);
+
+
+  const location = useLocation();
+  useEffect(() => {
+    if (isLoaded) window.scrollTo(0, 0);
+  }, [location, isLoaded]);
+
   return (
+    !isLoaded ? <div /> :
     isGetUserInfoFinished && userInfo.id === 0 ? <NotFind /> :
-    <div className={"flex flex-col justify-center items-center h-screen w-screen"}>
-      <div className={"w-screen flex flex-row justify-center items-center"}>
+    <div className={"flex flex-col justify-center items-center min-h-screen w-screen"}>
+      <div className={"h-[50vh] w-screen flex flex-row justify-center items-center"}>
         <motion.img
           src={`${window.location.origin}/image/${userInfo.avatar}`} alt={""}
           whileHover={isSelf ? {scale: 1, rotate: 360} : {scale: 1, rotate: 360}}
@@ -52,6 +66,8 @@ const Info = () => {
         </div>
 
       </div>
+
+      <ArticlesMain   articles={articles}/>
 
 
     </div>
