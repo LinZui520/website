@@ -5,6 +5,14 @@ export const GetAllArticle = () => request({
   method: 'get',
 })
 
+export const GetArticlesById = (id: number) => request({
+  url: '/article/list/id',
+  method: 'get',
+  params: {
+    id
+  }
+})
+
 export const GetArticleByAuthor = () => request({
   url: '/article/author',
   method: 'get',
