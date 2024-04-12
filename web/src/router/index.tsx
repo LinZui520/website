@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         element: <Chat />
       },
       {
-        path: 'info',
+        path: 'info/:username',
         element: <Info />,
       },
       {

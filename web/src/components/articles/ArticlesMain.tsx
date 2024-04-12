@@ -24,7 +24,7 @@ const ArticlesMain = () => {
 
 
   return (
-    <div className={"w-screen bg-[#fbfbfd] min-h-screen flex flex-col justify-evenly items-center overflow-clip"}>
+    <div className={"w-screen bg-[#fbfbfd] min-h-screen p-[64px] flex flex-col justify-evenly items-center overflow-clip"}>
       {articles.map(item =>
         <div
           key={item.id}
@@ -61,12 +61,15 @@ const ArticlesMain = () => {
               <motion.img
                 initial={isLargeScreen ? {x: 100, rotate: 180, opacity: 0} : {x: 50, rotate: 180, opacity: 0}}
                 whileInView={{x: 0, rotate: 0, opacity: 1}}
+                whileHover={{scale: 1.1, rotate: 360}}
+                whileTap={{scale: 0.9}}
                 transition={{duration: 0.5}}
                 src={`${window.location.origin}/image/${item.avatar}`}
                 alt={""} title={item.username}
+                onClick={() => navigate('/info/' + item.username)}
                 className={
                   "w-[32px] h-[32px] lg:w-[64px] lg:h-[64px] " +
-                  "object-contain rounded-full select-none ml-[16px] mr-[16px]"
+                  "object-contain rounded-full select-none ml-[16px] mr-[16px] cursor-pointer"
                 }
               />
             </div>

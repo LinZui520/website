@@ -84,3 +84,11 @@ export const UserCount = () => request({
   url: '/user/count',
   method: 'get',
 })
+
+export const GetUserInfo = (username: string) => request({
+  url: '/user/info',
+  method: 'get',
+  params: {
+    username
+  }
+})
