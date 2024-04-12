@@ -295,3 +295,21 @@ func (UserService) UpdateUsername(c *gin.Context) error {
 	}
 	return global.DB.Model(&user).Update("username", username).Error
 }
+
+func (UserService) GetUserInfo(c *gin.Context) (model.User, error) {
+	var user model.User
+	err := global.DB.Where("username = ?", c.Query("username")).First(&user).Error
+	if err != nil {
+		return model.User{}, errors.New("未查询到该用户")
+	}
+	return model.User{
+		Id:       user.Id,
+		Avatar:   user.Avatar,
+		Username: user.Username,
+		Email:    user.Email,
+		Password: "",
+		Power:    user.Power,
+		Register: user.Register,
+		Login:    user.Login,
+	}, nil
+}

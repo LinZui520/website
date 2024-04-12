@@ -22,6 +22,7 @@ func UserRouter(router *gin.Engine) {
 		user.POST("/avatar", userApi.UploadAvatar)
 		user.GET("/count", userApi.UserCount)
 		user.POST("/username", userApi.UpdateUsername)
+		user.GET("/info", userApi.GetUserInfo)
 	}
 
 }

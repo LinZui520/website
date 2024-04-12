@@ -117,3 +117,12 @@ func (UserApi) UpdateUsername(c *gin.Context) {
 		model.OK(true, "更新成功", c)
 	}
 }
+
+func (UserApi) GetUserInfo(c *gin.Context) {
+	data, err := userService.GetUserInfo(c)
+	if err != nil {
+		model.Fail(data, err.Error(), c)
+	} else {
+		model.OK(data, "查询成功", c)
+	}
+}
