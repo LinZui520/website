@@ -26,10 +26,37 @@ const ArticlesMain: React.FC<ArticlesMainProps> = ({ articles }) => {
     };
   }, []);
 
+  const [keywords, setKeywords] = useState("")
+
+  const filterArticles = ((articles: Article[], keywords: string) =>
+    articles.filter(
+      item =>
+      item.title.toLowerCase().includes(keywords.toLowerCase()) ||
+      item.content.toLowerCase().includes(keywords.toLowerCase()) ||
+      item.username.toLowerCase().includes(keywords.toLowerCase()) ||
+      item.create.toLowerCase().includes(keywords.toLowerCase())
+    )
+  )(articles, keywords)
 
   return (
     <div className={"w-screen bg-[#fbfbfd] p-[64px] flex flex-col justify-evenly items-center overflow-clip"}>
-      {articles.map(item =>
+      <div className={"w-[90vw] md:w-[80vw] lg:w-[60vw] max-w-[768px] flex flex-row justify-end items-center"}>
+        <motion.input
+          placeholder="关键字搜索"
+          value={keywords} onChange={(e) => setKeywords(e.target.value)}
+          className={
+            "max-w-[60vw] w-[38%] h-[30px] md:h-[38px] lg:h-[46px] text-[16px] md:text-[20px] lg:text-[24px] " +
+            "border-2 mb-[64px] mr-[64px] border-[#1f1f1d] rounded-full outline-none z-10"
+          }
+          whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} whileFocus={{scale: 1.1}}
+        />
+      </div>
+
+
+      {filterArticles.length <= 0 ?
+        <span className={"font-bold text-[18px] md:text-[24px] lg:text-[32px] text-[#1d1d1f] select-none"}>
+          你在找一种很新的东西
+        </span> : filterArticles.map(item =>
         <div
           key={item.id}
           className={
