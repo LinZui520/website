@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import React, {useEffect, useState} from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../redux";
+import useGetMenu from "../../hooks/useGetMenu";
 
 interface MenuItemProps {
   item: { href: string; text: string };
@@ -36,16 +35,8 @@ export const Menu = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
-  const user = useSelector((state: RootState) => state.user);
 
-  const menu = [
-    {href: '/', text: '首页'},
-    {href: '/articles', text: '博客'},
-    {href: '/message', text: '留言'},
-    user.id !== 0 ? {href: '/chat', text: '聊天'} : null,
-    user.id !== 0 ? {href: '/admin', text: '管理'} : null,
-    user.id === 0 ? {href: '/login', text: '登录'} : {href: '/info', text: user.username},
-  ]
+  const { menu } = useGetMenu()
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';

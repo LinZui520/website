@@ -1,24 +1,15 @@
 import { motion } from "framer-motion";
-import {useSelector} from "react-redux";
-import {RootState} from "../../redux";
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import Timer from "./Timer";
+import useGetMenu from "../../hooks/useGetMenu";
 
 
 const Footer = () => {
 
-  const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate()
 
-  const menu = [
-    {href: '/', text: '首页'},
-    {href: '/articles', text: '博客'},
-    {href: '/message', text: '留言'},
-    user.id !== 0 ? {href: '/chat', text: '聊天'} : null,
-    user.id !== 0 ? {href: '/admin', text: '管理'} : null,
-    user.id === 0 ? {href: '/login', text: '登录'} : {href: '/info', text: user.username},
-  ]
+  const { menu } = useGetMenu()
 
   return (
     <div className={"bg-[#1d1d1f] w-screen h-screen flex flex-col justify-around items-center"}>
