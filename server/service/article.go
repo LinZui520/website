@@ -73,6 +73,20 @@ func (ArticleService) GetAllArticle() ([]model.ArticleDTO, error) {
 	return articles, nil
 }
 
+func (ArticleService) GetArticlesById(c *gin.Context) ([]model.ArticleDTO, error) {
+	var articles []model.ArticleDTO
+	err := global.DB.Table("articles").
+		Select("articles.id as Id, author, username, avatar, title, `create`, `update`").
+		Joins("LEFT JOIN users ON articles.author = users.id").
+		Where("articles.author = ?", c.Query("id")).
+		Order("`create` desc").
+		Scan(&articles).Error
+	if err != nil {
+		return nil, errors.New("查询文章失败")
+	}
+	return articles, nil
+}
+
 func (ArticleService) GetArticleByAuthor(c *gin.Context) ([]model.ArticleDTO, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)

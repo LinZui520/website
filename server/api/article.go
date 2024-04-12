@@ -50,6 +50,17 @@ func (ArticleApi) GetAllArticle(c *gin.Context) {
 	}
 }
 
+func (ArticleApi) GetArticlesById(c *gin.Context) {
+	list, err := articleService.GetArticlesById(c)
+	if err != nil {
+		model.Fail(struct{}{}, "查询失败", c)
+	} else if len(list) == 0 {
+		model.OK(list, "未查询到任何文章", c)
+	} else {
+		model.OK(list, "查询成功", c)
+	}
+}
+
 func (ArticleApi) GetArticleByAuthor(c *gin.Context) {
 	data, err := articleService.GetArticleByAuthor(c)
 	if err != nil {
