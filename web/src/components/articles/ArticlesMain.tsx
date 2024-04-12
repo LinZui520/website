@@ -1,12 +1,15 @@
 import {useNavigate} from "react-router-dom";
-import useFetchArticles from "../../hooks/article/useFetchArticles";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Article } from "../../hooks/article/useFetchArticle";
 
-const ArticlesMain = () => {
+interface ArticlesMainProps {
+  articles: Article[]
+}
+
+const ArticlesMain: React.FC<ArticlesMainProps> = ({ articles }) => {
 
   const navigate = useNavigate()
-  const {articles} = useFetchArticles()
 
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
 
