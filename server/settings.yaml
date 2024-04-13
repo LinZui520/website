@@ -15,7 +15,7 @@ redis:
 
 logger:
   level: info
-  prefix: '[website]'
+  prefix: '[WEB]'
   director: log
   show_line: true
   log_in_console: true
