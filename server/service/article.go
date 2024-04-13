@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"server/global"
@@ -9,6 +10,8 @@ import (
 )
 
 type ArticleService struct{}
+
+const articlesCacheKey = "articles"
 
 func (ArticleService) AddArticle(c *gin.Context) error {
 	tokenString, _ := c.Cookie("token")
@@ -24,7 +27,16 @@ func (ArticleService) AddArticle(c *gin.Context) error {
 		Create:  time.Now(),
 		Update:  time.Now(),
 	}
-	return global.DB.Create(&article).Error
+	if global.DB.Create(&article).Error != nil {
+		return errors.New("添加失败")
+	}
+
+	err = global.Redis.Del(articlesCacheKey).Err()
+	if err != nil {
+		global.Log.Warnln("Redis 删除文章缓存失败:", err)
+	}
+
+	return nil
 }
 
 func (ArticleService) DeleteArticle(c *gin.Context) error {
@@ -44,7 +56,16 @@ func (ArticleService) DeleteArticle(c *gin.Context) error {
 		return errors.New("没有权限删除该文章")
 	}
 
-	return global.DB.Where("id = ?", article.Id).Delete(&article).Error
+	if global.DB.Where("id = ?", article.Id).Delete(&article).Error != nil {
+		return errors.New("删除失败")
+	}
+
+	err = global.Redis.Del(articlesCacheKey).Err()
+	if err != nil {
+		global.Log.Warnln("Redis 删除文章缓存失败:", err)
+	}
+
+	return nil
 }
 
 func (ArticleService) GetOneArticle(c *gin.Context) (model.ArticleDTO, error) {
@@ -62,7 +83,19 @@ func (ArticleService) GetOneArticle(c *gin.Context) (model.ArticleDTO, error) {
 
 func (ArticleService) GetAllArticle() ([]model.ArticleDTO, error) {
 	var articles []model.ArticleDTO
-	err := global.DB.Table("articles").
+
+	cachedArticles, err := global.Redis.Get(articlesCacheKey).Result()
+	if err == nil {
+		err = json.Unmarshal([]byte(cachedArticles), &articles)
+		if err == nil {
+			global.Log.Infoln("Redis 缓存文章数据获取成功")
+			return articles, nil
+		} else {
+			global.Log.Warnln("Redis 缓存文章数据解析失败:", err)
+		}
+	}
+
+	err = global.DB.Table("articles").
 		Select("articles.id as Id, author, username, avatar, title, content, `create`, `update`").
 		Joins("LEFT JOIN users ON articles.author = users.id").
 		Order("`create` desc").
@@ -70,6 +103,16 @@ func (ArticleService) GetAllArticle() ([]model.ArticleDTO, error) {
 	if err != nil {
 		return nil, errors.New("查询文章失败")
 	}
+
+	serializedArticles, err := json.Marshal(articles)
+	if err != nil {
+		global.Log.Warnln("Redis 文章数据序列化失败:", err)
+	}
+	err = global.Redis.Set(articlesCacheKey, serializedArticles, 10*time.Minute).Err()
+	if err != nil {
+		global.Log.Warnln("Redis 存储文章失败:", err)
+	}
+
 	return articles, nil
 }
 
