@@ -28,8 +28,8 @@ func SendVerificationEmail(email, code string) error {
 	message := gomail.NewMessage()
 	message.SetHeader("From", config.SMTPEmail)
 	message.SetHeader("To", email)
-	message.SetHeader("Subject", "Email Verification Code")
-	message.SetBody("text/plain", fmt.Sprintf("Your verification code is: %s", code))
+	message.SetHeader("Subject", "验证码")
+	message.SetBody("text/plain", fmt.Sprintf("你在www.朱贵是混蛋.cn里的验证码是: %s", code))
 
 	dialer := gomail.NewDialer(config.SMTPHost, config.SMTPPort, config.SMTPEmail, config.SMTPPassword)
 

@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"math"
 	"strconv"
@@ -16,18 +15,18 @@ func VerifySliderCaptcha(c *gin.Context) error {
 	if x != 260 || y == 0 || duration < 128 || length < 10 {
 		return errors.New("我一眼就看出你不是人")
 	}
-	trail := make([][2]float64, length)
-	for i := 0; i < length; i++ {
-		x, errX := strconv.ParseFloat(c.PostForm(fmt.Sprintf("trail[%d][0]", i)), 64)
-		y, errY := strconv.ParseFloat(c.PostForm(fmt.Sprintf("trail[%d][1]", i)), 64)
-		if errX != nil || errY != nil {
-			return errors.New("我一眼就看出你不是人")
-		}
-		trail[i] = [2]float64{x, y}
-	}
-	if verifyTrajectoryLength(trail, length) != true || verifyTrajectorySmooth(trail, length) != true {
-		return errors.New("我一眼就看出你不是人")
-	}
+	//trail := make([][2]float64, length)
+	//for i := 0; i < length; i++ {
+	//	x, errX := strconv.ParseFloat(c.PostForm(fmt.Sprintf("trail[%d][0]", i)), 64)
+	//	y, errY := strconv.ParseFloat(c.PostForm(fmt.Sprintf("trail[%d][1]", i)), 64)
+	//	if errX != nil || errY != nil {
+	//		return errors.New("我一眼就看出你不是人")
+	//	}
+	//	trail[i] = [2]float64{x, y}
+	//}
+	//if verifyTrajectoryLength(trail, length) != true || verifyTrajectorySmooth(trail, length) != true {
+	//	return errors.New("我一眼就看出你不是人")
+	//}
 	return nil
 }
 

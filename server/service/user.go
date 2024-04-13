@@ -29,6 +29,7 @@ func (UserService) UserVerify(c *gin.Context) error {
 	}
 	err = SendVerificationEmail(email, code)
 	if err != nil {
+		global.Log.Warnln("发送验证码失败", err)
 		return errors.New("发送验证码失败")
 	}
 
