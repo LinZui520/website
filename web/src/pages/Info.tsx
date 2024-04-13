@@ -24,7 +24,7 @@ const Info = () => {
   const { articles, isLoaded, fetchData } = useFetchUserInfoArticles(userInfo.id);
   useEffect(() => {
     fetchData(userInfo.id).then(() => {});
-  }, [isGetUserInfoFinished, fetchData]);
+  }, [userInfo.id, isGetUserInfoFinished, fetchData]);
 
 
   const location = useLocation();
