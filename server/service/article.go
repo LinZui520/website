@@ -166,11 +166,20 @@ func (ArticleService) UpdateArticle(c *gin.Context) error {
 		return errors.New("没有权限修改该文章")
 	}
 
-	return global.DB.Model(&article).Updates(model.Article{
+	if global.DB.Model(&article).Updates(model.Article{
 		Title:   c.PostForm("title"),
 		Content: c.PostForm("content"),
 		Update:  time.Now(),
-	}).Error
+	}).Error != nil {
+		return errors.New("修改文章失败")
+	}
+
+	err = global.Redis.Del(articlesCacheKey).Err()
+	if err != nil {
+		global.Log.Warnln("Redis 删除文章缓存失败:", err)
+	}
+
+	return nil
 }
 
 func (ArticleService) ArticleCount(c *gin.Context) (int64, error) {
