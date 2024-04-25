@@ -25,7 +25,7 @@ system:
   port: 8080
   env: release
   directory: ../database/mysql/data/image/
-  smtp_email: 3035486238@qq.com
+  smtp_email: yangminghe20@gmail.com
   smtp_password: [FILTERED]
-  smtp_host: smtp.qq.com
+  smtp_host: smtp.gmail.com
   smtp_port: 587
