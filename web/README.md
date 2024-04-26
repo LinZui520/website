@@ -1,3 +1,23 @@
+### 修改网站搭建时间
+````sh
+$ vim src/components/index/Timer.tsx
+````
+
+### 修改网站页脚信息
+````sh
+$ vim src/components/index/Footer.tsx
+````
+
+### 修改网站图标和名称
+
+图标：`public/favicon.ico`
+
+```sh
+$ vim public/index.html
+```
+
+
+
 ### Web所依赖的第三方库
 
 > 不用理会

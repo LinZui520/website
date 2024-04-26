@@ -35,11 +35,14 @@ $ git clone git@github.com:LinZui520/website.git
 
 阅读```./nginx```文件夹下的```README.md```文件 
 
+阅读```./web```文件夹下的```README.md```文件 
+
 阅读```./server```文件夹下的```README.md```文件 
 
 然后```website```启动🫡
 
 ```sh
+$ docker-compose build
 $ docker-compose up -d
 ```
 
