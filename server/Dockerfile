@@ -13,4 +13,4 @@ ENV GO111MODULE=on \
 RUN go mod download
 RUN go build main.go
 
-CMD ["./main"]
+CMD ["sh", "-c", "./main >> /root/website/database/logs/server.log"]
