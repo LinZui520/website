@@ -26,7 +26,7 @@ const useFetchUserInfoArticles = (id: number) => {
 
   useEffect(() => {
     fetchData(id).then(() => {});
-  }, [fetchData]);
+  }, [fetchData, id]);
 
   return { articles, isLoaded, fetchData: fetchData };
 }

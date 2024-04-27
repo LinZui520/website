@@ -18,7 +18,7 @@ const useGetUserInfo = (username: string) => {
     } catch (_) {
       setUserInfo({id: 0, avatar: '', username: '', email: '', password: '', power: -1, register: '', login: ''})
     }
-  },[])
+  },[username])
 
 
   useEffect(() => {
