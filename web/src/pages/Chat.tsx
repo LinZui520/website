@@ -103,7 +103,7 @@ const Chat = () => {
             "border-[#888888] rounded-[32px] px-[10px] outline-none"
           }
           type="text" placeholder="聊个天吧~（文明用语）~（回车发送）"
-          value={conversation} onChange={(e) => setConversation(e.target.value)}
+          value={conversation} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConversation(e.target.value)}
           onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' ? sendConversation() : null}
         />
 

@@ -1,6 +1,7 @@
 import {motion} from "framer-motion";
 import useUserSecurity from "../hooks/user/useUserSecurity";
 import Captcha from "../components/index/Captcha";
+import React from "react";
 
 const Security = () => {
 
@@ -44,7 +45,7 @@ const Security = () => {
           "w-[320px] h-[32px] mb-[32px] border-2 " +
           "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
         }
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
       />
       <motion.input
         drag whileFocus={{scale: 1.1}}
@@ -53,7 +54,7 @@ const Security = () => {
           "w-[320px] h-[32px] mb-[32px] border-2 " +
           "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
         }
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
       />
 
       <motion.input
@@ -63,7 +64,7 @@ const Security = () => {
           "w-[320px] h-[32px] mb-[32px] border-2 " +
           "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
         }
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
       />
 
       <div className={"flex flex-row justify-between items-center w-[320px] h-[32px] mb-[32px]"}>
@@ -74,7 +75,7 @@ const Security = () => {
             "w-[96px] h-[32px] border-2 border-[#1d1d1f]" +
             " rounded-[16px] px-[10px] outline-none"
           }
-          onChange={(e) => setCode(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
         />
 
         <motion.button

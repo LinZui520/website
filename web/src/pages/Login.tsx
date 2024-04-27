@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import useUserLogin from "../hooks/user/useUserLogin";
+import React from "react";
+
 const Login = () => {
 
   const {
@@ -26,7 +28,7 @@ const Login = () => {
           "w-[320px] h-[32px] mb-[32px] border-2 " +
           "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
         }
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
       />
       <motion.input
         drag whileFocus={{scale: 1.1}}
@@ -35,7 +37,7 @@ const Login = () => {
           "w-[320px] h-[32px] mb-[32px] border-2 " +
           "border-[#1d1d1f] rounded-[16px] px-[10px] outline-none"
         }
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
       />
       <div className={"flex flex-row justify-between items-center w-[320px] h-[32px] mb-[32px]"}>
         <motion.button

@@ -43,7 +43,7 @@ const ArticlesMain: React.FC<ArticlesMainProps> = ({ articles }) => {
       <div className={"w-[90vw] md:w-[80vw] lg:w-[60vw] max-w-[768px] flex flex-row justify-end items-center"}>
         <motion.input
           placeholder="关键字搜索"
-          value={keywords} onChange={(e) => setKeywords(e.target.value)}
+          value={keywords} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeywords(e.target.value)}
           className={
             "max-w-[60vw] w-[38%] h-[30px] md:h-[38px] lg:h-[46px] text-[16px] md:text-[20px] lg:text-[24px] " +
             "border-2 mb-[64px] mr-[64px] border-[#1f1f1d] rounded-full outline-none z-10"

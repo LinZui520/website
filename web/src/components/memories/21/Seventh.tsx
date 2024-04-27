@@ -23,7 +23,7 @@ const Seventh = () => {
   const windowHeight = window.innerHeight;
   const [value, setValue] = useState(0)
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+  useMotionValueEvent(scrollYProgress, "change", (latest: number)=> {
     setValue(latest)
   })
 

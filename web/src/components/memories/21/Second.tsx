@@ -13,7 +13,7 @@ const Second = () => {
   const [value, setValue] = useState(0)
   const windowWidth = window.innerWidth;
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+  useMotionValueEvent(scrollYProgress, "change", (latest: number)=> {
     setValue(latest)
   })
 

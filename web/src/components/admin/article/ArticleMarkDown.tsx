@@ -46,7 +46,7 @@ const ArticleMarkDown: React.FC<ArticleMarkDownProps> = (
       <Modal title={modalTitle} open={isModalOpen} onOk={operate} onCancel={() => setIsModalOpen(false)}>
         <Input
           placeholder="文章标题" value={title}
-          onChange={(e) => {
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setTitle(e.target.value)
           }}
         />

@@ -65,7 +65,7 @@ const Message = () => {
       <div className={"w-screen h-[128px] flex flex-row items-center justify-center"}>
         <motion.input
           placeholder="留下点什么啦~ "
-          value={bullet} onChange={(e) => setBullet(e.target.value)}
+          value={bullet} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBullet(e.target.value)}
           className={
             "max-w-[60vw] w-[320px] h-[48px] border-2 mr-[32px] " +
             "border-[#888888] rounded-full px-[10px] outline-none z-10"

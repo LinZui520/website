@@ -14,7 +14,7 @@ const Fifth = () => {
 
   const [value, setValue] = useState(0)
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+  useMotionValueEvent(scrollYProgress, "change", (latest: number)=> {
     setValue(latest)
   })
 
