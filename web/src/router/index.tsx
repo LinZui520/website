@@ -23,6 +23,7 @@ import Security from "../pages/Security";
 import ImageManager from "../pages/admin/ImageManager";
 import MessageManager from "../pages/admin/MessageManager";
 import Chat from "../pages/Chat";
+import Photo from '../pages/Photo';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: 'message',
         element: <Message />,
+      },
+      {
+        path: 'photo',
+        element: <Photo />,
       },
       {
         path: 'chat',
