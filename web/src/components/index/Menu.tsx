@@ -18,7 +18,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, onCloseMenu, navigate }) => {
       }}
       whileHover={{ scale: 1.3 }} whileTap={{ scale: 0.95 }}
       className={
-        "z-50 list-none cursor-pointer mb-[5vh] select-none " +
+        "z-50 list-none cursor-pointer mb-[3vh] select-none " +
         "text-[#fbfbfd] text-[24px] lg:text-[36px]"
       }
       onClick={() => {
