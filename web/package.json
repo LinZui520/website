@@ -16,7 +16,7 @@
     "@types/react-dom": "^18.2.18",
     "@vavt/rt-extension": "^1.1.0",
     "antd": "^5.12.2",
-    "axios": "^1.6.2",
+    "axios": "^1.6.8",
     "framer-motion": "^10.16.16",
     "markdown-it-mark": "^4.0.0",
     "md-editor-rt": "^4.9.0",
