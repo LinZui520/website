@@ -3,8 +3,8 @@ import {useEffect, useState} from "react";
 import { useSelector } from "react-redux";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {
-  UserOutlined, HomeOutlined, ReadOutlined,
-  FileImageOutlined, RollbackOutlined, MessageOutlined
+  UserOutlined, HomeOutlined, ReadOutlined, FileImageOutlined,
+  RollbackOutlined, MessageOutlined, MailOutlined
 } from '@ant-design/icons';
 import { RootState } from "../../redux";
 import NotFind from "../NotFind";
@@ -69,7 +69,10 @@ const IndexAdmin = () => {
       disabled: user.power <= 0,
     },
     {
-      label: '留言管理', key: '/admin/message', icon: <MessageOutlined />,
+      label: '评论管理', key: '/admin/comment', icon: <MessageOutlined />,
+    },
+    {
+      label: '留言管理', key: '/admin/message', icon: <MailOutlined />,
     }
   ];
 
