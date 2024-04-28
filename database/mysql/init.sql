@@ -27,6 +27,17 @@ create table if not exists articles (
     foreign key (author) references users(id)
 ) AUTO_INCREMENT=100000;
 
+create table if not exists comments (
+    id int auto_increment comment '评论编号',
+    author int not null comment '作者编号',
+    article int not null comment '文章编号',
+    content varchar(256) not null comment '内容',
+    `create` datetime not null comment '创建时间',
+    primary key (id),
+    foreign key (author) references users(id),
+    foreign key (article) references articles(id)
+) AUTO_INCREMENT=100000;
+
 create table if not exists images (
     id int auto_increment comment '图片编号',
     author int null comment '作者编号',
