@@ -15,6 +15,7 @@ func InitRouter() *gin.Engine {
 
 	UserRouter(router)
 	ArticleRouter(router)
+	CommentRouter(router)
 	ImageRouter(router)
 	MessageRouter(router)
 	ConversationRouter(router)
