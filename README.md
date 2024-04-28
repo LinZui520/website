@@ -18,8 +18,8 @@ $ systemctl enable docker
 `RedHat`系🤔
 
 ```sh
-$ sudo yum install docker
-$ sudo pip install docker-compose
+$ 
+$
 ```
 
 `Arch`系
