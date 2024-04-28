@@ -69,6 +69,29 @@ func (CommentService) GetCommentsByArticle(c *gin.Context) ([]model.CommentDTO, 
 	return comments, nil
 }
 
+func (CommentService) GetCommentsByUser(c *gin.Context) ([]model.CommentDTO, error) {
+	tokenString, _ := c.Cookie("token")
+	userClaims, err := ParseToken(tokenString)
+	if err != nil || userClaims.Power < 0 {
+		return nil, errors.New("权限不足")
+	}
+
+	var comments []model.CommentDTO
+
+	err = global.DB.Table("comments").
+		Select("comments.id as Id, comments.author as Author, username, avatar, article, title, comments.content as Content, comments.create as `Create`").
+		Joins("LEFT JOIN users ON comments.author = users.id").
+		Joins("LEFT JOIN articles ON comments.article = articles.id").
+		Where("comments.author = ?", userClaims.Id).
+		Order("comments.create desc").
+		Scan(&comments).Error
+	if err != nil {
+		return nil, errors.New("查询文章失败")
+	}
+
+	return comments, nil
+}
+
 func (CommentService) GetComments(c *gin.Context) ([]model.CommentDTO, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)

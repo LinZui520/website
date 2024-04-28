@@ -13,6 +13,7 @@ func CommentRouter(router *gin.Engine) {
 		comment.POST("/add", commentApi.AddComment)
 		comment.DELETE("/delete", commentApi.DeleteComment)
 		comment.GET("/get", commentApi.GetCommentsByArticle)
+		comment.GET("/author", commentApi.GetCommentsByUser)
 		comment.GET("/list", commentApi.GetComments)
 	}
 }

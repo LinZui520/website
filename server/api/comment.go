@@ -37,6 +37,15 @@ func (CommentApi) GetCommentsByArticle(c *gin.Context) {
 	}
 }
 
+func (CommentApi) GetCommentsByUser(c *gin.Context) {
+	comments, err := commentService.GetCommentsByUser(c)
+	if err != nil {
+		model.Fail(false, err.Error(), c)
+	} else {
+		model.OK(comments, "获取成功", c)
+	}
+}
+
 func (CommentApi) GetComments(c *gin.Context) {
 	comments, err := commentService.GetComments(c)
 	if err != nil {
