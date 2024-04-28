@@ -14,7 +14,9 @@ export interface Article {
 
 const useFetchArticle = (id: number) => {
   const [status, setStatus] = useState(true)
-  const [article, setArticle] = useState<Article>();
+  const [article, setArticle] = useState<Article>({
+    id: 0, author: 0, avatar: '', username: '', title: '', content: '', create: '', update: ''
+  });
 
   const fetchData = useCallback(async () => {
     try {
@@ -31,6 +33,7 @@ const useFetchArticle = (id: number) => {
   }, [id])
 
   useEffect(() => {
+    if (id === 0) return
     fetchData().then(() => {});
   }, [fetchData]);
 
