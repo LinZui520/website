@@ -9,7 +9,7 @@ import useFetchImages from "./useFetchImages";
 
 const useManageImage = () => {
   const user = useSelector((state: RootState) => state.user)
-  const {images, fetchData} = (() => user.power >= 2 ? useFetchImages : useFetchImagesByAuthor)()();
+  const {images, fetchData} = (() => user.power >= 1 ? useFetchImages : useFetchImagesByAuthor)()();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [manage, setManage] = useState<() => void>(() => () => {});

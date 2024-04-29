@@ -8,7 +8,7 @@ import { DeleteMessage } from "../../api/message";
 
 const useManageMessage = () => {
   const user = useSelector((state: RootState) => state.user)
-  const { messages, fetchData } = (() => user.power >= 2 ? useFetchMessages : useFetchMessagesByAuthor)()();
+  const { messages, fetchData } = (() => user.power >= 1 ? useFetchMessages : useFetchMessagesByAuthor)()();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [manage, setManage] = useState<() => void>(() => () => {});
