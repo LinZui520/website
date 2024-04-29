@@ -35,7 +35,7 @@ const Comment: React.FC<CommentProps> = ({article}) => {
 
   return (
     <div className={"w-[80vw] flex flex-col justify-center items-center"}>
-      <div className={"w-[80vw] max-w-[800px] flex flex-row justify-between items-center mb-[32px]"}>
+      {user.id !== 0 && <div className={"w-[80vw] max-w-[800px] flex flex-row justify-between items-center mb-[32px]"}>
         <img
           src={`${window.location.origin}/image/${user.avatar}`} alt={""}
           className={"w-[48px] h-[48px] object-contain rounded-[8px] select-none"}
@@ -58,7 +58,7 @@ const Comment: React.FC<CommentProps> = ({article}) => {
         >
           发布
         </motion.button>
-      </div>
+      </div>}
 
       <div className={"w-[80vw] max-w-[800px] border-2 border-[#1f1f1d] rounded-[8px] flex flex-col justify-between items-start"}>
         {comments.map(comment =>
