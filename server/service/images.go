@@ -17,7 +17,7 @@ func (ImageService) UploadImage(c *gin.Context) (model.Image, error) {
 
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return image, errors.New("权限不足")
 	}
 
@@ -51,7 +51,7 @@ func (ImageService) GetAllImage(c *gin.Context) ([]model.Image, error) {
 func (ImageService) GetImageByAuthor(c *gin.Context) ([]model.Image, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return nil, errors.New("权限不足")
 	}
 
@@ -62,7 +62,7 @@ func (ImageService) GetImageByAuthor(c *gin.Context) ([]model.Image, error) {
 func (ImageService) DeleteImage(c *gin.Context) error {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return errors.New("权限不足")
 	}
 
@@ -71,7 +71,7 @@ func (ImageService) DeleteImage(c *gin.Context) error {
 	if err != nil {
 		return errors.New("未查询到该图片")
 	}
-	if userClaims.Id != image.Author && userClaims.Power == 1 {
+	if userClaims.Id != image.Author && userClaims.Power <= 0 {
 		return errors.New("没有权限删除该图片")
 	}
 
@@ -85,7 +85,7 @@ func (ImageService) DeleteImage(c *gin.Context) error {
 func (ImageService) ImageCount(c *gin.Context) (int64, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return 0, errors.New("权限不足")
 	}
 	var count int64

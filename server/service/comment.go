@@ -45,7 +45,7 @@ func (CommentService) DeleteComment(c *gin.Context) error {
 		return errors.New("未查询到该评论")
 	}
 
-	if userClaims.Id != comment.Author && userClaims.Power == 1 {
+	if userClaims.Id != comment.Author && userClaims.Power <= 0 {
 		return errors.New("没有权限删除该评论")
 	}
 
@@ -95,7 +95,7 @@ func (CommentService) GetCommentsByUser(c *gin.Context) ([]model.CommentDTO, err
 func (CommentService) GetComments(c *gin.Context) ([]model.CommentDTO, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 1 {
+	if err != nil || userClaims.Power <= 0 {
 		return nil, errors.New("权限不足")
 	}
 
