@@ -18,12 +18,12 @@ const useFetchCommentsByArticle = (article: number) => {
     } catch (_) {
       setComments([])
     }
-  }, []);
+  }, [article]);
 
   useEffect(() => {
     if (article === 0) return
     fetchData().then(() => {});
-  }, [fetchData]);
+  }, [fetchData, article]);
 
   return { comments, fetchData: fetchData };
 }

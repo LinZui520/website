@@ -35,7 +35,7 @@ const useFetchArticle = (id: number) => {
   useEffect(() => {
     if (id === 0) return
     fetchData().then(() => {});
-  }, [fetchData]);
+  }, [fetchData, id]);
 
   return { article, status, fetchData: fetchData };
 }
