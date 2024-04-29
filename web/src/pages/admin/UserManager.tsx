@@ -42,9 +42,7 @@ const UserManager = () => {
     {
       title: '权限', dataIndex: 'power', key: 'power',
       render: (text: number) => text < 0 ? <span>人下人</span> :
-        text === 0 ? <span>普通用户</span> :
-          text === 1 ? <span>管理员</span> :
-            text === 2 ? <span>超级管理员</span> : <span>站长</span>
+        text < 1 ? <span>普通用户</span> : text < 2 ? <span>管理员</span> : <span>站长</span>
     },
     {
       title: '最近登陆时间', dataIndex: 'login', key: 'login',
@@ -65,7 +63,7 @@ const UserManager = () => {
   ]
 
   return (
-    user.power <= 1 ? <div className={"w-[80vw]"}><NotFind /></div> :
+    user.power <= 0 ? <div className={"w-[80vw]"}><NotFind /></div> :
     <div className={"w-[80vw]"}>
       {contextHolder}
       <Modal

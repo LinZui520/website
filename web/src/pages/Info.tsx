@@ -53,7 +53,7 @@ const Info = () => {
 
         <div className={"flex flex-col justify-center items-start"}>
           <div className={"text-[#1d1d1f] select-none" + (isSelf ? " cursor-pointer" : "")}>
-            {userInfo.username}({userInfo.power < 0 ? "人下人" : userInfo.power === 0 ? "普通用户" : userInfo.power === 1 ? "管理员" : userInfo.power === 2 ? "超级管理员" : "站长"})
+            {userInfo.username}({userInfo.power < 0 ? "人下人" : userInfo.power < 1 ? "普通用户" : userInfo.power < 2 ? "管理员" : "站长"})
           </div>
 
           <div className={"text-[#1d1d1f] select-none"}>
