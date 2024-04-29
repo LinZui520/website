@@ -13,13 +13,15 @@
 ```sh
 $ apt install docker docker-compose
 $ systemctl enable docker
+$ systemctl start docker 
 ```
 
 `RedHat`系🤔
 
 ```sh
-$ 
-$
+$ yum install docker docker-compose
+$ systemctl enable docker 
+$ systemctl start docker 
 ```
 
 `Arch`系
@@ -27,6 +29,7 @@ $
 ```sh
 $ pacman -S docker docker-compose
 $ systemctl enable docker
+$ systemctl start docker 
 ```
 
 #### 部署 
