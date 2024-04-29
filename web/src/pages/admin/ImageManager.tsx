@@ -52,7 +52,7 @@ const ImageManager = () => {
   ]
 
   return (
-    user.power <= 0 ? <div className={"w-[80vw]"}><NotFind /></div> :
+    user.power < 0 ? <div className={"w-[80vw]"}><NotFind /></div> :
     <div>
       {contextHolder}
       <Modal

@@ -16,7 +16,7 @@ const articlesCacheKey = "articles"
 func (ArticleService) AddArticle(c *gin.Context) error {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return errors.New("权限不足")
 	}
 
@@ -42,7 +42,7 @@ func (ArticleService) AddArticle(c *gin.Context) error {
 func (ArticleService) DeleteArticle(c *gin.Context) error {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return errors.New("权限不足")
 	}
 
@@ -52,7 +52,7 @@ func (ArticleService) DeleteArticle(c *gin.Context) error {
 		return errors.New("未查询到该文章")
 	}
 
-	if userClaims.Id != article.Author && userClaims.Power == 1 {
+	if userClaims.Id != article.Author && userClaims.Power <= 0 {
 		return errors.New("没有权限删除该文章")
 	}
 
@@ -133,7 +133,7 @@ func (ArticleService) GetArticlesById(c *gin.Context) ([]model.ArticleDTO, error
 func (ArticleService) GetArticleByAuthor(c *gin.Context) ([]model.ArticleDTO, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return nil, errors.New("权限不足")
 	}
 
@@ -153,7 +153,7 @@ func (ArticleService) GetArticleByAuthor(c *gin.Context) ([]model.ArticleDTO, er
 func (ArticleService) UpdateArticle(c *gin.Context) error {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return errors.New("权限不足")
 	}
 	var article model.Article
@@ -162,7 +162,7 @@ func (ArticleService) UpdateArticle(c *gin.Context) error {
 		return errors.New("未查询到该文章")
 	}
 
-	if userClaims.Id != article.Author && userClaims.Power == 1 {
+	if userClaims.Id != article.Author && userClaims.Power <= 0 {
 		return errors.New("没有权限修改该文章")
 	}
 
@@ -185,7 +185,7 @@ func (ArticleService) UpdateArticle(c *gin.Context) error {
 func (ArticleService) ArticleCount(c *gin.Context) (int64, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return 0, errors.New("权限不足")
 	}
 	var count int64

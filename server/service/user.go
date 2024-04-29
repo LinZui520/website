@@ -174,7 +174,7 @@ func (UserService) GetAllUser(c *gin.Context) ([]model.User, error) {
 func (UserService) BlockUser(c *gin.Context) error {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 1 {
+	if err != nil || userClaims.Power <= 0 {
 		return errors.New("权限不足")
 	}
 
@@ -270,7 +270,7 @@ func (UserService) UploadAvatar(c *gin.Context) (string, error) {
 func (UserService) UserCount(c *gin.Context) (int64, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return 0, errors.New("权限不足")
 	}
 	var count int64

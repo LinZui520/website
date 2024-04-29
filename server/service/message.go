@@ -85,7 +85,7 @@ func (MessageService) DeleteMessage(c *gin.Context) error {
 		return errors.New("未查询到该留言")
 	}
 
-	if userClaims.Id != message.Author && userClaims.Power <= 1 {
+	if userClaims.Id != message.Author && userClaims.Power <= 0 {
 		return errors.New("没有权限删除该留言")
 	}
 
@@ -124,7 +124,7 @@ func (MessageService) GetMessageByAuthor(c *gin.Context) ([]model.MessageDTO, er
 func (MessageService) MessageCount(c *gin.Context) (int64, error) {
 	tokenString, _ := c.Cookie("token")
 	userClaims, err := ParseToken(tokenString)
-	if err != nil || userClaims.Power <= 0 {
+	if err != nil || userClaims.Power < 0 {
 		return 0, errors.New("权限不足")
 	}
 	var count int64

@@ -48,25 +48,21 @@ const IndexAdmin = () => {
     },
     {
       label: '用户管理', key: '/admin/user', icon: <UserOutlined />,
-      disabled: user.power <= 1
+      disabled: user.power <= 0
     },
     {
       label: '文章管理', key: '/admin/article', icon: <ReadOutlined />,
-      disabled: user.power <= 0,
       children: [
         {
           label: '增加文章', key: '/admin/article/upload',
-          disabled: user.power <= 0,
         },
         {
           label: '管理文章', key: '/admin/article/manager',
-          disabled: user.power <= 0,
         },
       ]
     },
     {
       label: '图片管理', key: '/admin/image', icon: <FileImageOutlined />,
-      disabled: user.power <= 0,
     },
     {
       label: '评论管理', key: '/admin/comment', icon: <MessageOutlined />,
