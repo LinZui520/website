@@ -8,7 +8,7 @@ import {DeleteComment} from "../../api/comment";
 
 const useManagerComment = () => {
   const user = useSelector((state: RootState) => state.user)
-  const { comments, fetchData } = (() => user.power >= 2 ? useFetchComments : useFetchCommentsByAuthor)()();
+  const { comments, fetchData } = (() => user.power >= 1 ? useFetchComments : useFetchCommentsByAuthor)()();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [manage, setManage] = useState<() => void>(() => () => {});

@@ -10,7 +10,7 @@ import useFetchArticlesByAuthor from "./useFetchArticlesByAuthor";
 const useManageArticle = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user)
-  const {articles, fetchData} = (() => user.power >= 2 ? useFetchArticles : useFetchArticlesByAuthor)()();
+  const {articles, fetchData} = (() => user.power >= 1 ? useFetchArticles : useFetchArticlesByAuthor)()();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [manage, setManage] = useState<() => void>(() => () => {});
