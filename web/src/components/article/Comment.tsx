@@ -79,7 +79,7 @@ const Comment: React.FC<CommentProps> = ({article}) => {
             </span>
 
             <span>
-                {new Date(comment.create).toLocaleString()}
+              {new Date(comment.create).toLocaleString()}
             </span>
           </div>
         )}
