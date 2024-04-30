@@ -28,6 +28,7 @@ const useChat = () => {
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
       if (message === null) return
+      if (message.type === "pong") return
       if (message.type === "conversations") return message.data === null ? setConversations([]): setConversations(message.data)
       if (message.type === "count") return setCount(message.data)
       if (message.type === "decrement") return setConversations(prevConversations => prevConversations.filter(conversation => conversation.id !== message.data))
@@ -37,7 +38,18 @@ const useChat = () => {
     ws.onclose = () => setState("已断开")
 
     setWebSocket(ws);
-    return () => ws.close()
+
+    const heartbeatInterval = setInterval(() => {
+      ws?.send(JSON.stringify({
+        type: 'ping',
+        data: null
+      }))
+    }, 32000);
+
+    return () => {
+      clearInterval(heartbeatInterval)
+      ws.close()
+    }
   }, []);
 
   const sendConversation = () => {
