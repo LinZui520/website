@@ -89,16 +89,18 @@ func (cs *ConversationService) Chat(c *gin.Context) {
 		if err != nil {
 			return
 		}
-		if message.Type == "increment" {
+		switch message.Type {
+		case "increment":
 			conversation, err := uploadConversation(*userClaims, message)
 			if err != nil {
-				return
+				continue
 			}
 			err = publishConversation(conversation)
 			if err != nil {
 				return
 			}
-		} else if message.Type == "decrement" {
+			break
+		case "decrement":
 			id, err := deleteConversation(message)
 			if err != nil {
 				continue
@@ -107,19 +109,13 @@ func (cs *ConversationService) Chat(c *gin.Context) {
 			if err != nil {
 				return
 			}
-		} else if message.Type == "ping" {
-			message := SendMessage{
-				Type: "pong",
-				Data: nil,
-			}
-			messageJSON, err := json.Marshal(message)
+			break
+		case "ping":
+			err = pongBrowser(ws)
 			if err != nil {
-				return
+				continue
 			}
-			err = ws.WriteMessage(websocket.TextMessage, messageJSON)
-			if err != nil {
-				return
-			}
+			break
 		}
 	}
 
@@ -226,6 +222,22 @@ func withdrawConversation(id int) error {
 		return err
 	}
 	err = global.Redis.Publish("conversation", messageJSON).Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func pongBrowser(ws *websocket.Conn) error {
+	message := SendMessage{
+		Type: "pong",
+		Data: nil,
+	}
+	messageJSON, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	err = ws.WriteMessage(websocket.TextMessage, messageJSON)
 	if err != nil {
 		return err
 	}
