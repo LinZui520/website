@@ -107,6 +107,19 @@ func (cs *ConversationService) Chat(c *gin.Context) {
 			if err != nil {
 				return
 			}
+		} else if message.Type == "ping" {
+			message := SendMessage{
+				Type: "pong",
+				Data: nil,
+			}
+			messageJSON, err := json.Marshal(message)
+			if err != nil {
+				return
+			}
+			err = ws.WriteMessage(websocket.TextMessage, messageJSON)
+			if err != nil {
+				return
+			}
 		}
 	}
 
