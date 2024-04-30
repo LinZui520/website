@@ -19,7 +19,7 @@
     "axios": "^1.6.8",
     "framer-motion": "^10.16.16",
     "markdown-it-mark": "^4.0.0",
-    "md-editor-rt": "^4.9.0",
+    "md-editor-rt": "^4.13.5",
     "normalize.css": "^8.0.1",
     "rc-bullets-ts": "^1.4.0",
     "rc-slider-captcha": "^1.4.2",
