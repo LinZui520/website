@@ -1,7 +1,7 @@
 import React, {useRef, useState} from "react";
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import FirstImage from "../../../assets/image/memories/21/2024-02-15-16-12-55.png";
-import SecondImage from "../../../assets/image/memories/21/2024-02-15-16-13-55.png";
+import SeconedImage from "../../../assets/image/memories/21/2024-02-15-16-13-55.png";
 import ThirdImage from "../../../assets/image/memories/21/2024-02-15-16-14-55.png";
 import FourthImage from "../../../assets/image/memories/21/2024-02-15-16-15-55.png";
 import FifthImage from "../../../assets/image/memories/21/2024-02-15-16-16-55.png";
@@ -57,7 +57,7 @@ const Seventh = () => {
       <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
         <motion.img 
           className={"h-[30vw] w-[30vw] max-h-[309px] max-w-[500px] rounded-[16px] overflow-hidden"}
-          src={SecondImage} alt={""}
+          src={SeconedImage} alt={""}
           animate={{
             opacity: 9 * value,
             scale: 9 * value,
