@@ -14,6 +14,7 @@ import Sixth from "../components/memories/21/Sixth";
 import SixthNext from "../components/memories/21/SixthNext";
 import Eighth from "../components/memories/21/Eighth";
 import Seventh from '../components/memories/21/Seventh';
+import Ninth from '../components/memories/21/Ninth';
 
 const Home = () => {
 
@@ -76,6 +77,7 @@ const Home = () => {
       <SixthNext />
       <Seventh />
       <Eighth />
+      <Ninth />
       
 
       <Footer />
