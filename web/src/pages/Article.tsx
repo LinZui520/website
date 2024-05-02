@@ -4,6 +4,7 @@ import useFetchArticle from "../hooks/article/useFetchArticle";
 import NotFind from "./NotFind";
 import Comment from "../components/article/Comment";
 import {useEffect, useState } from "react";
+import ScrollBar from "../components/index/ScrollBar";
 
 const Article = () => {
   const params = useParams()
@@ -21,7 +22,7 @@ const Article = () => {
         modelValue={article.content}
 
       />
-
+      {isContentLoaded && <ScrollBar />}
       {isContentLoaded && <Comment article={article.id} />}
     </div>
   );

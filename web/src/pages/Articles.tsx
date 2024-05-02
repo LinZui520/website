@@ -4,6 +4,7 @@ import ArticlesHeader from "../components/articles/ArticlesHeader";
 import Footer from '../components/index/Footer';
 import useFetchArticles from "../hooks/article/useFetchArticles";
 import { useLocation } from "react-router-dom";
+import ScrollBar from "../components/index/ScrollBar";
 
 const Articles = () => {
 
@@ -19,6 +20,7 @@ const Articles = () => {
   return (
     !isLoaded ? <div /> :
     <>
+      <ScrollBar />
       <ArticlesHeader />
       <ArticlesMain articles={articles}/>
       <Footer />
