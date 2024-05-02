@@ -17,7 +17,7 @@
     "@vavt/rt-extension": "^1.2.2",
     "antd": "^5.16.5",
     "axios": "^1.6.8",
-    "framer-motion": "^10.18.0",
+    "framer-motion": "^11.1.7",
     "markdown-it-mark": "^4.0.0",
     "md-editor-rt": "^4.13.5",
     "normalize.css": "^8.0.1",
