@@ -4,7 +4,6 @@ import useFetchArticle from "../hooks/article/useFetchArticle";
 import NotFind from "./NotFind";
 import Comment from "../components/article/Comment";
 import {useEffect, useState } from "react";
-import ScrollBar from "../components/index/ScrollBar";
 
 const Article = () => {
   const params = useParams()
@@ -20,9 +19,8 @@ const Article = () => {
       <MdPreview
         className={"bg-[#fbfbfd] min-h-screen w-[80vw] max-w-[800px]"}
         modelValue={article.content}
-
       />
-      {isContentLoaded && <ScrollBar />}
+      
       {isContentLoaded && <Comment article={article.id} />}
     </div>
   );
