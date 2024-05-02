@@ -69,6 +69,7 @@ const ArticlesMain: React.FC<ArticlesMainProps> = ({ articles }) => {
               <motion.span
                 initial={{x: -64, opacity: 0}}
                 whileInView={{x: 0, opacity: 1}}
+                viewport={{ once: true }}
                 transition={{duration: 0.5}}
                 className={"italic text-[12px] md:text-[16px] lg:text-[24px] text-[#1d1d1f] mr-[32px]"}
               >
@@ -81,6 +82,7 @@ const ArticlesMain: React.FC<ArticlesMainProps> = ({ articles }) => {
                 whileTap={{scale: 0.9}}
                 initial={{opacity: 0, scale: 0}}
                 whileInView={{opacity: 1, scale: 1}}
+                viewport={{ once: true }}
                 transition={{duration: 0.5}}
                 className={"font-bold text-[18px] md:text-[24px] lg:text-[32px] text-[#1d1d1f] cursor-pointer"}
               >
@@ -94,6 +96,7 @@ const ArticlesMain: React.FC<ArticlesMainProps> = ({ articles }) => {
                 whileInView={{x: 0, rotate: 0, opacity: 1}}
                 whileHover={location.pathname !== '/info/' + item.username ? {scale: 1.1, rotate: 360} : {scale: 1, rotate: 360}}
                 whileTap={location.pathname !== '/info/' + item.username ? {scale: 0.9} : {scale: 1}}
+                viewport={{ once: true }}
                 transition={{duration: 0.5}}
                 src={`${window.location.origin}/image/${item.avatar}`}
                 alt={""} title={item.username}
@@ -110,6 +113,7 @@ const ArticlesMain: React.FC<ArticlesMainProps> = ({ articles }) => {
             initial={{scale: 0}}
             whileInView={{scale: 1}}
             transition={{duration: 0.5}}
+            viewport={{ once: true }}
             className={"w-[100%] border-t border-dashed border-[#1d1d1f]"}
           />
         </div>
