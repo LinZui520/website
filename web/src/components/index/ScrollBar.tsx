@@ -31,7 +31,7 @@ function ScrollBar() {
       const scrollTop = window.scrollY
       const scrollHeight = document.body.scrollHeight
 
-      scrollBarPosition.current = Math.floor((scrollTop / scrollHeight) * 100)
+      scrollBarPosition.current = Math.round((scrollTop / scrollHeight) * 100)
 
       scrollBarThumb.current &&
       (scrollBarThumb.current.style.height = `${scrollBarHeight.current}%`) &&
