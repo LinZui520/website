@@ -12,3 +12,29 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       Int       @id @default(autoincrement()) @map("id")
+  avatar   String    @default("default.png") @map("avatar")
+  username String    @unique @map("username")
+  email    String    @unique @map("email")
+  password String    @map("password")
+  power    Int       @default(0) @map("power")
+  register DateTime  @map("register")
+  login    DateTime  @map("login")
+  articles Article[]
+
+  @@map("users")
+}
+
+model Article {
+  id      Int      @id @default(autoincrement()) @map("id")
+  author  Int      @map("author")
+  title   String   @map("title")
+  content String?  @map("content")
+  create  DateTime @map("create")
+  update  DateTime @map("update")
+  user    User     @relation(fields: [author], references: [id])
+
+  @@map("articles")
+}
