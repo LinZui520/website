@@ -1,4 +1,4 @@
-import React, { useRef, useState ,memo } from "react";
+import React, { useRef, useState } from "react";
 import {motion, useMotionValueEvent, useScroll} from "framer-motion";
 import FirstImage from "../../../assets/image/memories/21/2024-05-3-13-33-02.png";
 import SecondImage from "../../../assets/image/memories/21/2024-05-3-13-34-02.png";
@@ -11,7 +11,7 @@ import EighthImage from "../../../assets/image/memories/21/2024-05-3-13-40-02.pn
 import NinthImage from "../../../assets/image/memories/21/2024-05-3-13-41-02.png";
 
 
-const End = () =>{
+const End = () => {
 
     const ref = useRef(null)
     const { scrollYProgress } = useScroll({
@@ -49,7 +49,7 @@ const End = () =>{
               y:-2 * windowHeight * Math.sin(Math.PI / 2 * value ),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden"}
+            className={"text-[#1d1d1f] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden"}
           >
             班主任:1.大家学会做人啊！ 2.努什么样的力，结什么样的因。
           </motion.span>
@@ -72,7 +72,7 @@ const End = () =>{
               x:-2 * windowWidth * Math.sin(Math.PI / 2 * value),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden "}
+            className={"text-[#1d1d1f] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden "}
           >
             化学老师:1.生物教主在哪里？ 2.三个和尚没水喝。
           </motion.span>
@@ -96,7 +96,7 @@ const End = () =>{
               y:windowHeight * Math.sin(Math.PI / 2 * value ),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden "}
+            className={"text-[#1d1d1f] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden "}
           >
             生物老师:1.首先把形式搞起来。2.学习不就是一个洗脑的过程？
           </motion.span>
@@ -238,7 +238,7 @@ const End = () =>{
               scale: (value - 6),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[64vw] mb-[15vh] select-none overflow-hidden"}
+            className={"text-[#1d1d1f] text-[16px] lg:text-[32px] max-w-[64vw] mb-[15vh] select-none overflow-hidden"}
           >
           {'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}亲爱的同学们,你们所乘坐的2018—2021永不返程号列车即将到站,带上祝福,带上自信,走向高考,勇敢地奔赴你们的战场吧,一起上大学,不负遇见！心之所向,终将抵达。
           <br />
@@ -262,8 +262,8 @@ const End = () =>{
             animate={{
               opacity:-100 * (value - 8) * (value - 8) + 1,
             }}
-            transition={{ease: "easeIn", duration: 5}}
-            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[64vw] mb-[20vh] select-none overflow-hidden"}
+            transition={{ease: "easeIn", duration:value <= 7 ? 0.5 : 5}}
+            className={"text-[#1d1d1f] text-[16px] lg:text-[32px] max-w-[64vw] mb-[20vh] select-none overflow-hidden"}
           >
           长街漫漫终无故人游......
           </motion.span>
