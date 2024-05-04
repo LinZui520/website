@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-export const Menu = () => {
+const Menu = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -18,7 +18,7 @@ export const Menu = () => {
   ]
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+    document.body.style.overflow = 'hidden';
   }, [isOpen]);
 
   return (
@@ -35,6 +35,7 @@ export const Menu = () => {
             transition: {delay: 0.5, type: "spring", stiffness: 400, damping: 40}
           }
         }}
+        onAnimationComplete={() => !isOpen && (document.body.style.overflow = 'auto')}
       />
 
       <motion.ul
