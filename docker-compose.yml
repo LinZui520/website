@@ -1,0 +1,24 @@
+services:
+  mysql:
+    build: ./mysql
+    volumes:
+      - ./mysql/data/mysql:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_CHARSET=utf8mb4
+    restart: always
+    network_mode: host
+
+  fullstack:
+    build: ./fullstack
+    network_mode: host
+    depends_on:
+      - mysql
+  nginx:
+    build: ./nginx
+    restart: always
+    network_mode: host
+    depends_on:
+      - fullstack
+

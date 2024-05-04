@@ -1,0 +1,7 @@
+clean.sh
+run.sh
+/mysql/data/mysql/*
+/mysql/data/image/*
+!database/mysql/data/image/default.png
+nginx/ssl/fullchain.crt
+nginx/ssl/private.pem
