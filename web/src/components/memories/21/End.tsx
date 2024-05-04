@@ -24,7 +24,7 @@ const End = () =>{
     const [value, setValue] = useState(0)
   
     useMotionValueEvent(scrollYProgress, "change", (latest: number)=> {
-      setValue(latest * 8)
+      setValue(Math.ceil(latest * 8))
     })
 
     
@@ -33,57 +33,57 @@ const End = () =>{
         <div className={"h-screen w-screen flex flex-col justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
           <motion.span
             animate={{
-              opacity:1 - value,
+              opacity:-100 * value * value + 1,
               y:-2 * windowHeight * Math.sin(Math.PI / 2 * value),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#ff3434] text-[16px] lg:text-[32px] max-w-[48vw] select-none overflow-hidden"}
+            className={"text-[#ff3434] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden"}
           >
             老师同你们一起走过高中岁月，人生旅途漫漫，虽然每个人都只能陪你走一段岁月，但点点滴滴便汇聚成了记忆的海洋。
           </motion.span>
 
           <motion.span
             animate={{
-              opacity:1 - value,
+              opacity:-100 * value * value + 1,
               x:-2 * windowWidth * Math.sin(Math.PI / 2 * value),
               y:-2 * windowHeight * Math.sin(Math.PI / 2 * value ),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[48vw] select-none overflow-hidden"}
+            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden"}
           >
             班主任:1.大家学会做人啊！ 2.努什么样的力，结什么样的因。
           </motion.span>
 
           <motion.span
             animate={{
-              opacity:1 - value,
+              opacity:-100 * value * value + 1,
               x:2 * windowWidth * Math.sin(Math.PI / 2 * value),
               y:-2 * windowHeight * Math.sin(Math.PI / 2 * value ),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#0d1dff] text-[16px] lg:text-[32px] max-w-[48vw] select-none overflow-hidden "}
+            className={"text-[#0d1dff] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden "}
           >
             数学老师:1.朱昊活过来了吧?2.重点班要有重点班学生的模样。
           </motion.span>
 
           <motion.span
             animate={{
-              opacity:1 - value,
+              opacity:-100 * value * value + 1,
               x:-2 * windowWidth * Math.sin(Math.PI / 2 * value),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[48vw] select-none overflow-hidden "}
+            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden "}
           >
             化学老师:1.生物教主在哪里？ 2.三个和尚没水喝。
           </motion.span>
 
           <motion.span
             animate={{
-              opacity:1 - value,
+              opacity:-100 * value * value + 1,
               x:2 * windowWidth * Math.sin(Math.PI / 2 * value),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#0d1dff] text-[16px] lg:text-[32px] max-w-[48vw] select-none overflow-hidden "}
+            className={"text-[#0d1dff] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden "}
           >
             英语老师:1.嘿嘿，开小差了。
                        2.朱昊，来一个，你笑得真好看。
@@ -91,24 +91,24 @@ const End = () =>{
 
           <motion.span
             animate={{
-              opacity:1 - value,
+              opacity:-100 * value * value + 1,
               x:-2 * windowWidth * Math.sin(Math.PI / 2 * value),
               y:windowHeight * Math.sin(Math.PI / 2 * value ),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[48vw] select-none overflow-hidden "}
+            className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden "}
           >
             生物老师:1.首先把形式搞起来。2.学习不就是一个洗脑的过程？
           </motion.span>
 
           <motion.span
             animate={{
-              opacity:1 - value,
+              opacity:-100 * value * value + 1,
               x:2 * windowWidth * Math.sin(Math.PI / 2 * value),
               y:windowHeight * Math.sin(Math.PI / 2 * value ),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
-            className={"text-[#0d1dff] text-[16px] lg:text-[32px] max-w-[48vw] select-none overflow-hidden "}
+            className={"text-[#0d1dff] text-[16px] lg:text-[32px] max-w-[52vw] select-none overflow-hidden "}
           >
             语文老师:1.难道说我们古代的诗词他不香吗？ 2.康师傅，你来给我翻译一下。
           </motion.span>
@@ -120,8 +120,9 @@ const End = () =>{
             className={"h-[40vw] w-[30vw] max-h-[800px] max-w-[600px] rounded-[16px] overflow-hidden"}
             src={FirstImage} alt={""}
             animate={{
-              opacity:(2 - value) * value,
+              opacity:-100 * (value - 1) * (value - 1) + 1,
               scale: 1,
+              x:60 * value + 'px',
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -130,8 +131,9 @@ const End = () =>{
             className={"h-[40vw] w-[30vw] max-h-[1000px] max-w-[750px] rounded-[16px] overflow-hidden"}
             src={SecondImage} alt={""}
             animate={{
-              opacity:(2 - value) * value,
+              opacity:-100 * (value - 1) * (value - 1) + 1,
               scale: 1,
+              x:-60 * value + 'px'
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -144,8 +146,8 @@ const End = () =>{
             className={"h-[40vw] w-[60vw] max-h-[1000px] max-w-[750px] rounded-[16px] overflow-hidden"}
             src={ThirdImage} alt={""}
             animate={{
-              opacity:(3 - value) * (value - 1),
-              scale: 1,
+              opacity:-100 * (value - 2) * (value - 2) + 1,
+              scale: (value - 1) * (value - 1),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -157,8 +159,9 @@ const End = () =>{
             className={"h-[40vw] w-[30vw] max-h-[800px] max-w-[600px] rounded-[16px] overflow-hidden"}
             src={FourthImage} alt={""}
             animate={{
-              opacity:(4 - value) * (value - 2),
+              opacity:-100 * (value - 3) * (value - 3) + 1,
               scale: 1,
+              x:-(value - 2) * (value - 3) * windowWidth / 2 + 'px',
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -167,8 +170,9 @@ const End = () =>{
             className={"h-[40vw] w-[30vw] max-h-[1000px] max-w-[750px] rounded-[16px] overflow-hidden"}
             src={FifthImage} alt={""}
             animate={{
-              opacity:(4 - value) * (value - 2),
+              opacity:-100 * (value - 3) * (value - 3) + 1,
               scale: 1,
+              x:(value - 2) * (value - 3) * windowWidth / 2 + 'px',
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -180,8 +184,9 @@ const End = () =>{
             className={"h-[40vw] w-[30vw] max-h-[1000px] max-w-[750px] rounded-[16px] overflow-hidden"}
             src={SixthImage} alt={""}
             animate={{
-              opacity:(5 - value) * (value - 3),
+              opacity:-100 * (value - 4) * (value - 4) + 1,
               scale: 1,
+              y:-(value - 4) * windowWidth / 2 + 'px',
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -191,7 +196,9 @@ const End = () =>{
         <div className="h-screen w-screen flex flex-raw justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
           <motion.span
             animate={{
-              opacity:(6 - value) * (value - 4),
+              opacity:-100 * (value - 5) * (value - 5) + 1,
+              y:-windowHeight * Math.sin(Math.PI * (value -3) / 2) + 'px',
+              x:-windowWidth * Math.abs(Math.sin(Math.PI * (value -3) / 2)) + 'px',
             }}
             transition={{ease: "easeOut", duration: 0.618}}
             className={"text-[#ff3434] text-[16px] lg:text-[32px] max-w-[40vw] select-none overflow-hidden"}
@@ -203,8 +210,8 @@ const End = () =>{
             className={"h-[40vw] w-[30vw] max-h-[1000px] max-w-[750px] rounded-[16px] overflow-hidden"}
             src={SeventhImage} alt={""}
             animate={{
-              opacity:(6 - value) * (value - 4),
-              scale: 1,
+              opacity:-100 * (value - 5) * (value - 5) + 1,
+              scale:(value - 4),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -216,8 +223,8 @@ const End = () =>{
             className={"h-[40vw] w-[60vw] max-h-[1000px] max-w-[750px] rounded-[16px] overflow-hidden"}
             src={EighthImage} alt={""}
             animate={{
-              opacity:(7 - value) * (value - 5),
-              scale: 1,
+              opacity:-100 * (value - 6) * (value - 6) + 1,
+              scale:(value - 5),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -227,7 +234,8 @@ const End = () =>{
         <div className="h-screen w-screen flex flex-col justify-end items-center sticky top-0 bottom-0 overflow-hidden">
           <motion.span
             animate={{
-              opacity:(8 - value) * (value - 6),
+              opacity:-100 * (value - 7) * (value - 7) + 1,
+              scale: (value - 6),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
             className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[64vw] mb-[15vh] select-none overflow-hidden"}
@@ -241,8 +249,8 @@ const End = () =>{
             className={"w-[100vw] h-[35vh] md:w-[80vw] lg:w-[100vw] lg:h-[40vh] max-w-[100vw] rounded-[16px] flex flex-row justify-end items-center"}
             src={NinthImage} alt={""}
             animate={{
-              opacity:(8 - value) * (value - 6),
-              scale: 1,
+              opacity:-100 * (value - 7) * (value - 7) + 1,
+              scale: (value - 6),
             }}
             transition={{ease: "easeOut", duration: 0.618}}
           />
@@ -252,10 +260,9 @@ const End = () =>{
         <div className="h-screen w-screen flex flex-raw justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
           <motion.span
             animate={{
-              opacity:(9 - value) * (value - 7),
-              delay:2000,
+              opacity:-100 * (value - 8) * (value - 8) + 1,
             }}
-            transition={{ease: "easeIn", duration: 0.618}}
+            transition={{ease: "easeIn", duration: 5}}
             className={"text-[#000000] text-[16px] lg:text-[32px] max-w-[64vw] mb-[20vh] select-none overflow-hidden"}
           >
           长街漫漫终无故人游......
