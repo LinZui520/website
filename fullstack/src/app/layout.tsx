@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import React from "react";
 import "./globals.css";
+import Menu from "@/components/Menu";
 
 export const metadata: Metadata = {
   title: "我不吃牛肉",
@@ -14,7 +15,10 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="zh-CN">
-      <body>{children}</body>
+      <body>
+        <Menu />
+        {children}
+      </body>
     </html>
   );
 }
