@@ -1,4 +1,4 @@
-import { ArticlePrisma } from "@/type/article";
+import { ArticlePrisma } from "@/types/article";
 
 const Page = async () => {
 
@@ -9,7 +9,7 @@ const Page = async () => {
   return (
     <>
       {articles.map(article => (
-        <div key={article.id}>{article.title} {article.User.username}</div>
+        <div key={article.id} className={"h-[30vh]"}>{article.title} {article.User.username}</div>
       ))}
     </>
   );

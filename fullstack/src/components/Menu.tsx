@@ -18,7 +18,7 @@ const Menu = () => {
   ]
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    isOpen && (document.body.style.overflow = 'hidden');
   }, [isOpen]);
 
   return (
@@ -68,7 +68,7 @@ const Menu = () => {
         )}
       </motion.ul>
 
-      <motion.button
+      <motion.div
         whileHover={{scale: 1.2}} whileTap={{scale: 0.84}}
         className={
           "z-50 flex justify-center items-center " +
@@ -102,7 +102,7 @@ const Menu = () => {
             }}
           />
         </svg>
-      </motion.button>
+      </motion.div>
     </motion.nav>
   );
 };

@@ -1,4 +1,4 @@
-import { ArticlePrisma } from "@/type/article";
+import { ArticlePrisma } from "@/types/article";
 
 const Page = async ({ params }: { params: { id: string } }) => {
 

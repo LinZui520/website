@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import prisma from "@/lib/prisma";
-import {ResponseError, ResponseOK} from "@/type/response";
+import {ResponseError, ResponseOK} from "@/types/response";
 
 export const GET = async (_request: NextRequest) => {
   try {
