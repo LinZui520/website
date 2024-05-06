@@ -2,33 +2,32 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const router = useRouter()
 
   const login = async () => {
     try {
       const response = await signIn('credentials', {
         username,
         password,
-        redirect: true,
+        redirect: false,
         redirectTo: '/'
       })
-      // const response = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({username, password})
-      // })
       console.log(response)
+      if (response && response.ok) {
+        router.push('/')
+        router.refresh()
+      }
+
     } catch (error) {
       console.error(error)
     }
   }
-
 
   return (
     <div className={"h-screen w-full flex flex-col justify-center items-center"}>
