@@ -18,14 +18,14 @@ const Page = () => {
         redirect: false,
         redirectTo: '/'
       })
-      console.log(response)
-      if (response && response.ok) {
+      if (response && !response.error) {
         router.push('/')
         router.refresh()
+      } else {
+        alert("账户或密码错误")
       }
+    } catch (_) {
 
-    } catch (error) {
-      console.error(error)
     }
   }
 

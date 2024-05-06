@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import React from "react";
 import "./globals.css";
 import Menu from "@/components/Menu";
+import { SessionProvider } from 'next-auth/react'
 
 export const metadata: Metadata = {
   title: "我不吃牛肉",
@@ -16,8 +17,10 @@ const RootLayout = ({
   return (
     <html lang="zh-CN">
       <body>
-        <Menu />
-        {children}
+        <SessionProvider>
+          <Menu />
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

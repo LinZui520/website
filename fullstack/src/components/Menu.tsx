@@ -2,10 +2,14 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react"
 
 const Menu = () => {
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const session = useSession()
+  console.log(session)
 
   const menu = [
     {href: '/', text: '首页'},
@@ -14,7 +18,7 @@ const Menu = () => {
     {href: '/photo', text: '照片墙'},
     {href: '/chat', text: '聊天室'},
     {href: '/admin', text: '控制台'},
-    {href: '/login', text: '登\u00A0\u00A0\u00A0\u00A0录'}
+    session.data ? {href: '/login', text: session.data.user?.name} : {href: '/login', text: '登\u00A0\u00A0\u00A0\u00A0录'}
   ]
 
   useEffect(() => {
