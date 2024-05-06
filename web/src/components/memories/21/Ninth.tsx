@@ -24,28 +24,30 @@ const Ninth = () => {
   const [value, setValue] = useState(0)
 
   useMotionValueEvent(scrollYProgress, "change", (latest: number)=> {
-    setValue(latest)
+    setValue(Math.ceil(latest * 7))
   })
 
   return (
     <div ref={ref} className={"w-screen h-[800vh]"} >
+
+
       <div className={"h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden"}>
         <motion.img
           className={"h-[40vw] w-[30vw] max-h-[800px] max-w-[600px] rounded-[16px] overflow-hidden"}
           src={FirstImage} alt={""}
           animate={{
-            opacity: 7 * (1 /7 - value),
-            scale: 7 *(1 /7 - value),
-            y: 1.5 * windowHeight * 7 * value  + 'px'
+            opacity:-10 * value * value + 1,
+            scale: 1,
+            y: value * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
 
         <motion.span 
           animate={{
-            opacity: 7 * (1 /7 - value),
-            scale: 7 *(1 /7 - value),
-            y: -7 * value  * windowHeight + 'px'
+            opacity:-10 * value * value + 1,
+            scale: 1,
+            y: -value  * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
@@ -54,23 +56,25 @@ const Ninth = () => {
         </motion.span>
       </div>
 
+
+
       <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
         <motion.img 
           className={"h-[40vw] w-[30vw] max-h-[800px] max-w-[600px] rounded-[16px] overflow-hidden"}
           src={SeconedImage} alt={""}
           animate={{
-            opacity: 7 * value,
-            scale: 7 * value ,
-            y: (7 * value - 1) * 1.5 * windowHeight + 'px'
+            opacity:-10 * (value - 1) * (value - 1) + 1,
+            scale: 1,
+            y: (value - 1) * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
 
         <motion.span 
           animate={{
-              opacity: 7 * value,
-              scale: 7 * value ,
-             y: -(7 * value - 1) * windowHeight + 'px'
+              opacity:-10 * (value - 1) * (value - 1) + 1,
+              scale: 1,
+              y: -(value - 1)  * 100 + 'px'
             }}
             transition={{ease: "easeOut", duration: 0.618}}
             className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
@@ -79,23 +83,25 @@ const Ninth = () => {
         </motion.span>
       </div>
 
+
+
       <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
         <motion.img 
           className={"h-[40vw] w-[30vw] max-h-[800px] max-w-[600px] rounded-[16px] overflow-hidden"}
           src={ThirdImage} alt={""}
           animate={{
-            opacity: 7 * value -1,
-            scale: 7 * value  -1,
-            y: (7 * value  - 2) * 1.5 * windowHeight + 'px'
+            opacity:-10 * (value - 2) * (value - 2) + 1,
+            scale: 1,
+            y: (value - 2) * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
 
         <motion.span 
           animate={{
-            opacity: 7 * value -1,
-            scale: 7 * value  -1,
-            y: -(7 * value  - 2) * windowHeight + 'px'
+            opacity:-10 * (value - 2) * (value - 2) + 1,
+            scale: 1,
+            y: -(value - 2)  * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
@@ -104,14 +110,17 @@ const Ninth = () => {
         </motion.span>
       </div>
 
+
+
+
       <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
         <motion.img 
           className={"h-[40vw] w-[30vw] max-h-[800px] max-w-[600px] rounded-[16px] overflow-hidden"}
           src={FourthImage} alt={""}
           animate={{
-            opacity: 7 * value -2,
-            scale: 7 * value  -2,
-            y: (7 * value  - 3) * 1.5 * windowHeight + 'px'
+            opacity:-10 * (value - 3) * (value - 3) + 1,
+            scale: 1,
+            y: (value - 3) * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
@@ -120,31 +129,33 @@ const Ninth = () => {
           className={"h-[40vw] w-[30vw] max-h-[800px] max-w-[600px] rounded-[16px] overflow-hidden"}
           src={FifthImage} alt={""}
           animate={{
-            opacity: 7 * value -2,
-            scale: 7 * value  -2,
-            y: -(7 * value  - 3) * 1.5 * windowHeight + 'px'
+            opacity:-10 * (value - 3) * (value - 3) + 1,
+            scale: 1,
+            y: -(value - 3) * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />  
       </div>
+
+
 
       <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
         <motion.img 
           className={"h-[40vw] w-[30vw] max-h-[800px] max-w-[600px] rounded-[16px] overflow-hidden"}
           src={SixthImage} alt={""}
           animate={{
-            opacity: 7 * value -3,
-            scale: 7 * value  -3,
-            y: (7 * value  - 4) * 1.5 * windowHeight + 'px'
+            opacity:-10 * (value - 4) * (value - 4) + 1,
+            scale: 1,
+            y: (value - 4) * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
 
         <motion.span 
           animate={{
-            opacity: 7 * value -3,
-            scale: 7 * value  -3,
-            y: -(7 * value  - 4) * windowHeight + 'px'
+            opacity:-10 * (value - 4) * (value - 4) + 1,
+            scale: 1,
+            y: -(value - 4) * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
           className={"text-[16px] lg:text-[32px] max-w-[30vw] select-none overflow-hidden"}
@@ -153,40 +164,46 @@ const Ninth = () => {
         </motion.span>
       </div>
 
+
+
       <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
         <motion.img 
           className={"h-[40vw] w-[30vw] max-h-[800px] max-w-[600px] rounded-[16px] overflow-hidden"}
           src={SeventhImage} alt={""}
           animate={{
-            opacity: 7 * value -4,
-            scale: 7 * value  -4,
-            y: (7 * value  - 5) * 1.5 * windowHeight + 'px'
+            opacity:-10 * (value - 5) * (value - 5) + 1,
+            scale: 1,
+            y: (value - 5) * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
       </div>
+
+
 
       <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
         <motion.img 
           className={"h-[36vw] w-[48vw] max-h-[600px] max-w-[800px] rounded-[16px] overflow-hidden"}
           src={EighthImage} alt={""}
           animate={{
-            opacity: 7 * value -5,
-            scale: 7 * value  -5,
-            y: (7 * value  - 6) * 1.5 * windowHeight + 'px'
+            opacity:-10 * (value - 6) * (value - 6) + 1,
+            scale: 1.2,
+            y: (value - 6) * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
       </div>
+
+
 
       <div className="h-screen w-screen flex flex-row justify-evenly items-center sticky top-0 bottom-0 overflow-hidden">
         <motion.img 
           className={"h-[36vw] w-[48vw] max-h-[600px] max-w-[800px] rounded-[16px] overflow-hidden"}
           src={NinthImage} alt={""}
           animate={{
-            opacity: 7 * value -6,
-            scale: 7 * value  -6,
-            y: (7 * value  - 7) * 1.5 * windowHeight + 'px'
+            opacity:-10 * (value - 7) * (value - 7) + 1,
+            scale: 1.2,
+            y: (value - 7) * 100 + 'px'
           }}
           transition={{ease: "easeOut", duration: 0.618}}
         />
