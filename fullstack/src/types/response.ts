@@ -1,9 +1,12 @@
 import { Article, Conversation, Image, Message, User } from "@prisma/client";
+import {ArticlePrisma} from "@/types/article";
+import {CommentPrisma} from "@/types/comment";
+import { UserPrisma } from "@/types/user";
 
 type data = null
-  | User | User[]
-  | Article | Article[]
-  | Comment | Comment[]
+  | User | User[] | UserPrisma | UserPrisma[]
+  | Article | Article[] | ArticlePrisma | ArticlePrisma[]
+  | Comment | Comment[] | CommentPrisma | CommentPrisma[]
   | Image | Image[]
   | Message | Message[]
   | Conversation | Conversation[]
