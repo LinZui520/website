@@ -30,7 +30,7 @@ export const { handlers, auth }= NextAuth({
           id: user.id.toString(),
           name: user.username,
           email: user.email,
-          image: user.avatar,
+          image: process.env.URL + "/image/" + user.avatar,
         }
       }
     })

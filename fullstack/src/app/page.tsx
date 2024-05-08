@@ -1,14 +1,23 @@
 import { auth } from "@/lib/auth";
+import Loading from "@/app/loading";
 
 const Home = async () => {
 
   const session = await auth()
 
+  if (!session?.user?.image) return <Loading />
+
+  const message = await new Promise<string>((resolve) => {
+    console.log('in executing sleep!')
+    setTimeout(() => resolve("after 3000 ms!"), 3000);
+  });
+
   return (
     <div className={"bg-[#fbfbfd] flex flex-col items-center"}>
+      <div>{message}</div>
       {!!session && <div>已登录</div>}
       {!session && <div>未登录</div>}
-      {!!session && <div>{session.user?.name}</div>}
+      {!!session && <div>{session.user.name}</div>}
       <h1 className={"font-bold text-[#1d1d1f]"}>我不吃牛肉</h1>
       <p>一个简约风格的网站</p>
       <div className={"w-full h-screen flex flex-col justify-center items-center"}>

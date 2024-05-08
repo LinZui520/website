@@ -9,7 +9,6 @@ const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const session = useSession()
-  console.log(session)
 
   const menu = [
     {href: '/', text: '首页'},
@@ -73,7 +72,7 @@ const Menu = () => {
       </motion.ul>
 
       <motion.div
-        whileHover={{scale: 1.2}} whileTap={{scale: 0.84}}
+        whileHover={{scale: 1.2}} whileTap={{scale: 0.9}}
         className={
           "z-50 flex justify-center items-center " +
           "outline-none border-none rounded-full cursor-pointer " +
