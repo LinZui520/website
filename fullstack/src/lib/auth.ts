@@ -16,14 +16,8 @@ export const { handlers, auth }= NextAuth({
         if (!credentials.username || !credentials.password) return null
         const username = String(credentials.username);
         const password = String(credentials.password);
-        console.log(username, password)
-        //const salt = bcrypt.genSaltSync(4);
-        //const hash = bcrypt.hashSync(String(password), salt);
-        //console.log(username, hash)
         const user = await prisma.user.findFirst({
-          where: {
-            username,
-          }
+          where: { username }
         })
         if (!user || !bcrypt.compareSync(password, user.password)) return null
         return {
