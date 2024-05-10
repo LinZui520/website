@@ -6,7 +6,7 @@
 
 技术栈 `next.js` + `prisma` + `mysql` + `redis` + `docker`
 
-> 该仓库已经重构，需访问旧的仓库请移步**archive**分支
+> 该仓库已经重构，需访问旧的仓库请移步[*archive分支*](https://github.com/LinZui520/website/tree/archive)
 >
 > 旧仓库技术栈 `react` + `gin` + `mysql` + `redis` + `docker`
 
