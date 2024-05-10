@@ -1,12 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/web"
-    schedule:
-      interval: "daily"
-
-  - package-ecosystem: "gomod"
-    directory: "/server"
+    directory: "/fullstack"
     schedule:
       interval: "daily"
 
