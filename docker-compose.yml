@@ -1,50 +1,24 @@
 services:
   mysql:
-    build: ./database/mysql
+    build: ./mysql
     volumes:
-      - ./database/mysql/data/mysql:/var/lib/mysql
-      - ./database/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mysql/data/mysql:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_CHARSET=utf8mb4
     restart: always
     network_mode: host
 
-  redis:
-    build: ./database/redis
-    restart: always
+  fullstack:
+    build: ./fullstack
     network_mode: host
     depends_on:
       - mysql
-
-  server:
-    build: ./server
-    volumes:
-      - ./database/mysql/data/image:/root/website/database/mysql/data/image
-      - ./database/logs/server.log:/root/website/database/logs/server.log
-    restart: always
-    tty: true
-    network_mode: host
-    depends_on:
-      - redis
-      - mysql
-  web:
-    build: ./web
-    volumes:
-      - ./database/mysql/data/image:/root/website/database/mysql/data/image
-      - ./web/build:/root/website/web/build
-    network_mode: host
-    depends_on:
-      - server
   nginx:
     build: ./nginx
-    volumes:
-      - ./database/mysql/data/image:/root/website/database/mysql/data/image
-      - ./web/build:/root/website/web/build
-      - ./database/logs/web/access.log:/root/website/database/logs/web/access.log
-      - ./database/logs/web/error.log:/root/website/database/logs/web/error.log
     restart: always
     network_mode: host
     depends_on:
-      - web
+      - fullstack
 

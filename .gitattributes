@@ -1,4 +1,4 @@
 # 提交时忽略本地修改
-# git config --global filter.Password.clean 'sed "s/smtp_password:.*/smtp_password: [FILTERED]/g"'
+# git config --global filter.Password.clean 'sed "s/SMTP_PASS=.*/SMTP_PASS=[FILTERED]/"'
 
-server/settings.yaml filter=Password
+fullstack/.env filter=Password

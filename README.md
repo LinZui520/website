@@ -4,6 +4,8 @@
 
 想了解代码细节请阅读`documents/README.md`
 
+技术栈 `next.js` + `prisma` + `mysql` + `docker`
+
 #### 依赖
 
 `docker` 和 `docker-compose`
@@ -40,9 +42,7 @@ $ git clone git@github.com:LinZui520/website.git
 
 阅读`nginx/README.md`
 
-阅读`web/README.md`
-
-阅读`server/README.md`
+阅读`fullstack/README.md`
 
 然后`website`启动🫡
 
