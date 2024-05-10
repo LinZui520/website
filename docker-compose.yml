@@ -9,12 +9,21 @@ services:
       - MYSQL_CHARSET=utf8mb4
     restart: always
     network_mode: host
+    
+  redis:
+    build: ./redis
+    restart: always
+    network_mode: host
+    depends_on:
+      - mysql
 
   fullstack:
     build: ./fullstack
     network_mode: host
     depends_on:
       - mysql
+      - redis
+      
   nginx:
     build: ./nginx
     restart: always

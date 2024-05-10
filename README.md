@@ -2,9 +2,13 @@
 
 边学习边搭建自己的个人网站
 
-想了解代码细节请阅读`documents/README.md`
+想了解代码细节请阅读`docs/README.md`
 
-技术栈 `next.js` + `prisma` + `mysql` + `docker`
+技术栈 `next.js` + `prisma` + `mysql` + `redis` + `docker`
+
+> 该仓库已经重构，需访问旧的仓库请移步**archive**分支
+>
+> 旧仓库技术栈 `react` + `gin` + `mysql` + `redis` + `docker`
 
 #### 依赖
 
