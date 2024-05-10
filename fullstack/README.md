@@ -9,6 +9,7 @@ $ npm install @types/bcryptjs --save-dev
 $ npm install nodemailer --save
 $ npm install @types/nodemailer --save
 $ npm install ioredis --save
+$ npm install axios
 ```
 
 > ```sh

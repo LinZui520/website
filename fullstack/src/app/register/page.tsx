@@ -1,26 +1,36 @@
 'use client'
 
 import { useState } from "react";
+import request from "@/lib/axios";
 
 const Page = () => {
 
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
+  const [code, setCode] = useState('')
   const [password, setPassword] = useState('')
 
   const register = async () => {
-    const res = await fetch('http://127.0.0.1:3000/api/auth/register', {
+    const res = request({
+      url: '/auth/register',
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({username, email, password})
+      data: {
+        username, password,
+        email, code,
+      }
     })
 
-    const data = await res.json()
-    console.log(data)
+    console.log(res)
   }
 
+  const getCode = async () => {
+    const res = await request({
+      url: `/auth/verify`,
+      method: 'POST',
+      data: { email }
+    })
+    console.log(res)
+  }
 
   return (
     <div className={"h-screen w-full flex flex-col justify-center items-center"}>
@@ -33,9 +43,14 @@ const Page = () => {
         onChange={e => setEmail(e.target.value)}
       />
       <input
+        type="text" placeholder="Code" name="Code" autoComplete="Code"
+        onChange={e => setCode(e.target.value)}
+      />
+      <input
         type="password" placeholder="Password" name="Password" autoComplete="Password"
         onChange={e => setPassword(e.target.value)}
       />
+      <button onClick={getCode}>验证码</button>
       <button onClick={register}>注册</button>
     </div>
   );

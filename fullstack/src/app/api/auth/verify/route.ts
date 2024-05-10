@@ -3,17 +3,17 @@ import { ResponseError, ResponseOK } from "@/types/response";
 import transporter from "@/lib/nodemailer";
 import redis from "@/lib/redis";
 
-
-export const GET = async (_request: NextRequest, { params }: { params: { email: string } }) => {
+export const POST = async (request: NextRequest) => {
   try {
-    const code = Math.floor(Math.random() * 1000000);
+    const { email } = await request.json()
+    const code = Math.floor(Math.random() * 1000000).toString();
     await transporter.sendMail({
       from: process.env.SMTP_USER,
-      to: params.email,
+      to: email,
       subject: process.env.SMTP_SUBJECT,
-      text: process.env.SMTP_TEXT + code.toString(),
+      text: process.env.SMTP_TEXT + code,
     });
-    redis.set(params.email, code.toString(), 'EX', 60 * 5);
+    redis.set(email, code, 'EX', 60 * 5);
 
     return NextResponse.json(ResponseOK(null))
   } catch (error) {

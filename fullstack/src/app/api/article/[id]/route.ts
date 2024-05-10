@@ -37,14 +37,14 @@ export const GET = async (_request: NextRequest, { params }: { params: { id: str
 
 export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    const formData = await request.formData()
+    const { title, content } = await request.json()
     const article = await prisma.article.update({
       where: {
         id: parseInt(params.id)
       },
       data: {
-        title: String(formData.get('title')) ,
-        content: String(formData.get('content')),
+        title: title,
+        content: content,
         update: new Date()
       }
     })
