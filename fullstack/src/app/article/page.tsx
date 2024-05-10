@@ -1,15 +1,14 @@
 import { ArticlePrisma } from "@/types/article";
+import request from "@/lib/axios";
 
 const Page = async () => {
 
-  const res: Response = await fetch('http://127.0.0.1:3000/api/article', {
+  const res = await request({
+    url: 'http://127.0.0.1:3000/api/article',
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
   })
 
-  const articles: ArticlePrisma[] = (await res.json()).data
+  const articles: ArticlePrisma[] = res.data.data
 
   return (
     <>
