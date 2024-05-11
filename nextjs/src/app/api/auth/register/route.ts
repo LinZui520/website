@@ -1,6 +1,6 @@
-import prisma from "@/lib/prisma"
-import {ResponseError, ResponseOK} from "@/types/response"
-import {NextRequest, NextResponse} from "next/server"
+import prisma from "@/lib/prisma";
+import {ResponseError, ResponseOK} from "@/types/response";
+import {NextRequest, NextResponse} from "next/server";
 import bcrypt from "bcryptjs";
 import redis from "@/lib/redis";
 
