@@ -8,7 +8,10 @@ export const GET = async (_request: NextRequest, { params }: { params: { id: str
       where: {
         id: parseInt(params.id)
       },
-      include: {
+      select: {
+        id: true, author: true,
+        title: true, content: true,
+        update: true, create: true,
         User: {
           select: {
             id: true, avatar: true, username: true, email: true,
@@ -16,7 +19,9 @@ export const GET = async (_request: NextRequest, { params }: { params: { id: str
           }
         },
         Comments: {
-          include: {
+          select: {
+            id: true, author: true, article: true,
+            content: true, create: true,
             User: {
               select: {
                 id: true, avatar: true, username: true, email: true,

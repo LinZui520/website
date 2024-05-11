@@ -5,7 +5,8 @@ import {ResponseError, ResponseOK} from "@/types/response";
 export const GET = async (_request: NextRequest) => {
   try {
     const articles = await prisma.article.findMany({
-      include: {
+      select: {
+        id: true, author: true, title: true, content: false, update: true, create: true,
         User: {
           select: {
             id: true, avatar: true, username: true, email: true,
