@@ -1,4 +1,4 @@
 # 提交时忽略本地修改
 # git config --global filter.Password.clean 'sed "s/SMTP_PASS=.*/SMTP_PASS=[FILTERED]/"'
 
-fullstack/.env filter=Password
+nextjs/.env filter=Password
