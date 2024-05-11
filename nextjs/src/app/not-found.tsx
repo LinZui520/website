@@ -4,18 +4,18 @@ import { motion } from "framer-motion";
 
 const NotFound = () => {
   return (
-    <div className={"h-screen w-full flex justify-center items-center"}>
+    <div className={"h-screen w-full flex flex-col justify-center items-center overflow-hidden"}>
       <motion.span
-        className={"select-none font-bold text-[#1d1d1f] text-[18px] md:text-[22px] lg:text-[26px]"}
-        initial={{ scale: 1, opacity: 0.6 }}
+        className={"select-none font-bold text-[#1d1d1f] text-[18px] md:text-[22px] lg:text-[27px]"}
+        initial={{ scale: 1, opacity: 1 }}
         animate={{
-          scale: [1, 1.5, 1],
-          opacity: [0.6, 1, 0.6],
+          scale: [1, 2, 1],
+          opacity: [1, 0.5, 1]
         }}
         transition={{
-          duration: 3,
+          duration: 2,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: "easeInOut"
         }}
       >
         Not Found
