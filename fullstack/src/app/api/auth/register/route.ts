@@ -13,8 +13,8 @@ export const POST = async (request : NextRequest) => {
       return NextResponse.json(ResponseError('验证码错误'))
     }
 
-    const salt = bcrypt.genSaltSync(4);
-    const hash = bcrypt.hashSync(password, salt);
+    const salt = bcrypt.genSaltSync(4)
+    const hash = bcrypt.hashSync(password, salt)
     const user = await prisma.user.create({
       data: {
         username,
@@ -28,6 +28,6 @@ export const POST = async (request : NextRequest) => {
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
   } finally {
-    await prisma.$disconnect();
+    await prisma.$disconnect()
   }
 }

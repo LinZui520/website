@@ -5,11 +5,11 @@ const request = (config: AxiosRequestConfig): Promise<AxiosResponse> => {
     baseURL: '/api',
     timeout: 5000,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     }
-  });
+  })
 
-  return instance(config);
+  return instance(config)
 };
 
 export default request;
