@@ -17,8 +17,8 @@ services:
     depends_on:
       - mysql
 
-  fullstack:
-    build: ./fullstack
+  nextjs:
+    build: ./nextjs
     network_mode: host
     depends_on:
       - mysql
@@ -29,5 +29,5 @@ services:
     restart: always
     network_mode: host
     depends_on:
-      - fullstack
+      - nextjs
 
