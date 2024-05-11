@@ -11,7 +11,7 @@ export const POST = async (request: NextRequest) => {
       from: process.env.SMTP_USER,
       to: email,
       subject: process.env.SMTP_SUBJECT,
-      text: process.env.SMTP_TEXT + code,
+      text: process.env.SMTP_TEXT + code
     })
     redis.set(email, code, 'EX', 60 * 5)
 

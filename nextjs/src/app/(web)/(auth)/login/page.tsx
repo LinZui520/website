@@ -2,21 +2,19 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
 
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
 
   const login = async () => {
     try {
       const response = await signIn('credentials', {
-        username,
-        password,
-        redirect: false,
-        redirectTo: '/'
+        email, password,
+        redirect: false, redirectTo: '/'
       })
       if (response && !response.error) {
         router.push('/')
@@ -32,8 +30,8 @@ const Page = () => {
   return (
     <div className={"h-screen w-full flex flex-col justify-center items-center"}>
       <input
-        type="text" placeholder="Username" name="Username" autoComplete="Username"
-        onChange={e => setUsername(e.target.value)}
+        type="email" placeholder="Email" name="Email" autoComplete="Email"
+        onChange={e => setEmail(e.target.value)}
       />
       <input
         type="password" placeholder="Password" name="Password"
