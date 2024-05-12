@@ -22,22 +22,28 @@ const Menu = () => {
       {href: '/login', text: '登\u00A0\u00A0\u00A0\u00A0录'}
   ]
 
-  const windowWidth = window.innerWidth
+  const [width, setWidth] = useState(window.innerWidth)
+
+  useEffect(() => {
+    const resize = () => setWidth(window.innerWidth)
+
+    window.addEventListener('resize', resize)
+
+    return () => window.removeEventListener('resize', resize)
+  }, [])
 
   useEffect(() => {
     isOpen && (document.body.style.overflow = 'hidden');
-  }, [isOpen]);
+  }, [isOpen])
 
   return (
     <motion.nav initial={false} animate={isOpen ? "open" : "closed"}>
 
       <motion.ul
         variants={{
-          open: { x: 0 }, closed: { x: -windowWidth }
+          open: { x: 0 }, closed: { x: -width }
         }}
-        transition={{
-          duration: 1, ease: "easeInOut"
-        }}
+        transition={{ duration: 1, ease: "easeInOut" }}
         className={
           "z-50 flex flex-col justify-center items-center fixed " +
           "bg-[#fbfbfd] right-0 top-0 w-full h-screen "
@@ -48,14 +54,8 @@ const Menu = () => {
           <motion.li
             key={item.href}
             onClick={() => setIsOpen(!isOpen)}
-            initial={{
-              color: "#1d1d1f",
-              backgroundColor: "#fbfbfd"
-            }}
-            whileHover={{
-              color: "#fbfbfd",
-              backgroundColor: "#1d1d1f"
-            }}
+            initial={{ color: "#1d1d1f", backgroundColor: "#fbfbfd" }}
+            whileHover={{ color: "#fbfbfd", backgroundColor: "#1d1d1f" }}
             className={
               "z-50 list-none cursor-pointer mb-[3vh] select-none rounded-full " +
               "font-light text-[18px] md:text-[22px] lg:text-[27px] p-[8px] pl-[16px] pr-[16px]"
