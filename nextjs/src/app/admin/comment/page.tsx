@@ -4,7 +4,7 @@ const Page = async () => {
   return (
 
     <div>
-      <h1>User</h1>
+      <h1>Comment</h1>
     </div>
   );
 }
