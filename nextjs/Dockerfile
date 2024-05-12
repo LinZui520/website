@@ -1,6 +1,6 @@
 FROM node
 
-WORKDIR /root/website/fullstack
+WORKDIR /root/website/nextjs
 
 COPY . .
 
