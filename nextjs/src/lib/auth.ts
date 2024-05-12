@@ -9,14 +9,14 @@ export const { handlers, auth } = NextAuth({
     Credentials({
       name: "credentials",
       credentials: {
-        username: {}, password: {}
+        email: {}, password: {}
       },
       authorize: async (credentials, _req) => {
-        if (!credentials.username || !credentials.password) return null
-        const username = String(credentials.username)
+        if (!credentials.email || !credentials.password) return null
+        const email = String(credentials.email)
         const password = String(credentials.password)
         const user = await prisma.user.findFirst({
-          where: { username }
+          where: { email }
         })
         if (!user || !bcrypt.compareSync(password, user.password)) return null
         return {

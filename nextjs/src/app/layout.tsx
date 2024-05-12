@@ -3,6 +3,7 @@ import React from "react";
 import "./globals.css";
 import Menu from "@/components/Menu";
 import { SessionProvider } from 'next-auth/react'
+import ArrowUp from "@/components/ArrowUp";
 
 export const metadata: Metadata = {
   title: "我不吃牛肉",
@@ -20,6 +21,7 @@ const RootLayout = ({
         <SessionProvider>
           <Menu />
           {children}
+          <ArrowUp />
         </SessionProvider>
       </body>
     </html>

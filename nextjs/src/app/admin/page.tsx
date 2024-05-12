@@ -3,8 +3,8 @@
 const Page = async () => {
   return (
     
-    <div>
-      <h1>Admin Page</h1>
+    <div className={"h-full w-full bg-gray-50"}>
+      <h1>home</h1>
     </div>
   );
 }
