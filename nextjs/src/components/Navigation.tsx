@@ -32,27 +32,26 @@ const Page = () => {
 
   const [isHovered, setIsHovered] = useState([
     false, false, false, false, false, false
-  ]);
+  ])
 
   return (
-    <div className={"flex flex-row justify-start items-center h-[82px]"}>
+    <nav className={"flex flex-row justify-start items-center h-[82px]"}>
       {menu.map((item, index) =>
-        <motion.div
+        <motion.svg
+          viewBox={item.viewBox} width="32" height="32"
           key={item.text}
           onClick={() => router.push(`/admin${item.route}`)}
           onHoverStart={() => setIsHovered({...isHovered, [index]: true})}
           onHoverEnd={() => setIsHovered({...isHovered, [index]: false})}
-          className={"flex flex-col justify-center items-center ml-[16px] md:ml-[32px] lg:ml-[64px] cursor-pointer"}
+          className={"ml-[16px] md:ml-[32px] lg:ml-[64px] cursor-pointer"}
         >
-          <svg viewBox={item.viewBox} width="32" height="32">
-            <path
-              fill={isHovered[index] || "/admin" + item.route === pathname ? "#11efef" : "#1d1d1f"}
-              d={item.d}
-            />
-          </svg>
-        </motion.div>
+          <path
+            fill={isHovered[index] || "/admin" + item.route === pathname ? "#11efef" : "#1d1d1f"}
+            d={item.d}
+          />
+        </motion.svg>
       )}
-    </div>
+    </nav>
   );
 }
 

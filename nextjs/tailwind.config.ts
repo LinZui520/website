@@ -8,7 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
-
+      height: {
+        'calc-82': 'calc(100vh - 82px)'
+      }
     },
   },
   plugins: [],

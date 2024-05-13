@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 const Menu = () => {
 
   const [isOpen, setIsOpen] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
 
   const session = useSession()
 
@@ -22,18 +23,8 @@ const Menu = () => {
       {href: '/login', text: '登\u00A0\u00A0\u00A0\u00A0录'}
   ]
 
-  const [width, setWidth] = useState(window.innerWidth)
-
   useEffect(() => {
-    const resize = () => setWidth(window.innerWidth)
-
-    window.addEventListener('resize', resize)
-
-    return () => window.removeEventListener('resize', resize)
-  }, [])
-
-  useEffect(() => {
-    isOpen && (document.body.style.overflow = 'hidden');
+    isOpen && (document.body.style.overflow = 'hidden')
   }, [isOpen])
 
   return (
@@ -41,9 +32,15 @@ const Menu = () => {
 
       <motion.ul
         variants={{
-          open: { x: 0 }, closed: { x: -width }
+          open: {
+            transform: "translateX(0)",
+            transition: { ease: "easeOut", duration: 1 }
+          },
+          closed: {
+            transform: "translateX(-100%)",
+            transition: { type: "spring", stiffness: 50 }
+          }
         }}
-        transition={{ duration: 1, ease: "easeInOut" }}
         className={
           "z-50 flex flex-col justify-center items-center fixed " +
           "bg-[#fbfbfd] right-0 top-0 w-full h-screen "
@@ -66,19 +63,23 @@ const Menu = () => {
         )}
       </motion.ul>
 
-      <svg
+      <motion.svg
         onClick={() => setIsOpen(!isOpen)}
         width="32" height="32" viewBox="0 0 23 23"
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
         className={"z-50 top-[25px] right-[25px] cursor-pointer fixed"}
       >
         <motion.path
-          fill="transparent" strokeWidth="3" stroke="#1d1d1f" strokeLinecap="round"
+          fill="transparent" strokeWidth="3" strokeLinecap="round"
+          stroke={isHovered ? "#11efef" : "#1d1d1f"}
           variants={{
             closed: { d: "M 2 2.5 L 20 2.5" }, open: { d: "M 3 16.5 L 17 2.5" }
           }}
         />
         <motion.path
-          fill="transparent" strokeWidth="3" stroke="#1d1d1f" strokeLinecap="round"
+          fill="transparent" strokeWidth="3" strokeLinecap="round"
+          stroke={isHovered ? "#11efef" : "#1d1d1f"}
           d="M 2 9.423 L 20 9.423"
           variants={{
             closed: { opacity: 1 }, open: { opacity: 0 }
@@ -86,12 +87,13 @@ const Menu = () => {
           transition={{ duration: 0.1 }}
         />
         <motion.path
-          fill="transparent" strokeWidth="3" stroke="#1d1d1f" strokeLinecap="round"
+          fill="transparent" strokeWidth="3" strokeLinecap="round"
+          stroke={isHovered ? "#11efef" : "#1d1d1f"}
           variants={{
             closed: { d: "M 2 16.346 L 20 16.346" }, open: { d: "M 3 2.5 L 17 16.346" }
           }}
         />
-      </svg>
+      </motion.svg>
     </motion.nav>
   );
 };
