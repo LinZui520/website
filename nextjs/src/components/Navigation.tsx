@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { Tooltip } from "@nextui-org/react";
 
 const Page = () => {
 
@@ -37,19 +38,20 @@ const Page = () => {
   return (
     <nav className={"flex flex-row justify-start items-center h-[82px]"}>
       {menu.map((item, index) =>
-        <motion.svg
-          viewBox={item.viewBox} width="32" height="32"
-          key={item.text}
-          onClick={() => router.push(`/admin${item.route}`)}
-          onHoverStart={() => setIsHovered({...isHovered, [index]: true})}
-          onHoverEnd={() => setIsHovered({...isHovered, [index]: false})}
-          className={"ml-[16px] md:ml-[32px] lg:ml-[64px] cursor-pointer"}
-        >
-          <path
-            fill={isHovered[index] || "/admin" + item.route === pathname ? "#11efef" : "#1d1d1f"}
-            d={item.d}
-          />
-        </motion.svg>
+        <Tooltip key={item.text} content={item.text}>
+          <motion.svg
+            viewBox={item.viewBox} width="32" height="32"
+            onClick={() => router.push(`/admin${item.route}`)}
+            onHoverStart={() => setIsHovered({...isHovered, [index]: true})}
+            onHoverEnd={() => setIsHovered({...isHovered, [index]: false})}
+            className={"ml-[16px] md:ml-[32px] lg:ml-[64px] cursor-pointer"}
+          >
+            <path
+              fill={isHovered[index] || "/admin" + item.route === pathname ? "#11efef" : "#1d1d1f"}
+              d={item.d}
+            />
+          </motion.svg>
+        </Tooltip>
       )}
     </nav>
   );
