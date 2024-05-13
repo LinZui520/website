@@ -9,7 +9,7 @@ const Layout = ({
   return (
     <>
       <Navigation />
-      {children}
+      <div className={"h-calc-82 w-full"}>{children}</div>
     </>
   )
 }

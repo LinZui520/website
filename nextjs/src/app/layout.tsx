@@ -3,12 +3,8 @@ import React from "react";
 import "./globals.css";
 import { SessionProvider } from 'next-auth/react'
 import ArrowUp from "@/components/ArrowUp";
-import dynamic from "next/dynamic";
+import Menu from "@/components/Menu";
 
-const Menu = dynamic(
-  () => import("@/components/Menu"),
-  { ssr: false }
-)
 
 export const metadata: Metadata = {
   title: "我不吃牛肉",
