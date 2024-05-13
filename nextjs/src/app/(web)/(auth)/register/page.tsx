@@ -67,17 +67,21 @@ const Page = () => {
             className="h-[50px] w-full"
             initial={{ opacity: 0 ,x: -200}}
             animate={{ opacity: 1 ,x: 0}}
-            transition={{ duration: 0.618,type: "spring", stiffness: 100, damping: 10,}}
+            transition={{ duration: 0.618,type: "spring", stiffness: 100, damping: 10,delay: 0.2}}
           >
             <label className="text-[#1d1d1f] text-lg font-bold object-left">用户名</label>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full h-[40px] border-[1px] border-[#1d1d1f] rounded-[5px] px-[10px] text-[#1d1d1f] placeholder-[#999999] focus:outline-none focus:border-[#1d1d1f]"/>
+            <input type="text" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              className="w-full h-[40px] border-[1px] border-[#1d1d1f] rounded-[5px] px-[10px] text-[#1d1d1f] placeholder-[#999999] focus:outline-none focus:border-[#1d1d1f]"
+            />
           </motion.div>
 
           <motion.div
             className="h-[50px] w-full"
             initial={{ opacity: 0 ,x: -200}}
             animate={{ opacity: 1 ,x: 0}}
-            transition={{ duration: 0.618,type: "spring", stiffness: 100, damping: 10,}}
+            transition={{ duration: 0.618,type: "spring", stiffness: 100, damping: 10,delay: 0.4}}
           >
             <label className="text-[#1d1d1f] text-lg font-bold">邮箱</label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full h-[40px] border-[1px] border-[#1d1d1f] rounded-[5px] px-[10px] text-[#1d1d1f] placeholder-[#999999] focus:outline-none focus:border-[#1d1d1f]"/>
@@ -87,7 +91,7 @@ const Page = () => {
             className="h-[50px] w-full"
             initial={{ opacity: 0 ,x: -200}}
             animate={{ opacity: 1 ,x: 0}}
-            transition={{ duration: 0.618,type: "spring", stiffness: 100, damping: 10,}}
+            transition={{ duration: 0.618,type: "spring", stiffness: 100, damping: 10,delay: 0.6}}
           >
             <label className="text-[#1d1d1f] text-lg font-bold">密码</label>  
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full h-[40px] border-[1px] border-[#1d1d1f] rounded-[5px] px-[10px] text-[#1d1d1f] placeholder-[#999999] focus:outline-none focus:border-[#1d1d1f]"/>
@@ -96,23 +100,43 @@ const Page = () => {
           <motion.div
             className="h-[50px] w-full"
             initial={{ opacity: 0 ,x: -200}}
-            animate={{ opacity: 1 ,x: 0}}
-            transition={{ duration: 0.618,type: "spring", stiffness: 100, damping: 10,}}
+            animate={{ opacity: 1 ,x: 0 }}
+            transition={{ duration: 0.618,type: "spring", stiffness: 100, damping: 10,delay: 0.8}}
           >
             <label className="text-[#1d1d1f] text-lg font-bold">验证码</label>
+            
             <div className="flex flex-row justify-between items-center">
-            <input type="text" value={code} onChange={(e) => setCode(e.target.value)} className="w-[120px] h-[40px] border-[1px] border-[#1d1d1f] rounded-[5px] px-[10px] text-[#1d1d1f] placeholder-[#999999] focus:outline-none focus:border-[#1d1d1f]"/>
-            <button onClick={getCode} className="w-[120px] h-[40px] bg-[#1d1d1f] text-[#fbfbfd] font-bold text-lg rounded-[5px] border-[1px] border-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-[#fbfbfd]">获取验证码</button>
+
+              <input type="text" value={code} onChange={(e) => setCode(e.target.value)} 
+              className="w-[120px] h-[40px] border-[1px] border-[#1d1d1f] rounded-[5px] px-[10px] text-[#1d1d1f] placeholder-[#999999] focus:outline-none focus:border-[#1d1d1f]"
+              />
+            
+              <motion.button 
+                onClick={getCode} 
+                initial={{ scale: 0.9 }}
+                whileHover={{ scale: 1 }}
+                className="w-[120px] h-[40px] bg-[#1d1d1f] text-[#fbfbfd] font-bold text-lg rounded-[5px] border-[1px] border-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-[#fbfbfd]"
+              >
+              获取验证码
+              </motion.button>
+            
             </div>
           </motion.div>
 
           <motion.div
             className="h-[30px] w-full"
             initial={{ opacity: 0 ,x: -200}}
-            animate={{ opacity: 1 ,x: 0}}
-            transition={{ duration: 0.618,type: "spring", stiffness: 100, damping: 10,}}
+            animate={{ opacity: 1 ,x: 0 }}
+            transition={{ duration: 0.618,type: "spring", stiffness: 100, damping: 10,delay: 1.0}}
           >
-            <button onClick={register} className="w-full h-[40px] bg-[#1d1d1f] text-[#fbfbfd] font-bold text-lg rounded-[5px] border-[1px] border-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-[#fbfbfd]">注册</button>
+            <motion.button onClick={register} 
+            initial={{ scale: 0.9 }}
+            whileHover={{ scale: 1 }}
+            className="w-full h-[40px] bg-[#1d1d1f] text-[#fbfbfd] font-bold text-lg rounded-[5px] border-[1px] border-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-[#fbfbfd]"
+            
+            >
+              注册
+            </motion.button>
           </motion.div>
 
         </motion.div>
