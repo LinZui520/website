@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import React from "react";
 import "./globals.css";
 import { SessionProvider } from 'next-auth/react'
+import { NextUIProvider } from "@nextui-org/react";
 import ArrowUp from "@/components/ArrowUp";
 import Menu from "@/components/Menu";
 
@@ -19,11 +20,13 @@ const RootLayout = ({
   return (
     <html lang="zh-CN">
       <body>
-        <SessionProvider>
-          <Menu />
-          {children}
-          <ArrowUp />
-        </SessionProvider>
+        <NextUIProvider>
+          <SessionProvider>
+            <Menu />
+            {children}
+            <ArrowUp />
+          </SessionProvider>
+        </NextUIProvider>
       </body>
     </html>
   );

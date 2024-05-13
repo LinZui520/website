@@ -10,6 +10,7 @@ $ npm install nodemailer --save
 $ npm install @types/nodemailer --save
 $ npm install ioredis --save
 $ npm install axios
+$ npm install @nextui-org/react
 ```
 
 > ```sh

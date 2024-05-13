@@ -1,5 +1,6 @@
 import React from "react";
 import Navigation from "@/components/Navigation";
+import { Divider } from "@nextui-org/divider";
 
 const Layout = ({
   children,
@@ -9,7 +10,8 @@ const Layout = ({
   return (
     <>
       <Navigation />
-      <div className={"h-calc-82 w-full"}>{children}</div>
+      <Divider className={"w-full h-[2px]"} />
+      <div className={"h-calc-84 w-full"}>{children}</div>
     </>
   )
 }
