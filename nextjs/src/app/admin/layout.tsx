@@ -18,7 +18,7 @@ const Layout = async ({
     <>
       <Navigation />
       <Divider className={"w-full h-[2px]"} />
-      <div className={"h-calc-84 w-full"}>{children}</div>
+      <div className={"bg-[#fbfbfd] h-calc-84 w-full"}>{children}</div>
     </>
   )
 }

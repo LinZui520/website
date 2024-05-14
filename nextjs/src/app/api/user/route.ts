@@ -16,8 +16,8 @@ export const GET = async (_request: NextRequest) => {
   try {
     const session = await auth()
     if (!session || !session.user) return NextResponse.json(ResponseError('权限不足'))
-    const user = session.user
-    if (user.name !== 'root' && user.name !== 'adsense') {
+    const role = session.user.name
+    if (role !== 'root' && role !== 'adsense') {
       return NextResponse.json(ResponseError('权限不足'))
     }
 
@@ -32,5 +32,43 @@ export const GET = async (_request: NextRequest) => {
     return NextResponse.json(ResponseError('系统错误'))
   } finally {
     await prisma.$disconnect()
+  }
+}
+
+export const PUT = async (request: NextRequest) => {
+  try {
+    const session = await auth()
+    if (!session || !session.user) return NextResponse.json(ResponseError('权限不足'))
+    const role = session.user.name
+    if (role === "block" || role === "user") return NextResponse.json(ResponseError('权限不足'))
+
+
+    const { id, action } = await request.json()
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) }
+    })
+    if (!user) return NextResponse.json(ResponseError('用户不存在'))
+
+    const power = role === 'adsense' ? 3 : role === 'root' ? 2 : 1;
+
+    switch (action) {
+      case 'block':
+        if (power <= user.power) return NextResponse.json(ResponseError('权限不足'))
+        await prisma.user.update({
+          where: { id: Number(id) },
+          data: { power: user.power - 1 }
+        })
+        return NextResponse.json(ResponseOK('操作成功'))
+      case 'boost':
+        if (power <= user.power + 1) return NextResponse.json(ResponseError('权限不足'))
+        await prisma.user.update({
+          where: { id: Number(id) },
+          data: { power: user.power + 1 }
+        })
+        return NextResponse.json(ResponseOK('操作成功'))
+      default:return NextResponse.json(ResponseError("未知操作"))
+    }
+  } catch (error) {
+    return NextResponse.json(ResponseError('系统错误'))
   }
 }
