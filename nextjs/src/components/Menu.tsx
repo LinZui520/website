@@ -14,7 +14,7 @@ const Menu = () => {
 
   const menu = [
     { href: '/', text: '首页' },
-    { href: '/article', text: '博客' },
+    { href: '/blog', text: '博客' },
     session.data ? { href: '/message', text: '留言板' } : null,
     session.data ? { href: '/photo', text: '照片墙' } : null,
     session.data ? { href: '/chat', text: '聊天室' } : null,
