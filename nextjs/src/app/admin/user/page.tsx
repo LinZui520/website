@@ -110,7 +110,7 @@ const Page = () => {
     {name: "操作", uid: "actions"}
   ];
 
-  if (!users.length) return <Loading/>
+  if (!users || !users.length) return <Loading/>
 
   return (
     <Table
