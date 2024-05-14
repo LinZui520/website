@@ -25,7 +25,8 @@ export const GET = async (_request: NextRequest) => {
       select: {
         id: true, avatar: true, username: true, email: true,
         password: false, power: true, register: false, login: true
-      }
+      },
+      orderBy: { register: 'desc' }
     })
     return NextResponse.json(ResponseOK(users))
   } catch (error) {

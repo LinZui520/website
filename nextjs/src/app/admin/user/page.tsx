@@ -6,17 +6,7 @@ import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Toolti
 import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Loading from "@/app/loading";
-
-function formatTime(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-
-  return `${year}-${month}-${day}-${hours}:${minutes}:${seconds}`;
-}
+import { format } from "@/utils/time";
 
 const Page = () => {
 
@@ -50,8 +40,6 @@ const Page = () => {
   }, [fetchUsers])
 
   const renderCell = useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User]
-
     switch (columnKey) {
       case "username":
         return <div className={"relative flex items-center gap-2"}>
@@ -68,7 +56,7 @@ const Page = () => {
           {user.power < 0 ? "人下人" : user.power < 1 ? "普通用户" : user.power < 2 ? "管理员" : "站长"}
         </div>
       case "login":
-        return <span>{formatTime(new Date(user.login))}</span>
+        return <span>{format(new Date(user.login))}</span>
       case "actions":
         return <div className={"relative flex items-center gap-2"}>
           <Tooltip content="降低权限">
@@ -97,8 +85,6 @@ const Page = () => {
             </svg>
           </Tooltip>
         </div>
-      default:
-        return cellValue
     }
   }, [blockUser, boostUser])
 
@@ -115,7 +101,7 @@ const Page = () => {
   return (
     <Table
       isHeaderSticky
-      className={"h-full w-full"} aria-label="Users"
+      className={"h-full w-full select-none"} aria-label="Users"
     >
       <TableHeader columns={columns}>
         {(column) => (

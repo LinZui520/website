@@ -30,7 +30,8 @@ export const GET = async (_request: NextRequest) => {
             password: false, power: true, register: false, login: false,
           }
         }
-      }
+      },
+      orderBy: { create: 'desc' }
     })
     return NextResponse.json(ResponseOK(blogs))
   } catch (error) {
