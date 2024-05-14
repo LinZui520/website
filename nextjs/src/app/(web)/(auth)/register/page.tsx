@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import request from "@/lib/axios";
 import { motion } from "framer-motion";
 import { Input , Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 /*
 * Author: Lin_Zui
@@ -21,23 +22,26 @@ const Page = () => {
 
   const [isHovered, setIsHovered] = useState(false)
 
+  const router = useRouter()
+
   const register = async () => {
-    const res = request({
+    request({
       url: '/auth/register',
       method: 'POST',
-      data: {
-        username, password,
-        email, code,
+      data: { username, password, email, code }
+    }).then(res => {
+      if (res.data.code === 200) {
+        router.push('/login')
       }
     })
   }
 
   const getCode = async () => {
-    const res = await request({
+    request({
       url: `/auth/verify`,
       method: 'POST',
       data: { email }
-    })
+    }).then(() => {})
   }
 
   return (

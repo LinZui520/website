@@ -3,8 +3,8 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
-import { color, motion } from "framer-motion";
-import { Input , Button } from "@nextui-org/react";
+import { motion } from "framer-motion";
+import { Input } from "@nextui-org/react";
 
 /*
 * Author: Lin_Zui
@@ -105,18 +105,18 @@ const Page = () => {
           >
             <motion.div 
               initial={{ scale: 0.8 }}
-              whileHover={{ scale: 1, color: "#11efef" }}
+              whileHover={{ scale: 1 }}
               whileTap={{ scale: 0.8 }}
-              onClick={() => {}}
+              onClick={() => router.push('/security')}
             >
               忘记密码
             </motion.div>
 
             <motion.div
               initial={{ scale: 0.8 }}
-              whileHover={{ scale: 1, color: "#11efef" }}
+              whileHover={{ scale: 1 }}
               whileTap={{ scale: 0.8 }}
-              onClick={() => {}}
+              onClick={() => router.push('/register')}
             >
               注册
             </motion.div>
