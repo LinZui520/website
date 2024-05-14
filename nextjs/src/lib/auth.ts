@@ -21,7 +21,11 @@ export const { handlers, auth } = NextAuth({
         if (!user || !bcrypt.compareSync(password, user.password)) return null
         return {
           id: user.id.toString(),
-          name: user.username,
+          name: user.power < 0 ? "block"
+              : user.power < 1 ? "user"
+              : user.power < 2 ? "admin"
+              : user.power < 3 ? "root"
+              : "adsense",
           email: user.email,
           image: process.env.URL + "/image/" + user.avatar
         }
