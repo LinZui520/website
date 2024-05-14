@@ -13,14 +13,12 @@ const Menu = () => {
   const session = useSession()
 
   const menu = [
-    {href: '/', text: '首页'},
-    {href: '/article', text: '博客'},
-    {href: '/message', text: '留言板'},
-    {href: '/photo', text: '照片墙'},
-    {href: '/chat', text: '聊天室'},
-    {href: '/admin', text: '控制台'},
-    session.data ? {href: `/user/${session.data.user?.id}`, text: session.data.user?.name} :
-      {href: '/login', text: '登\u00A0\u00A0\u00A0\u00A0录'}
+    { href: '/', text: '首页' },
+    { href: '/article', text: '博客' },
+    session.data ? { href: '/message', text: '留言板' } : null,
+    session.data ? { href: '/photo', text: '照片墙' } : null,
+    session.data ? { href: '/chat', text: '聊天室' } : null,
+    session.data ? { href: '/admin', text: '控制台' } : { href: '/login', text: '登录' },
   ]
 
   useEffect(() => {
@@ -48,6 +46,7 @@ const Menu = () => {
         onAnimationComplete={() => !isOpen && (document.body.style.overflow = 'auto')}
       >
         {menu.map(item =>
+          item === null ? null :
           <motion.li
             key={item.href}
             onClick={() => setIsOpen(!isOpen)}
