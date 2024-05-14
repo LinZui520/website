@@ -70,5 +70,7 @@ export const PUT = async (request: NextRequest) => {
     }
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
+  } finally {
+    await prisma.$disconnect()
   }
 }
