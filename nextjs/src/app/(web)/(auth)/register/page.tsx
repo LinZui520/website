@@ -7,9 +7,9 @@ import { Input , Button } from "@nextui-org/react";
 
 /*
 * Author: Lin_Zui
-* Date: 2024-5-13 22:26:33
+* Date: 2024-5-14 17:20:00
 * Description: register page
-* Version: 1.0.1
+* Version: 1.0.2
 */
 
 const Page = () => {
@@ -41,7 +41,7 @@ const Page = () => {
   }
 
   return (
-    <div className="h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-[#fbfbfd]">
+    <div className="h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-[#fbfbfd] select-none">
     
     <motion.div
         whileInView={{ height:"480px" }}
