@@ -36,7 +36,7 @@ const Page = () => {
   ])
 
   return (
-    <nav className={"flex flex-row justify-start items-center h-[82px]"}>
+    <nav className={"bg-[#fbfbfd] flex flex-row justify-start items-center h-[82px]"}>
       {menu.map((item, index) =>
         <Tooltip key={item.text} content={item.text}>
           <motion.svg
