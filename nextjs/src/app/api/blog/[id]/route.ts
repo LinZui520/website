@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { ResponseError, ResponseOK } from "@/types/response";
-import { auth } from "@/lib/auth";
+import { session } from "@/utils/session";
 
 export interface Blog {
   id: number
@@ -73,16 +73,15 @@ export const GET = async (_request: NextRequest, { params }: { params: { id: str
 
 export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    const session = await auth()
-    if (!session || !session.user) return NextResponse.json(ResponseError('权限不足'))
-    const role = session.user.name
+    const { id, role } = await session()
     if (role === "block") return NextResponse.json(ResponseError('权限不足'))
 
     const { title, content } = await request.json()
+    if (!title) return NextResponse.json(ResponseError('参数错误'))
+
     const blog = await prisma.blog.findUnique({ where: { id: Number(params.id) } })
     if (!blog) return NextResponse.json(ResponseError('权限不足'))
-    if (blog.author !== Number(session.user.id) && role !== "admin" && role !== "root" && role !== "adsense") return NextResponse.json(ResponseError('权限不足'))
-
+    if (blog.author !== Number(id) && role !== "admin" && role !== "root" && role !== "adsense") return NextResponse.json(ResponseError('权限不足'))
 
     await prisma.blog.update({
       where: {
@@ -104,14 +103,12 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
 export const DELETE = async (_request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    const session = await auth()
-    if (!session || !session.user) return NextResponse.json(ResponseError('权限不足'))
-    const role = session.user.name
+    const { id, role } = await session()
     if (role === "block") return NextResponse.json(ResponseError('权限不足'))
 
     const blog = await prisma.blog.findUnique({ where: { id: Number(params.id) } })
     if (!blog) return NextResponse.json(ResponseError('权限不足'))
-    if (blog.author !== Number(session.user.id) && role !== "admin" && role !== "root" && role !== "adsense") return NextResponse.json(ResponseError('权限不足'))
+    if (blog.author !== Number(id) && role !== "admin" && role !== "root" && role !== "adsense") return NextResponse.json(ResponseError('权限不足'))
 
     await prisma.blog.delete({
       where: {
