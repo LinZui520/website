@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Menu = () => {
 
@@ -11,6 +11,7 @@ const Menu = () => {
   const [isHovered, setIsHovered] = useState(false)
 
   const session = useSession()
+  const router = useRouter()
 
   const menu = [
     { href: '/', text: '首页' },
@@ -49,7 +50,10 @@ const Menu = () => {
           item === null ? null :
           <motion.li
             key={item.href}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => {
+              router.push(item.href)
+              setIsOpen(!isOpen)
+            }}
             initial={{ color: "#1d1d1f", backgroundColor: "#fbfbfd" }}
             whileHover={{ color: "#fbfbfd", backgroundColor: "#1d1d1f" }}
             className={
@@ -57,7 +61,7 @@ const Menu = () => {
               "font-light text-[18px] md:text-[22px] lg:text-[27px] p-[8px] pl-[16px] pr-[16px]"
             }
           >
-            <Link href={item.href}>{item.text}</Link>
+            {item.text}
           </motion.li>
         )}
       </motion.ul>
