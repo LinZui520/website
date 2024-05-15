@@ -21,7 +21,7 @@ export interface Blog {
 
 export const GET = async (_request: NextRequest) => {
   try {
-    const blogs = await prisma.article.findMany({
+    const blogs = await prisma.blog.findMany({
       select: {
         id: true, author: true, title: true, content: false, update: true, create: true,
         User: {
@@ -49,7 +49,7 @@ export const POST = async (request: NextRequest) => {
     if (role === "block") return NextResponse.json(ResponseError('权限不足'))
 
     const { title, content } = await request.json()
-    await prisma.article.create({
+    await prisma.blog.create({
       data: {
         author: Number(session.user.id),
         title: title.toString(),

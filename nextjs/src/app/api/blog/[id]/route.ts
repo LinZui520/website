@@ -35,7 +35,7 @@ export interface Blog {
 
 export const GET = async (_request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-     const blog = await prisma.article.findUnique({
+     const blog = await prisma.blog.findUnique({
       where: {
         id: Number(params.id)
       },
@@ -51,7 +51,7 @@ export const GET = async (_request: NextRequest, { params }: { params: { id: str
         },
         Comments: {
           select: {
-            id: true, author: true, article: true,
+            id: true, author: true, blog: true,
             content: true, create: true,
             User: {
               select: {
@@ -79,12 +79,12 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     if (role === "block") return NextResponse.json(ResponseError('权限不足'))
 
     const { title, content } = await request.json()
-    const blog = await prisma.article.findUnique({ where: { id: Number(params.id) } })
+    const blog = await prisma.blog.findUnique({ where: { id: Number(params.id) } })
     if (!blog) return NextResponse.json(ResponseError('权限不足'))
     if (blog.author !== Number(session.user.id) && role !== "admin" && role !== "root" && role !== "adsense") return NextResponse.json(ResponseError('权限不足'))
 
 
-    await prisma.article.update({
+    await prisma.blog.update({
       where: {
         id: Number(params.id)
       },
@@ -109,11 +109,11 @@ export const DELETE = async (_request: NextRequest, { params }: { params: { id: 
     const role = session.user.name
     if (role === "block") return NextResponse.json(ResponseError('权限不足'))
 
-    const blog = await prisma.article.findUnique({ where: { id: Number(params.id) } })
+    const blog = await prisma.blog.findUnique({ where: { id: Number(params.id) } })
     if (!blog) return NextResponse.json(ResponseError('权限不足'))
     if (blog.author !== Number(session.user.id) && role !== "admin" && role !== "root" && role !== "adsense") return NextResponse.json(ResponseError('权限不足'))
 
-    await prisma.article.delete({
+    await prisma.blog.delete({
       where: {
         id: Number(params.id)
       }
