@@ -1,17 +1,35 @@
 'use client'
 
 import { motion } from "framer-motion";
-import {useState} from "react";
+import { useEffect, useState } from "react";
 
 const ArrowUp = () => {
 
   const [isHovered, setIsHovered] = useState(false)
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    const check = () => setShow(window.scrollY > 100)
+
+    window.addEventListener("scroll", check)
+
+    return () => window.removeEventListener("scroll", check)
+  }, [])
 
   return (
     <motion.svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 384 512"
       width="32" height="32"
+      animate={show ? "show" : "hide"}
+      initial={{
+        opacity: 0, scale: 0
+      }}
+      variants={{
+        show: { opacity: 1, scale: 1 },
+        hide: { opacity: 0, scale: 0 }
+      }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       className={"z-50 fixed right-[25px] bottom-[25px] cursor-pointer"}
