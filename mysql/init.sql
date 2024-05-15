@@ -16,7 +16,7 @@ create table if not exists users (
 ) AUTO_INCREMENT=100000;
 
 
-create table if not exists articles (
+create table if not exists blogs (
     id int auto_increment comment '文章编号',
     author int not null comment '作者编号',
     title varchar(256) not null comment '标题',
@@ -30,7 +30,7 @@ create table if not exists articles (
 create table if not exists comments (
     id int auto_increment comment '评论编号',
     author int not null comment '作者编号',
-    article int not null comment '文章编号',
+    blog int not null comment '文章编号',
     content varchar(256) not null comment '内容',
     `create` datetime not null comment '创建时间',
     primary key (id),

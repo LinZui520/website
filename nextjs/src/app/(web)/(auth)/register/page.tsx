@@ -174,7 +174,7 @@ const Page = () => {
             <motion.button 
               onClick={register} 
               initial={{ scale: 0.9 }}
-              whileHover={{ scale: 1 }}
+              whileHover={{ scale: 1, opacity: 0.9 }}
               whileTap={{ scale: 0.9 }}
               className="w-full h-[40px] bg-[#1d1d1f] text-[#fbfbfd] font-bold text-lg rounded-[12px] border-[1px] border-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-[#fbfbfd]"
             >

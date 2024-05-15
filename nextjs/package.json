@@ -16,6 +16,8 @@
     "bcryptjs": "^2.4.3",
     "framer-motion": "^11.1.9",
     "ioredis": "^5.4.1",
+    "markdown-it-mark": "^4.0.0",
+    "md-editor-rt": "^4.14.1",
     "next": "14.2.3",
     "next-auth": "^5.0.0-beta.17",
     "nodemailer": "^6.9.13",

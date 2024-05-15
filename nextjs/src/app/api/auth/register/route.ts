@@ -7,6 +7,7 @@ import redis from "@/lib/redis";
 export const POST = async (request : NextRequest) => {
   try {
     const { username, email, password, code } = await request.json()
+    if (!username || !email || !password || !code) return NextResponse.json(ResponseError('参数错误'))
 
     const redisCode = await redis.get(email)
     if (code !== redisCode) {

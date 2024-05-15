@@ -11,6 +11,8 @@ $ npm install @types/nodemailer --save
 $ npm install ioredis --save
 $ npm install axios
 $ npm install @nextui-org/react
+$ npm install md-editor-rt
+$ npm install markdown-it-mark
 ```
 
 > ```sh

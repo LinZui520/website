@@ -7,7 +7,8 @@ import bcrypt from "bcryptjs";
 export const PUT = async (request: NextRequest) => {
   try {
     const { email, password, code } = await request.json()
-    
+    if (!email || !password || !code) return NextResponse.json(ResponseError('参数错误'))
+
     const redisCode = await redis.get(email)
     if (code !== redisCode) {
       return NextResponse.json(ResponseError('验证码错误'))

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { ResponseError, ResponseOK } from "@/types/response";
-import {auth} from "@/lib/auth";
+import { session } from "@/utils/session";
+
 
 export interface Blog {
   id: number
@@ -21,7 +22,7 @@ export interface Blog {
 
 export const GET = async (_request: NextRequest) => {
   try {
-    const blogs = await prisma.article.findMany({
+    const blogs = await prisma.blog.findMany({
       select: {
         id: true, author: true, title: true, content: false, update: true, create: true,
         User: {
@@ -43,15 +44,15 @@ export const GET = async (_request: NextRequest) => {
 
 export const POST = async (request: NextRequest) => {
   try {
-    const session = await auth()
-    if (!session || !session.user) return NextResponse.json(ResponseError('权限不足'))
-    const role = session.user.name
-    if (role === "block") return NextResponse.json(ResponseError('权限不足'))
+    const { id, role } = await session()
+    if (role === "block" || !id) return NextResponse.json(ResponseError('权限不足'))
 
     const { title, content } = await request.json()
-    await prisma.article.create({
+    if (!title) return NextResponse.json(ResponseError('参数错误'))
+
+    await prisma.blog.create({
       data: {
-        author: Number(session.user.id),
+        author: Number(id),
         title: title.toString(),
         content: content.toString(),
         update: new Date(),
