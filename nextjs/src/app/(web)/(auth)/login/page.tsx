@@ -21,16 +21,15 @@ const Page = () => {
 
   const login = async () => {
     try {
-      const response = await signIn('credentials', {
+      signIn('credentials', {
         email, password,
         redirect: false, redirectTo: '/'
+      }).then(res => {
+        if (res && !res.error) {
+          router.push('/')
+          router.refresh()
+        }
       })
-      if (response && !response.error) {
-        router.push('/')
-        router.refresh()
-      } else {
-        alert("账户或密码错误")
-      }
     } catch (_) {
 
     }
@@ -105,7 +104,7 @@ const Page = () => {
           >
             <motion.div 
               initial={{ scale: 0.8 }}
-              whileHover={{ scale: 1 }}
+              whileHover={{ scale: 1, opacity: 0.9 }}
               whileTap={{ scale: 0.8 }}
               onClick={() => router.push('/security')}
             >
@@ -114,7 +113,7 @@ const Page = () => {
 
             <motion.div
               initial={{ scale: 0.8 }}
-              whileHover={{ scale: 1 }}
+              whileHover={{ scale: 1, opacity: 0.9 }}
               whileTap={{ scale: 0.8 }}
               onClick={() => router.push('/register')}
             >
@@ -131,7 +130,7 @@ const Page = () => {
             <motion.button 
               onClick={login} 
               initial={{ scale: 0.9 }}
-              whileHover={{ scale: 1 }}
+              whileHover={{ scale: 1, opacity: 0.9 }}
               whileTap={{ scale: 0.9 }}
               className="w-full h-[40px] bg-[#1d1d1f] text-[#fbfbfd] font-bold text-lg rounded-[12px] border-[1px] border-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-[#fbfbfd]"
             >
