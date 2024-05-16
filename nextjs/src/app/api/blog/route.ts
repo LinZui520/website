@@ -37,8 +37,6 @@ export const GET = async (_request: NextRequest) => {
     return NextResponse.json(ResponseOK(blogs))
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -62,7 +60,5 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(ResponseOK(null))
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
-  } finally {
-    await prisma.$disconnect();
   }
 }

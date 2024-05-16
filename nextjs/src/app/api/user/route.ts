@@ -31,8 +31,6 @@ export const GET = async (_request: NextRequest) => {
     return NextResponse.json(ResponseOK(users))
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
-  } finally {
-    await prisma.$disconnect()
   }
 }
 
@@ -71,7 +69,5 @@ export const PUT = async (request: NextRequest) => {
     }
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
-  } finally {
-    await prisma.$disconnect()
   }
 }
