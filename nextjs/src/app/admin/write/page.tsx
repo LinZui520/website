@@ -7,6 +7,8 @@ import 'md-editor-rt/lib/style.css';
 import { Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react';
 import { motion } from "framer-motion";
 import request from '@/lib/axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 config({
   markdownItConfig(md) {
@@ -18,19 +20,27 @@ const Page = () => {
 
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
-  const {isOpen, onOpen, onClose} = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const upload = async () => {
-    const res = await request({
-      url: '/blog',
-      method: 'POST',
-      data: { title, content }
-    })
-    return res.data.code === 200
+  const uploadBlog = async () => {
+    try {
+      const res = await request({
+        url: '/blog',
+        method: 'POST',
+        data: {title, content}
+      })
+      return res.data.code === 200 ? Promise.resolve() : Promise.reject(res.data.message)
+    } catch (_) {
+      return Promise.reject("系统错误")
+    }
   }
 
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        closeOnClick={true}
+      />
       <Modal
         size={"md"}
         backdrop={"blur"}
@@ -57,7 +67,20 @@ const Page = () => {
               </ModalBody>
               <ModalFooter className={"flex flex-row justify-evenly"}>
                 <motion.button
-                  onClick={() => upload().then(res => res && onClose())}
+                  onClick={() => toast.promise(uploadBlog, {
+                    pending: '正在上传博客',
+                    success: {
+                      render: () => {
+                        setTitle('')
+                        setContent('')
+                        onClose()
+                        return '上传成功'
+                      }
+                    },
+                    error: {
+                      render: ({ data }: { data: string }) => data
+                    }
+                  })}
                   initial={{ scale: 0.9 }}
                   whileHover={{ scale: 1, opacity: 0.9 }}
                   whileTap={{ scale: 0.9 }}
