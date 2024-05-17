@@ -5,7 +5,7 @@ import request from "@/lib/axios";
 import { Blog } from "@/app/api/blog/route";
 import Image from "next/image";
 import { format } from "@/utils/time";
-import {Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip} from "@nextui-org/react";
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react";
 import Loading from "@/app/loading";
 
 
