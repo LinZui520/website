@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -22,10 +22,6 @@ const Menu = () => {
     session.data ? { href: '/admin', text: '控制台' } : { href: '/login', text: '登录' },
   ]
 
-  useEffect(() => {
-    isOpen && (document.body.style.overflow = 'hidden')
-  }, [isOpen])
-
   return (
     <motion.nav initial={false} animate={isOpen ? "open" : "closed"}>
 
@@ -44,7 +40,6 @@ const Menu = () => {
           "z-50 flex flex-col justify-center items-center fixed " +
           "bg-[#fbfbfd] right-0 top-0 w-full h-screen "
         }
-        onAnimationComplete={() => !isOpen && (document.body.style.overflow = 'auto')}
       >
         {menu.map(item =>
           item === null ? null :
