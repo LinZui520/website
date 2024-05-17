@@ -5,6 +5,8 @@ import request from "@/lib/axios";
 import { motion } from "framer-motion";
 import { Input , Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /*
 * Author: Lin_Zui
@@ -23,30 +25,40 @@ const Page = () => {
 
   const router = useRouter()
 
-  const getCode = () => {
-    request({
-      url: '/auth/verify',
-      method: 'POST',
-      data: { email }
-    }).then(() => {})
+
+  const resetPassword = async () => {
+    try {
+      const res = await request({
+        url: '/auth/security',
+        method: 'PUT',
+        data: {email, code, password}
+      })
+      if (res.data.code === 200) {
+        toast.success("重置密码成功")
+        setTimeout(() => router.push('/login'), 2048)
+      } else {
+        toast.warning(res.data.message)
+      }
+    } catch (_) {
+      toast.error("系统错误")
+    }
   }
 
-  const resetPassword = () => {
-    request({
-      url: '/auth/security',
-      method: 'PUT',
-      data: { email, code, password }
-    }).then(res => {
-      if (res.data.code === 200) {
-        router.push('/login')
-      }
+  const getCode = async () => {
+    const res = await request({
+      url: `/auth/verify`, method: 'POST', data: { email }
     })
+    return res.data.code === 200 ? Promise.resolve() : Promise.reject()
   }
 
   return (
     <div className="h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-[#fbfbfd] select-none">
-    
-    <motion.div
+      <ToastContainer
+        position="top-center"
+        closeOnClick={true}
+      />
+
+      <motion.div
         whileInView={{ height:"480px" }}
         transition={{ duration: 0.618, type: "spring", stiffness: 100, damping: 10 }}
         className="h-[64px] w-[360px] flex flex-col items-center border-solid shadow-lg border-[#1d1d1f] border-4 p-4 rounded-[20px] bg-[#fbfbfd] space-y-4"
@@ -143,7 +155,11 @@ const Page = () => {
                 type="button"
                 isIconOnly
                 className="bg-[#fbfbfd]"
-                onClick={getCode}
+                onClick={() => toast.promise(getCode, {
+                  pending: '正在发送验证码',
+                  success: '发送验证码成功',
+                  error: '发送验证码失败'
+                })}
               >
                 <motion.svg
                   xmlns="http://www.w3.org/2000/svg"

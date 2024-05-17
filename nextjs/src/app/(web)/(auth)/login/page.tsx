@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { motion } from "framer-motion";
 import { Input } from "@nextui-org/react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /*
 * Author: Lin_Zui
@@ -21,23 +23,27 @@ const Page = () => {
 
   const login = async () => {
     try {
-      signIn('credentials', {
+      const res = await signIn('credentials', {
         email, password,
         redirect: false, redirectTo: '/'
-      }).then(res => {
-        if (res && !res.error) {
-          router.push('/')
-          router.refresh()
-        }
       })
+      if (res && !res.error) {
+        toast.success("登录成功")
+        setTimeout(() => router.push('/'), 2048)
+      } else {
+        toast.warning("邮箱或密码错误")
+      }
     } catch (_) {
-
+      toast.error("系统错误")
     }
   }
 
   return (
     <div className="h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-[#fbfbfd] select-none">
-      
+      <ToastContainer
+        position="top-center"
+        closeOnClick={true}
+      />
       <motion.div
         whileInView={{ height:"480px" }}
         transition={{ duration: 0.618, type: "spring", stiffness: 100, damping: 10 }}

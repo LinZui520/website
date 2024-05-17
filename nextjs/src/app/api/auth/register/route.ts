@@ -9,6 +9,14 @@ export const POST = async (request : NextRequest) => {
     const { username, email, password, code } = await request.json()
     if (!username || !email || !password || !code) return NextResponse.json(ResponseError('参数错误'))
 
+    if (await prisma.user.findUnique({ where: { email } })) {
+      return NextResponse.json(ResponseError('邮箱已注册'))
+    }
+
+    if (await prisma.user.findUnique({ where: { username } })) {
+      return NextResponse.json(ResponseError('用户名已注册'))
+    }
+
     const redisCode = await redis.get(email)
     if (code !== redisCode) {
       return NextResponse.json(ResponseError('验证码错误'))
