@@ -13,6 +13,7 @@ $ npm install axios
 $ npm install @nextui-org/react
 $ npm install md-editor-rt
 $ npm install markdown-it-mark
+$ npm install mac-scrollbar
 ```
 
 > ```sh

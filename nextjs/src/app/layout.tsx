@@ -5,6 +5,7 @@ import { SessionProvider } from 'next-auth/react'
 import { NextUIProvider } from "@nextui-org/react";
 import ArrowUp from "@/components/ArrowUp";
 import Menu from "@/components/Menu";
+import ScrollBar from "@/components/ScrollBar";
 
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ const RootLayout = ({
           <SessionProvider>
             <Menu />
             {children}
+            <ScrollBar />
             <ArrowUp />
           </SessionProvider>
         </NextUIProvider>
