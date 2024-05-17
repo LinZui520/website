@@ -24,7 +24,8 @@
     "nodemailer": "^6.9.13",
     "rc-bullets-ts": "^1.4.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-toastify": "^10.0.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

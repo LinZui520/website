@@ -5,6 +5,8 @@ import request from "@/lib/axios";
 import { motion } from "framer-motion";
 import { Input , Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /*
 * Author: Lin_Zui
@@ -25,28 +27,37 @@ const Page = () => {
   const router = useRouter()
 
   const register = async () => {
-    request({
-      url: '/auth/register',
-      method: 'POST',
-      data: { username, password, email, code }
-    }).then(res => {
+    try {
+      const res = await request({
+        url: '/auth/register',
+        method: 'POST',
+        data: { username, password, email, code }
+      })
       if (res.data.code === 200) {
-        router.push('/login')
+        toast.success("注册成功")
+        setTimeout(() => router.push('/login'), 2048)
+      } else {
+        toast.warning(res.data.message)
       }
-    })
+    } catch (_) {
+      toast.error("系统错误")
+    }
   }
 
   const getCode = async () => {
-    request({
-      url: `/auth/verify`,
-      method: 'POST',
-      data: { email }
-    }).then(() => {})
+    const res = await request({
+      url: `/auth/verify`, method: 'POST', data: { email }
+    })
+    return res.data.code === 200 ? Promise.resolve() : Promise.reject()
   }
 
   return (
     <div className="h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-[#fbfbfd] select-none">
-    
+      <ToastContainer
+        position="top-center"
+        closeOnClick={true}
+      />
+
       <motion.div
         whileInView={{ height:"480px" }}
         transition={{ duration: 0.618, type: "spring", stiffness: 100, damping: 10 }}
@@ -167,7 +178,11 @@ const Page = () => {
                 type="button"
                 isIconOnly
                 className="bg-[#fbfbfd]"
-                onClick={getCode}
+                onClick={() => toast.promise(getCode, {
+                  pending: '正在发送验证码',
+                  success: '发送验证码成功',
+                  error: '发送验证码失败'
+                })}
               >
                 <motion.svg
                   xmlns="http://www.w3.org/2000/svg"

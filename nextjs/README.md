@@ -15,6 +15,7 @@ $ npm install md-editor-rt
 $ npm install markdown-it-mark
 $ npm install mac-scrollbar
 $ npm install rc-bullets-ts
+$ npm install react-toastify
 ```
 
 > ```sh
