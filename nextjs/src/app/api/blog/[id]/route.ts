@@ -66,8 +66,6 @@ export const GET = async (_request: NextRequest, { params }: { params: { id: str
     return NextResponse.json(ResponseOK(blog))
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -96,8 +94,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     return NextResponse.json(ResponseOK(null))
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -118,7 +114,5 @@ export const DELETE = async (_request: NextRequest, { params }: { params: { id: 
     return NextResponse.json(ResponseOK(null))
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
-  } finally {
-    await prisma.$disconnect();
   }
 }

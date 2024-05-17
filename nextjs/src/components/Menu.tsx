@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -23,7 +23,7 @@ const Menu = () => {
   ]
 
   useEffect(() => {
-    isOpen && (document.body.style.overflow = 'hidden')
+    !isOpen && (document.body.style.overflow = 'auto')
   }, [isOpen])
 
   return (
@@ -44,7 +44,7 @@ const Menu = () => {
           "z-50 flex flex-col justify-center items-center fixed " +
           "bg-[#fbfbfd] right-0 top-0 w-full h-screen "
         }
-        onAnimationComplete={() => !isOpen && (document.body.style.overflow = 'auto')}
+        onAnimationComplete={() => isOpen && (document.body.style.overflow = 'hidden')}
       >
         {menu.map(item =>
           item === null ? null :

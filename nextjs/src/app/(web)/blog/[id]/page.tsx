@@ -1,21 +1,42 @@
-// import { ArticlePrisma } from "@/types/article";
-// import NotFound from "@/app/not-found";
-// import request from "@/lib/axios";
+'use client'
 
-const Page = async ({ params }: { params: { id: string } }) => {
+import { MdPreview, config } from "md-editor-rt";
+import 'md-editor-rt/lib/style.css';
+import MarkExtension from "markdown-it-mark";
+import { useCallback, useEffect, useState } from "react";
+import request from "@/lib/axios";
+import Loading from "@/app/loading";
+import NotFound from "@/app/not-found";
+import { Blog } from "@/app/api/blog/[id]/route";
 
-  // const res = await request({
-  //   url: `http://127.0.0.1:3000/api/article/${params.id}`,
-  //   method: 'GET',
-  // })
-  //
-  // const article: ArticlePrisma = res.data.data
-  //
-  // if (!article) return <NotFound />
+config({
+  markdownItConfig(md) {
+    md.use(MarkExtension);
+  }
+})
+
+const Page = ({ params }: { params: { id: string } }) => {
+
+  const [blog, setBlog] = useState<Blog>()
+
+  const fetchBlog = useCallback(() => {
+    request({
+      url: `/blog/${params.id}`,
+      method: 'GET',
+    }).then(res => setBlog(res.data.data))
+  }, [params.id])
+
+  useEffect(() => {
+    fetchBlog()
+  }, [fetchBlog])
+
+  if (blog === undefined) return <Loading />
+
+  if (!blog || !blog.content) return <NotFound />
 
   return (
-    <div>
-      article{params.id}
+    <div className={"w-full min-h-screen bg-[#fbfbfd] flex flex-row justify-center"}>
+      <MdPreview editorId={'MdCatalog'} className={"w-[80%] max-w-[825px]"} modelValue={blog.content}/>
     </div>
   );
 }

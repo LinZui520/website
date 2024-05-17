@@ -24,8 +24,6 @@ export const PUT = async (request: NextRequest) => {
     return NextResponse.json(ResponseOK('密码修改成功'))
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
-  } finally {
-    await prisma.$disconnect()
   }
 }
   

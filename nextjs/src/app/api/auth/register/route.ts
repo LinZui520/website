@@ -28,7 +28,5 @@ export const POST = async (request : NextRequest) => {
     return NextResponse.json(ResponseOK(user))
   } catch (error) {
     return NextResponse.json(ResponseError('系统错误'))
-  } finally {
-    await prisma.$disconnect()
   }
 }

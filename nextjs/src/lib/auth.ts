@@ -19,6 +19,9 @@ export const { handlers, auth } = NextAuth({
           where: { email }
         })
         if (!user || !bcrypt.compareSync(password, user.password)) return null
+        await prisma.user.update({
+          where: { email }, data: { login: new Date() }
+        })
         return {
           id: user.id.toString(),
           name: user.power < 0 ? "block"
