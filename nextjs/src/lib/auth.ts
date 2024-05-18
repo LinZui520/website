@@ -52,6 +52,9 @@ export const { handlers, auth } = NextAuth({
     session: async (params:{ session: Session, token: JWT }): Promise<Session> => {
       if (params.token.user) {
         params.session.user = params.token.user
+        params.session.user.email && await prisma.user.update({
+          where: { email: params.session.user.email }, data: { login: new Date() }
+        })
       }
       return params.session
     }

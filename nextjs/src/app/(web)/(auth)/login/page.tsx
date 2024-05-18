@@ -9,11 +9,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 /*
-* Author: Lin_Zui
-* Date: 2024-5-14 17:20:00
-* Description: login page
-* Version: 1.0.1
-*/
+ * Author: Lin_Zui
+ * Date: 2024-5-14 17:20:00
+ * Description: login page
+ * Version: 1.0.1
+ */
 
 const Page = () => {
 

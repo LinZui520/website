@@ -3,8 +3,6 @@
 import { GlobalScrollbar } from 'mac-scrollbar';
 import 'mac-scrollbar/dist/mac-scrollbar.css';
 
-const ScrollBar = () => {
-  return <GlobalScrollbar />
-}
+const ScrollBar = () => <GlobalScrollbar />
 
 export default ScrollBar;
