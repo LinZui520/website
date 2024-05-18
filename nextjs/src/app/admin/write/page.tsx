@@ -37,10 +37,7 @@ const Page = () => {
 
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        closeOnClick={true}
-      />
+      <ToastContainer position="top-center" closeOnClick={true} />
       <Modal
         size={"md"}
         backdrop={"blur"}
@@ -50,7 +47,7 @@ const Page = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">请输入标题</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
               <ModalBody>
                 <Input
                   size={"md"} type="text" label="标题"
