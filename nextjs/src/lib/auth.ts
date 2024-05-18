@@ -18,7 +18,7 @@ export const { handlers, auth } = NextAuth({
         const user = await prisma.user.findFirst({
           where: { email }
         })
-        if (!user || !bcrypt.compareSync(password, user.password)) return null
+        if (!user || !bcrypt.compareSync(password, user.password) || user.power < 0) return null
         await prisma.user.update({
           where: { email }, data: { login: new Date() }
         })
