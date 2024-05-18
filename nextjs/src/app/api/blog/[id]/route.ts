@@ -78,7 +78,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     if (!title) return NextResponse.json(ResponseError('参数错误'))
 
     const blog = await prisma.blog.findUnique({ where: { id: Number(params.id) } })
-    if (!blog) return NextResponse.json(ResponseError('权限不足'))
+    if (!blog) return NextResponse.json(ResponseError('博客不存在'))
     if (blog.author !== Number(id) && role !== "admin" && role !== "root" && role !== "adsense") return NextResponse.json(ResponseError('权限不足'))
 
     await prisma.blog.update({
@@ -103,7 +103,7 @@ export const DELETE = async (_request: NextRequest, { params }: { params: { id: 
     if (role === "block") return NextResponse.json(ResponseError('权限不足'))
 
     const blog = await prisma.blog.findUnique({ where: { id: Number(params.id) } })
-    if (!blog) return NextResponse.json(ResponseError('权限不足'))
+    if (!blog) return NextResponse.json(ResponseError('博客不存在'))
     if (blog.author !== Number(id) && role !== "admin" && role !== "root" && role !== "adsense") return NextResponse.json(ResponseError('权限不足'))
 
     await prisma.blog.delete({
