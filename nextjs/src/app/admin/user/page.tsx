@@ -156,10 +156,7 @@ const Page = () => {
 
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        closeOnClick={true}
-      />
+      <ToastContainer position="top-center" closeOnClick={true} />
       <Modal
         size={"md"}
         backdrop={"blur"}
@@ -169,9 +166,9 @@ const Page = () => {
         <ModalContent>
           {() => (
             <>
-              <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
-              <ModalBody>
-
+              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+              <ModalBody className={"flex flex-col justify-center items-center"}>
+                <span className={"font-bold"}>{title}</span>
               </ModalBody>
               <ModalFooter className={"flex flex-row justify-evenly"}>
                 <motion.button

@@ -70,7 +70,6 @@ const Menu = () => {
         onClick={() => setIsOpen(!isOpen)}
         width="32" height="32" viewBox="0 0 23 23"
         whileHover={{ scale: 1.1 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
         className={"z-50 top-[25px] right-[25px] cursor-pointer fixed"}

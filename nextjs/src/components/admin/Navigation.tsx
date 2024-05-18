@@ -87,7 +87,7 @@ const Page = () => {
               transition={{
                 duration: 0.618, type: "spring", stiffness: 100, damping: 10
               }}
-              fill={"#11efef"}
+              initial={{ fill: "#11efef" }}
               d={item.d}
             />
           </motion.svg>
