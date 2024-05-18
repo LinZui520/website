@@ -54,8 +54,8 @@ const Page = () => {
       })
       if (res.data.code === 200) {
         toast.success("操作成功")
-        onClose()
         await fetchUsers()
+        onClose()
       } else {
         toast.warning(res.data.message)
       }
@@ -73,8 +73,8 @@ const Page = () => {
       })
       if (res.data.code === 200) {
         toast.success("操作成功")
-        onClose()
         await fetchUsers()
+        onClose()
       } else {
         toast.warning(res.data.message)
       }
@@ -110,10 +110,10 @@ const Page = () => {
           <Tooltip content="降低权限">
             <svg
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-              width="18" height="18"
+              width="24" height="24"
               className={"cursor-pointer active:opacity-50"}
               onClick={() => {
-                setTitle(`确定降低${user.username}的权限吗？`)
+                setTitle(`确定降低 ${user.username} 的权限吗？`)
                 setAction(() => () => blockUser(user.id))
                 onOpen()
               }}
@@ -127,10 +127,10 @@ const Page = () => {
           <Tooltip content="增加权限">
             <svg
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-              width="18" height="18"
+              width="24" height="24"
               className={"cursor-pointer active:opacity-50"}
               onClick={() => {
-                setTitle(`确定提升${user.username}的权限吗？`)
+                setTitle(`确定提升 ${user.username} 的权限吗？`)
                 setAction(() => () => boostUser(user.id))
                 onOpen()
               }}
