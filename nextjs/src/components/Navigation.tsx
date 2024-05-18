@@ -1,14 +1,14 @@
 'use client'
 
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Tooltip } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 
 const Page = () => {
 
-  const menu = [
+  const menu = useMemo(() => [
     {
       route: '', text: "主页", viewBox: "0 0 576 512",
       role: ['user', 'admin', 'root', 'adsense'],
@@ -44,7 +44,7 @@ const Page = () => {
       role: ['user', 'admin', 'root', 'adsense'],
       d: "M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"
     }
-  ]
+  ],[])
 
   const router = useRouter()
   const pathname = usePathname()
@@ -52,6 +52,10 @@ const Page = () => {
   const [isHovered, setIsHovered] = useState([
     false, false, false, false, false, false, false
   ])
+
+  const [select, setSelect] = useState(0)
+
+  useEffect(() => setSelect(menu.findIndex(item => pathname === "/admin" + item.route)), [menu, pathname])
 
   const session = useSession()
 
@@ -62,13 +66,28 @@ const Page = () => {
         <Tooltip key={item.text} content={item.text}>
           <motion.svg
             viewBox={item.viewBox} width="32" height="32"
-            onClick={() => router.push(`/admin${item.route}`)}
+            animate={select === index ? "select" : isHovered[index] ? "hover" : "none"}
+            variants={{
+              select: { scale: 1.1 }, hover: { scale: 1.1 }, none: { scale: 1 }
+            }}
+            onClick={() => {
+              setSelect(index)
+              router.push(`/admin${item.route}`)
+            }}
             onHoverStart={() => setIsHovered({...isHovered, [index]: true})}
             onHoverEnd={() => setIsHovered({...isHovered, [index]: false})}
             className={"ml-[14px] md:ml-[28px] lg:ml-[56px] cursor-pointer"}
           >
-            <path
-              fill={isHovered[index] || "/admin" + item.route === pathname ? "#11efef" : "#1d1d1f"}
+            <motion.path
+              variants={{
+                select: { fill: "#11efef" },
+                hover: { fill: "#11efef" },
+                none: { fill: "#1d1d1f" }
+              }}
+              transition={{
+                duration: 0.618, type: "spring", stiffness: 100, damping: 10
+              }}
+              fill={"#11efef"}
               d={item.d}
             />
           </motion.svg>

@@ -69,21 +69,44 @@ const Menu = () => {
       <motion.svg
         onClick={() => setIsOpen(!isOpen)}
         width="32" height="32" viewBox="0 0 23 23"
+        whileHover={{ scale: 1.1 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
         className={"z-50 top-[25px] right-[25px] cursor-pointer fixed"}
       >
         <motion.path
           fill="transparent" strokeWidth="3" strokeLinecap="round"
-          stroke={isHovered ? "#11efef" : "#1d1d1f"}
+          initial={{ d: "M 2 2.5 L 20 2.5", stroke: "#1d1d1f" }}
+          animate={
+            isHovered ? {
+              stroke: "#11efef", transition: {
+                duration: 0.618, type: "spring", stiffness: 100, damping: 10
+              }
+            } : {
+              stroke: "#1d1d1f", transition: {
+                duration: 0.618, type: "spring", stiffness: 100, damping: 10
+              }
+            }
+          }
           variants={{
             closed: { d: "M 2 2.5 L 20 2.5" }, open: { d: "M 3 16.5 L 17 2.5" }
           }}
         />
         <motion.path
           fill="transparent" strokeWidth="3" strokeLinecap="round"
-          stroke={isHovered ? "#11efef" : "#1d1d1f"}
-          d="M 2 9.423 L 20 9.423"
+          initial={{ d: "M 2 9.423 L 20 9.423", opacity: 1, stroke: "#1d1d1f" }}
+          animate={
+            isHovered ? {
+              stroke: "#11efef", transition: {
+                duration: 0.618, type: "spring", stiffness: 100, damping: 10
+              }
+            } : {
+              stroke: "#1d1d1f", transition: {
+                duration: 0.618, type: "spring", stiffness: 100, damping: 10
+              }
+            }
+          }
           variants={{
             closed: { opacity: 1 }, open: { opacity: 0 }
           }}
@@ -91,7 +114,18 @@ const Menu = () => {
         />
         <motion.path
           fill="transparent" strokeWidth="3" strokeLinecap="round"
-          stroke={isHovered ? "#11efef" : "#1d1d1f"}
+          initial={{ d: "M 2 16.346 L 20 16.346", stroke: "#1d1d1f" }}
+          animate={
+            isHovered ? {
+              stroke: "#11efef", transition: {
+                duration: 0.618, type: "spring", stiffness: 100, damping: 10
+              }
+            } : {
+              stroke: "#1d1d1f", transition: {
+                duration: 0.618, type: "spring", stiffness: 100, damping: 10
+              }
+            }
+          }
           variants={{
             closed: { d: "M 2 16.346 L 20 16.346" }, open: { d: "M 3 2.5 L 17 16.346" }
           }}
