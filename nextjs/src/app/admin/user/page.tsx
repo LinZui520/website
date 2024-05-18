@@ -25,7 +25,7 @@ const Page = () => {
 
   const [users, setUsers] = useState<User[]>([])
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [title, setTitle] = useState("")
+  const [username, setUsername] = useState("")
   const [action, setAction] = useState<() => () => void>(() => () => () => {})
 
 
@@ -113,7 +113,7 @@ const Page = () => {
               width="24" height="24"
               className={"cursor-pointer active:opacity-50"}
               onClick={() => {
-                setTitle(`确定降低 ${user.username} 的权限吗？`)
+                setUsername(user.username)
                 setAction(() => () => blockUser(user.id))
                 onOpen()
               }}
@@ -130,7 +130,7 @@ const Page = () => {
               width="24" height="24"
               className={"cursor-pointer active:opacity-50"}
               onClick={() => {
-                setTitle(`确定提升 ${user.username} 的权限吗？`)
+                setUsername(user.username)
                 setAction(() => () => boostUser(user.id))
                 onOpen()
               }}
@@ -168,7 +168,8 @@ const Page = () => {
             <>
               <ModalHeader className="flex flex-col gap-1"></ModalHeader>
               <ModalBody className={"flex flex-col justify-center items-center"}>
-                <span className={"font-bold"}>{title}</span>
+                确定操作用户
+                <span className={"font-bold text-xl"}>{username}</span>
               </ModalBody>
               <ModalFooter className={"flex flex-row justify-evenly"}>
                 <motion.button
