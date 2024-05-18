@@ -1,5 +1,5 @@
 import React from "react";
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/admin/Navigation";
 import { Divider } from "@nextui-org/divider";
 import { auth } from "@/lib/auth";
 import NotFound from "@/app/not-found";

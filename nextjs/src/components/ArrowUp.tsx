@@ -22,14 +22,11 @@ const ArrowUp = () => {
       viewBox="0 0 384 512"
       width="32" height="32"
       animate={show ? "show" : "hide"}
-      initial={{
-        opacity: 0, scale: 0
-      }}
+      initial={{ opacity: 0, scale: 0 }}
       variants={{
         show: { opacity: 1, scale: 1 },
         hide: { opacity: 0, scale: 0 }
       }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
       whileHover={{ scale: 1.1 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
@@ -39,8 +36,7 @@ const ArrowUp = () => {
       <motion.path
         animate={isHovered ? "hover" : "none"}
         variants={{
-          hover: { fill: "#11efef" },
-          none: { fill: "#1d1d1f" }
+          hover: { fill: "#11efef" }, none: { fill: "#1d1d1f" }
         }}
         transition={{
           duration: 0.618, type: "spring", stiffness: 100, damping: 10
