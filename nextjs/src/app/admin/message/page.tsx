@@ -47,9 +47,7 @@ const Page = () => {
   const deleteMessage = useCallback(async (id: number) => {
     try {
       const res = await request({
-        url: '/message',
-        method: 'DELETE',
-        data: { MessageId: id }
+        url: `/message/${id}`, method: 'DELETE',
       })
       if (res.data.code === 200) {
         toast.success("删除成功")
