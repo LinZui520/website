@@ -52,7 +52,7 @@ export const POST =  async (request: NextRequest) => {
       data: {
         author: Number(id),
         content: content.toString(),
-        create: new Date()
+        create: new Date(+new Date() + 8 * 3600 * 1000)
       }
     })
 

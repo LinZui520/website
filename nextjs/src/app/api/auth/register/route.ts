@@ -29,8 +29,8 @@ export const POST = async (request : NextRequest) => {
         username,
         email,
         password: hash,
-        register: new Date(),
-        login: new Date()
+        register: new Date(+new Date() + 8 * 3600 * 1000),
+        login: new Date(+new Date() + 8 * 3600 * 1000)
       }
     })
     return NextResponse.json(ResponseOK(user))

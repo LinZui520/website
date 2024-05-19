@@ -94,7 +94,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       data: {
         title: title,
         content: content,
-        update: new Date()
+        update: new Date(+new Date() + 8 * 3600 * 1000)
       }
     })
     return NextResponse.json(ResponseOK(null))

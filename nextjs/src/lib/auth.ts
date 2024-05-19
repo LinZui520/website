@@ -20,7 +20,7 @@ export const { handlers, auth } = NextAuth({
         })
         if (!user || !bcrypt.compareSync(password, user.password) || user.power < 0) return null
         await prisma.user.update({
-          where: { email }, data: { login: new Date() }
+          where: { email }, data: { login: new Date(+new Date() + 8 * 3600 * 1000) }
         })
         return {
           id: user.id.toString(),
@@ -53,7 +53,8 @@ export const { handlers, auth } = NextAuth({
       if (params.token.user) {
         params.session.user = params.token.user
         params.session.user.email && await prisma.user.update({
-          where: { email: params.session.user.email }, data: { login: new Date() }
+          where: { email: params.session.user.email },
+          data: { login: new Date(+new Date() + 8 * 3600 * 1000) }
         })
       }
       return params.session
