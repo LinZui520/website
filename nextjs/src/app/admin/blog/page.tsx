@@ -189,7 +189,7 @@ const Page = () => {
       </Modal>
       <Table
         isHeaderSticky
-        className={"h-full w-full select-none"} aria-label="Users"
+        className={"h-full w-full select-none"} aria-label="Blogs"
       >
         <TableHeader columns={columns}>
           {(column) => (
