@@ -53,8 +53,8 @@ export const POST = async (request: NextRequest) => {
         author: Number(id),
         title: title.toString(),
         content: content.toString(),
-        update: new Date(),
-        create: new Date()
+        update: new Date(+new Date() + 8 * 3600 * 1000),
+        create: new Date(+new Date() + 8 * 3600 * 1000)
       }
     })
     return NextResponse.json(ResponseOK(null))

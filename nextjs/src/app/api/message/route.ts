@@ -52,33 +52,7 @@ export const POST =  async (request: NextRequest) => {
       data: {
         author: Number(id),
         content: content.toString(),
-        create: new Date()
-      }
-    })
-
-    return NextResponse.json(ResponseOK(null))
-  } catch (error) {
-    return NextResponse.json(ResponseError('系统错误'))
-  }
-}
-
-export const DELETE = async (request: NextRequest) => {
-  try {
-    const { id, role } = await session()
-    if (role === "block" || !id) return NextResponse.json(ResponseError('权限不足'))
-
-    const { MessageId } = await request.json()
-    if (!MessageId) return NextResponse.json(ResponseError('参数错误'))
-
-    const message = await prisma.message.findUnique({
-      where: { id: Number(MessageId) }
-    })
-    if (!message) return NextResponse.json(ResponseError('留言不存在'))
-    if (message.author !== Number(id) && role !== "admin" && role !== "root" && role !== "adsense") return NextResponse.json(ResponseError('权限不足'))
-
-    await prisma.message.delete({
-      where: {
-        id: Number(MessageId)
+        create: new Date(+new Date() + 8 * 3600 * 1000)
       }
     })
 

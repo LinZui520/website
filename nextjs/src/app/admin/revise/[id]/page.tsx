@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { MdEditor, config } from 'md-editor-rt';
 import MarkExtension from "markdown-it-mark";
 import 'md-editor-rt/lib/style.css';
@@ -16,40 +16,45 @@ config({
   }
 })
 
-const Page = () => {
+const Page = ({ params }: { params: { id: string } }) => {
 
+  const [id, setId] = useState(0)
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const uploadBlog = async () => {
+  const fetchBlog = useCallback(async () => {
     try {
       const res = await request({
-        url: '/blog',
-        method: 'POST',
-        data: { title, content }
-      })
-      return res.data.code === 200 ? Promise.resolve() : Promise.reject(res.data.message)
-    } catch (_) {
-      return Promise.reject("系统错误")
-    }
-  }
-
-  const uploadImage = async (files: File[], callback: (urls: string[]) => void) => {
-    try {
-      const res = await request({
-        url: '/blog/image', method: 'POST',
-        data: { file: files[0] },
-        headers: { 'Content-Type': 'multipart/form-data' }
+        url: `/blog/${params.id}`,
+        method: 'GET',
       })
       if (res.data.code === 200) {
-        toast.success('上传图片成功')
-        callback([`${window.location.origin}/image/${res.data.data.filename}`])
+        setId(res.data.data.id)
+        setTitle(res.data.data.title)
+        setContent(res.data.data.content)
       } else {
         toast.warning(res.data.message)
       }
     } catch (_) {
-      toast.error('系统错误')
+      toast.error("系统错误")
+    }
+  }, [params.id])
+
+  useEffect(() => {
+    fetchBlog().then(() => {})
+  }, [fetchBlog])
+
+  const updateBlog = async () => {
+    try {
+      const res = await request({
+        url: `/blog/${id}`,
+        method: 'PUT',
+        data: {title, content}
+      })
+      return res.data.code === 200 ? Promise.resolve() : Promise.reject(res.data.message)
+    } catch (_) {
+      return Promise.reject("系统错误")
     }
   }
 
@@ -82,14 +87,14 @@ const Page = () => {
               </ModalBody>
               <ModalFooter className={"flex flex-row justify-evenly"}>
                 <motion.button
-                  onClick={() => toast.promise(uploadBlog, {
-                    pending: '正在上传博客',
+                  onClick={() => toast.promise(updateBlog, {
+                    pending: '正在修改博客',
                     success: {
                       render: () => {
                         setTitle('')
                         setContent('')
                         onClose()
-                        return '上传成功'
+                        return '修改成功'
                       }
                     },
                     error: {
@@ -101,7 +106,7 @@ const Page = () => {
                   whileTap={{ scale: 0.9 }}
                   className="w-[64px] h-[40px] bg-[#1d1d1f] text-[#fbfbfd] font-bold text-lg rounded-[12px] border-[1px] border-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-[#fbfbfd]"
                 >
-                  上传
+                  修改
                 </motion.button>
               </ModalFooter>
             </>
@@ -119,7 +124,7 @@ const Page = () => {
           '=', 'pageFullscreen', 'fullscreen', 'preview', 'previewOnly'
         ]}
         onSave={() => onOpen()}
-        onUploadImg={uploadImage}
+        onUploadImg={() => {}}
       />
     </>
   );
