@@ -68,12 +68,15 @@ const Page = () => {
           <Image
             className={"rounded-full object-cover h-[24px] w-[24px]"}
             height={24} width={24} alt={""}
-            src={`https://www.zhuguishihundan.cn/image/${image.User.avatar}`}
+            src={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/image/${image.User.avatar}`}
           />
           {image.User.username}
         </div>
       case "filename":
-        return <IMG height={256} width={256} alt={""} src={`https://www.zhuguishihundan.cn/image/${image.filename}`} />
+        return <IMG
+          height={256} width={256} alt={""}
+          src={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/image/${image.filename}`}
+        />
       case "create":
         return <span>{format(new Date(image.create))}</span>
       case "actions":
