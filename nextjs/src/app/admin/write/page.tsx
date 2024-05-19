@@ -27,11 +27,29 @@ const Page = () => {
       const res = await request({
         url: '/blog',
         method: 'POST',
-        data: {title, content}
+        data: { title, content }
       })
       return res.data.code === 200 ? Promise.resolve() : Promise.reject(res.data.message)
     } catch (_) {
       return Promise.reject("系统错误")
+    }
+  }
+
+  const uploadImage = async (files: File[], callback: (urls: string[]) => void) => {
+    try {
+      const res = await request({
+        url: '/blog/image', method: 'POST',
+        data: { file: files[0] },
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      if (res.data.code === 200) {
+        toast.success('上传图片成功')
+        callback([`${window.location.origin}/image/${res.data.data.filename}`])
+      } else {
+        toast.warning(res.data.message)
+      }
+    } catch (_) {
+      toast.error('系统错误')
     }
   }
 
@@ -101,7 +119,7 @@ const Page = () => {
           '=', 'pageFullscreen', 'fullscreen', 'preview', 'previewOnly'
         ]}
         onSave={() => onOpen()}
-        onUploadImg={() => {}}
+        onUploadImg={uploadImage}
       />
     </>
   );
