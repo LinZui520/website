@@ -6,8 +6,8 @@ import {toast} from "react-toastify";
 
 
 const Verify = ({
-                  email, code, setCode
-                } : {
+  email, code, setCode
+} : {
   email: string
   code: string
   setCode: React.Dispatch<React.SetStateAction<string>>
