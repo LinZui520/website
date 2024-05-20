@@ -1,9 +1,9 @@
 'use client'
 
 import { motion } from "framer-motion";
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Menu = () => {
 
@@ -12,6 +12,9 @@ const Menu = () => {
 
   const session = useSession()
   const router = useRouter()
+  const pathname = usePathname()
+
+  useEffect(() => setIsOpen(false), [pathname])
 
   const menu = [
     { href: '/', text: '首页' },
@@ -50,10 +53,7 @@ const Menu = () => {
           item === null ? null :
           <motion.li
             key={item.href}
-            onClick={() => {
-              router.push(item.href)
-              setIsOpen(!isOpen)
-            }}
+            onClick={() => router.push(item.href)}
             initial={{ color: "#1d1d1f", backgroundColor: "#fbfbfd" }}
             whileHover={{ color: "#fbfbfd", backgroundColor: "#1d1d1f" }}
             className={
