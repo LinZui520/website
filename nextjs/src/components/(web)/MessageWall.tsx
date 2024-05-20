@@ -29,7 +29,7 @@ const MessageWall = forwardRef((
         setMessages(res.data.data.sort(() => 0.5 - Math.random()))
         setSpeed(Math.max(768 ,Math.min(2048, 24 / (res.data.data.length + 1) * 1024)))
       } else {
-        toast.warning("获取留言失败")
+        toast.warning(res.data.message)
       }
     } catch (_) {
       toast.error("系统错误")

@@ -6,6 +6,8 @@ import { useCallback, useRef, useState } from "react";
 import { Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
 import request from '@/lib/axios';
 import { MessageWallHandles } from "@/components/(web)/MessageWall";
+import { useSession } from "next-auth/react";
+import NotFound from "@/app/not-found";
 
 const MessageWall = dynamic(
   () => import("@/components/(web)/MessageWall"),
@@ -38,6 +40,10 @@ const Page = () => {
       ref.current?.toast.error('系统错误')
     }
   }, [message, onClose])
+
+  const session = useSession()
+
+  if (!session || !session.data || !session.data.user) return <NotFound />
 
   return (
     <>
