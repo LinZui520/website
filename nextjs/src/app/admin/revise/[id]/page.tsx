@@ -59,7 +59,12 @@ const Page = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.5, ease: 'easeInOut' }}
+      className={"bg-[#fbfbfd] h-calc-84 w-full"}
+    >
       <ToastContainer position="top-center" closeOnClick={true} />
       <Modal
         size={"md"}
@@ -126,7 +131,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         onSave={() => onOpen()}
         onUploadImg={() => {}}
       />
-    </>
+    </motion.div>
   );
 }
 

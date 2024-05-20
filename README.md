@@ -44,11 +44,13 @@ $ systemctl start docker
 $ git clone git@github.com:LinZui520/website.git
 ```
 
-阅读`nginx/README.md`
+阅读 `nginx/README.md`
 
-阅读`fullstack/README.md`
+阅读 `mysql/README.md`
 
-然后`website`启动🫡
+阅读 `nextjs/README.md`
+
+然后 `website` 启动🫡
 
 ```sh
 $ docker-compose build

@@ -72,7 +72,7 @@ const Page = () => {
           <Image
             className={"rounded-full object-cover h-[24px] w-[24px]"}
             height={24} width={24} alt={""}
-            src={`https://www.zhuguishihundan.cn/image/${message.User.avatar}`}
+            src={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/image/${message.User.avatar}`}
           />
           {message.User.username}
         </div>
@@ -113,7 +113,12 @@ const Page = () => {
   if (!messages || !messages.length) return <Loading/>
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.5, ease: 'easeInOut' }}
+      className={"bg-[#fbfbfd] h-calc-84 w-full"}
+    >
       <ToastContainer position="top-center" closeOnClick={true} />
 
       <Modal
@@ -148,7 +153,7 @@ const Page = () => {
 
       <Table
         isHeaderSticky
-        className={"h-full w-full select-none"} aria-label="Users"
+        className={"h-full w-full select-none"} aria-label="Messages"
       >
         <TableHeader columns={columns}>
           {(column) => (
@@ -165,7 +170,7 @@ const Page = () => {
           )}
         </TableBody>
       </Table>
-    </>
+    </motion.div>
   );
 }
 

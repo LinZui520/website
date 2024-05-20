@@ -79,7 +79,7 @@ const checkBlog = async (id: string, role: string, params: { id: string }) => {
 export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     const { id, role } = await session()
-    if (role === "block") return NextResponse.json(ResponseError('权限不足'))
+    if (role === "block" || !id) return NextResponse.json(ResponseError('权限不足'))
 
     const { title, content } = await request.json()
     if (!title) return NextResponse.json(ResponseError('参数错误'))
@@ -106,7 +106,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 export const DELETE = async (_request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     const { id, role } = await session()
-    if (role === "block") return NextResponse.json(ResponseError('权限不足'))
+    if (role === "block" || !id) return NextResponse.json(ResponseError('权限不足'))
 
     const message = await checkBlog(id, role, params)
     if (message) return NextResponse.json(ResponseError(message))
