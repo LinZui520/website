@@ -69,6 +69,8 @@ const Menu = () => {
       <motion.svg
         onClick={() => setIsOpen(!isOpen)}
         width="32" height="32" viewBox="0 0 23 23"
+        initial={{ opacity: 0, x: 57 }}
+        animate={{ opacity: 1, x: 0 }}
         whileHover={{ scale: 1.1 }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}

@@ -92,8 +92,8 @@ const MessageWall = forwardRef((
   return (
     <>
       <ToastContainer position="top-center" closeOnClick={true} />
-      <div className={"h-[5vh]"}/>
-      <div ref={screenElRef} className={"w-full h-[93vh] max-h-[93vh] overflow-x-clip"}/>
+      <div className={"bg-[#fbfbfd] h-[5vh]"}/>
+      <div ref={screenElRef} className={"bg-[#fbfbfd] w-full h-[93vh] max-h-[93vh] overflow-x-clip"}/>
     </>
   );
 })

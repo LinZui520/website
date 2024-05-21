@@ -91,13 +91,16 @@ const Page = () => {
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32" height="32"
         className={"z-40 top-[25px] right-[82px] cursor-pointer fixed"}
         onClick={() => onOpen()}
-        animate={isHovered ? "hover" : "none"}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, ease: 'easeInOut' }}
         whileHover={{ scale: 1.1 }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
       >
         <motion.path
           initial={{ fill: "#1d1d1f" }}
+          animate={isHovered ? "hover" : "none"}
           variants={{
             hover: { fill: "#11efef" } ,
             none: { fill: "#1d1d1f" }
