@@ -7,7 +7,7 @@ import { Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDis
 import request from '@/lib/axios';
 import { MessageWallHandles } from "@/components/(web)/MessageWall";
 import { useSession } from "next-auth/react";
-import NotFound from "@/app/not-found";
+import Loading from "@/app/loading";
 
 const MessageWall = dynamic(
   () => import("@/components/(web)/MessageWall"),
@@ -43,7 +43,7 @@ const Page = () => {
 
   const session = useSession()
 
-  if (!session || !session.data || !session.data.user) return <NotFound />
+  if (!session || !session.data || !session.data.user) return <Loading />
 
   return (
     <>
