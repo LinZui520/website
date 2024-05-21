@@ -13,6 +13,11 @@ const config: Config = {
     extend: {
       height: {
         'calc-84': 'calc(100vh - 84px)'
+      },
+      screens: {
+        'sm': { 'max': '767px' },
+        'md': { 'min': '768px', 'max': '1023px' },
+        'lg': { 'min': '1024px' }
       }
     },
   },

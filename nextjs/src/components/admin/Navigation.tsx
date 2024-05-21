@@ -60,7 +60,12 @@ const Page = () => {
   const session = useSession()
 
   return (
-    <nav className={"bg-[#fbfbfd] flex flex-row justify-start items-center h-[82px]"}>
+    <motion.nav
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2, ease: 'easeInOut' }}
+      className={"bg-[#fbfbfd] flex flex-row justify-start items-center h-[82px]"}
+    >
       {menu.map((item, index) =>
         !item.role.includes(String(session.data?.user?.name)) ? null :
         <Tooltip key={item.text} content={item.text}>
@@ -93,7 +98,7 @@ const Page = () => {
           </motion.svg>
         </Tooltip>
       )}
-    </nav>
+    </motion.nav>
   );
 }
 

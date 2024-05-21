@@ -7,7 +7,7 @@ import { Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDis
 import request from '@/lib/axios';
 import { MessageWallHandles } from "@/components/(web)/MessageWall";
 import { useSession } from "next-auth/react";
-import NotFound from "@/app/not-found";
+import Loading from "@/app/loading";
 
 const MessageWall = dynamic(
   () => import("@/components/(web)/MessageWall"),
@@ -43,7 +43,7 @@ const Page = () => {
 
   const session = useSession()
 
-  if (!session || !session.data || !session.data.user) return <NotFound />
+  if (!session || !session.data || !session.data.user) return <Loading />
 
   return (
     <>
@@ -52,6 +52,7 @@ const Page = () => {
         backdrop={"blur"}
         isOpen={isOpen}
         onClose={onClose}
+        placement={"center"}
       >
         <ModalContent>
           {() => (
@@ -90,13 +91,16 @@ const Page = () => {
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32" height="32"
         className={"z-40 top-[25px] right-[82px] cursor-pointer fixed"}
         onClick={() => onOpen()}
-        animate={isHovered ? "hover" : "none"}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, ease: 'easeInOut' }}
         whileHover={{ scale: 1.1 }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
       >
         <motion.path
           initial={{ fill: "#1d1d1f" }}
+          animate={isHovered ? "hover" : "none"}
           variants={{
             hover: { fill: "#11efef" } ,
             none: { fill: "#1d1d1f" }

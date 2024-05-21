@@ -66,6 +66,7 @@ const Page = () => {
         backdrop={"blur"}
         isOpen={isOpen}
         onClose={onClose}
+        placement={"center"}
       >
         <ModalContent>
           {(onClose) => (

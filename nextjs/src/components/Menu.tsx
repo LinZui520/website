@@ -58,7 +58,7 @@ const Menu = () => {
             whileHover={{ color: "#fbfbfd", backgroundColor: "#1d1d1f" }}
             className={
               "z-50 list-none cursor-pointer mb-[3vh] select-none rounded-full " +
-              "font-light text-[18px] md:text-[22px] lg:text-[27px] p-[8px] pl-[16px] pr-[16px]"
+              "font-light sm:text-[18px] md:text-[22px] lg:text-[27px] p-[8px] pl-[16px] pr-[16px]"
             }
           >
             {item.text}
@@ -69,6 +69,8 @@ const Menu = () => {
       <motion.svg
         onClick={() => setIsOpen(!isOpen)}
         width="32" height="32" viewBox="0 0 23 23"
+        initial={{ opacity: 0, x: 57 }}
+        animate={{ opacity: 1, x: 0 }}
         whileHover={{ scale: 1.1 }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
