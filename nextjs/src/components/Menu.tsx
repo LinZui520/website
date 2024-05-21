@@ -58,7 +58,7 @@ const Menu = () => {
             whileHover={{ color: "#fbfbfd", backgroundColor: "#1d1d1f" }}
             className={
               "z-50 list-none cursor-pointer mb-[3vh] select-none rounded-full " +
-              "font-light text-[18px] md:text-[22px] lg:text-[27px] p-[8px] pl-[16px] pr-[16px]"
+              "font-light sm:text-[18px] md:text-[22px] lg:text-[27px] p-[8px] pl-[16px] pr-[16px]"
             }
           >
             {item.text}
