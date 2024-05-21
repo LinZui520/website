@@ -22,10 +22,10 @@ const ArrowUp = () => {
       viewBox="0 0 384 512"
       width="32" height="32"
       animate={show ? "show" : "hide"}
-      initial={{ opacity: 0, scale: 0 }}
+      initial={{ opacity: 0, y: 57 }}
       variants={{
-        show: { opacity: 1, scale: 1 },
-        hide: { opacity: 0, scale: 0 }
+        show: { opacity: 1, y: 0 },
+        hide: { opacity: 0, y: 57 }
       }}
       whileHover={{ scale: 1.1 }}
       onHoverStart={() => setIsHovered(true)}
