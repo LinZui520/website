@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const NotFound = () => {
   return (
-    <div className={"h-screen max-h-full w-full flex flex-col justify-center items-center overflow-hidden"}>
+    <div className={"h-screen max-h-full w-full bg-[#fbfbfd] flex flex-col justify-center items-center overflow-hidden"}>
       <motion.span
         className={"select-none font-bold text-[#1d1d1f] sm:text-[18px] md:text-[22px] lg:text-[27px]"}
         initial={{ scale: 1, opacity: 1 }}

@@ -153,9 +153,8 @@ const Page = () => {
     {name: "操作", uid: "actions"}
   ];
 
-  if (!blogs || !blogs.length) return <Loading/>
-
   return (
+    !blogs || !blogs.length ? <div className={"h-calc-84 w-full"}><Loading/></div> :
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -168,6 +167,7 @@ const Page = () => {
         backdrop={"blur"}
         isOpen={isOpen}
         onClose={onClose}
+        placement={"center"}
       >
         <ModalContent>
           {() => (

@@ -71,6 +71,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         backdrop={"blur"}
         isOpen={isOpen}
         onClose={onClose}
+        placement={"center"}
       >
         <ModalContent>
           {(onClose) => (
