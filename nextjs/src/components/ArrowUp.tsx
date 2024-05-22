@@ -30,7 +30,7 @@ const ArrowUp = () => {
       whileHover={{ scale: 1.1 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className={"z-50 fixed right-[25px] bottom-[25px] cursor-pointer"}
+      className={"z-40 fixed right-[25px] bottom-[25px] cursor-pointer"}
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       <motion.path
