@@ -44,7 +44,7 @@ const Page = () => {
       })
       if (res.data.code === 200) {
         toast.success('上传图片成功')
-        callback([`${window.location.origin}/image/${res.data.data.filename}`])
+        callback([`${process.env.NEXT_PUBLIC_WEBSITE_IMAGE_URL}${res.data.data.filename}`])
       } else {
         toast.warning(res.data.message)
       }

@@ -30,7 +30,7 @@ export const { handlers, auth } = NextAuth({
               : user.power < 3 ? "root"
               : "adsense",
           email: user.email,
-          image: process.env.URL + "/image/" + user.avatar
+          image: process.env.NEXT_PUBLIC_WEBSITE_IMAGE_URL + user.avatar
         }
       }
     })
