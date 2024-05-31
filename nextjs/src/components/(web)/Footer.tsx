@@ -11,7 +11,7 @@ const Timer = dynamic(
 const Footer = () => {
   return (
     <div className={"h-[512px] w-full sticky bottom-0 bg-[#1d1d1f] flex flex-col items-center"}>
-      <div className={"h-[358px] w-calc-150 flex flex-col justify-center items-start"}>
+      <div className={"h-[358px] w-calc-150 flex flex-col justify-center sm:items-center items-start"}>
         <span className={"text-[#fbfbfd] sm:text-[20px] md:text-[35px] lg:text-[45px]"}>你可以永远相信狗哥</span>
       </div>
 

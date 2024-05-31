@@ -57,7 +57,7 @@ const MessageWall = forwardRef((
     screenRef.current.push(
       <StyledBullet
         className={"select-none"}
-        head={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/image/${messages[index].User.avatar}`}
+        head={`${process.env.NEXT_PUBLIC_WEBSITE_IMAGE_URL}${messages[index].User.avatar}`}
         msg={messages[index].content}
         backgroundColor={'#fbfbfd'}
         size="large"

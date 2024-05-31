@@ -68,14 +68,14 @@ const Page = () => {
           <Image
             className={"rounded-full object-cover h-[24px] w-[24px]"}
             height={24} width={24} alt={""}
-            src={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/image/${image.User.avatar}`}
+            src={`${process.env.NEXT_PUBLIC_WEBSITE_IMAGE_URL}${image.User.avatar}`}
           />
           {image.User.username}
         </div>
       case "filename":
         return <IMG
           height={256} width={256} alt={""}
-          src={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/image/${image.filename}`}
+          src={`${process.env.NEXT_PUBLIC_WEBSITE_IMAGE_URL}${image.filename}`}
         />
       case "create":
         return <span>{format(new Date(image.create))}</span>
@@ -91,7 +91,30 @@ const Page = () => {
                 onOpen()
               }}
             >
-              <path fill="#1d1d1f" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
+              <path
+                fill="#1d1d1f"
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+              />
+            </svg>
+          </Tooltip>
+
+          <Tooltip content="复制">
+            <svg
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+              width="24" height="24"
+              className={"cursor-pointer active:opacity-50"}
+              onClick={() =>
+                navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_WEBSITE_URL}/image/${image.filename}`).then(() => {
+                  toast.success("复制URL成功")
+                }).catch(() => {
+                  toast.error("复制URL失败")
+                })
+              }
+            >
+              <path
+                fill="#1d1d1f"
+                d="M208 0H332.1c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9V336c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V48c0-26.5 21.5-48 48-48zM48 128h80v64H64V448H256V416h64v48c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V176c0-26.5 21.5-48 48-48z"
+              />
             </svg>
           </Tooltip>
         </div>

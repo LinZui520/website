@@ -85,7 +85,7 @@ const Page = () => {
           <Image
             className={"rounded-full object-cover h-[24px] w-[24px]"}
             height={24} width={24} alt={""}
-            src={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/image/${blog.User.avatar}`}
+            src={`${process.env.NEXT_PUBLIC_WEBSITE_IMAGE_URL}${blog.User.avatar}`}
           />
           {blog.User.username}
         </div>

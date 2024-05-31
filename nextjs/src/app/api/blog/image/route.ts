@@ -50,7 +50,7 @@ export const POST = async (request: NextRequest) => {
     const file = (await request.formData()).get('file')
 
     if (!file || !(file instanceof Blob)) {
-      return NextResponse.json(ResponseError('文件上传失败'));
+      return NextResponse.json(ResponseError('文件格式错误'));
     }
 
     const filename = Date.now().toString() + '.png'
