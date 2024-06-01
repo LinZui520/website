@@ -1,7 +1,6 @@
 'use client'
 
 import dynamic from "next/dynamic";
-import React from "react";
 
 const Timer = dynamic(
   () => import("@/components/(web)/Timer"),
@@ -12,7 +11,7 @@ const Footer = () => {
   return (
     <div className={"h-[512px] w-full sticky bottom-0 bg-[#1d1d1f] flex flex-col items-center"}>
       <div className={"h-[358px] w-calc-150 flex flex-col justify-center sm:items-center items-start"}>
-        <span className={"text-[#fbfbfd] sm:text-[20px] md:text-[35px] lg:text-[45px]"}>你可以永远相信狗哥</span>
+        <span className={"text-[#fbfbfd] sm:text-[20px] md:text-[35px] lg:text-[45px]"}>你可以永远相信我</span>
       </div>
 
       <hr className={"h-[2px] w-calc-150 bg-[#fbfbfd]"} />
@@ -31,7 +30,7 @@ const Footer = () => {
           </a>
 
           <span className={"text-[#fbfbfd] ml-0 lg:ml-[32px]"}>
-            ©2023 - 2024 狗哥 & 林醉
+            ©2023 - 2024 贺阳明 & 林醉
           </span>
 
           <div className={"flex flex-row mr-[75px] ml-0 lg:ml-[32px] mt-[32px] lg:mt-0"}>
@@ -62,7 +61,7 @@ const Footer = () => {
         </div>
       </div>
     </div>
-);
+  );
 }
 
 export default Footer;
