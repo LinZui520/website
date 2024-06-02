@@ -21,6 +21,7 @@ const Menu = () => {
     { href: '/blog', text: '博客' },
     session.data ? { href: '/message', text: '留言板' } : null,
     session.data ? { href: '/photo', text: '照片墙' } : null,
+    session.data ? { href: '/recollection', text: '回忆录' } : null,
     session.data ? { href: '/chat', text: '聊天室' } : null,
     session.data ? { href: '/admin', text: '控制台' } : { href: '/login', text: '登录' },
   ]
