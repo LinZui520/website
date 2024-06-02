@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import request from "@/lib/axios";
 import { Blog } from "@/app/api/blog/route";
-import Image from "next/image";
+import { Image } from "@nextui-org/image";
 import { format } from "@/utils/time";
 import {
   Modal, ModalBody,

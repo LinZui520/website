@@ -14,7 +14,7 @@ import {
   Tooltip, useDisclosure
 } from "@nextui-org/react";
 import React, { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
+import { Image } from "@nextui-org/image";
 import Loading from "@/app/loading";
 import { format } from "@/utils/time";
 import { ToastContainer, toast } from 'react-toastify';
