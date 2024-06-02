@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const Menu = () => {
 
@@ -11,7 +12,6 @@ const Menu = () => {
   const [isHovered, setIsHovered] = useState(false)
 
   const session = useSession()
-  const router = useRouter()
   const pathname = usePathname()
 
   useEffect(() => setIsOpen(false), [pathname])
@@ -53,7 +53,6 @@ const Menu = () => {
           item === null ? null :
           <motion.li
             key={item.href}
-            onClick={() => router.push(item.href)}
             initial={{ color: "#1d1d1f", backgroundColor: "#fbfbfd" }}
             whileHover={{ color: "#fbfbfd", backgroundColor: "#1d1d1f" }}
             className={
@@ -61,7 +60,7 @@ const Menu = () => {
               "font-light sm:text-[18px] md:text-[22px] lg:text-[27px] p-[8px] pl-[16px] pr-[16px]"
             }
           >
-            {item.text}
+            <Link href={item.href}>{item.text}</Link>
           </motion.li>
         )}
       </motion.ul>
