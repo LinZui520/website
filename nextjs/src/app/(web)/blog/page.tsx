@@ -31,15 +31,13 @@ const Page = () => {
             <span className={"font-serif text-[#1d1d1f] text-[34px] lg:text-[44px]"}>BLOG</span>
 
             <span className={"sm:text-[18px] md:text-[21px] lg:text-[24px]"}>
-              深度学习如同呼吸一样自然
+              深度学习如同呼吸般自然
             </span>
           </div>
 
           {blogs.map((blog, index) => (
-            <Link key={index} className={"cursor-pointer hover:opacity-50"} href={`/blog/${blog.id}`}>
-              <div
-                className={"mt-[10vh] flex justify-between sm:text-[18px] md:text-[21px] lg:text-[24px]"}
-              >
+            <Link key={index} href={`/blog/${blog.id}`}>
+              <div className={"mt-[10vh] cursor-pointer hover:opacity-50 flex justify-between sm:text-[18px] md:text-[21px] lg:text-[24px]"}>
                 <span className={"font-light"}>{blog.title}</span>
 
                 <span className={"font-mono"}>
