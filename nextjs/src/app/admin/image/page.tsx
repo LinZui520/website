@@ -13,8 +13,7 @@ import {
   TableColumn,
   TableHeader, TableRow, Tooltip, useDisclosure
 } from "@nextui-org/react";
-import { Image as IMG } from "@nextui-org/image";
-import Image from "next/image";
+import { Image } from "@nextui-org/image";
 import { format } from "@/utils/time";
 import Loading from "@/app/loading";
 import { motion } from "framer-motion";
@@ -73,7 +72,7 @@ const Page = () => {
           {image.User.username}
         </div>
       case "filename":
-        return <IMG
+        return <Image
           height={256} width={256} alt={""}
           src={`${process.env.NEXT_PUBLIC_WEBSITE_IMAGE_URL}${image.filename}`}
         />

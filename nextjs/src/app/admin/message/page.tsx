@@ -14,7 +14,7 @@ import {
   useDisclosure
 } from "@nextui-org/react";
 import React, { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
+import { Image } from "@nextui-org/image";
 import { format } from "@/utils/time";
 import { Message } from "@/app/api/message/route";
 import request from "@/lib/axios";
