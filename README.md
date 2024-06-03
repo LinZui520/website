@@ -1,46 +1,27 @@
-### 搭建属于自己的网站😎
+### 项目介绍😎
 
 边学习边搭建自己的个人网站
 
-想了解代码细节请阅读`docs/README.md`
+想**学习代码细节**或者**学习如何参与开源社区贡献代码**请阅读`docs/README.md`
 
-技术栈 `next.js` + `prisma` + `mysql` + `redis` + `docker`
+放心大胆地提 `Issues` 和 `Pull request` 🥳
+
+
+
+项目技术栈 `Nextjs` + `Prisma` + `MySQL` + `Redis` + `Docker`
 
 > 该仓库已经重构，需访问旧的仓库请移步[*archive分支*](https://github.com/LinZui520/website/tree/archive)
 >
 > 旧仓库技术栈 `react` + `gin` + `mysql` + `redis` + `docker`
 
-#### 依赖
+
+
+### 项目依赖和部署
 
 `docker` 和 `docker-compose`
 
-`Debian`系
-
 ```sh
-$ apt install docker docker-compose
-$ systemctl enable docker
-$ systemctl start docker 
-```
-
-`RedHat`系🤔
-
-```sh
-$ yum install docker docker-compose
-$ systemctl enable docker 
-$ systemctl start docker 
-```
-
-`Arch`系
-
-```sh
-$ pacman -S docker docker-compose
-$ systemctl enable docker
-$ systemctl start docker 
-```
-
-#### 部署 
-
-```sh
+$ cd /root
 $ git clone git@github.com:LinZui520/website.git
 ```
 
@@ -56,25 +37,3 @@ $ git clone git@github.com:LinZui520/website.git
 $ docker-compose build
 $ docker-compose up -d
 ```
-
-
-
-### 代码提交规范
-
-feat: 新增功能
-
-fix: 修复功能
-
-docs: 更新文档
-
-style: 代码格式变更
-
-refactor: 代码重构，非新增功能，非修改功能
-
-perf: 性能优化
-
-test: 增加测试用例
-
-chore: 构建过程或辅助工具的变动
-
-revert: 代码回退
