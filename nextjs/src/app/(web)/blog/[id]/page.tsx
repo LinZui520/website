@@ -32,7 +32,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   if (blog === undefined) return <Loading />
 
-  if (!blog || !blog.content) return <NotFound />
+  if (!blog) return <NotFound />
 
   return (
     <div className={"w-full min-h-screen bg-[#fbfbfd] flex flex-row justify-center"}>
