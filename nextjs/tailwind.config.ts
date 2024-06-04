@@ -15,7 +15,8 @@ const config: Config = {
         'calc-84': 'calc(100vh - 84px)'
       },
       width: {
-        'calc-150': 'calc(100vw - 150px)'
+        'calc-150': 'calc(100vw - 150px)',
+        'calc-64': 'calc(100vw - 64px)'
       },
       screens: {
         'sm': { 'max': '767px' },
