@@ -280,7 +280,7 @@ const Third = () => {
   const x = useTransform(scrollYProgress, [0, 1], ["-0vw", "-200vw"])
 
   return (
-    <div ref={ref} className={"h-[300vh] w-full select-none overflow-x-clip"}>
+    <div ref={ref} className={"h-[500vh] w-full select-none overflow-x-clip"}>
       <motion.div
         style={{ x }}
         transition={{ duration: 2, type: "spring", stiffness: 130, damping: 10 }}
