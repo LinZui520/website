@@ -69,7 +69,7 @@ const Page = () => {
       {menu.map((item, index) =>
         !item.role.includes(String(session.data?.user?.name)) ? null :
         <Tooltip key={item.text} content={item.text}>
-          <Link href={`/admin${item.route}`}>
+          <Link href={`/admin${item.route}`} className={"ml-[14px] md:ml-[28px] lg:ml-[56px]"}>
             <motion.svg
               viewBox={item.viewBox} width="32" height="32"
               animate={select === index ? "select" : isHovered[index] ? "hover" : "none"}
@@ -78,7 +78,7 @@ const Page = () => {
               }}
               onHoverStart={() => setIsHovered({...isHovered, [index]: true})}
               onHoverEnd={() => setIsHovered({...isHovered, [index]: false})}
-              className={"ml-[14px] md:ml-[28px] lg:ml-[56px] cursor-pointer"}
+              className={"cursor-pointer"}
             >
               <motion.path
                 variants={{
