@@ -19,6 +19,8 @@ services:
 
   nextjs:
     build: ./nextjs
+    volumes:
+      - ./mysql/data/image:/root/website/mysql/data/image
     network_mode: host
     depends_on:
       - mysql
