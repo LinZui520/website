@@ -23,7 +23,12 @@
 ```sh
 $ cd /root
 $ git clone git@github.com:LinZui520/website.git
+$ cd website
 ```
+
+> `website` 文件夹一定要 `clone` 在 `/root` 下
+
+阅读 `tools/README.md`
 
 阅读 `nginx/README.md`
 
@@ -34,6 +39,5 @@ $ git clone git@github.com:LinZui520/website.git
 然后 `website` 启动🫡
 
 ```sh
-$ docker-compose build
-$ docker-compose up -d
+$ sh scripts/start.sh
 ```
