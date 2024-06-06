@@ -1,9 +1,6 @@
-clean.sh
-run.sh
-backup.sh
-restart.sh
 /mysql/data/mysql/*
 /mysql/data/image/*
 !/mysql/data/image/default.png
+
 nginx/ssl/fullchain.crt
 nginx/ssl/private.pem
