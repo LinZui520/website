@@ -8,11 +8,13 @@ app = Flask(__name__)
 
 
 def script():
-    while True:
+    count = 0
+    while count < 5:
         try:
             subprocess.check_output(['sh', '-c', 'cd /root/website && /bin/sh scripts/restart.sh'])
             break
         except subprocess.CalledProcessError as _e:
+            count += 1
             continue
 
 
