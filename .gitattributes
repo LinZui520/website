@@ -1,4 +1,8 @@
 # 提交时忽略本地修改
-# git config --global filter.Password.clean 'sed "s/SMTP_PASS=.*/SMTP_PASS=[FILTERED]/"'
+# git config --global filter.SMTP_PASS.clean 'sed "s/SMTP_PASS=.*/SMTP_PASS=[FILTERED]/"'
+# git config --global filter.AUTH_SECRET.clean 'sed "s/AUTH_SECRET=.*/AUTH_SECRET=[FILTERED]/"'
+# git config --global filter.GITHUB_WEBHOOK_SECRET.clean 'sed "s/GITHUB_WEBHOOK_SECRET=.*/GITHUB_WEBHOOK_SECRET=[FILTERED]/"'
 
-nextjs/.env filter=Password
+nextjs/.env filter=SMTP_PASS
+nextjs/.env filter=AUTH_SECRET
+nextjs/.env filter=GITHUB_WEBHOOK_SECRET

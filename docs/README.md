@@ -34,7 +34,7 @@ $ docker-compose up -d
 
 1. 克隆仓库 `git clone git@github.com:LinZui520/website.git` 
 
-   > 一般是==不能==在我的仓库直接提交代码的，所以得先在 `github` `fork`我的仓库
+   > 一般是**不能**在我的仓库直接提交代码的，所以得先在 `github` `fork`我的仓库
    >
    > 这个时候在你的账户里面会出现一个跟我仓库一模一样的仓库
    >
@@ -85,4 +85,4 @@ $ docker-compose up -d
 
 举例 ：`docs: 更新README.md`
 
-> `docs` 之后是==英文==的 `:` 且之后再空一个==空格==。
+> `docs` 之后是**英文**的 `:` 且之后再空一个**空格**。

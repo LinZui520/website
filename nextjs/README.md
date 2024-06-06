@@ -23,7 +23,8 @@ export const metadata: Metadata = {
 NEXT_PUBLIC_WEBSITE_URL="https://www.zhuguishihundan.cn"
 NEXT_PUBLIC_WEBSITE_IMAGE_URL="https://www.zhuguishihundan.cn/image/"
 
-AUTH_SECRET="ZhuGui"
+AUTH_SECRET="XXX"
+GITHUB_WEBHOOK_SECRET="XXX"
 
 SMTP_HOST="smtp.qq.com"
 SMTP_PORT=587
@@ -38,6 +39,8 @@ SMTP_TEXT="你的验证码是："
 > `NEXT_PUBLIC_WEBSITE_IMAGE_URL` 为服务器域名加上 `/image/`
 >
 > `AUTH_SECRET` 为一个字符串
+>
+> `GITHUB_WEBHOOK_SECRET` 为一个字符串
 >
 > `SMTP` 服务如何获取自行解决
 
