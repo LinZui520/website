@@ -4,7 +4,7 @@ import Footer from "@/components/(web)/Footer";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
 
-const Home = () => {
+const Page = () => {
 
   useEffect(() => window.scroll({ top: 0 }), [])
 
@@ -218,14 +218,22 @@ const First = () => {
 
 const Second = () => {
 
-  const message = [
+  const FunctionalProgramming = [
+    '函', '\u00A0', '数', '\u00A0', '式', '\u00A0', '编', '\u00A0', '程',
+  ]
+
+  const Linux = [
     'L', '\u00A0', 'i', '\u00A0', 'n', '\u00A0', 'u', '\u00A0', 'x'
+  ]
+
+  const Web = [
+    'W', '\u00A0', 'e', '\u00A0', 'b'
   ]
 
   return (
     <div className={"h-screen sm:w-[96vw] w-[80vw] select-none flex flex-col justify-evenly items-center"}>
       <div className={"text-[#1d1d1f] flex justify-center items-center sm:text-[24px] md:text-[34px] lg:text-[44px]"}>
-        {message.map((item, index) => <motion.div
+        {FunctionalProgramming.map((item, index) => <motion.div
           key={index}
           initial={{ opacity: 0, y: 64 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -250,20 +258,39 @@ const Second = () => {
         />
       </svg>
 
-      <div className={"text-[#1d1d1f] flex justify-center items-center sm:text-[24px] md:text-[34px] lg:text-[44px]"}>
-        {['W', '\u00A0', 'e', '\u00A0', 'b'].map((item, index) => <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 64 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{
-            delay: 0.5 + 0.1 * index, duration: 1,
-            type: "spring", stiffness: 260, damping: 20
-          }}
-          className={"font-serif"}
-        >
-          {item}
-        </motion.div>)}
+      <div className={"w-full flex justify-evenly items-center"}>
+        <div className={"text-[#1d1d1f] flex justify-center items-center sm:text-[24px] md:text-[34px] lg:text-[44px]"}>
+          {Linux.map((item, index) => <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 64 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{
+              delay: 0.5 + 0.1 * index, duration: 1,
+              type: "spring", stiffness: 260, damping: 20
+            }}
+            className={"font-serif"}
+          >
+            {item}
+          </motion.div>)}
+        </div>
+
+
+        <div className={"text-[#1d1d1f] flex justify-center items-center sm:text-[24px] md:text-[34px] lg:text-[44px]"}>
+          {Web.map((item, index) => <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 64 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{
+              delay: 0.5 + 0.1 * index, duration: 1,
+              type: "spring", stiffness: 260, damping: 20
+            }}
+            className={"font-serif"}
+          >
+            {item}
+          </motion.div>)}
+        </div>
       </div>
     </div>
   );
@@ -397,4 +424,4 @@ const Third = () => {
   );
 }
 
-export default Home;
+export default Page;
