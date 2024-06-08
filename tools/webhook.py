@@ -2,6 +2,7 @@ import hmac
 import re
 import subprocess
 import threading
+import time
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -25,6 +26,7 @@ def script():
                     count = 0
                 except subprocess.CalledProcessError as _e:
                     count -= 1
+                    time.sleep(60)
                 finally:
                     running = False
 
