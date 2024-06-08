@@ -23,6 +23,6 @@ $ apt install python-flask gunicorn
 
 ```sh
 $ cd /root/website/tools
-$ setsid gunicorn -w 1 webhook:app -b 127.0.0.1:8080
+$ setsid gunicorn -w 1 webhook:app -b 127.0.0.1:8080 --timeout 600
 ```
 
