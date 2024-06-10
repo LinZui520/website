@@ -6,23 +6,29 @@
 
 #### 原理
 
-当仓库main分支merge代码时，Github通过Webhook向指定服务器路由发送一个Post请求这个时候在服务器开启一个服务，这边是通过Python的Flask框架在8080端口开启一个服务监听/api/github/webhook路由的Post请求并通过Nginx代理到80端口，当接受到一个Post请求且验证是Github发送的的时候，该Python程序执行`/bin/sh scripts/restart.sh` 通过该脚本重新部署。
+当仓库`main`分支`merge`代码时，`Github`通过`Webhooks`向指定服务器路由发送一个`Post`请求。
+
+这个时候在服务器开启一个服务，这边是通过`Rust`的`actix-web`框架在`8080`端口开启一个服务。
+
+该服务监听`/api/github/webhook`路由的`Post`请求并通过`Nginx`代理到`80`端口。
+
+当服务器接受到一个发送到`/api/github/webhook`的`Post`请求且验证是`Github`发送的的时候，该程序执行`/bin/sh scripts/restart.sh` 通过该脚本重新部署。
 
 ### 启动自动部署
 
 依赖：
 
 ```sh
-$ apt install python3
-$ apt install python-flask gunicorn
+$ apt install cargo
 ```
 
-在Github设置Webhook并将密钥写进website/nextjs/.env
+在`Github`设置`Webhooks`并将密钥写进`website/nextjs/.env`文件
 
 启动：
 
 ```sh
 $ cd /root/website/tools
-$ setsid gunicorn -w 1 webhook:app -b 127.0.0.1:8080 --timeout 600
+$ cargo build --release
+$ setsid ./target/release/webhook
 ```
 
