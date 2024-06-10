@@ -27,7 +27,7 @@ $ apt install cargo
 启动：
 
 ```sh
-$ cd /root/website/tools
+$ cd /root/website/tools/webhook
 $ cargo build --release
 $ setsid ./target/release/webhook
 ```
