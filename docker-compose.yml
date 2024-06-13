@@ -28,8 +28,8 @@ services:
       - database
       - cache
       
-  nginx:
-    build: nginx
+  middleware:
+    build: middleware
     volumes:
       - ./database/image:/root/website/database/image
     restart: always

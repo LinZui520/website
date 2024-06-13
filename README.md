@@ -30,7 +30,7 @@ $ cd website
 
 阅读 `tools/README.md`
 
-阅读 `nginx/README.md`
+阅读 `middleware/README.md`
 
 阅读 `database/README.md`
 
