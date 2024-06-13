@@ -32,7 +32,7 @@ $ cd website
 
 阅读 `nginx/README.md`
 
-阅读 `mysql/README.md`
+阅读 `database/README.md`
 
 阅读 `web/README.md`
 

@@ -6,7 +6,7 @@ $ docker-compose up -d
 
 执行这个命令会根据 `website/docker-compose.yml` 文件按以下顺序开启 `4` 个容器。
 
-`mysql` 容器主要存储数据，同时会把容器中的数据映射到 `website/mysql/data/mysql` 
+`database` 容器主要存储数据，同时会把容器中的数据映射到 `website/database/mysql` 
 
 `cache` 容器主要作为缓存
 
