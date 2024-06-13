@@ -1,6 +1,6 @@
 services:
   mysql:
-    build: ./mysql
+    build: mysql
     volumes:
       - ./mysql/data/mysql:/var/lib/mysql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -11,17 +11,17 @@ services:
     network_mode: host
     
   redis:
-    build: ./redis
+    build: redis
     restart: always
     network_mode: host
     depends_on:
       - mysql
 
-  nextjs:
-    build: ./nextjs
+  web:
+    build: web
     volumes:
       - ./mysql/data/image:/root/website/mysql/data/image
-      - ./nextjs:/root/website/nextjs
+      - ./web:/root/website/web
     restart: always
     network_mode: host
     depends_on:
@@ -29,11 +29,11 @@ services:
       - redis
       
   nginx:
-    build: ./nginx
+    build: nginx
     volumes:
       - ./mysql/data/image:/root/website/mysql/data/image
     restart: always
     network_mode: host
     depends_on:
-      - nextjs
+      - web
 

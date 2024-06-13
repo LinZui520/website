@@ -10,7 +10,7 @@ $ docker-compose up -d
 
 `redis` 容器主要作为缓存
 
-`nextjs` 容器为网站主要服务，该容器会在 `3000` 端口开启一个 `nodejs` 服务，负责处理 `http` 请求
+`web` 容器为网站主要服务，该容器会在 `3000` 端口开启一个 `nodejs` 服务，负责处理 `http` 请求
 
 `nginx` 容器主要代理 `3000` 端口和静态图片
 
@@ -20,7 +20,7 @@ $ docker-compose up -d
 
 ### 开发流程
 
-贡献代码的地方主要是 `website/nextjs/src`
+贡献代码的地方主要是 `website/web/src`
 
 。。。。。。
 

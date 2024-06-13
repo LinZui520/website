@@ -23,7 +23,7 @@ lazy_static! {
 async fn handle_webhook(req: HttpRequest, body: Bytes) -> impl Responder {
     let secret = &Regex::new(r#"GITHUB_WEBHOOK_SECRET="([^"]*)""#)
         .unwrap()
-        .captures(&fs::read_to_string("/root/website/nextjs/.env").unwrap())
+        .captures(&fs::read_to_string("/root/website/web/.env").unwrap())
         .unwrap()[1]
         .to_string();
 

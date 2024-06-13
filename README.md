@@ -34,7 +34,7 @@ $ cd website
 
 阅读 `mysql/README.md`
 
-阅读 `nextjs/README.md`
+阅读 `web/README.md`
 
 然后 `website` 启动🫡
 
