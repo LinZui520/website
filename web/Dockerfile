@@ -1,5 +1,5 @@
 FROM node
 
-WORKDIR /root/website/nextjs
+WORKDIR /root/website/web
 
 CMD ["./start.sh"]

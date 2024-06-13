@@ -22,7 +22,7 @@
 $ apt install cargo
 ```
 
-在`Github`设置`Webhooks`并将密钥写进`website/nextjs/.env`文件
+在`Github`设置`Webhooks`并将密钥写进`website/web/.env`文件
 
 启动：
 

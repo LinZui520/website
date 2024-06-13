@@ -1,8 +1,8 @@
 ### 修改网站图标和网站名称
 
-网站图标 `nextjs/public/favicon.ico`
+网站图标 `web/public/favicon.ico`
 
-网站名称 `nextjs/src/app/layout.tsx`
+网站名称 `web/src/app/layout.tsx`
 
 ```tsx
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 ### 环境变量
 
-文件`nextjs/.env`
+文件`web/.env`
 
 需要修改字段
 
