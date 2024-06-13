@@ -6,13 +6,13 @@ $ docker-compose up -d
 
 执行这个命令会根据 `website/docker-compose.yml` 文件按以下顺序开启 `4` 个容器。
 
-`mysql` 容器主要存储数据，同时会把容器中的数据映射到 `website/mysql/data/mysql` 
+`database` 容器主要存储数据，同时会把容器中的数据映射到 `website/database/mysql` 
 
-`redis` 容器主要作为缓存
+`cache` 容器主要作为缓存
 
-`nextjs` 容器为网站主要服务，该容器会在 `3000` 端口开启一个 `nodejs` 服务，负责处理 `http` 请求
+`web` 容器为网站主要服务，该容器会在 `3000` 端口开启一个 `nodejs` 服务，负责处理 `http` 请求
 
-`nginx` 容器主要代理 `3000` 端口和静态图片
+`middleware` 容器主要代理 `3000` 端口和静态图片
 
 > 因为 `4` 个容器的 `network_mode` 都为 `host` ，所以各个容器之间可以相互通信
 
@@ -20,7 +20,7 @@ $ docker-compose up -d
 
 ### 开发流程
 
-贡献代码的地方主要是 `website/nextjs/src`
+贡献代码的地方主要是 `website/web/src`
 
 。。。。。。
 

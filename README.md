@@ -30,11 +30,11 @@ $ cd website
 
 阅读 `tools/README.md`
 
-阅读 `nginx/README.md`
+阅读 `middleware/README.md`
 
-阅读 `mysql/README.md`
+阅读 `database/README.md`
 
-阅读 `nextjs/README.md`
+阅读 `web/README.md`
 
 然后 `website` 启动🫡
 

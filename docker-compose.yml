@@ -1,39 +1,39 @@
 services:
-  mysql:
-    build: ./mysql
+  database:
+    build: database
     volumes:
-      - ./mysql/data/mysql:/var/lib/mysql
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/mysql:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_CHARSET=utf8mb4
     restart: always
     network_mode: host
     
-  redis:
-    build: ./redis
+  cache:
+    build: cache
     restart: always
     network_mode: host
     depends_on:
-      - mysql
+      - database
 
-  nextjs:
-    build: ./nextjs
+  web:
+    build: web
     volumes:
-      - ./mysql/data/image:/root/website/mysql/data/image
-      - ./nextjs:/root/website/nextjs
+      - ./database/image:/root/website/database/image
+      - ./web:/root/website/web
     restart: always
     network_mode: host
     depends_on:
-      - mysql
-      - redis
+      - database
+      - cache
       
-  nginx:
-    build: ./nginx
+  middleware:
+    build: middleware
     volumes:
-      - ./mysql/data/image:/root/website/mysql/data/image
+      - ./database/image:/root/website/database/image
     restart: always
     network_mode: host
     depends_on:
-      - nextjs
+      - web
 

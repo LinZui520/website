@@ -1,6 +1,6 @@
 FROM nginx
 
-WORKDIR /root/website/nginx
+WORKDIR /root/website/middleware
 COPY . .
 COPY ./nginx.conf /etc/nginx/nginx.conf
 

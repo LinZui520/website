@@ -1,4 +1,4 @@
 # 提交时忽略本地修改
 # git config --global filter.secrets.clean 'sed "s/SMTP_PASS=.*/SMTP_PASS=[FILTERED]/;s/AUTH_SECRET=.*/AUTH_SECRET=[FILTERED]/;s/GITHUB_WEBHOOK_SECRET=.*/GITHUB_WEBHOOK_SECRET=[FILTERED]/"'
 
-nextjs/.env filter=secrets
+web/.env filter=secrets
