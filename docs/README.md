@@ -8,7 +8,7 @@ $ docker-compose up -d
 
 `mysql` 容器主要存储数据，同时会把容器中的数据映射到 `website/mysql/data/mysql` 
 
-`redis` 容器主要作为缓存
+`cache` 容器主要作为缓存
 
 `web` 容器为网站主要服务，该容器会在 `3000` 端口开启一个 `nodejs` 服务，负责处理 `http` 请求
 

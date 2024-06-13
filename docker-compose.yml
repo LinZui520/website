@@ -10,8 +10,8 @@ services:
     restart: always
     network_mode: host
     
-  redis:
-    build: redis
+  cache:
+    build: cache
     restart: always
     network_mode: host
     depends_on:
@@ -26,7 +26,7 @@ services:
     network_mode: host
     depends_on:
       - mysql
-      - redis
+      - cache
       
   nginx:
     build: nginx
