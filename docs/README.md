@@ -12,7 +12,7 @@ $ docker-compose up -d
 
 `web` 容器为网站主要服务，该容器会在 `3000` 端口开启一个 `nodejs` 服务，负责处理 `http` 请求
 
-`nginx` 容器主要代理 `3000` 端口和静态图片
+`middleware` 容器主要代理 `3000` 端口和静态图片
 
 > 因为 `4` 个容器的 `network_mode` 都为 `host` ，所以各个容器之间可以相互通信
 

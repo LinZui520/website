@@ -2,5 +2,5 @@
 /database/image/*
 !/database/image/default.png
 
-nginx/ssl/fullchain.crt
-nginx/ssl/private.pem
+middleware/ssl/fullchain.crt
+middleware/ssl/private.pem
