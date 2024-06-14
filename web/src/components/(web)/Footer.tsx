@@ -11,12 +11,12 @@ const Footer = () => {
   return (
     <div className={"h-[512px] w-full sticky bottom-0 bg-[#1d1d1f] flex flex-col items-center"}>
       <div className={"h-[358px] w-calc-150 flex flex-col justify-center sm:items-center items-start"}>
-        <span className={"text-[#fbfbfd] font-thin sm:text-[20px] md:text-[35px] lg:text-[45px]"}>
-          你可以永远相信狗哥
+        <span className={"text-[#fbfbfd] font-serif sm:text-[18px] md:text-[32px] lg:text-[42px]"}>
+          Read{'\u00A0'} The{'\u00A0'} Fucking{'\u00A0'} Source{'\u00A0'} Code
         </span>
       </div>
 
-      <hr className={"h-[2px] w-calc-64 lg:w-calc-150 bg-[#fbfbfd]"} />
+      <hr className={"h-[2px] w-calc-64 lg:w-calc-150 bg-[#fbfbfd]"}/>
 
       <div className={"h-[152px] w-full flex flex-col-reverse lg:flex-row justify-between items-start lg:items-center"}>
         <span className={"text-[#fbfbfd] ml-[32px] lg:ml-[75px] mb-[32px] lg:mb-0"}>
