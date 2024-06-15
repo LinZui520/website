@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
+import LocalFont from "next/font/local"
 import "./globals.css";
 import { SessionProvider } from 'next-auth/react'
 import { NextUIProvider } from "@nextui-org/react";
@@ -7,6 +8,9 @@ import ArrowUp from "@/components/ArrowUp";
 import Menu from "@/components/Menu";
 import ScrollBar from "@/components/ScrollBar";
 
+const font = LocalFont({
+  src: "../assets/fonts/XinYeNianTi-2.otf"
+})
 
 export const metadata: Metadata = {
   title: "我不吃牛肉",
@@ -20,7 +24,7 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="zh-CN">
-      <body>
+      <body className={font.className}>
         <NextUIProvider>
           <SessionProvider>
             <Menu />

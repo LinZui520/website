@@ -45,7 +45,6 @@ const First = () => {
             delay: 0.5, type: "spring",
             stiffness: 260, damping: 20
           }}
-          className={"font-serif"}
         >I
         </motion.div>
 
@@ -57,7 +56,6 @@ const First = () => {
             delay: 1, type: "spring",
             stiffness: 260, damping: 20
           }}
-          className={"font-serif"}
         >{"\u00A0"}am{"\u00A0"}
         </motion.div>
 
@@ -242,7 +240,6 @@ const Second = () => {
             delay: 0.5 + 0.1 * index, duration: 1,
             type: "spring", stiffness: 260, damping: 20
           }}
-          className={"font-serif"}
         >
           {item}
         </motion.div>)}
@@ -269,7 +266,6 @@ const Second = () => {
               delay: 0.5 + 0.1 * index, duration: 1,
               type: "spring", stiffness: 260, damping: 20
             }}
-            className={"font-serif"}
           >
             {item}
           </motion.div>)}
@@ -286,7 +282,6 @@ const Second = () => {
               delay: 0.5 + 0.1 * index, duration: 1,
               type: "spring", stiffness: 260, damping: 20
             }}
-            className={"font-serif"}
           >
             {item}
           </motion.div>)}
