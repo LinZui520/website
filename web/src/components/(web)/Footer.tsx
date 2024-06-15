@@ -32,7 +32,7 @@ const Footer = () => {
           </a>
 
           <span className={"text-[#fbfbfd] ml-0 lg:ml-[32px]"}>
-            ©2023 - 2024 贺阳明 & 林醉
+            (C)2023 - 2024 贺阳明 & 林醉
           </span>
 
           <div className={"flex flex-row mr-[75px] ml-0 lg:ml-[32px] mt-[32px] lg:mt-0"}>

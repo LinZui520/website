@@ -7,9 +7,13 @@ const ArrowUp = () => {
 
   const [isHovered, setIsHovered] = useState(false)
   const [show, setShow] = useState(false)
+  const [color, setColor] = useState("#1d1d1f")
 
   useEffect(() => {
-    const check = () => setShow(window.scrollY > 100)
+    const check = () => {
+      setShow(window.scrollY > 100)
+      setColor(window.scrollY > document.documentElement.scrollHeight - window.innerHeight - 512 ? "#fbfbfd" : "#1d1d1f")
+    }
 
     window.addEventListener("scroll", check)
 
@@ -36,7 +40,7 @@ const ArrowUp = () => {
       <motion.path
         animate={isHovered ? "hover" : "none"}
         variants={{
-          hover: { fill: "#11efef" }, none: { fill: "#1d1d1f" }
+          hover: { fill: "#11efef" }, none: { fill: color }
         }}
         transition={{
           duration: 0.618, type: "spring", stiffness: 100, damping: 10
