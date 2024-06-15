@@ -5,12 +5,12 @@ import dynamic from 'next/dynamic'
 import { useCallback, useRef, useState } from "react";
 import { Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
 import request from '@/lib/axios';
-import { MessageWallHandles } from "@/components/(web)/MessageWall";
+import { MessageWallHandles } from "@/components/(web)/(auth)/message/MessageWall";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 
 const MessageWall = dynamic(
-  () => import("@/components/(web)/MessageWall"),
+  () => import("@/components/(web)/(auth)/message/MessageWall"),
   { ssr: false }
 )
 

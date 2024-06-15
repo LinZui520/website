@@ -7,7 +7,7 @@ import { Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Verify from "@/components/(web)/(auth)/Verify";
+import Verify from "@/components/(web)/(account)/Verify";
 
 /*
  * Author: Lin_Zui
