@@ -17,7 +17,7 @@ config({
 
 const Page = ({ params }: { params: { id: string } }) => {
 
-  const [blog, setBlog] = useState<Blog>()
+  const [blog, setBlog] = useState<Blog | null>()
 
   const fetchBlog = useCallback(() => {
     request({
@@ -32,7 +32,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   if (blog === undefined) return <Loading />
 
-  if (!blog) return <NotFound />
+  if (blog === null) return <NotFound />
 
   return (
     <div className={"w-full min-h-screen bg-[#fbfbfd] flex flex-row justify-center"}>

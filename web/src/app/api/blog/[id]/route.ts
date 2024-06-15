@@ -35,7 +35,7 @@ export interface Blog {
 
 export const GET = async (_request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-     const blog = await prisma.blog.findUnique({
+    const blog = await prisma.blog.findUnique({
       where: {
         id: Number(params.id)
       },
