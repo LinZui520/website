@@ -9,7 +9,7 @@ import Menu from "@/components/Menu";
 import ScrollBar from "@/components/ScrollBar";
 
 const font = LocalFont({
-  src: "../assets/fonts/XinYeNianTi-2.otf"
+  src: "../assets/fonts/JetBrainsMono-Medium.ttf"
 })
 
 export const metadata: Metadata = {
