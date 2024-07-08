@@ -51,7 +51,7 @@ model Comment {
   content String   @map("content")
   create  DateTime @map("create")
   User    User     @relation(fields: [author], references: [id])
-  Blog    Blog     @relation(fields: [blog], references: [id])
+  Blog    Blog     @relation(fields: [blog], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("comments")
 }
