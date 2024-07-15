@@ -96,7 +96,7 @@ const First = () => {
         >明
         </motion.div>
 
-        {"\u00A0"}{"\u00A0"}{"\u00A0"}{"\u00A0"}
+        {"\u00A0"}
 
         <motion.svg
           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
