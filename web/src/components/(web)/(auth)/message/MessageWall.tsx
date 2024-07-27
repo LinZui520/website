@@ -71,20 +71,20 @@ const MessageWall = forwardRef((
     screenRef.current = new BulletScreen(screenElRef.current, { duration: 18 })
   }, [])
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout
+  const intervalRef = useRef<NodeJS.Timeout>()
 
+  useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.hidden) clearInterval(interval)
-      else interval = setInterval(pushMessage, speed)
+      if (document.hidden) clearInterval(intervalRef.current)
+      else intervalRef.current = setInterval(pushMessage, speed)
     }
 
     document.addEventListener('visibilitychange', handleVisibilityChange)
 
-    interval = setInterval(pushMessage, speed)
+    intervalRef.current = setInterval(pushMessage, speed)
 
     return () => {
-      clearInterval(interval)
+      clearInterval(intervalRef.current)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [speed, messages, pushMessage])

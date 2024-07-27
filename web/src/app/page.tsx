@@ -24,7 +24,11 @@ const Page = () => {
 
 const First = () => {
   return (
-    <div className={"h-screen select-none sm:w-[96vw] w-[80vw] flex flex-col justify-center"}>
+    <div className={"h-screen select-none sm:w-[96vw] w-[80vw] flex flex-col justify-evenly"}>
+      <div
+        className={"absolute -z-10 blur-3xl left-0 top-[70vh] bg-gray-200 w-[100vw] h-[160vh] rounded-3xl"}
+      />
+
       <motion.svg
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
         className={"absolute top-[100vh] sm:w-[36px] md:w-[54px] lg:w-[64px] sm:h-[54px] md:h-[81px] lg:h-[96px]"}
@@ -36,7 +40,7 @@ const First = () => {
         />
       </motion.svg>
 
-      <div className={"text-[#1d1d1f] flex justify-center items-center sm:text-[36px] md:text-[54px] lg:text-[64px] mt-[32px] sm:self-center self-start"}>
+      <div className={"text-[#1d1d1f] flex justify-center items-center sm:text-[36px] md:text-[54px] lg:text-[64px] mt-[32px] self-center"}>
         <motion.div
           initial={{ scaleY: -1, y: 64 }}
           whileInView={{ scaleY: 1, y: 0 }}
@@ -124,7 +128,7 @@ const First = () => {
         </motion.svg>
       </div>
 
-      <div className={"text-[#1d1d1f] flex justify-center items-center sm:text-[36px] md:text-[54px] lg:text-[64px] mt-[32px] sm:self-center self-end"}>
+      <div className={"text-[#1d1d1f] flex justify-center items-center sm:text-[36px] md:text-[54px] lg:text-[64px] mt-[32px] self-center"}>
         <motion.div
           initial={{ scale: 0 }}
           whileInView={{ scale: 1, transition: { delay: 1.5 } }}
