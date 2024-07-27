@@ -39,7 +39,7 @@ const Page = () => {
 
           {blogs.map((blog, index) => (
             <Link key={index} href={`/blog/${blog.id}`}>
-              <div className={"mt-[10vh] cursor-pointer hover:opacity-50 flex justify-between sm:text-[18px] md:text-[21px] lg:text-[24px]"}>
+              <div title={blog.User.username} className={"mt-[10vh] cursor-pointer hover:opacity-50 flex justify-between sm:text-[18px] md:text-[21px] lg:text-[24px]"}>
                 <span className={"font-light"}>{blog.title}</span>
 
                 <span className={""}>
