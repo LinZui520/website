@@ -356,7 +356,7 @@ const Third = () => {
         <motion.div className={"w-[200vw] text-[6vw] flex justify-center items-center"}>
           {['童', '\u00A0', '年', '\u00A0', '的', '\u00A0'].map((item, index) => <motion.div
             key={index}
-            initial={{ opacity: 0, y: 64, x: "40vw" }}
+            initial={{ opacity: 0, y: 64, x: "25vw" }}
             whileInView={{ opacity: [0, 1], y: [64, 0], x: [0, 0] }}
             viewport={{ once: true }}
             transition={{
@@ -367,7 +367,7 @@ const Third = () => {
           </motion.div>)}
 
           <motion.div
-            initial={{ opacity: 0, scale: 1, x: "40vw" }}
+            initial={{ opacity: 0, scale: 1, x: "25vw" }}
             whileInView={{ opacity: [0, 1], scale: [2, 1], x: [0, 0] }}
             viewport={{ once: true }}
             transition={{
@@ -382,7 +382,7 @@ const Third = () => {
             '终', '\u00A0', '于', '\u00A0'
           ].map((item, index) => <motion.div
             key={index}
-            initial={{ opacity: 0, y: 64, x: "40vw" }}
+            initial={{ opacity: 0, y: 64, x: "25vw" }}
             whileInView={{ opacity: [0, 1], y: [64, 0], x: [0, 0] }}
             viewport={{ once: true }}
             transition={{
@@ -393,7 +393,7 @@ const Third = () => {
           </motion.div>)}
 
           <motion.div
-            initial={{ opacity: 0, scale: 1, x: "40vw" }}
+            initial={{ opacity: 0, scale: 1, x: "25vw" }}
             whileInView={{ opacity: [0, 1], scale: [2, 1], x: [0, 0] }}
             viewport={{ once: true }}
             transition={{
@@ -407,7 +407,7 @@ const Third = () => {
             '\u00A0', '我', '\u00A0', '手', '\u00A0', '里', '\u00A0', '。'
           ].map((item, index) => <motion.div
             key={index}
-            initial={{ opacity: 0, y: 64, x: "40vw" }}
+            initial={{ opacity: 0, y: 64, x: "25vw" }}
             whileInView={{ opacity: [0, 1], y: [64, 0], x: [0, 0] }}
             viewport={{ once: true }}
             transition={{
