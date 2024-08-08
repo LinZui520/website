@@ -3,6 +3,7 @@
 import Footer from "@/components/(web)/Footer";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
+import MusicPlayer from "@/components/(web)/MusicPlayer";
 
 const Page = () => {
 
@@ -18,6 +19,7 @@ const Page = () => {
         <Third />
       </div>
       <Footer/>
+      <MusicPlayer/>
     </>
   );
 }
