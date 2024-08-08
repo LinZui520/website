@@ -13,6 +13,44 @@ export const metadata: Metadata = {
 
 > 修改`title`字段即可
 
+### 修改网站主页歌曲播放
+
+根据`web/src/components/(web)/MusicPlayer.tsx`文件的 `music`变量
+
+补全`web/public/musics`文件夹下的文件
+
+比如`web/public/musics/images/XXX.jpg`
+
+```tsx
+'use client'
+
+import dynamic from 'next/dynamic';
+import type { Music } from 'react-tyranitar';
+
+const Tyranitar = dynamic(
+  () => import('react-tyranitar').then((mod) => mod.Tyranitar),
+  { ssr: false }
+);
+
+const MusicPlayer = () => {
+  const music: Music = {
+    title: '晴天-周杰伦',
+    cover: '/musics/images/晴天-周杰伦.jpg',
+    audio: '/musics/audios/晴天-周杰伦.mp3',
+    lyrics: '/musics/lyrics/晴天-周杰伦.lrc'
+  };
+
+  return (
+    <Tyranitar
+      music={music} size={38}
+      style={{position: 'fixed', left: '25px', bottom: '25px', zIndex: '10'}}
+    />
+  );
+};
+
+export default MusicPlayer;
+```
+
 ### 环境变量
 
 文件`web/.env`
