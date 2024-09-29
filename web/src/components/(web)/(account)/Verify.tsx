@@ -19,7 +19,7 @@ const Verify = ({
     const res = await request({
       url: `/auth/verify`, method: 'POST', data: {email}
     })
-    return res.data.code === 200 ? Promise.resolve() : Promise.reject()
+    return res.data.code === 200 ? Promise.resolve(res.data.message) : Promise.reject(res.data.message)
   }
 
   return (
@@ -52,7 +52,9 @@ const Verify = ({
           onClick={() => toast.promise(getCode, {
             pending: '正在发送验证码',
             success: '发送验证码成功',
-            error: '发送验证码失败'
+            error: {
+              render: ({data}: {data: string}) => data,
+            }
           })}
         >
           <motion.svg

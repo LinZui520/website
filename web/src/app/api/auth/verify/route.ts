@@ -6,6 +6,9 @@ import redis from "@/lib/redis";
 export const POST = async (request: NextRequest) => {
   try {
     const { email } = await request.json()
+    if (await redis.get(email) !== null) {
+      return NextResponse.json(ResponseError('请勿频繁发送验证码'))
+    }
     const code = Math.floor(Math.random() * 1000000).toString()
     await transporter.sendMail({
       from: process.env.SMTP_USER,
@@ -13,7 +16,7 @@ export const POST = async (request: NextRequest) => {
       subject: process.env.SMTP_SUBJECT,
       text: process.env.SMTP_TEXT + code
     })
-    redis.set(email, code, 'EX', 60 * 5)
+    await redis.set(email, code, 'EX', 60 * 5)
 
     return NextResponse.json(ResponseOK(null))
   } catch (error) {
