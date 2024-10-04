@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const Timer = dynamic(
   () => import("@/components/(web)/Timer"),
@@ -32,7 +33,7 @@ const Footer = () => {
           </a>
 
           <span className={"text-[#fbfbfd] ml-0 lg:ml-[32px]"}>
-            (C)2023 - 2024 贺阳明 & 林醉
+            (C)2023 - 2024 <Link href={"/"}>贺阳明</Link> & <Link href={"/linzui"}>林醉</Link>
           </span>
 
           <div className={"flex flex-row mr-[75px] ml-0 lg:ml-[32px] mt-[32px] lg:mt-0"}>
