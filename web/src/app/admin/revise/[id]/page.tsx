@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import request from '@/lib/axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 config({
   markdownItConfig(md) {
@@ -22,6 +23,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter()
 
   const fetchBlog = useCallback(async () => {
     try {
@@ -52,6 +54,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         method: 'PUT',
         data: {title, content}
       })
+      setTimeout(() => router.push('/admin/blog'), 2048)
       return res.data.code === 200 ? Promise.resolve() : Promise.reject(res.data.message)
     } catch (_) {
       return Promise.reject("系统错误")

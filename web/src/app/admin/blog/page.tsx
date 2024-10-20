@@ -16,7 +16,7 @@ import {
   TableRow,
   Tooltip, useDisclosure
 } from "@nextui-org/react";
-import Loading from "@/app/loading";
+import Loading from "@/app/admin/loading";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { motion } from "framer-motion";

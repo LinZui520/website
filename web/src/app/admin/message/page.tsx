@@ -18,7 +18,7 @@ import { Image } from "@nextui-org/image";
 import { format } from "@/utils/time";
 import { Message } from "@/app/api/message/route";
 import request from "@/lib/axios";
-import Loading from "@/app/loading";
+import Loading from "@/app/admin/loading";
 import { motion } from "framer-motion";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
