@@ -58,8 +58,8 @@ export default MusicPlayer;
 需要修改字段
 
 ```
-NEXT_PUBLIC_WEBSITE_URL="https://www.zhuguishihundan.cn"
-NEXT_PUBLIC_WEBSITE_IMAGE_URL="https://www.zhuguishihundan.cn/image/"
+NEXT_PUBLIC_WEBSITE_URL="https://www.zhuguishihundan.com"
+NEXT_PUBLIC_WEBSITE_IMAGE_URL="https://www.zhuguishihundan.com/image/"
 
 AUTH_SECRET="XXX"
 GITHUB_WEBHOOK_SECRET="XXX"
