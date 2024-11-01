@@ -15,7 +15,7 @@ import {
 } from "@nextui-org/react";
 import { Image } from "@nextui-org/image";
 import { format } from "@/utils/time";
-import Loading from "@/app/loading";
+import Loading from "@/app/admin/loading";
 import { motion } from "framer-motion";
 
 const Page = () => {

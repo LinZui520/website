@@ -15,7 +15,7 @@ import {
 } from "@nextui-org/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Image } from "@nextui-org/image";
-import Loading from "@/app/loading";
+import Loading from "@/app/admin/loading";
 import { format } from "@/utils/time";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
