@@ -82,6 +82,14 @@ SMTP_TEXT="你的验证码是："
 >
 > `SMTP` 服务如何获取自行解决
 
+### start.sh脚本
+
+如果不需要设置`npm`代理可以删除这行命令
+
+```sh
+npm config set registry https://registry.npmmirror.com
+```
+
 
 
 ### 项目依赖
