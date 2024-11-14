@@ -29,7 +29,7 @@ const Footer = () => {
             rel='noopener noreferrer' href='https://beian.miit.gov.cn/' target='_blank'
             className={"text-[#fbfbfd] cursor-pointer"}
           >
-            赣ICP备2023014673号-1
+            赣ICP备2023014673号-2
           </a>
 
           <span className={"text-[#fbfbfd] ml-0 lg:ml-[32px]"}>
