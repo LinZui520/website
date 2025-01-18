@@ -10,7 +10,7 @@ const Timer = dynamic(
 
 const Footer = () => {
   return (
-    <div className={"h-[512px] w-full sticky bottom-0 bg-[#1d1d1f] flex flex-col items-center"}>
+    <div className={"h-[512px] w-full -z-10 sticky bottom-0 bg-[#1d1d1f] flex flex-col items-center"}>
       <div className={"h-[358px] w-calc-150 flex flex-col justify-center sm:items-center items-start"}>
         <span className={"text-[#fbfbfd] sm:text-[18px] md:text-[32px] lg:text-[42px]"}>
           Read{'\u00A0'}The{'\u00A0'}Fucking{'\u00A0'}Source{'\u00A0'}Code
