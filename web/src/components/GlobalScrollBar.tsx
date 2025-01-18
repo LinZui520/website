@@ -47,7 +47,6 @@ const GlobalScrollBar = () => {
 
 
   const [scrollTarget, setScrollTarget] = useState(window.scrollY)
-  const test = useRef(0)
 
   useEffect(() => {
     if (isScrollBarSelect) {
@@ -75,10 +74,10 @@ const GlobalScrollBar = () => {
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
-      if (scrollTarget + event.deltaY < 0) {
+      if (scrollTarget + event.deltaY / 2 < 0) {
         setScrollTarget(0)
-      } else if (scrollTarget + event.deltaY > document.body.clientHeight) {
-        setScrollTarget(document.body.clientHeight)
+      } else if (scrollTarget + event.deltaY / 2 > scrollHeight - window.innerHeight){
+        setScrollTarget(scrollHeight - window.innerHeight)
       } else {
         setScrollTarget(scrollTarget + event.deltaY / 2)
       }
@@ -89,7 +88,7 @@ const GlobalScrollBar = () => {
     return () => {
       window.removeEventListener('wheel', handleWheel);
     };
-  }, [scrollTarget]);
+  }, [scrollTarget, scrollHeight]);
 
   if (window.innerHeight >= scrollHeight) return null;
 

@@ -11,7 +11,7 @@ const Page = () => {
 
   return (
     <>
-      <div className={"w-full bg-[#fbfbfd] relative z-10 flex flex-col items-center"}>
+      <div className={"w-full bg-[#fbfbfd] flex flex-col items-center"}>
         <First />
 
         <Second />
