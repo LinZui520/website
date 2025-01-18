@@ -4,7 +4,7 @@ import LocalFont from "next/font/local"
 import "./globals.css";
 import { SessionProvider } from 'next-auth/react'
 import { NextUIProvider } from "@nextui-org/react";
-import ArrowUp from "@/components/ArrowUp";
+// import ArrowUp from "@/components/ArrowUp";
 import Menu from "@/components/Menu";
 import DynamicGlobalScrollBar from "@/components/DynamicGlobalScrollBar";
 
@@ -30,7 +30,7 @@ const RootLayout = ({
             <Menu />
             {children}
             <DynamicGlobalScrollBar />
-            <ArrowUp />
+            {/* <ArrowUp /> */}
           </SessionProvider>
         </NextUIProvider>
       </body>
