@@ -9,7 +9,7 @@ import Loading from "@/app/loading";
 import NotFound from "@/app/not-found";
 import { Blog } from "@/app/api/blog/[id]/route";
 import Footer from "@/components/(web)/Footer";
-import DynamicScrollBar from "@/components/DynamicScrollBar";
+import ScrollBar from "@/components/ScrollBar";
 
 config({
   markdownItConfig(md) {
@@ -41,7 +41,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       <div className={"w-full min-h-screen relative z-10 bg-[#fbfbfd] flex flex-row justify-center"}>
         <MdPreview editorId={'MdCatalog'} className={"w-[80%] max-w-[825px]"} modelValue={blog.content}/>
       </div>
-      <DynamicScrollBar />
+      <ScrollBar />
       <Footer />
     </>
   );
