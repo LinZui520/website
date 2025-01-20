@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Blog } from "@/app/api/blog/route";
 import Loading from "@/app/loading";
 import Link from "next/link";
-import DynamicScrollBar from "@/components/DynamicScrollBar";
+import ScrollBar from "@/components/ScrollBar";
 
 const Page = () => {
 
@@ -55,7 +55,7 @@ const Page = () => {
           <div className={"mb-[20vh]"} />
         </div>
       </div>
-      <DynamicScrollBar />
+      <ScrollBar />
       <Footer />
     </>
   );
