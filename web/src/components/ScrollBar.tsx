@@ -15,9 +15,9 @@ const ScrollBar = () => {
   useEffect(() => {
     setScrollHeight(document.body.clientHeight);
     if (scrollBarRef.current === null) return;
-    scrollBarRef.current.style.height = (window.innerHeight / scrollHeight * 100) + "%";
-    scrollBarRef.current.style.top = (window.scrollY / scrollHeight * 100) + "%";
-  }, [scrollHeight])
+    scrollBarRef.current.style.height = (window.innerHeight / document.body.clientHeight * 100) + "%";
+    scrollBarRef.current.style.top = (window.scrollY / document.body.clientHeight * 100) + "%";
+  }, []);
 
   const handleScroll = useCallback(() => {
     if (scrollBarRef.current === null) return;
@@ -29,9 +29,6 @@ const ScrollBar = () => {
 
   const handleDragScrollBar = useCallback((event: MouseEvent) => {
     if (isScrollBarSelect) {
-      // window.scroll(
-      //   0, oldWindowY.current + (event.clientY - oldMouseY.current) / window.innerHeight * document.body.clientHeight
-      // );
       setScrollTarget(oldWindowY.current + (event.clientY - oldMouseY.current) / window.innerHeight * document.body.clientHeight)
     }
   }, [isScrollBarSelect]);
@@ -53,16 +50,14 @@ const ScrollBar = () => {
   }, [handleScroll, handleDragScrollBar, handleResize, cancelSelect]);
 
   const [scrollTarget, setScrollTarget] = useState(0);
+  const isScrolling = useRef(false);
 
   useEffect(() => {
     setScrollTarget(window.scrollY);
   }, [])
 
   useEffect(() => {
-    if (isScrollBarSelect) {
-      window.scroll(0, scrollTarget);
-      return;
-    }
+    if (isScrolling.current) return;
     const startY = window.scrollY;
     const startTimestamp = performance.now();
     const duration = 1000;
@@ -73,6 +68,8 @@ const ScrollBar = () => {
 
       if (elapsed < duration) {
         requestAnimationFrame(scrollAnimation);
+      } else {
+        isScrolling.current = false
       }
     }
 
@@ -114,13 +111,8 @@ const ScrollBar = () => {
           oldMouseY.current = event.clientY;
         }}
         animate={{ width: isScrollBarHover || isScrollBarSelect ? 12 : 8 }}
-        className={"absolute right-0 w-full bg-[#7f7f7f] rounded-full"}
-        // style={{
-        //   height: (window.innerHeight/ scrollHeight * 100) + "%",
-        //   top: (window.scrollY/ scrollHeight * 100) + "%",
-        // }}
-      >
-      </motion.button>
+        className={"absolute right-0 w-full bg-[#7f7f7f] rounded-full opacity-80"}
+      />
     </motion.div>
   );
 }
