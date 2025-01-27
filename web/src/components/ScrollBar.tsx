@@ -13,6 +13,32 @@ const ScrollBar = () => {
   const oldMouseY = useRef(0);
 
   useEffect(() => {
+    const target = document.body
+
+    const observer = new MutationObserver(() => {
+      setScrollHeight(document.body.clientHeight)
+    });
+    const config = {
+      // childList: true, // 子节点的变动（新增、删除或者更改）
+      attributes: true, // 属性的变动
+      // characterData: true, // 节点内容或节点文本的变动
+      subtree: true// 是否将观察器应用于该节点的所有后代节点
+    };
+
+    observer.observe(target, config);
+
+    return () => {
+      observer.disconnect();
+    }
+  }, [])
+
+  useEffect(() => {
+    if (scrollBarRef.current === null) return;
+    scrollBarRef.current.style.height = (window.innerHeight / document.body.clientHeight * 100) + "%";
+    scrollBarRef.current.style.top = (window.scrollY / document.body.clientHeight * 100) + "%";
+  }, [scrollHeight]);
+
+  useEffect(() => {
     setScrollHeight(document.body.clientHeight);
     if (scrollBarRef.current === null) return;
     scrollBarRef.current.style.height = (window.innerHeight / document.body.clientHeight * 100) + "%";
