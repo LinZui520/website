@@ -3,20 +3,72 @@
 import { motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const ScrollBar = () => {
+export default function ScrollBar() {
 
-  const scrollBarRef = useRef<HTMLButtonElement>(null)
+  const easeOutScrollBarRef = useRef<HTMLButtonElement>(null);
   const [scrollHeight, setScrollHeight] = useState(0);
-  const [isScrollBarSelect, setIsScrollBarSelect] = useState(false);
-  const [isScrollBarHover, setIsScrollBarHover] = useState(false);
-  const oldWindowY = useRef(0);
+
+  const [target, setTarget] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setScrollHeight(document.documentElement.scrollHeight);
+      setTarget(document.documentElement.scrollTop);
+    }
+  }, []);
+
+  const duration = 1000;
+  const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const start = document.documentElement.scrollTop;
+    const change = target - start;
+    const startTimestamp = performance.now();
+    
+    const animateScroll = (current: number) => {
+      const elapsed = current - startTimestamp;
+      window.scroll(0, change * easeOutCubic(elapsed / duration) + start);
+      if (elapsed < duration) {
+        requestAnimationFrame(animateScroll);
+      }
+    }
+
+    requestAnimationFrame(animateScroll);
+  }, [target]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const handleWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const offsetHeight = window.innerHeight;
+      setTarget(
+        (preTarget) => Math.max(0, Math.min(scrollHeight - offsetHeight, preTarget + event.deltaY))
+      );
+    }
+    window.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+    }
+  }, [scrollHeight]);
+
+  const easeOutScrollTo = useCallback((to: number) => setTarget(to), []);
+
+  const [isThumbBarHover, setIsThumbBarHover] = useState(false);
+  const [isScrollBarDrag, setIsScrollBarDrag] = useState(false);
+  const oldScrollTop = useRef(0);
   const oldMouseY = useRef(0);
 
   useEffect(() => {
-    const target = document.body
+    const target = document.documentElement;
 
     const observer = new MutationObserver(() => {
-      setScrollHeight(document.body.clientHeight)
+      setScrollHeight(document.documentElement.scrollHeight);
     });
     const config = {
       // childList: true, // 子节点的变动（新增、删除或者更改）
@@ -30,117 +82,72 @@ const ScrollBar = () => {
     return () => {
       observer.disconnect();
     }
-  }, [])
-
-  useEffect(() => {
-    if (scrollBarRef.current === null) return;
-    scrollBarRef.current.style.height = (window.innerHeight / document.body.clientHeight * 100) + "%";
-    scrollBarRef.current.style.top = (window.scrollY / document.body.clientHeight * 100) + "%";
-  }, [scrollHeight]);
-
-  useEffect(() => {
-    setScrollHeight(document.body.clientHeight);
-    if (scrollBarRef.current === null) return;
-    scrollBarRef.current.style.height = (window.innerHeight / document.body.clientHeight * 100) + "%";
-    scrollBarRef.current.style.top = (window.scrollY / document.body.clientHeight * 100) + "%";
   }, []);
 
-  const handleScroll = useCallback(() => {
-    if (scrollBarRef.current === null) return;
-    scrollBarRef.current.style.height = (window.innerHeight / scrollHeight * 100) + "%";
-    scrollBarRef.current.style.top = (window.scrollY / scrollHeight * 100) + "%";
+  const handleDragScrollBar = useCallback((event: MouseEvent) => {
+    if (isScrollBarDrag && typeof window !== "undefined") {
+      const change = event.clientY - oldMouseY.current
+      easeOutScrollTo(
+        oldScrollTop.current + change * scrollHeight / window.innerHeight
+      );
+    }
+  }, [easeOutScrollTo, isScrollBarDrag, scrollHeight]);
+
+  const handleScrollBarDragEnd = () => setIsScrollBarDrag(false);
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleDragScrollBar);
+    window.addEventListener("mouseup", handleScrollBarDragEnd);
+
+    return () => {
+      window.removeEventListener("mousemove", handleDragScrollBar);
+      window.removeEventListener("mouseup", handleScrollBarDragEnd);
+    };
+  }, [handleDragScrollBar]);
+
+  const handleUpdateScrollBarStyle = useCallback(() => {
+    if (easeOutScrollBarRef.current === null || document.documentElement === null) return;
+    const offsetHeight = window.innerHeight;
+
+    easeOutScrollBarRef.current.style.height = (offsetHeight / scrollHeight * 100) + "%";
+    easeOutScrollBarRef.current.style.top = (document.documentElement.scrollTop / scrollHeight * 100) + "%";
   }, [scrollHeight]);
 
-  const handleResize = useCallback(() => setScrollHeight(document.body.clientHeight), []);
-
-  const handleDragScrollBar = useCallback((event: MouseEvent) => {
-    if (isScrollBarSelect) {
-      setScrollTarget(oldWindowY.current + (event.clientY - oldMouseY.current) / window.innerHeight * document.body.clientHeight)
-    }
-  }, [isScrollBarSelect]);
-
-  const cancelSelect = useCallback(() => setIsScrollBarSelect(false), []);
+  const handleResize = () => setScrollHeight(document.documentElement.scrollHeight);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    if (typeof window === "undefined") return;
+
+    handleUpdateScrollBarStyle();
+
+    window.addEventListener("scroll", handleUpdateScrollBarStyle);
     window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleDragScrollBar);
-    window.addEventListener("mouseup", cancelSelect);
-
+    
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleUpdateScrollBarStyle);
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleDragScrollBar);
-      window.removeEventListener("mouseup", cancelSelect);
-    };
-  }, [handleScroll, handleDragScrollBar, handleResize, cancelSelect]);
-
-  const [scrollTarget, setScrollTarget] = useState(0);
-  const isScrolling = useRef(false);
-
-  useEffect(() => {
-    setScrollTarget(window.scrollY);
-  }, [])
-
-  useEffect(() => {
-    if (isScrolling.current) return;
-    const startY = window.scrollY;
-    const startTimestamp = performance.now();
-    const duration = 1000;
-    const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
-    const scrollAnimation = (current: number) => {
-      const elapsed = current - startTimestamp;
-      window.scroll(0, startY + (scrollTarget - startY) * easeOutCubic(elapsed / duration));
-
-      if (elapsed < duration) {
-        requestAnimationFrame(scrollAnimation);
-      } else {
-        isScrolling.current = false
-      }
     }
-
-    requestAnimationFrame(scrollAnimation);
-  }, [isScrollBarSelect, scrollTarget]);
-
-  useEffect(() => {
-    const handleWheel = (event: WheelEvent) => {
-      event.preventDefault();
-      if (scrollTarget + event.deltaY / 2 < 0) {
-        setScrollTarget(0);
-      } else if (scrollTarget + event.deltaY / 2 > scrollHeight - window.innerHeight) {
-        setScrollTarget(scrollHeight - window.innerHeight);
-      } else {
-        setScrollTarget(scrollTarget + event.deltaY / 2);
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-    };
-  }, [scrollTarget, scrollHeight]);
-
-  // const scrollY = (y: number) => setScrollTarget(y);
+  }, [handleUpdateScrollBarStyle, scrollHeight]);
 
   return (
-    <motion.div
-      onHoverStart={() => setIsScrollBarHover(true)}
-      onHoverEnd={() => setIsScrollBarHover(false)}
-      className={"fixed right-[2px] top-0 h-screen w-[8px] z-10"}
+    <motion.div 
+      onHoverStart={() => setIsThumbBarHover(true)}
+      onHoverEnd={() => setIsThumbBarHover(false)}
+      className="fixed right-[2px] top-0 bottom-0 h-full w-[8px] z-10"
     >
-      <motion.button
-        ref={scrollBarRef}
+      <motion.button 
+        ref={easeOutScrollBarRef}
         onMouseDown={(event) => {
-          setIsScrollBarSelect(true);
-          oldWindowY.current = window.scrollY;
+          oldScrollTop.current = window.scrollY;
           oldMouseY.current = event.clientY;
+          setIsScrollBarDrag(true)
         }}
-        animate={{ width: isScrollBarHover || isScrollBarSelect ? 12 : 8 }}
-        className={"absolute right-0 w-full bg-[#7f7f7f] rounded-full opacity-80"}
+        title="scrollbar" type="button"
+        animate={{
+          width: isThumbBarHover || isScrollBarDrag ? "12px" : "8px"
+        }}
+        className="absolute right-0 w-full bg-[#7f7f7f] rounded-full opacity-80"
       />
     </motion.div>
   );
 }
-
-export default ScrollBar;
