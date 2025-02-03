@@ -4,7 +4,7 @@ import Footer from "@/components/(web)/Footer";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
 import MusicPlayer from "@/components/(web)/MusicPlayer";
-import ScrollBar from "@/components/ScrollBar";
+import GlobalScrollBar from "@/components/GlobalScrollBar";
 
 const Page = () => {
 
@@ -21,7 +21,7 @@ const Page = () => {
       </div>
       <Footer/>
       <MusicPlayer/>
-      <ScrollBar />
+      <GlobalScrollBar />
     </>
   );
 }
