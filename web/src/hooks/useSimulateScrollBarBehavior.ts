@@ -63,25 +63,15 @@ export default function useSimulateScrollBarBehavior(
     if (element === null) {
       return;
     }
-    if (element === document.documentElement) {
-      window.addEventListener("mousemove", handleDragScrollBar);
-      window.addEventListener("mouseup", handleScrollBarDragEnd);
-    } else {
-      element.addEventListener("mousemove", handleDragScrollBar);
-      element.addEventListener("mouseup", handleScrollBarDragEnd);
-    }
+    window.addEventListener("mousemove", handleDragScrollBar);
+    window.addEventListener("mouseup", handleScrollBarDragEnd);
 
     return () => {
       if (element === null) {
         return;
       }
-      if (element === document.documentElement) {
-        window.removeEventListener("mousemove", handleDragScrollBar);
-        window.removeEventListener("mouseup", handleScrollBarDragEnd);
-      } else {
-        element.removeEventListener("mousemove", handleDragScrollBar);
-        element.removeEventListener("mouseup", handleScrollBarDragEnd);
-      }
+      window.removeEventListener("mousemove", handleDragScrollBar);
+      window.removeEventListener("mouseup", handleScrollBarDragEnd);
     };
   }, [element, handleDragScrollBar]);
 
