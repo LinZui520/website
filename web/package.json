@@ -20,13 +20,13 @@
     "nodemailer": "^6.9.13",
     "prisma": "^6.2.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^19"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react-dom": "^19",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
     "eslint": "^8",
