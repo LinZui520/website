@@ -1,6 +1,0 @@
-/database/mysql/*
-/database/image/*
-!/database/image/default.png
-
-middleware/ssl/fullchain.crt
-middleware/ssl/private.pem
