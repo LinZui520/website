@@ -2,23 +2,19 @@
 
 
 @theme {
-  --color-mint-950: #000000;
-  --color-mint-900: #1D1D1F;
-  --color-mint-800: #333336;
+  --color-mint-950: #1D1D1F;
+  --color-mint-900: #333336;
 
-  --color-mint-600: #444445;
   --color-mint-500: #6c6c6c;
 
   --color-mint-100: #F5F5F7;
   --color-mint-50: #FAFAFC;
-}
 
-@layer theme {
-  :root {
-    --screen-sm: 640px;
-    --screen-md: 768px;
-    --screen-lg: 1024px;
-    --screen-xl: 1280px;
-    --screen-2xl: 1536px;
-  }
+  /*--color-mint-950: #FAFAFC;*/
+  /*--color-mint-900: #F5F5F7;*/
+
+  /*--color-mint-500: #6c6c6c;*/
+
+  /*--color-mint-100: #333336;*/
+  /*--color-mint-50: #1D1D1F;*/
 }
