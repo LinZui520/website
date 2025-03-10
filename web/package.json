@@ -1,0 +1,50 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rsbuild build",
+    "dev": "rsbuild dev --open",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest ----coverage && open coverage/lcov-report/index.html",
+    "lint": "eslint .",
+    "preview": "rsbuild preview",
+    "prepare": "cd .. && husky install .husky"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^1.2.7",
+    "@eslint/js": "^9.21.0",
+    "@gsap/react": "^2.1.2",
+    "@rsbuild/core": "^1.2.11",
+    "@rsbuild/plugin-react": "^1.1.1",
+    "@stylistic/eslint-plugin": "^4.1.0",
+    "@tailwindcss/postcss": "^4.0.12",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^16.0.0",
+    "husky": "^8.0.3",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "postcss": "^8.5.3",
+    "react-router-dom": "^7.2.0",
+    "tailwindcss": "^4.0.12",
+    "ts-jest": "^29.2.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.1"
+  }
+}
