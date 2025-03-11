@@ -15,7 +15,7 @@ if echo "$STAGED_FILES" | grep -q '^web/'; then
 
   cd web || exit
 
-  npx eslint . --max-warnings 0
+  npm run lint-staged
 
   # 仅运行关联测试
   if [ -n "$FRONTEND_FILES" ]; then
