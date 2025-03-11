@@ -5,5 +5,8 @@ export default defineConfig({
   plugins: [pluginReact()],
   html: {
     template: './public/index.html'
+  },
+  output: {
+    assetPrefix: './'
   }
 });

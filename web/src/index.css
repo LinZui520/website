@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-mint-950: #1D1D1F;
@@ -9,12 +10,11 @@
 
   --color-mint-100: #F5F5F7;
   --color-mint-50: #FAFAFC;
+}
 
-  /*--color-mint-950: #FAFAFC;*/
-  /*--color-mint-900: #F5F5F7;*/
-
-  /*--color-mint-500: #6c6c6c;*/
-
-  /*--color-mint-100: #333336;*/
-  /*--color-mint-50: #1D1D1F;*/
+@font-face {
+  font-family: 'SmileySans';
+  src: url('assets/fonts/SmileySans.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
 }

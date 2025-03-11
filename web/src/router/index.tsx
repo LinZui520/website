@@ -4,6 +4,7 @@ import IndexPage from '../pages/index/page.tsx';
 import BlogPage from '../pages/blog/page.tsx';
 import RegisterPage from '../pages/register/page.tsx';
 import LoginPage from '../pages/login/page.tsx';
+import ErrorPage from '../pages/error/page.tsx';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
         element: <LoginPage />
       }
     ]
+  },
+  {
+    path: '*',
+    element: <ErrorPage />
   }
 ]);
 
