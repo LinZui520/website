@@ -18,3 +18,20 @@
   font-weight: 400;
   font-style: normal;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #FAFAFC inset !important;
+  -webkit-text-fill-color: #1D1D1F !important;
+  transition: background-color 5000s ease-in-out 0s; /* 延长动画时间防止闪烁 */
+}
+
+@media (prefers-color-scheme: dark) {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #1D1D1F inset !important;
+    -webkit-text-fill-color: #FAFAFC !important;
+  }
+}

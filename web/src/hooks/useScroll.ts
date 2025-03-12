@@ -1,39 +1,56 @@
-import { useCallback, useEffect } from 'react';
+import { RefObject, useCallback, useEffect, useRef } from 'react';
 
 const useScroll = (
-  element: HTMLElement,
+  container: RefObject<HTMLElement | null>,
+  easing: (x: number) => number,
   duration: number
 ) => {
-  console.log('useScroll', element);
 
-  const scrollTo = useCallback((end: number) => {
+  const target = useRef<number>(0);
+  const animation = useRef<number>(0);
+
+  const createAnimation = useCallback((element: HTMLElement, end: number) => {
     const start = element.scrollTop;
-    const startTimestamp = performance.now();
-    const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
-    const animateScroll = (current: number) => {
-      const elapsed = current - startTimestamp;
-      element.scrollTop = (end - start) * easeOutCubic(elapsed / duration) + start;
+    const startTime = performance.now();
+
+    const frame = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = easing(Math.min(elapsed / duration, 1));
+      element.scrollTop = start + (end - start) * progress;
+
       if (elapsed < duration) {
-        requestAnimationFrame(animateScroll);
+        requestAnimationFrame(frame);
       }
     };
-    requestAnimationFrame(animateScroll);
-  }, [duration, element]);
+
+    return frame;
+  }, [duration, easing]);
+
+  const scrollTo = useCallback((end: number) => {
+    if (!container.current) { return; }
+    const element = container.current;
+
+    const animationFrame = createAnimation(element, end);
+    requestAnimationFrame(animationFrame);
+  }, [createAnimation, container]);
 
   useEffect(() => {
-    let target = element.scrollTop;
+    if (!container.current) { return; }
+    const element = container.current;
+
+    target.current = element.scrollTop;
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
-      target = Math.max(0, Math.min(element.scrollHeight - window.innerHeight, target + event.deltaY / 2));
-      console.log(target);
-      requestAnimationFrame(() => scrollTo(target));
+      target.current = Math.max(0, Math.min(element.scrollHeight - element.clientHeight, target.current + event.deltaY));
+      animation.current = requestAnimationFrame(() => scrollTo(target.current));
     };
     element.addEventListener('wheel', handleWheel, { passive: false });
 
     return () => {
       element.removeEventListener('wheel', handleWheel);
+      cancelAnimationFrame(animation.current);
     };
-  }, [element, scrollTo]);
+  }, [container, scrollTo]);
 
   return {
     scrollTo

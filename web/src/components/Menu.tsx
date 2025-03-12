@@ -27,7 +27,7 @@ const Menu = () => {
     });
 
     timeline.current
-      .to('#nav', { x: 0, duration: 0.3 }, 0)
+      .to('#nav', { x: 0, duration: 0.3, ease: 'power1.out' }, 0)
       .to('#line1', { attr: { d: 'M 6 16 L 26 16' }, duration: 0.15 }, 0)
       .to('#line2', { attr: { d: 'M 6 16 L 26 16' }, duration: 0.15 }, 0)
       .to('#line1', { attr: { d: 'M 6 26 L 26 6' }, duration: 0.15 }, 0.15)
@@ -49,11 +49,11 @@ const Menu = () => {
   useLayoutEffect(() => {
     const cacheTheme = localStorage.getItem('theme') as Theme | null;
     const isSystemThemeDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    toggleTheme(cacheTheme || (isSystemThemeDark ? 'dark' : 'light'));
+    toggleTheme(cacheTheme || (!isSystemThemeDark ? 'dark' : 'light'));
   }, []);
   return (
     <header
-      className={'bg-mint-50/0 dark:bg-mint-950/0 backdrop-blur-md w-screen h-32 fixed top-0 flex flex-row items-center justify-between'}
+      className={'bg-mint-50/0 dark:bg-mint-950/0 backdrop-blur-md w-screen h-32 z-50 fixed top-0 flex flex-row items-center justify-between'}
       ref={container}
     >
       <div className={'text-mint-950 dark:text-mint-50 ml-12 text-6xl z-50'}>Logo</div>
