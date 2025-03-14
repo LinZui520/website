@@ -20,8 +20,8 @@ impl<T: Serialize> Response<T> {
         }
     }
 
-    pub fn success(data: T) -> Self {
-        Self::new(200, Some(data), String::from("success"))
+    pub fn success(data: T, message: &str) -> Self {
+        Self::new(200, Some(data), message.to_owned())
     }
 
     pub fn warn(message: &str) -> Self {

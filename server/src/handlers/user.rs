@@ -4,16 +4,16 @@ use crate::core::jwt::{generate_jwt, parse_jwt, verify_jwt};
 use crate::core::mail::{generate_random_code, is_valid_email, send_verification_email};
 use crate::models::response::Response;
 use axum::http::HeaderMap;
-use axum::{Extension, Form};
+use axum::{Extension, Json};
 use bcrypt::{hash, verify};
 use chrono::Local;
 use deadpool_redis::redis::AsyncCommands;
 use serde_json::Value;
 use std::sync::{Arc, OnceLock};
 
-pub async fn send_code(
+pub async fn verify_code(
     Extension(state): Extension<Arc<AppState>>,
-    Form(form): Form<Value>,
+    Json(form): Json<Value>,
 ) -> Response<()> {
     let mut redis = match state.redis_pool.get().await {
         Ok(redis) => redis,
@@ -50,7 +50,7 @@ pub async fn send_code(
         .set_ex::<&str, u32, bool>(email, code.to_owned(), 300)
         .await
     {
-        Ok(_) => Response::success(()),
+        Ok(_) => Response::success((), "验证码发送成功"),
         Err(err) => Response::error("验证码存入缓存失败", err),
     }
 }
@@ -59,7 +59,7 @@ static DEFAULT_AVATAR: OnceLock<String> = OnceLock::new();
 
 pub async fn register(
     Extension(state): Extension<Arc<AppState>>,
-    Form(form): Form<Value>,
+    Json(form): Json<Value>,
 ) -> Response<()> {
     let postgres = match state.postgres_pool.get().await {
         Ok(postgres) => postgres,
@@ -107,7 +107,7 @@ pub async fn register(
         )
         .await
     {
-        Ok(_) => Response::success(()),
+        Ok(_) => Response::success((), "注册成功"),
         Err(err) => {
             if err.to_string().contains("unique constraint") {
                 if err.to_string().contains("username") {
@@ -123,7 +123,7 @@ pub async fn register(
 
 pub async fn login(
     Extension(state): Extension<Arc<AppState>>,
-    Form(form): Form<Value>,
+    Json(form): Json<Value>,
 ) -> Response<String> {
     let postgres = match state.postgres_pool.get().await {
         Ok(postgres) => postgres,
@@ -152,12 +152,12 @@ pub async fn login(
     };
 
     let hashed = row.get::<&str, &str>("password");
-    if verify(password, hashed).is_err() {
+    if !verify(password, hashed).unwrap() {
         return Response::warn("邮箱或密码错误");
-    };
+    }
 
     match generate_jwt(&row.get::<&str, i32>("id").to_string()) {
-        Ok(jwt) => Response::success(jwt),
+        Ok(jwt) => Response::success(jwt, "登录成功"),
         Err(err) => Response::error("JWT 创建失败", err),
     }
 }
@@ -177,5 +177,5 @@ pub async fn jwt(headers: HeaderMap) -> Response<()> {
         return Response::warn("JWT 已过期");
     }
 
-    Response::success(())
+    Response::success((), "登录成功")
 }
