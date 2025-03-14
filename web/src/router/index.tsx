@@ -3,7 +3,7 @@ import IndexLayout from '../pages/layout.tsx';
 import IndexPage from '../pages/index/page.tsx';
 import BlogPage from '../pages/blog/page.tsx';
 import RegisterPage from '../pages/register/page.tsx';
-import LoginPage from '../pages/login/page.tsx';
+import AuthPage from '../pages/auth/page.tsx';
 import ErrorPage from '../pages/error/page.tsx';
 
 const router = createBrowserRouter([
@@ -24,8 +24,8 @@ const router = createBrowserRouter([
         element: <RegisterPage />
       },
       {
-        path: 'login',
-        element: <LoginPage />
+        path: 'auth',
+        element: <AuthPage />
       }
     ]
   },

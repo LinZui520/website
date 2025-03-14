@@ -13,7 +13,7 @@ const Menu = () => {
   const menu = [
     { href: '/', text: 'Home' },
     { href: '/blog', text: 'Blog' },
-    { href: '/login', text: 'Login' }
+    { href: '/auth', text: 'Login' }
   ];
 
   const location = useLocation();
@@ -27,11 +27,11 @@ const Menu = () => {
     });
 
     timeline.current
-      .to('#nav', { x: 0, duration: 0.3, ease: 'power1.out' }, 0)
-      .to('#line1', { attr: { d: 'M 6 16 L 26 16' }, duration: 0.15 }, 0)
-      .to('#line2', { attr: { d: 'M 6 16 L 26 16' }, duration: 0.15 }, 0)
-      .to('#line1', { attr: { d: 'M 6 26 L 26 6' }, duration: 0.15 }, 0.15)
-      .to('#line2', { attr: { d: 'M 6 6 L 26 26' }, duration: 0.15 }, 0.15);
+      .to('#nav', { x: 0, duration: 0.7, ease: 'power2.out' }, 0)
+      .to('#line1', { attr: { d: 'M 6 16 L 26 16' }, duration: 0.35 }, 0)
+      .to('#line2', { attr: { d: 'M 6 16 L 26 16' }, duration: 0.35 }, 0)
+      .to('#line1', { attr: { d: 'M 6 26 L 26 6' }, duration: 0.35 }, 0.35)
+      .to('#line2', { attr: { d: 'M 6 6 L 26 26' }, duration: 0.35 }, 0.35);
 
     return () => timeline.current?.kill();
   }, { scope: container });
@@ -49,7 +49,7 @@ const Menu = () => {
   useLayoutEffect(() => {
     const cacheTheme = localStorage.getItem('theme') as Theme | null;
     const isSystemThemeDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    toggleTheme(cacheTheme || (!isSystemThemeDark ? 'dark' : 'light'));
+    toggleTheme(cacheTheme || (isSystemThemeDark ? 'dark' : 'light'));
   }, []);
   return (
     <header
@@ -79,7 +79,8 @@ const Menu = () => {
             className={
               'w-2/3 min-w-md h-24 text-6xl mb-6 rounded-3xl cursor-pointer flex flex-row justify-start items-center ' +
               'select-none group bg-mint-50 hover:bg-mint-100 dark:bg-mint-950 dark:hover:bg-mint-900 ' +
-              'text-mint-950 dark:text-mint-50 stroke-mint-950 dark:stroke-mint-50'
+              'text-mint-950 dark:text-mint-50 stroke-mint-950 dark:stroke-mint-50 ' +
+              (isOpen ? 'pointer-events-auto' : 'pointer-events-none')
             }
             key={index}
             to={item.href}
