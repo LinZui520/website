@@ -3,7 +3,7 @@ import { MouseEvent, useRef, useState } from 'react';
 import Button from '../../components/Button.tsx';
 import FontButton from '../../components/FontButton.tsx';
 import { userLogin, userRegister, userVerifyCode } from '../../api/user.ts';
-import useNotification from '../../components/useNotification.ts';
+import useNotification from '../../hooks/useNotification.ts';
 
 type TPage = 'Login' | 'Register' | 'Reset Password';
 

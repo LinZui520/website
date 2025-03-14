@@ -42,7 +42,7 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
     timeline.current = gsap.timeline({ paused: true });
 
     timeline.current
-      .to(span.current, { y: 0, duration: 0.3 }, 0)
+      .to(span.current, { y: 128, duration: 0.3 }, 0)
       .to(span.current, { scale: 0, opacity: 0, duration: 0.3 }, 3);
 
     return () => timeline.current?.kill();
@@ -50,9 +50,9 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <NotificationContext.Provider value={{ notify }}>
-      <div className="h-32 z-50 fixed top-0 left-1/2 transform -translate-x-1/2 flex justify-center items-center">
+      <div className="h-32 z-50 fixed top-0 left-1/2 transform -translate-x-1/2 -translate-y-32 flex justify-center items-center">
         <span
-          className={'z-50 p-4 -translate-y-36 border border-mint-950 dark:border-mint-50 text-mint-950 dark:text-mint-50'}
+          className={'z-50 p-4 border border-mint-950 dark:border-mint-50 text-mint-950 dark:text-mint-50'}
           ref={span}
         >
           {notification ? notification.message : null}
