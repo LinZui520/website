@@ -1,8 +1,8 @@
 
 const Page = () => {
   return (
-    <div className="bg-mint-50 h-screen w-screen flex flex-col items-center justify-center">
-      <span className={'text-6xl text-mint-950 font-[SmileySans]'}>404 - NotFind</span>
+    <div className="bg-mint-50 dark:bg-mint-950 h-screen w-screen flex flex-col items-center justify-center">
+      <span className={'text-6xl text-mint-950 dark:text-mint-50'}>404 - NotFind</span>
     </div>
   );
 };

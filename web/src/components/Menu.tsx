@@ -53,11 +53,11 @@ const Menu = () => {
   }, []);
   return (
     <header
-      className={'bg-mint-50/0 dark:bg-mint-950/0 backdrop-blur-md w-screen h-32 z-50 fixed top-0 flex flex-row items-center justify-between'}
+      className={'bg-mint-50/0 dark:bg-mint-950/0 backdrop-blur-md w-screen h-32 z-40 fixed top-0 flex flex-row items-center justify-between'}
       ref={container}
     >
-      <div className={'text-mint-950 dark:text-mint-50 ml-12 text-6xl z-50'}>Logo</div>
-      <div className={'flex flex-row items-center justify-center mr-12 z-50 stroke-mint-950 dark:stroke-mint-50'}>
+      <div className={'text-mint-950 dark:text-mint-50 ml-12 text-6xl z-40'}>Logo</div>
+      <div className={'flex flex-row items-center justify-center mr-12 z-40 stroke-mint-950 dark:stroke-mint-50'}>
         <svg
           className={'stroke-3 h-16 w-16 cursor-pointer'}
           onClick={() => setIsOpen((val) => !val)}
@@ -69,7 +69,7 @@ const Menu = () => {
       </div>
       <nav
         className={
-          'bg-mint-50 dark:bg-mint-950 h-screen w-screen fixed top-0 z-40 translate-x-full ' +
+          'bg-mint-50 dark:bg-mint-950 h-screen w-screen fixed top-0 z-30 translate-x-full ' +
           'flex flex-col items-center justify-center'
         }
         id="nav"

@@ -1,7 +1,9 @@
 import Input from '../../components/Input.tsx';
-import { useRef, useState } from 'react';
+import { MouseEvent, useRef, useState } from 'react';
 import Button from '../../components/Button.tsx';
 import FontButton from '../../components/FontButton.tsx';
+import { userLogin, userRegister, userVerifyCode } from '../../api/user.ts';
+import useNotification from '../../components/useNotification.ts';
 
 type TPage = 'Login' | 'Register' | 'Reset Password';
 
@@ -14,6 +16,31 @@ const Page = () => {
   const [email, setEmail] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
   const [password, setPassword] = useState('');
+  const { notify } = useNotification();
+  const submit = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (!formRef.current) return;
+    const isValid = formRef.current.checkValidity();
+    if (!isValid) {
+      formRef.current.reportValidity();
+      return;
+    }
+    switch (pageType) {
+      case 'Login': {
+        userLogin(email, password)
+          .then((res) => { notify(res.data.message); })
+          .catch((err) => { notify(err.response.data.message); });
+        break;
+      }
+      case 'Register': {
+        userRegister(username, email, verifyCode, password)
+          .then((res) => { notify(res.data.message); })
+          .catch((err) => { notify(err.response.data.message); });
+        break;
+      }
+    }
+  };
+
   return (
     <main className="bg-mint-50 dark:bg-mint-950 h-screen w-screen flex flex-col items-center justify-center relative">
       <form
@@ -49,6 +76,10 @@ const Page = () => {
             />
             <Button
               onClick={() => {
+                userVerifyCode(email)
+                  .then((res) => {
+                    console.log(res);
+                  });
               }}
               type="button"
             />
@@ -82,16 +113,7 @@ const Page = () => {
         </div>
         <Button
           label={pageType}
-          onClick={(event) => {
-            event.preventDefault();
-            if (!formRef.current) return;
-            const isValid = formRef.current.checkValidity();
-            if (!isValid) {
-              formRef.current.reportValidity();
-              return;
-            }
-            console.log(pageType);
-          }}
+          onClick={submit}
           type="submit"
         />
       </form>
