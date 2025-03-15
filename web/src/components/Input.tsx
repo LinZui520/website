@@ -5,6 +5,7 @@ type Props = {
   autoComplete: string;
   type: string;
   value: string;
+  name: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 };
@@ -29,7 +30,7 @@ const Input = forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>) => {
         autoComplete={props.autoComplete}
         className={'focus:outline-none focus-visible:outline-none focus:ring-0 h-12 w-3/4'}
         id={props.label}
-        name={props.label}
+        name={props.name}
         onBlur={() => setIsFocus(false)}
         onChange={props.onChange}
         onFocus={() => setIsFocus(true)}

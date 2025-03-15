@@ -1,6 +1,6 @@
-use crate::handlers::user::{jwt, login, register, verify_code};
+use crate::handlers::user::{jwt, login, register, reset, verify_code};
 use axum::Router;
-use axum::routing::{get, post};
+use axum::routing::{get, post, put};
 
 pub fn create_user_router() -> Router {
     Router::new()
@@ -8,4 +8,5 @@ pub fn create_user_router() -> Router {
         .route("/user/register", post(register))
         .route("/user/login", post(login))
         .route("/user/jwt", get(jwt))
+        .route("/user/reset", put(reset))
 }

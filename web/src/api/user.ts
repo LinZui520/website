@@ -18,3 +18,14 @@ export const userLogin = (email: string, password: string): Promise<AxiosRespons
   method: 'POST',
   data: { email, password }
 });
+
+export const userJWTLogin = () => request({
+  url: '/user/jwt',
+  method: 'GET'
+});
+
+export const userResetPassword = (email: string, code: string, password: string) => request({
+  url: '/user/reset',
+  method: 'PUT',
+  data: { email, code, password }
+});

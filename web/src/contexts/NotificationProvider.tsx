@@ -12,11 +12,7 @@ type Notification = {
 };
 
 interface NotificationContextType {
-  notify: (
-    message: string,
-    type?: NotificationType,
-    duration?: number
-  ) => void;
+  notify: (message: string, type?: NotificationType, duration?: number) => void;
 }
 
 export const NotificationContext = createContext<NotificationContextType | null>(null);
@@ -32,6 +28,7 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
     duration?: number
   ) => {
     const id = Math.random().toString(36);
+    if (!message) { return; }
     setNotification({ id, message, type: type || 'info', duration: duration || 3 });
     timeline.current?.restart();
   }, []);

@@ -3,6 +3,7 @@ use crate::core::env::env;
 use crate::core::jwt::{generate_jwt, parse_jwt, verify_jwt};
 use crate::core::mail::{generate_random_code, is_valid_email, send_verification_email};
 use crate::models::response::Response;
+use crate::models::user::{User, UserDTO};
 use axum::http::HeaderMap;
 use axum::{Extension, Json};
 use bcrypt::{hash, verify};
@@ -83,13 +84,17 @@ pub async fn register(
         None => return Response::warn("密码字段缺失"),
     };
 
-    if match form.get("code").and_then(|v| v.as_str()) {
+    let code = match form.get("code").and_then(|v| v.as_str()) {
         Some(code) => code,
         None => return Response::warn("验证码字段缺失"),
-    } != match redis.get::<&str, u32>(email).await {
-        Ok(code) => code.to_string(),
-        Err(_) => return Response::warn("缓存中未查询到验证码"),
-    } {
+    };
+
+    if code
+        != match redis.get::<&str, u32>(email).await {
+            Ok(code) => code.to_string(),
+            Err(_) => return Response::warn("缓存中未查询到验证码"),
+        }
+    {
         return Response::warn("验证码错误");
     }
 
@@ -124,7 +129,7 @@ pub async fn register(
 pub async fn login(
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
-) -> Response<String> {
+) -> Response<UserDTO> {
     let postgres = match state.postgres_pool.get().await {
         Ok(postgres) => postgres,
         Err(err) => return Response::error("获取 Postgres 连接失败", err),
@@ -141,7 +146,7 @@ pub async fn login(
 
     let row = match postgres
         .query_opt(
-            "SELECT id, email, password FROM users WHERE email = $1",
+            "SELECT id, avatar, username, email, password, power FROM users WHERE email = $1",
             &[&email],
         )
         .await
@@ -152,17 +157,42 @@ pub async fn login(
     };
 
     let hashed = row.get::<&str, &str>("password");
-    if !verify(password, hashed).unwrap() {
+    if !verify(password, hashed)
+        .map_err(|err| Response::<String>::error("密码验证失败", err))
+        .unwrap()
+    {
         return Response::warn("邮箱或密码错误");
     }
+    let id = row.get::<&str, i32>("id");
+    let avatar = row.get::<&str, &str>("avatar").to_owned();
+    let username = row.get::<&str, &str>("username").to_owned();
+    let power = row.get::<&str, i32>("power");
 
-    match generate_jwt(&row.get::<&str, i32>("id").to_string()) {
-        Ok(jwt) => Response::success(jwt, "登录成功"),
-        Err(err) => Response::error("JWT 创建失败", err),
-    }
+    let token = match generate_jwt(row.get::<&str, i32>("id")) {
+        Ok(token) => token,
+        Err(err) => return Response::error("JWT 创建失败", err),
+    };
+    let response = UserDTO {
+        user: User {
+            id,
+            avatar,
+            username,
+            email: email.to_owned(),
+            power,
+        },
+        token,
+    };
+    Response::success(response, "登录成功")
 }
 
-pub async fn jwt(headers: HeaderMap) -> Response<()> {
+pub async fn jwt(
+    Extension(state): Extension<Arc<AppState>>,
+    headers: HeaderMap,
+) -> Response<UserDTO> {
+    let postgres = match state.postgres_pool.get().await {
+        Ok(postgres) => postgres,
+        Err(err) => return Response::error("获取 Postgres 连接失败", err),
+    };
     let token = match parse_jwt(headers) {
         Some(token) => token,
         None => return Response::warn("JWT 不存在"),
@@ -177,5 +207,81 @@ pub async fn jwt(headers: HeaderMap) -> Response<()> {
         return Response::warn("JWT 已过期");
     }
 
-    Response::success((), "登录成功")
+    let row = match postgres
+        .query_opt(
+            "SELECT id, avatar, username, email, power FROM users WHERE id = $1",
+            &[&claims.sub.to_owned()],
+        )
+        .await
+    {
+        Ok(Some(row)) => row,
+        Ok(None) => return Response::warn("用户不存在"),
+        Err(err) => return Response::error("查询用户失败", err),
+    };
+
+    let id = row.get::<&str, i32>("id");
+    let avatar = row.get::<&str, &str>("avatar").to_owned();
+    let username = row.get::<&str, &str>("username").to_owned();
+    let email = row.get::<&str, &str>("email").to_owned();
+    let power = row.get::<&str, i32>("power");
+
+    let response = UserDTO {
+        user: User {
+            id,
+            avatar,
+            username,
+            email: email.to_owned(),
+            power,
+        },
+        token,
+    };
+    Response::success(response, "登录成功")
+}
+
+pub async fn reset(
+    Extension(state): Extension<Arc<AppState>>,
+    Json(form): Json<Value>,
+) -> Response<()> {
+    let postgres = match state.postgres_pool.get().await {
+        Ok(postgres) => postgres,
+        Err(err) => return Response::error("获取 Postgres 连接失败", err),
+    };
+    let mut redis = match state.redis_pool.get().await {
+        Ok(redis) => redis,
+        Err(err) => return Response::error("获取 Redis 连接失败", err),
+    };
+    let email = match form.get("email").and_then(|v| v.as_str()) {
+        Some(email) => email,
+        None => return Response::warn("邮箱字段缺失"),
+    };
+    let password = match form.get("password").and_then(|v| v.as_str()) {
+        Some(password) => password,
+        None => return Response::warn("密码字段缺失"),
+    };
+
+    if match form.get("code").and_then(|v| v.as_str()) {
+        Some(code) => code,
+        None => return Response::warn("验证码字段缺失"),
+    } != match redis.get::<&str, u32>(email).await {
+        Ok(code) => code.to_string(),
+        Err(_) => return Response::warn("缓存中未查询到验证码"),
+    } {
+        return Response::warn("验证码错误");
+    }
+
+    let hashed = match hash(password, 4) {
+        Ok(hashed) => hashed,
+        Err(err) => return Response::error("密码哈希失败", err),
+    };
+
+    match postgres
+        .execute(
+            "UPDATE users SET password = $1 WHERE email = $2",
+            &[&hashed, &email],
+        )
+        .await
+    {
+        Ok(_) => Response::success((), "修改密码成功"),
+        Err(err) => Response::error("修改密码失败", err),
+    }
 }

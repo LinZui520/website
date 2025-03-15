@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useLocation, Link } from 'react-router-dom';
+import useAuth from '../hooks/useAuth.ts';
 
 type Theme = 'light' | 'dark';
 
@@ -9,11 +10,12 @@ const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const container = useRef<HTMLElement | null>(null);
   const timeline = useRef<GSAPTimeline | undefined>(undefined);
+  const auth = useAuth();
 
   const menu = [
     { href: '/', text: 'Home' },
     { href: '/blog', text: 'Blog' },
-    { href: '/auth', text: 'Login' }
+    auth.state.user ? { href: '/admin', text: 'Admin' } : { href: '/auth', text: 'Login' }
   ];
 
   const location = useLocation();

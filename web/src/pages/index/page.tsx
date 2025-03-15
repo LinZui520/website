@@ -1,5 +1,6 @@
 import useScroll from '../../hooks/useScroll.ts';
 import { useRef } from 'react';
+import useAuth from '../../hooks/useAuth.ts';
 
 const Page = () => {
 
@@ -9,6 +10,7 @@ const Page = () => {
     (x: number) => 1 - Math.pow(1 - x, 5),
     700
   );
+  const { state } = useAuth();
 
   return (
     <main className="h-[300vh] bg-mint-50 dark:bg-mint-950 w-screen flex flex-col items-center">
@@ -17,6 +19,7 @@ const Page = () => {
           <span className={'text-lg'}>正文</span>
         </div>
       ))}
+      {state.user?.email}
     </main>
   );
 };
