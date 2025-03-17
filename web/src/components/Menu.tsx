@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useLocation, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.ts';
+import Logo from './Logo.tsx';
 
 type Theme = 'light' | 'dark';
 
@@ -58,7 +59,7 @@ const Menu = () => {
       className={'bg-mint-50/0 dark:bg-mint-950/0 backdrop-blur-md w-screen h-32 z-40 fixed top-0 flex flex-row items-center justify-between'}
       ref={container}
     >
-      <div className={'text-mint-950 dark:text-mint-50 ml-12 text-6xl z-40'}>Logo</div>
+      <Logo className={'ml-12 z-40 h-28 w-28'} />
       <div className={'flex flex-row items-center justify-center mr-12 z-40 stroke-mint-950 dark:stroke-mint-50'}>
         <svg
           className={'stroke-3 h-16 w-16 cursor-pointer'}
