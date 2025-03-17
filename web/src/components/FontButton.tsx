@@ -25,14 +25,18 @@ const FontButton = (props: Props) => {
       }, 0);
 
     return () => timeline.current?.kill();
-  }, { scope: container });
+  }, { scope: container, dependencies: [props.label] });
+
+  const handleMouseEnter = () => timeline.current?.play();
+  const handleMouseLeave = () => timeline.current?.reverse();
 
   return (
     <div
       className={'cursor-pointer text-mint-950 dark:text-mint-50 select-none ' + props.className}
+      key={props.label}
       onClick={props.onClick}
-      onMouseEnter={() => timeline.current?.play()}
-      onMouseLeave={() => timeline.current?.reverse()}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       ref={container}
     >
       <span>{props.label}</span>

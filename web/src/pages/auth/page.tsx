@@ -26,6 +26,11 @@ const Page = () => {
   const { notify } = useNotification();
   const { login } = useAuth();
 
+  const changePageType = (value: PageType) => {
+    dispatch({ type: 'CLEAR_VALUES' });
+    setPageType(value);
+  };
+
   const submit = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (!formRef.current) return;
@@ -123,11 +128,13 @@ const Page = () => {
 
         <div className={'w-full mb-8 flex flex-row items-center justify-between'}>
           {pageType !== 'Login' ? (
-            <FontButton className={'ml-6'} label={'返回'} onClick={() => setPageType('Login')} />
+            <>
+              <FontButton className={'ml-6'} label={'返回'} onClick={() => changePageType('Login')} />
+            </>
           ) : (
             <>
-              <FontButton className={'ml-6'} label={'忘记密码'} onClick={() => setPageType('Reset Password')} />
-              <FontButton className={'mr-6'} label={'注册账号'} onClick={() => setPageType('Register')} />
+              <FontButton className={'ml-6'} label={'忘记密码'} onClick={() => changePageType('Reset Password')} />
+              <FontButton className={'mr-6'} label={'注册账号'} onClick={() => changePageType('Register')} />
             </>
           )}
         </div>
