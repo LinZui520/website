@@ -7,9 +7,18 @@ use serde::{Deserialize, Serialize};
 use std::sync::OnceLock;
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct UserCredentials {
+    pub avatar: String,
+    pub username: String,
+    pub email: String,
+    pub power: i32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
     pub iss: String, // 签发者标识符 服务器域名
     pub sub: i32,    // 主题标识符 用户唯一ID
+    pub user: UserCredentials,
     pub exp: i64,    // 过期时间
     pub iat: i64,    // 签发时间
     pub nbf: i64,    // 生效时间
@@ -21,7 +30,7 @@ static JWT_DOMAIN: OnceLock<String> = OnceLock::new();
 static JWT_SECRET: OnceLock<String> = OnceLock::new();
 static JWT_AUDIENCE: OnceLock<String> = OnceLock::new();
 
-pub fn generate_jwt(sub: i32) -> Result<String, Error> {
+pub fn generate_jwt(sub: i32, user: UserCredentials) -> Result<String, Error> {
     let domain = JWT_DOMAIN.get_or_init(|| env("JWT_DOMAIN"));
     let secret = JWT_SECRET.get_or_init(|| env("JWT_SECRET"));
     let audience = JWT_AUDIENCE.get_or_init(|| env("JWT_AUDIENCE"));
@@ -29,6 +38,7 @@ pub fn generate_jwt(sub: i32) -> Result<String, Error> {
     let claims = Claims {
         iss: domain.to_owned(),
         sub,
+        user,
         exp: (Local::now() + Duration::hours(24 * 7)).timestamp(),
         iat: Local::now().timestamp(),
         nbf: Local::now().timestamp(),

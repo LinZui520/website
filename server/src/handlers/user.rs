@@ -1,6 +1,6 @@
 use crate::AppState;
 use crate::core::env::env;
-use crate::core::jwt::{generate_jwt, parse_jwt, verify_jwt};
+use crate::core::jwt::{UserCredentials, generate_jwt, parse_jwt, verify_jwt};
 use crate::core::mail::{generate_random_code, is_valid_email, send_verification_email};
 use crate::models::response::Response;
 use crate::models::user::{User, UserDTO};
@@ -168,7 +168,14 @@ pub async fn login(
     let username = row.get::<&str, &str>("username").to_owned();
     let power = row.get::<&str, i32>("power");
 
-    let token = match generate_jwt(row.get::<&str, i32>("id")) {
+    let user = UserCredentials {
+        avatar: avatar.to_owned(),
+        username: username.to_owned(),
+        email: email.to_owned(),
+        power,
+    };
+
+    let token = match generate_jwt(row.get::<&str, i32>("id"), user) {
         Ok(token) => token,
         Err(err) => return Response::error("JWT 创建失败", err),
     };
@@ -185,14 +192,7 @@ pub async fn login(
     Response::success(response, "登录成功")
 }
 
-pub async fn jwt(
-    Extension(state): Extension<Arc<AppState>>,
-    headers: HeaderMap,
-) -> Response<UserDTO> {
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
+pub async fn jwt(headers: HeaderMap) -> Response<UserDTO> {
     let token = match parse_jwt(headers) {
         Some(token) => token,
         None => return Response::warn("JWT 不存在"),
@@ -207,31 +207,13 @@ pub async fn jwt(
         return Response::warn("JWT 已过期");
     }
 
-    let row = match postgres
-        .query_opt(
-            "SELECT id, avatar, username, email, power FROM users WHERE id = $1",
-            &[&claims.sub.to_owned()],
-        )
-        .await
-    {
-        Ok(Some(row)) => row,
-        Ok(None) => return Response::warn("用户不存在"),
-        Err(err) => return Response::error("查询用户失败", err),
-    };
-
-    let id = row.get::<&str, i32>("id");
-    let avatar = row.get::<&str, &str>("avatar").to_owned();
-    let username = row.get::<&str, &str>("username").to_owned();
-    let email = row.get::<&str, &str>("email").to_owned();
-    let power = row.get::<&str, i32>("power");
-
     let response = UserDTO {
         user: User {
-            id,
-            avatar,
-            username,
-            email: email.to_owned(),
-            power,
+            id: claims.sub,
+            avatar: claims.user.avatar,
+            username: claims.user.username,
+            email: claims.user.email,
+            power: claims.user.power,
         },
         token,
     };
