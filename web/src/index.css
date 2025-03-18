@@ -35,3 +35,35 @@ input:-webkit-autofill:focus {
     -webkit-text-fill-color: #FAFAFC !important;
   }
 }
+
+html,
+body,
+*[style*="overflow"],
+*[style*="overflow-y"],
+*[style*="overflow-x"],
+div[style*="overflow"],
+.overflow-auto,
+.overflow-scroll,
+.overflow-y-auto,
+.overflow-y-scroll,
+.overflow-x-auto,
+.overflow-x-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*[style*="overflow"]::-webkit-scrollbar,
+*[style*="overflow-y"]::-webkit-scrollbar,
+*[style*="overflow-x"]::-webkit-scrollbar,
+div[style*="overflow"]::-webkit-scrollbar,
+.overflow-auto::-webkit-scrollbar,
+.overflow-scroll::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-y-scroll::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-x-scroll::-webkit-scrollbar {
+  display: none;
+}
+
