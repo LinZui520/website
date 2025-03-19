@@ -86,6 +86,7 @@ const Menu = () => {
               (isOpen ? 'pointer-events-auto' : 'pointer-events-none')
             }
             key={index}
+            tabIndex={-1}
             to={item.href}
           >
             <svg className={'stroke-3 group-hover:w-16 w-0 ml-12 duration-700 ease-in-out'} viewBox="0 0 32 32">

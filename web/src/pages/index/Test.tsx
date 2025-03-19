@@ -12,8 +12,8 @@ const Test = () => {
   );
 
   return (
-    <div className={'h-[50vh] w-[80vw] overflow-y-scroll bg-mint-950 dark:bg-mint-50'} ref={container}>
-      {Array.from(Array(22).keys()).map((_, i) => (
+    <div className={'h-[50vh] w-[80vw] overflow-y-scroll bg-mint-950 dark:bg-mint-50 relative'} ref={container}>
+      {Array.from(Array(222).keys()).map((_, i) => (
         <div className={'mt-12 text-mint-500'} key={i}>
           <span className={'text-lg'}>正文</span>
         </div>

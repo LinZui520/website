@@ -1,26 +1,19 @@
-import useScroll from '../../hooks/useScroll.tsx';
-import { useRef } from 'react';
 import useAuth from '../../hooks/useAuth.ts';
+import Test from './Test.tsx';
 
 const Page = () => {
 
-  const container = useRef(document.documentElement);
-  const { Scrollbar } = useScroll(
-    container,
-    (x: number) => 1 - Math.pow(1 - x, 4),
-    700
-  );
   const { state } = useAuth();
 
   return (
-    <main className="h-[300vh] bg-mint-50 dark:bg-mint-950 w-screen flex flex-col items-center">
-      {Array.from(Array(22).keys()).map((_, i) => (
-        <div className={'mt-12 text-mint-500'} key={i}>
+    <main className="h-[500vh] bg-mint-50 dark:bg-mint-950 w-screen flex flex-col items-center">
+      {Array.from(Array(5).keys()).map((_, i) => (
+        <div className={'mt-12 text-mint-500 bg-amber-100'} key={i}>
           <span className={'text-lg'}>正文</span>
         </div>
       ))}
+      <Test />
       {state.user?.email}
-      <Scrollbar />
     </main>
   );
 };
