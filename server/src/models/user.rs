@@ -1,10 +1,10 @@
 #[derive(serde::Serialize)]
 pub struct User {
-    pub id: i32,
+    pub id: i64,
     pub avatar: String,
     pub username: String,
     pub email: String,
-    pub power: i32,
+    pub permission: i32,
 }
 
 #[derive(serde::Serialize)]

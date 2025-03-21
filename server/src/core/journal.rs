@@ -1,4 +1,9 @@
+use axum::body::Body;
+use axum::http::Request;
+use axum::middleware;
+use axum::response::Response;
 use chrono::Local;
+use tokio::time::Instant;
 use tracing_appender::rolling::{RollingFileAppender, Rotation};
 use tracing_appender::{non_blocking, rolling};
 use tracing_subscriber::fmt::format::Writer;
@@ -30,10 +35,38 @@ pub fn init_async_journal() -> non_blocking::WorkerGuard {
     let (non_blocking_writer, guard) = non_blocking(file_appender);
 
     tracing_subscriber::fmt()
+        .with_target(false)
         .with_timer(CustomTimeFormat)
         .with_ansi(false)
         .with_writer(non_blocking_writer)
         .init();
 
     guard
+}
+
+#[tracing::instrument(
+    name = "request",
+    level = "info",
+    skip_all,
+    fields(
+        method = %req.method(),
+        uri = %req.uri(),
+        http.version = ?req.version()
+    )
+)]
+pub async fn journal_request(
+    req: Request<Body>,
+    next: middleware::Next,
+) -> Result<Response, Response> {
+    let start = Instant::now();
+    let response = next.run(req).await;
+
+    let latency = start.elapsed();
+    tracing::info!(
+        status = %response.status(),
+        latency = ?latency,
+        "Request completed"
+    );
+
+    Ok(response)
 }

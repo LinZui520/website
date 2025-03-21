@@ -12,7 +12,7 @@ use deadpool_redis::redis::AsyncCommands;
 use serde_json::Value;
 use std::sync::{Arc, OnceLock};
 
-pub async fn verify_code(
+pub async fn verification_code(
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
 ) -> Response<()> {
@@ -106,7 +106,7 @@ pub async fn register(
     let avatar = DEFAULT_AVATAR.get_or_init(|| env("WEBSITE_USER_DEFAULT_AVATAR"));
 
     match postgres
-        .query(
+        .execute(
             "INSERT INTO users (avatar, username, email, password) VALUES ($1, $2, $3, $4)",
             &[&avatar, &username, &email, &hashed],
         )
@@ -146,7 +146,7 @@ pub async fn login(
 
     let row = match postgres
         .query_opt(
-            "SELECT id, avatar, username, email, password, power FROM users WHERE email = $1",
+            "SELECT id, avatar, username, email, password, permission FROM users WHERE email = $1",
             &[&email],
         )
         .await
@@ -163,19 +163,19 @@ pub async fn login(
     {
         return Response::warn("邮箱或密码错误");
     }
-    let id = row.get::<&str, i32>("id");
+    let id = row.get::<&str, i64>("id");
     let avatar = row.get::<&str, &str>("avatar").to_owned();
     let username = row.get::<&str, &str>("username").to_owned();
-    let power = row.get::<&str, i32>("power");
+    let permission = row.get::<&str, i32>("permission");
 
     let user = UserCredentials {
         avatar: avatar.to_owned(),
         username: username.to_owned(),
         email: email.to_owned(),
-        power,
+        permission,
     };
 
-    let token = match generate_jwt(row.get::<&str, i32>("id"), user) {
+    let token = match generate_jwt(row.get::<&str, i64>("id"), user) {
         Ok(token) => token,
         Err(err) => return Response::error("JWT 创建失败", err),
     };
@@ -185,14 +185,14 @@ pub async fn login(
             avatar,
             username,
             email: email.to_owned(),
-            power,
+            permission,
         },
         token,
     };
     Response::success(response, "登录成功")
 }
 
-pub async fn jwt(headers: HeaderMap) -> Response<UserDTO> {
+pub async fn token_login(headers: HeaderMap) -> Response<UserDTO> {
     let token = match parse_jwt(headers) {
         Some(token) => token,
         None => return Response::warn("JWT 不存在"),
@@ -213,14 +213,14 @@ pub async fn jwt(headers: HeaderMap) -> Response<UserDTO> {
             avatar: claims.user.avatar,
             username: claims.user.username,
             email: claims.user.email,
-            power: claims.user.power,
+            permission: claims.user.permission,
         },
         token,
     };
     Response::success(response, "登录成功")
 }
 
-pub async fn reset(
+pub async fn reset_password(
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
 ) -> Response<()> {

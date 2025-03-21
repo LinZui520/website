@@ -13,7 +13,7 @@ serde = { version = "1.0.218", features = ["derive"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["local-time"] }
 tracing-appender = "0.2.3"
-chrono = "0.4.40"
+chrono = { version = "0.4.40", features = ["serde"] }
 dotenvy = "0.15.7"
 bcrypt = "0.17.0"
 jsonwebtoken = "9.3.1"
