@@ -1,11 +1,11 @@
 use crate::core::env::env;
+use crate::models::user::Permission;
 use axum::http::HeaderMap;
 use chrono::{Duration, Local};
 use jsonwebtoken::errors::Error;
 use jsonwebtoken::{Algorithm, DecodingKey, EncodingKey, Header, Validation, decode, encode};
 use serde::{Deserialize, Serialize};
 use std::sync::OnceLock;
-use crate::models::user::Permission;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserCredentials {
@@ -94,7 +94,10 @@ pub fn parse_jwt(headers: HeaderMap) -> Option<String> {
     None
 }
 
-pub fn extract_permissions_from_headers(headers: HeaderMap, permission: Permission) -> Option<Claims> {
+pub fn extract_permissions_from_headers(
+    headers: HeaderMap,
+    permission: Permission,
+) -> Option<Claims> {
     let token = parse_jwt(headers)?;
 
     match verify_jwt(token.as_str()) {

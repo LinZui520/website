@@ -37,16 +37,19 @@ pub async fn create_blog(
 
     let transaction = match postgres.transaction().await {
         Ok(transaction) => transaction,
-        Err(err) => return Response::error("Postgres 开启事务失败", err)
+        Err(err) => return Response::error("Postgres 开启事务失败", err),
     };
 
-    match transaction.query_opt(
-        "SELECT id FROM categories WHERE id = $1 LIMIT 1",
-        &[&category]
-    ).await {
-        Ok(Some(_)) => {},
-        Ok(None) =>  return Response::warn("标签不存在"),
-        Err(err) => return Response::error("验证标签失败", err)
+    match transaction
+        .query_opt(
+            "SELECT id FROM categories WHERE id = $1 LIMIT 1",
+            &[&category],
+        )
+        .await
+    {
+        Ok(Some(_)) => {}
+        Ok(None) => return Response::warn("标签不存在"),
+        Err(err) => return Response::error("验证标签失败", err),
     };
 
     match transaction.execute(
@@ -63,6 +66,6 @@ pub async fn create_blog(
     };
     match transaction.commit().await {
         Ok(_) => Response::success((), "添加博客成功"),
-        Err(err) => Response::error("Postgres 事务提交失败", err)
+        Err(err) => Response::error("Postgres 事务提交失败", err),
     }
 }

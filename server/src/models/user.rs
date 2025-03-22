@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 #[repr(i32)]
 pub enum Permission {
     Block = -1,
