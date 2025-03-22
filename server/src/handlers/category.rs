@@ -2,6 +2,7 @@ use crate::AppState;
 use crate::core::jwt::extract_permissions_from_headers;
 use crate::models::category::Category;
 use crate::models::response::Response;
+use crate::models::user::Permission;
 use axum::http::HeaderMap;
 use axum::{Extension, Json};
 use chrono::{DateTime, Utc};
@@ -13,12 +14,8 @@ pub async fn create_category(
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
 ) -> Response<()> {
-    match extract_permissions_from_headers(headers) {
-        Some(permission) => {
-            if permission < 3 {
-                return Response::warn("权限不足");
-            }
-        }
+    let _ = match extract_permissions_from_headers(headers, Permission::Master) {
+        Some(claims) => claims,
         None => return Response::warn("权限不足"),
     };
 
@@ -58,12 +55,8 @@ pub async fn delete_category(
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
 ) -> Response<()> {
-    match extract_permissions_from_headers(headers) {
-        Some(permission) => {
-            if permission < 3 {
-                return Response::warn("权限不足");
-            }
-        }
+    let _ = match extract_permissions_from_headers(headers, Permission::Master) {
+        Some(claims) => claims,
         None => return Response::warn("权限不足"),
     };
 
@@ -95,12 +88,8 @@ pub async fn update_category(
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
 ) -> Response<()> {
-    match extract_permissions_from_headers(headers) {
-        Some(permission) => {
-            if permission < 3 {
-                return Response::warn("权限不足");
-            }
-        }
+    let _ = match extract_permissions_from_headers(headers, Permission::Master) {
+        Some(claims) => claims,
         None => return Response::warn("权限不足"),
     };
 
