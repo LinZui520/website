@@ -8,7 +8,7 @@ const Test = () => {
   const { Scrollbar } = useScroll(
     container,
     (x: number) => 1 - Math.pow(1 - x, 4),
-    700
+    500
   );
 
   return (

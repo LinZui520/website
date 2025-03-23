@@ -1,11 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useLocation, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.ts';
 import Logo from './Logo.tsx';
 
-type Theme = 'light' | 'dark';
+// type Theme = 'light' | 'dark';
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,19 +41,20 @@ const Menu = () => {
 
   useGSAP(() => isOpen ? timeline.current?.play() : timeline.current?.reverse(), [isOpen]);
 
-  const toggleTheme = (theme: Theme) => {
-    if (theme === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    }
-  };
-
-  useLayoutEffect(() => {
-    const cacheTheme = localStorage.getItem('theme') as Theme | null;
-    const isSystemThemeDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    toggleTheme(cacheTheme || (isSystemThemeDark ? 'dark' : 'light'));
-  }, []);
+  /**
+   * const toggleTheme = (theme: Theme) => {
+   *  if (theme === 'light') {
+   *     document.documentElement.classList.remove('dark');
+   *   } else if (theme === 'dark') {
+   *     document.documentElement.classList.add('dark');
+   *   }
+   * };
+   * useLayoutEffect(() => {
+   *   const cacheTheme = localStorage.getItem('theme') as Theme | null;
+   *   const isSystemThemeDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+   *   toggleTheme(cacheTheme || (isSystemThemeDark ? 'dark' : 'light'));
+   * }, []);
+   */
   return (
     <header
       className={'bg-mint-50/0 dark:bg-mint-950/0 backdrop-blur-md w-screen h-32 z-40 fixed top-0 flex flex-row items-center justify-between'}

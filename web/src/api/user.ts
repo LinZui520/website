@@ -2,7 +2,7 @@ import request from '../utils/axios.ts';
 import { AxiosResponse } from 'axios';
 
 export const userVerifyCode = (email: string) => request({
-  url: '/user/code',
+  url: '/user/verification-code',
   method: 'POST',
   data: { email }
 });
@@ -20,12 +20,12 @@ export const userLogin = (email: string, password: string): Promise<AxiosRespons
 });
 
 export const userJWTLogin = () => request({
-  url: '/user/jwt',
+  url: '/user/jwt-login',
   method: 'GET'
 });
 
 export const userResetPassword = (email: string, code: string, password: string) => request({
-  url: '/user/reset',
+  url: '/user/reset-password',
   method: 'PUT',
   data: { email, code, password }
 });
