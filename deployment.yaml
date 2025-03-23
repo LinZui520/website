@@ -230,6 +230,12 @@ data:
         index index.html;
       }
 
+      location /admin {
+        alias /usr/share/nginx/html/admin;
+        try_files $uri $uri/ /admin/index.html;
+        index index.html;
+      }
+
       location /api {
         proxy_pass http://server-service:8080;
         proxy_set_header Host $host;
@@ -257,6 +263,9 @@ spec:
         - name: website-pvc
           mountPath: /usr/share/nginx/html
           subPath: web/dist
+        - name: website-pvc
+          mountPath: /usr/share/nginx/html/admin
+          subPath: webmaster/dist
         - name: nginx-config
           mountPath: /etc/nginx/conf.d/default.conf
           subPath: default.conf

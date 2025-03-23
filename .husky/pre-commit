@@ -9,7 +9,7 @@ STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
 # 前端检查（仅当 web/ 目录有改动时触发）
 # ----------------------------
 if echo "$STAGED_FILES" | grep -q '^web/'; then
-  echo "前端代码改动：运行 ESLint 和测试..."
+  echo "前端web代码改动：运行 ESLint 和测试..."
 
   FRONTEND_FILES=$(echo "$STAGED_FILES" | grep '^web/' | sed 's|^web/||')
 
@@ -21,6 +21,21 @@ if echo "$STAGED_FILES" | grep -q '^web/'; then
   if [ -n "$FRONTEND_FILES" ]; then
     npx jest --findRelatedTests $FRONTEND_FILES --passWithNoTests
   fi
+
+  cd ..
+fi
+
+# ----------------------------
+# 前端检查（仅当 webmaster/ 目录有改动时触发）
+# ----------------------------
+if echo "$STAGED_FILES" | grep -q '^webmaster/'; then
+  echo "前端webmaster代码改动：运行 ESLint ..."
+
+  FRONTEND_FILES=$(echo "$STAGED_FILES" | grep '^webmaster/' | sed 's|^webmaster/||')
+
+  cd webmaster || exit
+
+  npm run lint-staged
 
   cd ..
 fi
