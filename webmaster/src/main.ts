@@ -5,9 +5,25 @@ import { createPinia } from 'pinia';
 import App from './App.tsx';
 import router from './router';
 
-const app = createApp(App);
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import { aliases, mdi } from 'vuetify/iconsets/mdi';
+import '@mdi/font/css/materialdesignicons.css';
 
-app.use(createPinia());
-app.use(router);
-
-app.mount('#app');
+const vuetify = createVuetify({
+  theme: {
+    defaultTheme: 'light'
+  },
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi
+    }
+  }
+});
+createApp(App)
+  .use(createPinia())
+  .use(router)
+  .use(vuetify)
+  .mount('#app');

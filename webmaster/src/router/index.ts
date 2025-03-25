@@ -4,7 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '',
+      path: '/',
       name: 'index',
       component: () => import('../views/index')
     },
@@ -12,6 +12,11 @@ const router = createRouter({
       path: '/blogs',
       name: 'blogs',
       component: () => import('../views/blogs')
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: () => import('../views/category')
     }
   ]
 });
