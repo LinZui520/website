@@ -17,6 +17,11 @@ const router = createRouter({
       path: '/category',
       name: 'category',
       component: () => import('../views/category')
+    },
+    {
+      path: '/category/detail',
+      name: 'categoryDetail',
+      component: () => import('../views/category/detail')
     }
   ]
 });

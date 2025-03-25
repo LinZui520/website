@@ -5,6 +5,7 @@ import { VBtn, VCard, VCardActions, VCardText, VChip, VCol, VDataTable, VDialog,
 import { useRequest } from '@/composables/useRequest';
 import { useState } from '@/composables/useState';
 import { headers } from './constant';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'CategoryView',
@@ -12,6 +13,7 @@ export default defineComponent({
     const [categoryList, setCategoryList] = useState<Category[]>([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
     const [deleteCategoryId, setDeleteCategoryId] = useState<number>(0);
+    const router = useRouter();
     const { handleRequest, SnackbarComponent } = useRequest();
 
     const handleOpenDeleteDialog = (id: number) => {
@@ -25,10 +27,7 @@ export default defineComponent({
     ).then(() => setShowDeleteDialog(false));
 
     onMounted(() => {
-      handleRequest<Category[]>(
-        () => getCategoryList(),
-        (res) => setCategoryList(res.data.data)
-      );
+      getCategoryList<Category[]>().then((res) => setCategoryList(res.data.data));
     });
 
     return () => (
@@ -46,19 +45,29 @@ export default defineComponent({
                 <VCol cols="12" md="6">
                 </VCol>
                 <VCol cols="12" md="2">
-                  <VBtn>添加标签</VBtn>
+                  <VBtn prependIcon="mdi-plus" {...{ onClick: () => router.push({ name: 'categoryDetail', query: { type: 'create' } }) }}>添加标签</VBtn>
                 </VCol>
               </VRow>
             ),
             'item.name': ({ item }: { item: Category }) => (<VChip>{item.name}</VChip>),
             'item.created_at': ({ item }: { item: Category }) => (new Date(item.created_at).toLocaleString()),
             'item.actions': ({ item }: { item: Category }) => (
-              <VBtn
-                variant="text"
-                {...{ onClick: () => { handleOpenDeleteDialog(item.id); } }}
-              >
-                删除
-              </VBtn>
+              <>
+                <VBtn
+                  prependIcon="mdi-tag-edit"
+                  variant="text"
+                  {...{ onClick: () => router.push({ name: 'categoryDetail', query: { type: 'update', id: item.id } }) }}
+                >
+                  修改
+                </VBtn>
+                <VBtn
+                  prependIcon="mdi-delete"
+                  variant="text"
+                  {...{ onClick: () => handleOpenDeleteDialog(item.id) }}
+                >
+                  删除
+                </VBtn>
+              </>
             )
           }}
         </VDataTable>
@@ -69,8 +78,8 @@ export default defineComponent({
             </VCardText>
             <VCardActions>
               <VSpacer />
-              <VBtn variant="outlined" {...{ onClick: () => setShowDeleteDialog(false) }}>取消</VBtn>
-              <VBtn variant="outlined" {...{ onClick: () => { handleDeleteCategory(); } }}>确定</VBtn>
+              <VBtn rounded="xl" variant="outlined" {...{ onClick: () => setShowDeleteDialog(false) }}>取消</VBtn>
+              <VBtn rounded="xl" variant="outlined" {...{ onClick: () => { handleDeleteCategory(); } }}>确定</VBtn>
             </VCardActions>
           </VCard>
         </VDialog>
