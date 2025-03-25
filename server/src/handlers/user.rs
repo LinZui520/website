@@ -38,13 +38,13 @@ pub async fn verification_code(
             );
         }
         Ok(false) => {}
-        Err(err) => return Response::error("查询缓存失败", err),
+        Err(err) => return Response::error(err.to_string().as_str(), err),
     }
 
     let code: u32 = generate_random_code();
     match send_verification_email(&state.mailer, email.to_owned(), code.to_string()).await {
         Ok(_) => {}
-        Err(err) => return Response::error("发送验证码失败", err),
+        Err(err) => return Response::error(err.to_string().as_str(), err),
     }
 
     match redis
@@ -52,7 +52,7 @@ pub async fn verification_code(
         .await
     {
         Ok(_) => Response::success((), "验证码发送成功"),
-        Err(err) => Response::error("验证码存入缓存失败", err),
+        Err(err) => Response::error(err.to_string().as_str(), err),
     }
 }
 
@@ -72,27 +72,31 @@ pub async fn register(
     };
 
     let username = match form.get("username").and_then(|v| v.as_str()) {
-        Some(username) => username,
+        Some(username) if !username.is_empty() => username,
+        Some(_) => return Response::warn("用户名不能为空"),
         None => return Response::warn("用户名字段缺失"),
     };
     let email = match form.get("email").and_then(|v| v.as_str()) {
-        Some(email) => email,
+        Some(email) if !email.is_empty() => email,
+        Some(_) => return Response::warn("邮箱不能为空"),
         None => return Response::warn("邮箱字段缺失"),
     };
     let password = match form.get("password").and_then(|v| v.as_str()) {
-        Some(password) => password,
+        Some(password) if !password.is_empty() => password,
+        Some(_) => return Response::warn("密码不能为空"),
         None => return Response::warn("密码字段缺失"),
     };
 
     let code = match form.get("code").and_then(|v| v.as_str()) {
-        Some(code) => code,
+        Some(code) if !code.is_empty() => code,
+        Some(_) => return Response::warn("验证码不能为空"),
         None => return Response::warn("验证码字段缺失"),
     };
 
     if code
         != match redis.get::<&str, u32>(email).await {
             Ok(code) => code.to_string(),
-            Err(_) => return Response::warn("缓存中未查询到验证码"),
+            Err(_) => return Response::warn("未查询到验证码"),
         }
     {
         return Response::warn("验证码错误");
@@ -100,7 +104,7 @@ pub async fn register(
 
     let hashed = match hash(password, 4) {
         Ok(hashed) => hashed,
-        Err(err) => return Response::error("密码哈希失败", err),
+        Err(err) => return Response::error(err.to_string().as_str(), err),
     };
 
     let avatar = DEFAULT_AVATAR.get_or_init(|| env("WEBSITE_USER_DEFAULT_AVATAR"));
@@ -121,7 +125,7 @@ pub async fn register(
                     return Response::warn("邮箱已被注册");
                 }
             }
-            Response::error("用户注册失败", err)
+            Response::error(err.to_string().as_str(), err)
         }
     }
 }
@@ -136,29 +140,32 @@ pub async fn login(
     };
 
     let email = match form.get("email").and_then(|v| v.as_str()) {
-        Some(email) => email,
+        Some(email) if !email.is_empty() => email,
+        Some(_) => return Response::warn("邮箱不能为空"),
         None => return Response::warn("邮箱字段缺失"),
     };
+
     let password = match form.get("password").and_then(|v| v.as_str()) {
-        Some(password) => password,
+        Some(password) if !password.is_empty() => password,
+        Some(_) => return Response::warn("密码不能为空"),
         None => return Response::warn("密码字段缺失"),
     };
 
     let row = match postgres
         .query_opt(
-            "SELECT id, avatar, username, email, password, permission FROM users WHERE email = $1",
+            "SELECT id, avatar, username, email, password, permission FROM users WHERE email = $1 LIMIT 1",
             &[&email],
         )
         .await
     {
         Ok(Some(row)) => row,
         Ok(None) => return Response::warn("用户不存在"),
-        Err(err) => return Response::error("查询用户失败", err),
+        Err(err) => return Response::error(err.to_string().as_str(), err),
     };
 
     let hashed = row.get::<&str, &str>("password");
     if !verify(password, hashed)
-        .map_err(|err| Response::<String>::error("密码验证失败", err))
+        .map_err(|err| Response::<String>::error(err.to_string().as_str(), err))
         .unwrap()
     {
         return Response::warn("邮箱或密码错误");
@@ -177,7 +184,7 @@ pub async fn login(
 
     let token = match generate_jwt(row.get::<&str, i64>("id"), user) {
         Ok(token) => token,
-        Err(err) => return Response::error("JWT 创建失败", err),
+        Err(err) => return Response::error(err.to_string().as_str(), err),
     };
     let response = UserDTO {
         user: User {
@@ -200,7 +207,7 @@ pub async fn token_login(headers: HeaderMap) -> Response<UserDTO> {
 
     let claims = match verify_jwt(token.as_str()) {
         Ok(claims) => claims,
-        Err(err) => return Response::error("JWT 解析失败", err),
+        Err(err) => return Response::error(err.to_string().as_str(), err),
     };
 
     if Local::now().timestamp() > claims.exp {
@@ -233,11 +240,13 @@ pub async fn reset_password(
         Err(err) => return Response::error("获取 Redis 连接失败", err),
     };
     let email = match form.get("email").and_then(|v| v.as_str()) {
-        Some(email) => email,
+        Some(email) if !email.is_empty() => email,
+        Some(_) => return Response::warn("邮箱不能为空"),
         None => return Response::warn("邮箱字段缺失"),
     };
     let password = match form.get("password").and_then(|v| v.as_str()) {
-        Some(password) => password,
+        Some(password) if !password.is_empty() => password,
+        Some(_) => return Response::warn("密码不能为空"),
         None => return Response::warn("密码字段缺失"),
     };
 
@@ -253,7 +262,7 @@ pub async fn reset_password(
 
     let hashed = match hash(password, 4) {
         Ok(hashed) => hashed,
-        Err(err) => return Response::error("密码哈希失败", err),
+        Err(err) => return Response::error(err.to_string().as_str(), err),
     };
 
     match postgres
@@ -264,6 +273,6 @@ pub async fn reset_password(
         .await
     {
         Ok(_) => Response::success((), "修改密码成功"),
-        Err(err) => Response::error("修改密码失败", err),
+        Err(err) => Response::error(err.to_string().as_str(), err),
     }
 }

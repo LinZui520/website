@@ -2,6 +2,7 @@ use crate::AppState;
 use crate::core::jwt::extract_permissions_from_headers;
 use crate::models::response::Response;
 use crate::models::user::Permission;
+use axum::extract::Path;
 use axum::http::HeaderMap;
 use axum::{Extension, Json};
 use serde_json::Value;
@@ -49,7 +50,7 @@ pub async fn create_blog(
     {
         Ok(Some(_)) => {}
         Ok(None) => return Response::warn("标签不存在"),
-        Err(err) => return Response::error("验证标签失败", err),
+        Err(err) => return Response::error("查询标签失败", err),
     };
 
     match transaction.execute(
@@ -66,6 +67,60 @@ pub async fn create_blog(
     };
     match transaction.commit().await {
         Ok(_) => Response::success((), "添加博客成功"),
+        Err(err) => Response::error("Postgres 事务提交失败", err),
+    }
+}
+
+pub async fn delete_blog(
+    headers: HeaderMap,
+    Extension(state): Extension<Arc<AppState>>,
+    Path(id): Path<i64>,
+) -> Response<()> {
+    let claims = match extract_permissions_from_headers(headers, Permission::Admin) {
+        Some(claims) => claims,
+        None => return Response::warn("权限不足"),
+    };
+
+    let mut postgres = match state.postgres_pool.get().await {
+        Ok(postgres) => postgres,
+        Err(err) => return Response::error("获取 Postgres 连接失败", err),
+    };
+
+    let transaction = match postgres.transaction().await {
+        Ok(transaction) => transaction,
+        Err(err) => return Response::error("Postgres 开启事务失败", err),
+    };
+
+    let row = match transaction
+        .query_opt(
+            "SELECT blogs.id, users.permission FROM blogs INNER JOIN users ON blogs.author = users.id WHERE blogs.id = $1 LIMIT 1",
+            &[&id],
+        )
+        .await
+    {
+        Ok(Some(row)) => row,
+        Ok(None) => return Response::warn("博客不存在"),
+        Err(err) => return Response::error("查询博客失败", err),
+    };
+
+    let permission = row.get::<&str, i32>("permission");
+
+    if claims.user.permission < permission {
+        return Response::warn("权限不足");
+    };
+
+    let rows = match transaction
+        .execute("DELETE FROM blogs WHERE id = $1", &[&id])
+        .await
+    {
+        Ok(rows) => rows,
+        Err(err) => return Response::error("删除博客失败", err),
+    };
+    if rows != 1 {
+        return Response::warn("博客不存在");
+    };
+    match transaction.commit().await {
+        Ok(_) => Response::success((), "删除博客成功"),
         Err(err) => Response::error("Postgres 事务提交失败", err),
     }
 }
