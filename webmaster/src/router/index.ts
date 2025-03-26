@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import ErrorView from '../views/error/index';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,11 @@ const router = createRouter({
       path: '/category/detail',
       name: 'categoryDetail',
       component: () => import('../views/category/detail')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'errorView',
+      component: ErrorView
     }
   ]
 });

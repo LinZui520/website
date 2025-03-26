@@ -6,6 +6,7 @@ import { useRequest } from '@/composables/useRequest';
 import { useState } from '@/composables/useState';
 import { headers } from './constant';
 import { useRouter } from 'vue-router';
+import { mdiDelete, mdiPlus, mdiTagEdit } from '@mdi/js';
 
 export default defineComponent({
   name: 'CategoryView',
@@ -57,7 +58,7 @@ export default defineComponent({
                 <VCol cols="12" md="6">
                 </VCol>
                 <VCol cols="12" md="2">
-                  <VBtn prependIcon="mdi-plus" {...{ onClick: () => router.push({ name: 'categoryDetail', query: { type: 'create' } }) }}>添加标签</VBtn>
+                  <VBtn prependIcon={mdiPlus} {...{ onClick: () => router.push({ name: 'categoryDetail', query: { type: 'create' } }) }}>添加标签</VBtn>
                 </VCol>
               </VRow>
             ),
@@ -66,14 +67,14 @@ export default defineComponent({
             'item.actions': ({ item }: { item: Category }) => (
               <>
                 <VBtn
-                  prependIcon="mdi-tag-edit"
+                  prependIcon={mdiTagEdit}
                   variant="text"
                   {...{ onClick: () => router.push({ name: 'categoryDetail', query: { type: 'update', id: item.id } }) }}
                 >
                   修改
                 </VBtn>
                 <VBtn
-                  prependIcon="mdi-delete"
+                  prependIcon={mdiDelete}
                   variant="text"
                   {...{ onClick: () => handleOpenDeleteDialog(item.id) }}
                 >

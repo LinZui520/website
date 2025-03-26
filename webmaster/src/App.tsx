@@ -1,17 +1,43 @@
 import { RouterView } from 'vue-router';
-import { defineComponent } from 'vue';
+import { computed, defineComponent, onMounted, onUnmounted } from 'vue';
+import ErrorView from './views/error/index.tsx';
 import { VApp, VAppBar, VBtn, VList, VListItem, VMain, VNavigationDrawer } from 'vuetify/components';
+import request from './utils/axios';
+import { useAuthStore, type AuthState } from './stores/auth';
+import { mdiHome, mdiTag, mdiBookOpenPageVariantOutline } from '@mdi/js';
+import { useTheme } from 'vuetify';
 
 export default defineComponent({
   name: 'App',
   setup() {
+    const theme = useTheme();
+    const authStore = useAuthStore();
+    const permission = computed(() => authStore.permission);
     const menu = [
-      { title: '主页', icon: 'mdi-home', to: '/' },
-      { title: '标签管理', icon: 'mdi-tag', to: '/category' },
-      { title: '博客管理', icon: 'mdi-book-open-page-variant-outline', to: '/blogs' }
+      { title: '主页', icon: mdiHome, to: '/' },
+      { title: '标签管理', icon: mdiTag, to: '/category' },
+      { title: '博客管理', icon: mdiBookOpenPageVariantOutline, to: '/blogs' }
     ];
 
-    return () => (
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const toggleTheme = (event: MediaQueryListEvent | MediaQueryList) => {
+      theme.global.name.value = event.matches ? 'dark' : 'light';
+    };
+
+    onMounted(() => {
+      request<AuthState>({ url: '/user/jwt-login', method: 'get' })
+        .then((res) => authStore.setAuth(res.data.data.user, res.data.data.token));
+    });
+
+    onMounted(() => {
+      toggleTheme(media);
+      media.addEventListener('change', toggleTheme);
+    });
+    onUnmounted(() => {
+      media.removeEventListener('change', toggleTheme);
+    });
+
+    return () => permission.value ? (
       <VApp>
         <VAppBar elevation="1">
           {{
@@ -19,7 +45,7 @@ export default defineComponent({
               <VListItem
                 lines="two"
                 prepend-avatar="https://www.zhuguishihundan.com/image/root.png"
-                title="LinZui"
+                title={authStore.user?.username}
               />
             )
           }}
@@ -42,6 +68,12 @@ export default defineComponent({
         </VNavigationDrawer>
         <VMain>
           <RouterView />
+        </VMain>
+      </VApp>
+    ) : (
+      <VApp>
+        <VMain>
+          <ErrorView />
         </VMain>
       </VApp>
     );

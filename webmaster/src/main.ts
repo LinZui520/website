@@ -7,8 +7,7 @@ import router from './router';
 
 import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
-import { aliases, mdi } from 'vuetify/iconsets/mdi';
-import '@mdi/font/css/materialdesignicons.css';
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 
 const vuetify = createVuetify({
   theme: {

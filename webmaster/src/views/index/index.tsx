@@ -1,5 +1,4 @@
 import { defineComponent } from 'vue';
-import Button from '@/components/Button.tsx';
 
 export default defineComponent({
   name: 'IndexView',
@@ -11,7 +10,6 @@ export default defineComponent({
             item
           </p>
         ))}
-        <Button onClick={() => console.log('hello')} text={'text'} />
       </div>
     );
   }

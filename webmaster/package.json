@@ -21,7 +21,6 @@
     "vuetify": "^3.7.18"
   },
   "devDependencies": {
-    "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
     "@stylistic/eslint-plugin": "^4.2.0",
     "@tsconfig/node22": "^22.0.1",
