@@ -11,7 +11,8 @@ export const useRequest = () => {
   const handleRequest = async<T> (
     request: () => Promise<AxiosResponse>,
     successCallback?: (res: AxiosResponse<ApiResponse<T>>) => void,
-    errorCallback?: (err: AxiosError) => void
+    errorCallback?: (err: AxiosError) => void,
+    finallyCallback?: () => void
   ) => {
     close();
     request().then((res) => {
@@ -23,6 +24,8 @@ export const useRequest = () => {
         err.response.data.code === 400 ? 'warning' : 'error'
       );
       errorCallback?.(err);
+    }).finally(() => {
+      finallyCallback?.();
     });
   };
 

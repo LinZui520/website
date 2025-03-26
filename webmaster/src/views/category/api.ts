@@ -15,3 +15,14 @@ export const createCategory = (name: string, description: string) => request({
   method: 'post',
   data: { name, description }
 });
+
+export const getCategory = <T> (id: number) => request<T>({
+  url: `/category/get/${id}`,
+  method: 'get'
+});
+
+export const updateCategory = (id: number, name: string, description: string) => request({
+  url: `/category/update`,
+  method: 'put',
+  data: { id, name, description }
+});

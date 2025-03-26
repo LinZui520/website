@@ -142,7 +142,7 @@ pub async fn list_categories(
         )
         .await
     {
-        Ok(row) => row,
+        Ok(rows) => rows,
         Err(err) => return Response::error(err.to_string().as_str(), err),
     };
 
@@ -157,4 +157,34 @@ pub async fn list_categories(
         categories.push(category);
     }
     Response::success(categories, "查询成功")
+}
+
+pub async fn get_category(
+    Extension(state): Extension<Arc<AppState>>,
+    Path(id): Path<i64>,
+) -> Response<Category> {
+    let postgres = match state.postgres_pool.get().await {
+        Ok(postgres) => postgres,
+        Err(err) => return Response::error("获取 Postgres 连接失败", err),
+    };
+
+    let row = match postgres
+        .query_one(
+            "SELECT id, name, description, created_at FROM categories WHERE id = $1",
+            &[&id],
+        )
+        .await
+    {
+        Ok(row) => row,
+        Err(err) => return Response::error(err.to_string().as_str(), err),
+    };
+
+    let category = Category {
+        id: row.get::<&str, i64>("id"),
+        name: row.get::<&str, &str>("name").to_owned(),
+        description: Some(row.get::<&str, &str>("description").to_owned()),
+        created_at: row.get::<&str, DateTime<Utc>>("created_at"),
+    };
+
+    Response::success(category, "查询成功")
 }

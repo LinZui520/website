@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router';
 export default defineComponent({
   name: 'CategoryView',
   setup() {
+    const [loading, setLoading] = useState(false);
     const [categoryList, setCategoryList] = useState<Category[]>([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
     const [deleteCategoryId, setDeleteCategoryId] = useState<number>(0);
@@ -21,13 +22,24 @@ export default defineComponent({
       setDeleteCategoryId(id);
     };
 
-    const handleDeleteCategory = () => handleRequest(
-      () => deleteCategory(deleteCategoryId.value),
-      () => setCategoryList(categoryList.value.filter((item) => item.id !== deleteCategoryId.value))
-    ).then(() => setShowDeleteDialog(false));
+    const handleDeleteCategory = () => {
+      setLoading(true);
+      handleRequest(
+        () => deleteCategory(deleteCategoryId.value),
+        () => setCategoryList(categoryList.value.filter((item) => item.id !== deleteCategoryId.value)),
+        undefined,
+        () => {
+          setLoading(false);
+          setShowDeleteDialog(false);
+        }
+      );
+    };
 
     onMounted(() => {
-      getCategoryList<Category[]>().then((res) => setCategoryList(res.data.data));
+      handleRequest<Category[]>(
+        () => getCategoryList<Category[]>(),
+        (res) => setCategoryList(res.data.data)
+      );
     });
 
     return () => (
@@ -79,7 +91,7 @@ export default defineComponent({
             <VCardActions>
               <VSpacer />
               <VBtn rounded="xl" variant="outlined" {...{ onClick: () => setShowDeleteDialog(false) }}>取消</VBtn>
-              <VBtn rounded="xl" variant="outlined" {...{ onClick: () => { handleDeleteCategory(); } }}>确定</VBtn>
+              <VBtn loading={loading.value} rounded="xl" variant="outlined" {...{ onClick: () => { handleDeleteCategory(); } }}>确定</VBtn>
             </VCardActions>
           </VCard>
         </VDialog>
