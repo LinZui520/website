@@ -6,12 +6,14 @@ import request from './utils/axios';
 import { useAuthStore, type AuthState } from './stores/auth';
 import { mdiHome, mdiTag, mdiBookOpenPageVariantOutline } from '@mdi/js';
 import { useTheme } from 'vuetify';
+import useMarkdownTheme from './composables/useMarkdownTheme.ts';
 
 export default defineComponent({
   name: 'App',
   setup() {
     const theme = useTheme();
     const authStore = useAuthStore();
+    const { toggleMarkdownTheme } = useMarkdownTheme();
     const permission = computed(() => authStore.permission);
     const menu = [
       { title: '主页', icon: mdiHome, to: '/' },
@@ -22,6 +24,7 @@ export default defineComponent({
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     const toggleTheme = (event: MediaQueryListEvent | MediaQueryList) => {
       theme.global.name.value = event.matches ? 'dark' : 'light';
+      toggleMarkdownTheme(event.matches);
     };
 
     onMounted(() => {
@@ -66,13 +69,13 @@ export default defineComponent({
             )
           }}
         </VNavigationDrawer>
-        <VMain>
+        <VMain style={{ height: 'calc(100vh - 64px)', overflowY: 'scroll' }}>
           <RouterView />
         </VMain>
       </VApp>
     ) : (
       <VApp>
-        <VMain>
+        <VMain style={{ height: 'calc(100vh - 64px)', overflowY: 'scroll' }}>
           <ErrorView />
         </VMain>
       </VApp>

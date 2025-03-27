@@ -8,6 +8,7 @@ import router from './router';
 import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
+import './main.css';
 
 const vuetify = createVuetify({
   theme: {
