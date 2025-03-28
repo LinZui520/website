@@ -151,7 +151,7 @@ pub async fn list_categories(
         let category = Category {
             id: row.get::<&str, i64>("id"),
             name: row.get::<&str, &str>("name").to_owned(),
-            description: Some(row.get::<&str, &str>("description").to_owned()),
+            description: row.get::<&str, &str>("description").to_owned(),
             created_at: row.get::<&str, DateTime<Utc>>("created_at"),
         };
         categories.push(category);
@@ -182,7 +182,7 @@ pub async fn get_category(
     let category = Category {
         id: row.get::<&str, i64>("id"),
         name: row.get::<&str, &str>("name").to_owned(),
-        description: Some(row.get::<&str, &str>("description").to_owned()),
+        description: row.get::<&str, &str>("description").to_owned(),
         created_at: row.get::<&str, DateTime<Utc>>("created_at"),
     };
 
