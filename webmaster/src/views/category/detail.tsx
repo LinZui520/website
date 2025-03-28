@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router';
 import { VBtn, VCol, VContainer, VForm, VRow, VTextField } from 'vuetify/components';
 import { createCategory, getCategory, updateCategory } from './api';
 import type { Category } from './type';
+import ErrorView from '../error';
 
 type PageType = 'create' | 'update';
 
@@ -63,7 +64,7 @@ export default defineComponent({
       }
     });
 
-    return () => (
+    return () => type === 'create' || type === 'update' ? (
       <VContainer class="d-flex justify-center items-center">
         <VRow justify="center">
           <VCol cols="6">
@@ -80,6 +81,8 @@ export default defineComponent({
         </VRow>
         <SnackbarComponent />
       </VContainer>
+    ) : (
+      <ErrorView />
     );
   }
 });

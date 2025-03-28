@@ -10,14 +10,19 @@ const router = createRouter({
       component: () => import('../views/index')
     },
     {
-      path: '/blogs',
-      name: 'blogs',
-      component: () => import('../views/blogs')
+      path: '/blog',
+      name: 'blog',
+      component: () => import('../views/blog/index')
+    },
+    {
+      path: '/blog/detail',
+      name: 'blogDetail',
+      component: () => import('../views/blog/detail')
     },
     {
       path: '/category',
       name: 'category',
-      component: () => import('../views/category')
+      component: () => import('../views/category/index')
     },
     {
       path: '/category/detail',

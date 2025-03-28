@@ -1,6 +1,6 @@
 import request from '@/utils/axios';
 
-export const getCategoryList = <T> () => request<T>({
+export const listCategories = <T> () => request<T>({
   url: '/category/list',
   method: 'get'
 });

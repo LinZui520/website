@@ -18,7 +18,7 @@ export default defineComponent({
     const menu = [
       { title: '主页', icon: mdiHome, to: '/' },
       { title: '标签管理', icon: mdiTag, to: '/category' },
-      { title: '博客管理', icon: mdiBookOpenPageVariantOutline, to: '/blogs' }
+      { title: '博客管理', icon: mdiBookOpenPageVariantOutline, to: '/blog' }
     ];
 
     const media = window.matchMedia('(prefers-color-scheme: dark)');

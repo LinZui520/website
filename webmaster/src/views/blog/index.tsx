@@ -1,33 +1,33 @@
 import { defineComponent, onMounted } from 'vue';
-import { deleteCategory, listCategories } from './api';
-import type { Category } from './type';
+import { deleteBlog, listBlogs } from './api';
+import type { BlogDTO } from './type';
 import { VBtn, VCard, VCardActions, VCardText, VChip, VCol, VContainer, VDataTable, VDialog, VRow, VSpacer } from 'vuetify/components';
 import { useRequest } from '@/composables/useRequest';
 import { useState } from '@/composables/useState';
-import { headers } from './constant';
 import { useRouter } from 'vue-router';
-import { mdiDelete, mdiPlus, mdiTagEdit } from '@mdi/js';
+import { mdiDelete, mdiPlus, mdiBookEdit } from '@mdi/js';
+import { headers } from './constant';
 
 export default defineComponent({
-  name: 'CategoryView',
+  name: 'IndexView',
   setup() {
     const [loading, setLoading] = useState(false);
-    const [categoryList, setCategoryList] = useState<Category[]>([]);
+    const [blogList, setBlogList] = useState<BlogDTO[]>([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
-    const [deleteCategoryId, setDeleteCategoryId] = useState<number>(0);
+    const [deleteBlogId, setDeleteBlogId] = useState<number>(0);
     const router = useRouter();
     const { handleRequest, SnackbarComponent } = useRequest();
 
     const handleOpenDeleteDialog = (id: number) => {
       setShowDeleteDialog(true);
-      setDeleteCategoryId(id);
+      setDeleteBlogId(id);
     };
 
-    const handleDeleteCategory = () => {
+    const handleDeleteBlog = () => {
       setLoading(true);
       handleRequest(
-        () => deleteCategory(deleteCategoryId.value),
-        () => setCategoryList(categoryList.value.filter((item) => item.id !== deleteCategoryId.value)),
+        () => deleteBlog(deleteBlogId.value),
+        () => setBlogList(blogList.value.filter((item) => item.id !== deleteBlogId.value)),
         undefined,
         () => {
           setLoading(false);
@@ -37,9 +37,9 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      handleRequest<Category[]>(
-        () => listCategories<Category[]>(),
-        (res) => setCategoryList(res.data.data)
+      handleRequest<BlogDTO[]>(
+        () => listBlogs<BlogDTO[]>(),
+        (res) => setBlogList(res.data.data)
       );
     });
 
@@ -47,31 +47,41 @@ export default defineComponent({
       <VContainer fluid>
         <VDataTable
           headers={headers}
-          items={categoryList.value}
+          items={blogList.value}
         >
           {{
             top: () => (
               <VRow class="pa-4">
                 <VCol cols="12" md="4">
-                  <VCard title="标签管理" variant="text" />
+                  <VCard title="博客管理" variant="text" />
                 </VCol>
                 <VCol cols="12" md="6">
                 </VCol>
                 <VCol cols="12" md="2">
-                  <VBtn prependIcon={mdiPlus} {...{ onClick: () => router.push({ name: 'categoryDetail', query: { type: 'create' } }) }}>添加标签</VBtn>
+                  <VBtn prependIcon={mdiPlus} {...{ onClick: () => router.push({ name: 'blogDetail', query: { type: 'create' } }) }}>写博客</VBtn>
                 </VCol>
               </VRow>
             ),
-            'item.name': ({ item }: { item: Category }) => (<VChip>{item.name}</VChip>),
-            'item.created_at': ({ item }: { item: Category }) => (new Date(item.created_at).toLocaleString()),
-            'item.actions': ({ item }: { item: Category }) => (
+            'item.category.name': ({ item }: { item: BlogDTO }) => (
+              <VChip>
+                {item.category.name}
+              </VChip>
+            ),
+            'item.publish': ({ item }: { item: BlogDTO }) => (
+              <VChip color={item.publish ? 'success' : 'warning'}>
+                {item.publish ? '已发布' : '草稿'}
+              </VChip>
+            ),
+            'item.created_at': ({ item }: { item: BlogDTO }) => (new Date(item.created_at).toLocaleString()),
+            'item.updated_at': ({ item }: { item: BlogDTO }) => (new Date(item.updated_at).toLocaleString()),
+            'item.actions': ({ item }: { item: BlogDTO }) => (
               <>
                 <VBtn
-                  prependIcon={mdiTagEdit}
+                  prependIcon={mdiBookEdit}
                   variant="text"
-                  {...{ onClick: () => router.push({ name: 'categoryDetail', query: { type: 'update', id: item.id } }) }}
+                  {...{ onClick: () => router.push({ name: 'blogDetail', query: { type: 'update', id: item.id } }) }}
                 >
-                  修改
+                  编辑
                 </VBtn>
                 <VBtn
                   prependIcon={mdiDelete}
@@ -87,12 +97,12 @@ export default defineComponent({
         <VDialog maxWidth="500px" modelValue={showDeleteDialog.value}>
           <VCard class="pa-4" title="确认">
             <VCardText>
-              是否删除该标签？
+              是否删除该博客？
             </VCardText>
             <VCardActions>
               <VSpacer />
               <VBtn rounded="xl" variant="outlined" {...{ onClick: () => setShowDeleteDialog(false) }}>取消</VBtn>
-              <VBtn loading={loading.value} rounded="xl" variant="outlined" {...{ onClick: () => { handleDeleteCategory(); } }}>确定</VBtn>
+              <VBtn loading={loading.value} rounded="xl" variant="outlined" {...{ onClick: () => { handleDeleteBlog(); } }}>确定</VBtn>
             </VCardActions>
           </VCard>
         </VDialog>
