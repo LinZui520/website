@@ -14,9 +14,9 @@ const Menu = () => {
   const auth = useAuth();
 
   const menu = [
-    { href: '/', text: 'Home' },
-    { href: '/blog', text: 'Blog' },
-    auth.state.user ? { href: '/admin', text: 'Admin' } : { href: '/auth', text: 'Login' }
+    { href: '/', text: '首页' },
+    { href: '/blog', text: '博客' },
+    auth.state.user ? null: { href: '/auth', text: '登录' }
   ];
 
   const location = useLocation();
@@ -60,7 +60,7 @@ const Menu = () => {
       className={'bg-mint-50/0 dark:bg-mint-950/0 backdrop-blur-md w-screen h-32 z-40 fixed top-0 flex flex-row items-center justify-between'}
       ref={container}
     >
-      <Logo className={'ml-12 z-40 h-28 w-28'} />
+      <Logo className={'ml-12 z-40'} />
       <div className={'flex flex-row items-center justify-center mr-12 z-40 stroke-mint-950 dark:stroke-mint-50'}>
         <svg
           className={'stroke-3 h-16 w-16 cursor-pointer'}
@@ -78,7 +78,7 @@ const Menu = () => {
         }
         id="nav"
       >
-        {menu.map((item, index) => (
+        {menu.filter((item) => item !== null).map((item, index) => (
           <Link
             className={
               'w-2/3 min-w-md h-24 text-6xl mb-6 rounded-3xl cursor-pointer flex flex-row justify-start items-center ' +

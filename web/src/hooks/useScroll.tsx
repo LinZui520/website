@@ -40,7 +40,7 @@ const useScroll = (
   const [scrollHeight, setScrollHeight] = useState(0);
   const [clientHeight, setClientHeight] = useState(0);
   const isThumbGrabbed = useRef(false);
-  const thumb = useRef<HTMLButtonElement | null>(null);
+  const thumb = useRef<HTMLDivElement | null>(null);
   // mouseY scrollTop 分别记录当鼠标点击滚动条时的鼠标Y轴坐标和已经滚动的位置
   const mouseY = useRef<number>(0);
   const scrollTop = useRef<number>(0);
@@ -183,7 +183,7 @@ const useScroll = (
           height: container.current === document.documentElement ? '100vh' : '100%'
         }}
       >
-        <button
+        <div
           className={
             'w-full group-hover:w-[10px] absolute right-0 top-1/2 rounded-sm duration-300 transition-[width,transform] ' +
             'bg-[#7f7f7f] opacity-50 hover:cursor-grab'
@@ -195,7 +195,7 @@ const useScroll = (
           }}
           tabIndex={-1}
         >
-        </button>
+        </div>
       </div>
     );
   }, [clientHeight, container, scrollHeight]);

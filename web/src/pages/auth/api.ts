@@ -1,5 +1,4 @@
-import request from '../utils/axios.ts';
-import { AxiosResponse } from 'axios';
+import request from '../../utils/axios.ts';
 
 export const userVerifyCode = (email: string) => request({
   url: '/user/verification-code',
@@ -13,13 +12,13 @@ export const userRegister = (username: string, email: string, code: string, pass
   data: { username, email, code, password }
 });
 
-export const userLogin = (email: string, password: string): Promise<AxiosResponse> => request({
+export const userLogin = <T> (email: string, password: string) => request<T>({
   url: '/user/login',
   method: 'POST',
   data: { email, password }
 });
 
-export const userJWTLogin = () => request({
+export const userJWTLogin = <T> () => request<T>({
   url: '/user/jwt-login',
   method: 'GET'
 });

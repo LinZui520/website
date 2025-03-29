@@ -1,16 +1,9 @@
 import { createContext, Dispatch, ReactNode, useCallback, useEffect, useReducer } from 'react';
-import useNotification from '../hooks/useNotification.ts';
-import { userJWTLogin, userLogin } from '../api/user.ts';
+import { userJWTLogin, userLogin } from '../pages/auth/api.ts';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-
-type User = {
-  id: string;
-  avatar: string;
-  username: string;
-  email: string;
-  power: number;
-};
+import { useRequest } from '../hooks/useRequest.ts';
+import { User, UserDTO } from '../pages/auth/type';
 
 type State = { user: User | null };
 type Action = { type: 'LOGIN'; payload: User } | { type: 'LOGOUT' };
@@ -33,37 +26,29 @@ export const AuthContext = createContext<{
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { notify } = useNotification();
+  const { handleRequest } = useRequest();
   const navigate = useNavigate();
   const [cookies, setCookies] = useCookies(['token']);
 
-  const login = useCallback((email: string, password: string) => {
-    userLogin(email, password)
-      .then((res) => {
-        dispatch({ type: 'LOGIN', payload: res.data.data.user });
-        setCookies('token', res.data.data.token, { path: '/', expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) });
-        notify(res.data.message);
-        navigate('/');
-      })
-      .catch((err) => { notify(err.response.data.message); });
-  }, [navigate, notify, setCookies]);
+  const login = useCallback((email: string, password: string) => handleRequest<UserDTO>(
+    () => userLogin<UserDTO>(email, password),
+    (res) => {
+      dispatch({ type: 'LOGIN', payload: res.data.data.user });
+      setCookies('token', res.data.data.token, { path: '/', expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) });
+      navigate('/');
+    }
+  ), [handleRequest, navigate, setCookies]);
 
   const logout = useCallback(() => {
-    notify('登出成功');
     dispatch({ type: 'LOGOUT' });
-  }, [notify]);
+  }, []);
 
   useEffect(() => {
     if (!cookies.token) { return; }
-    userJWTLogin()
-      .then((res) => {
-        dispatch({ type: 'LOGIN', payload: res.data.data.user });
-      })
-      .catch((err) => {
-        notify(err.response.data.message);
-        navigate('/auth');
-      });
-  }, [cookies, navigate, notify]);
+    userJWTLogin<UserDTO>()
+      .then((res) => dispatch({ type: 'LOGIN', payload: res.data.data.user }))
+      .catch(() => {});
+  }, [cookies]);
 
   return (
     <AuthContext.Provider value={{ state, dispatch, login, logout }}>

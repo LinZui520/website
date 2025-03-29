@@ -2,9 +2,9 @@ import Input from '../../components/Input.tsx';
 import { ChangeEvent, MouseEvent, useReducer, useRef, useState } from 'react';
 import Button from '../../components/Button.tsx';
 import FontButton from '../../components/FontButton.tsx';
-import { userRegister, userResetPassword, userVerifyCode } from '../../api/user.ts';
-import useNotification from '../../hooks/useNotification.ts';
+import { userRegister, userResetPassword, userVerifyCode } from './api.ts';
 import useAuth from '../../hooks/useAuth.ts';
+import { useRequest } from '../../hooks/useRequest.ts';
 
 type PageType = 'Login' | 'Register' | 'Reset Password';
 
@@ -23,7 +23,7 @@ const Page = () => {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { notify } = useNotification();
+  const { handleRequest } = useRequest();
   const { login } = useAuth();
 
   const changePageType = (value: PageType) => {
@@ -45,21 +45,17 @@ const Page = () => {
         break;
       }
       case 'Register': {
-        userRegister(state.username, state.email, state.code, state.password)
-          .then((res) => {
-            notify(res.data.message);
-            dispatch({ type: 'CLEAR_VALUES' });
-          })
-          .catch((err) => { notify(err.response.data.message); });
+        handleRequest(
+          () => userRegister(state.username, state.email, state.code, state.password),
+          () => dispatch({ type: 'CLEAR_VALUES' })
+        );
         break;
       }
       case 'Reset Password': {
-        userResetPassword(state.email, state.code, state.password)
-          .then((res) => {
-            notify(res.data.message);
-            dispatch({ type: 'CLEAR_VALUES' });
-          })
-          .catch((err) => { notify(err.response.data.message); });
+        handleRequest(
+          () => userResetPassword(state.email, state.code, state.password),
+          () => dispatch({ type: 'CLEAR_VALUES' })
+        );
         break;
       }
     }
@@ -94,18 +90,14 @@ const Page = () => {
 
         {/* 验证码 */}
         {pageType !== 'Login' ? (
-          <div className={'w-full flex flex-row items-center justify-between'}>
+          <div className={'w-full flex flex-row items-center justify-start'}>
             <Input
-              autoComplete={'one-time-code'} className={'w-32 mb-8'} label={'验证码'} name={'code'}
+              autoComplete={'one-time-code'} className={'w-32 mb-8 mr-8'} label={'验证码'} name={'code'}
               onChange={handleInputChangeEvent}
               type={'text'} value={state.code}
             />
             <Button
-              onClick={() => {
-                userVerifyCode(state.email)
-                  .then((res) => { notify(res.data.message); })
-                  .catch((err) => { notify(err.response.data.message); });
-              }}
+              onClick={() => handleRequest(() => userVerifyCode(state.email))}
               type="button"
             />
           </div>

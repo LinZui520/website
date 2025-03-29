@@ -12,13 +12,6 @@
   --color-mint-50: #FAFAFC;
 }
 
-@font-face {
-  font-family: 'SmileySans';
-  src: url('./assets/fonts/SmileySans.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
-
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {

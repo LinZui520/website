@@ -8,7 +8,7 @@ export const useRequest = () => {
     location: 'top'
   });
 
-  const handleRequest = async<T> (
+  const handleRequest = <T> (
     request: () => Promise<AxiosResponse>,
     successCallback?: (res: AxiosResponse<ApiResponse<T>>) => void,
     errorCallback?: (err: AxiosError) => void,
@@ -20,7 +20,7 @@ export const useRequest = () => {
       successCallback?.(res);
     }).catch((err) => {
       show(
-        err.response.data.message || '请求失败',
+        err.response.data.message || '504 Gateway Timeout',
         err.response.data.code === 400 ? 'warning' : 'error'
       );
       errorCallback?.(err);

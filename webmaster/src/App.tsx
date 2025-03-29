@@ -47,7 +47,7 @@ export default defineComponent({
             prepend: () => (
               <VListItem
                 lines="two"
-                prepend-avatar="https://www.zhuguishihundan.com/image/root.png"
+                prepend-avatar={`/avatar/${authStore.user?.avatar}`}
                 title={authStore.user?.username}
               />
             )
