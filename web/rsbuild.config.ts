@@ -6,9 +6,6 @@ export default defineConfig({
   html: {
     template: './public/index.html'
   },
-  output: {
-    assetPrefix: './'
-  },
   server: {
     proxy: {
       '/api': 'http://127.0.0.1:8080'

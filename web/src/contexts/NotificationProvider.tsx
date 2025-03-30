@@ -19,7 +19,6 @@ export const NotificationContext = createContext<NotificationContextType | null>
 
 const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notification, setNotification] = useState<Notification | null>(null);
-  const div = useRef<HTMLDivElement | null>(null);
   const span = useRef<HTMLSpanElement | null>(null);
   const timeline = useRef<GSAPTimeline | undefined>(undefined);
 
@@ -35,15 +34,15 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useGSAP(() => {
-    if (!span.current || !div.current) return;
+    if (!span.current) return;
 
     timeline.current = gsap.timeline({ paused: true });
 
     timeline.current
       .to(span.current, { y: 128, duration: 0.5 }, 0)
-      .to(div.current, { y: 128, duration: 0.5 }, 0)
-      .to(span.current, { y: 144, opacity: 0, duration: 1 }, 3)
-      .to(div.current, { y: 0, duration: 2 }, 3);
+      .to('.line', { y: 128, duration: 0.5 }, 0)
+      .to(span.current, { opacity: 0, duration: 1 }, 3)
+      .to('.line', { y: 0, duration: 2 }, 3);
 
     return () => timeline.current?.kill();
   });
@@ -51,7 +50,8 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
   return (
     <NotificationContext.Provider value={{ notify }}>
       <div className="h-32 z-50 fixed top-0 left-1/2 transform -translate-x-1/2 -translate-y-32 flex justify-center items-center">
-        <div className="absolute top-0 w-[1px] h-9 bg-mint-950 dark:bg-mint-50 -translate-x-1/2" ref={div}></div>
+        <div className="absolute top-0 left-1/2 w-[1px] h-9 bg-mint-950 dark:bg-mint-50 -translate-x-8 line"></div>
+        <div className="absolute top-0 left-1/2 w-[1px] h-9 bg-mint-950 dark:bg-mint-50 translate-x-8 line"></div>
         <span
           className={'z-50 p-4 border border-mint-950 dark:border-mint-50 text-mint-950 dark:text-mint-50'}
           ref={span}

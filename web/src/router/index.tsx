@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import IndexLayout from '../pages/layout.tsx';
 import IndexPage from '../pages/index/page.tsx';
 import BlogPage from '../pages/blog/page.tsx';
+import BlogDetailPage from '../pages/blog/[id]/page.tsx';
 import AuthPage from '../pages/auth/page.tsx';
 import ErrorPage from '../pages/error/page.tsx';
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: 'blog',
         element: <BlogPage />
+      },
+      {
+        path: 'blog/:id',
+        element: <BlogDetailPage />
       },
       {
         path: 'auth',

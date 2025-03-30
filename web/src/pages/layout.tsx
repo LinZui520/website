@@ -5,9 +5,11 @@ import NotificationProvider from '../contexts/NotificationProvider.tsx';
 import AuthProvider from '../contexts/AuthProvider.tsx';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import useScroll from '../hooks/useScroll.tsx';
+import useMarkdownTheme from '../hooks/useMarkdownTheme.ts';
 
 const Layout = () => {
 
+  useMarkdownTheme();
   const container = useRef(document.documentElement);
   const { scrollTo, Scrollbar } = useScroll(
     container,

@@ -73,7 +73,7 @@ const Menu = () => {
       </div>
       <nav
         className={
-          'bg-mint-50 dark:bg-mint-950 h-screen w-screen fixed top-0 z-30 translate-x-full ' +
+          'bg-mint-50 dark:bg-mint-950 h-screen w-screen fixed top-0 z-30 translate-x-[200%] ' +
           'flex flex-col items-center justify-center'
         }
         id="nav"
