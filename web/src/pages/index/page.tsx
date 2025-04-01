@@ -9,9 +9,9 @@ const Page = () => {
     gsap.from('#he', { y: '-100%', ease: 'back', delay: 0.5, duration: 0.5 });
     gsap.from('#yang', { x: '100%', ease: 'power2.out', delay: 1, duration: 0.5 });
     gsap.from('#ming', { x: '100%', ease: 'power2.out', delay: 1.2, duration: 0.5 });
-    for (const i of [1, 2, 3, 4, 5]) {
+    [1, 2, 3, 4, 5].map((i) => {
       gsap.from(`#self-${i}`, { x: '-100%', ease: 'power2.out', delay: 1.5 + i * 0.2, duration: 0.5 });
-    }
+    });
     gsap.from('#life', { x: '100%', ease: 'power2.out', delay: 3, duration: 0.5 });
     gsap.from('#less', { y: '-100%', ease: 'power2.out', delay: 3.5, duration: 0.5 });
   }, { scope: container });

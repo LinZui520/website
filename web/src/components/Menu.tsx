@@ -14,9 +14,9 @@ const Menu = () => {
   const auth = useAuth();
 
   const menu = [
-    { href: '/', text: '首页' },
-    { href: '/blog', text: '博客' },
-    auth.state.user ? null: { href: '/auth', text: '登录' }
+    { href: '/', text: 'HOME' },
+    { href: '/blog', text: 'BLOG' },
+    auth.state.user ? null: { href: '/auth', text: 'LOGIN' }
   ];
 
   const location = useLocation();
@@ -39,7 +39,16 @@ const Menu = () => {
     return () => timeline.current?.kill();
   }, { scope: container });
 
-  useGSAP(() => isOpen ? timeline.current?.play() : timeline.current?.reverse(), [isOpen]);
+  useGSAP(() => {
+    if (isOpen) {
+      timeline.current?.play();
+      menu.filter((item) => item !== null).map((_, index) => {
+        gsap.from(`#nav-${index}`, { x: '150%', ease: 'power2.out', delay: 0.5 + index * 0.2, duration: 0.5 });
+      });
+    } else {
+      timeline.current?.reverse();
+    }
+  }, { scope: container, dependencies: [isOpen] });
 
   /**
    * const toggleTheme = (theme: Theme) => {
@@ -57,7 +66,7 @@ const Menu = () => {
    */
   return (
     <header
-      className={'bg-mint-50/0 dark:bg-mint-950/0 backdrop-blur-md w-screen h-32 z-40 fixed top-0 flex flex-row items-center justify-between'}
+      className={'bg-mint-50/0 dark:bg-mint-950/0 backdrop-blur-md w-screen h-32 z-40 fixed top-0 flex flex-row items-center justify-between font-mono'}
       ref={container}
     >
       <Logo className={'ml-12 z-40'} />
@@ -71,33 +80,40 @@ const Menu = () => {
           <path d="M 6 22 L 26 22" id="line2" />
         </svg>
       </div>
-      <nav
+      <div
         className={
-          'bg-mint-50 dark:bg-mint-950 h-screen w-screen fixed top-0 z-30 translate-x-[200%] ' +
-          'flex flex-col items-center justify-center'
+          'bg-mint-50 dark:bg-mint-950 h-screen w-screen fixed top-0 z-30 translate-x-[150%] ' +
+          'flex flex-row items-center'
         }
         id="nav"
       >
-        {menu.filter((item) => item !== null).map((item, index) => (
-          <Link
-            className={
-              'w-2/3 min-w-md h-24 text-6xl mb-6 rounded-3xl cursor-pointer flex flex-row justify-start items-center ' +
-              'select-none group bg-mint-50 hover:bg-mint-100 dark:bg-mint-950 dark:hover:bg-mint-900 ' +
-              'text-mint-950 dark:text-mint-50 stroke-mint-950 dark:stroke-mint-50 ' +
-              (isOpen ? 'pointer-events-auto' : 'pointer-events-none')
-            }
-            key={index}
-            tabIndex={-1}
-            to={item.href}
-          >
-            <svg className={'stroke-3 group-hover:w-16 w-0 ml-12 duration-700 ease-in-out'} viewBox="0 0 32 32">
-              <path d="M 26 16 L 26 16" strokeLinecap="round" />
-              <path d="M 6 16 L 26 16 M 18 8 L 26 16 M 18 24 L 26 16" />
-            </svg>
-            <span className={'ml-12'}>{item.text}</span>
-          </Link>
-        ))}
-      </nav>
+        <nav className={'w-2/5 h-full p-4 flex flex-col items-end justify-center gap-8'}>
+          <div className={'text-base text-mint-500'}>NAVIGATION MENU</div>
+          <hr className={'w-16 border-1 border-mint-500'} />
+          {menu.filter((item) => item !== null).map((item, index) => (
+            <Link
+              className={
+                'text-6xl cursor-pointer flex overflow-hidden ' +
+                'select-none group text-mint-950 dark:text-mint-50'
+              }
+              key={index}
+              tabIndex={-1}
+              to={item.href}
+            >
+              <span className={'group-hover:opacity-50'} id={`nav-${index}`}>
+                {item.text}
+              </span>
+            </Link>
+          ))}
+        </nav>
+        <div className={'w-2/5 h-full'} />
+        <div className={'w-1/5 h-full bg-mint-100 dark:bg-mint-900 p-4 flex flex-col items-start justify-center gap-8'}>
+          <div className={'text-3xl text-mint-500'}>CONTACT US</div>
+          <hr className={'w-16 border-2 border-mint-500'} />
+          <div className={'text-base underline text-mint-950 dark:text-mint-50'}>yangminghe20@gmail.com</div>
+          <div className={'text-base underline text-mint-950 dark:text-mint-50'}>Copyright © LinZui520</div>
+        </div>
+      </div>
     </header>
   );
 };
