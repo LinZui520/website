@@ -5,6 +5,7 @@ import gsap from 'gsap';
 type Props = {
   label?: string;
   type?: 'submit' | 'reset' | 'button';
+  isLoading?: boolean;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
@@ -38,6 +39,7 @@ const Button = (props: Props) => {
         'border rounded-full border-mint-950 dark:border-mint-50 ' +
         'h-10 pr-3 cursor-pointer flex flex-row items-center justify-center'
       }
+      disabled={props.isLoading}
       onClick={props.onClick}
       onMouseEnter={() => timeline.current?.play()}
       onMouseLeave={() => timeline.current?.reverse()}

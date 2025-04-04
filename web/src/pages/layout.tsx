@@ -14,7 +14,7 @@ const Layout = () => {
   const { scrollTo, Scrollbar } = useScroll(
     container,
     (x: number) => 1 - Math.pow(1 - x, 3),
-    500
+    1000
   );
 
   const pathname = useLocation();

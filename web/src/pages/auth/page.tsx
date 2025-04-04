@@ -22,6 +22,7 @@ const Page = () => {
   const [pageType, setPageType] = useState<PageType>('Login');
   const formRef = useRef<HTMLFormElement | null>(null);
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { handleRequest } = useRequest();
   const { login } = useAuth();
@@ -39,6 +40,7 @@ const Page = () => {
       formRef.current.reportValidity();
       return;
     }
+    setIsLoading(true);
     switch (pageType) {
       case 'Login': {
         login(state.email, state.password);
@@ -47,18 +49,32 @@ const Page = () => {
       case 'Register': {
         handleRequest(
           () => userRegister(state.username, state.email, state.code, state.password),
-          () => dispatch({ type: 'CLEAR_VALUES' })
+          () => dispatch({ type: 'CLEAR_VALUES' }),
+          undefined,
+          () => setIsLoading(false)
         );
         break;
       }
       case 'Reset Password': {
         handleRequest(
           () => userResetPassword(state.email, state.code, state.password),
-          () => dispatch({ type: 'CLEAR_VALUES' })
+          () => dispatch({ type: 'CLEAR_VALUES' }),
+          undefined,
+          () => setIsLoading(false)
         );
         break;
       }
     }
+  };
+
+  const handleSentVerifyCode = () => {
+    setIsLoading(true);
+    handleRequest(
+      () => userVerifyCode(state.email),
+      undefined,
+      undefined,
+      () => setIsLoading(false)
+    );
   };
 
   const handleInputChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +113,8 @@ const Page = () => {
               type={'text'} value={state.code}
             />
             <Button
-              onClick={() => handleRequest(() => userVerifyCode(state.email))}
+              isLoading={isLoading}
+              onClick={handleSentVerifyCode}
               type="button"
             />
           </div>
@@ -131,6 +148,7 @@ const Page = () => {
           )}
         </div>
         <Button
+          isLoading={isLoading}
           label={pageType}
           onClick={submit}
           type="submit"
