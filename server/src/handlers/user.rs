@@ -1,14 +1,15 @@
-use crate::AppState;
 use crate::core::env::env;
 use crate::core::jwt::{UserCredentials, generate_jwt, parse_jwt, verify_jwt};
 use crate::core::mail::{generate_random_code, is_valid_email, send_verification_email};
 use crate::models::response::Response;
-use crate::models::user::{User, UserDTO};
+use crate::models::user::{ActiveModel, Column, Entity as UserEntity, User, UserDTO};
+use crate::{AppState, validate_field};
 use axum::http::HeaderMap;
 use axum::{Extension, Json};
 use bcrypt::{hash, verify};
 use chrono::Local;
 use deadpool_redis::redis::AsyncCommands;
+use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use serde_json::Value;
 use std::sync::{Arc, OnceLock};
 
@@ -16,9 +17,9 @@ pub async fn verification_code(
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
 ) -> Response<()> {
-    let mut redis = match state.redis_pool.get().await {
+    let mut redis = match state.redis.get().await {
         Ok(redis) => redis,
-        Err(err) => return Response::error("获取 Redis 连接失败", err),
+        Err(err) => return Response::error(err),
     };
 
     let email = match form.get("email").and_then(|v| v.as_str()) {
@@ -38,13 +39,13 @@ pub async fn verification_code(
             );
         }
         Ok(false) => {}
-        Err(err) => return Response::error(err.to_string().as_str(), err),
+        Err(err) => return Response::error(err),
     }
 
     let code: u32 = generate_random_code();
     match send_verification_email(&state.mailer, email.to_owned(), code.to_string()).await {
         Ok(_) => {}
-        Err(err) => return Response::error(err.to_string().as_str(), err),
+        Err(err) => return Response::error(err),
     }
 
     match redis
@@ -52,7 +53,7 @@ pub async fn verification_code(
         .await
     {
         Ok(_) => Response::success((), "验证码发送成功"),
-        Err(err) => Response::error(err.to_string().as_str(), err),
+        Err(err) => Response::error(err),
     }
 }
 
@@ -62,36 +63,16 @@ pub async fn register(
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
 ) -> Response<()> {
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
-    let mut redis = match state.redis_pool.get().await {
+    let postgres = &state.postgres;
+    let mut redis = match state.redis.get().await {
         Ok(redis) => redis,
-        Err(err) => return Response::error("获取 Redis 连接失败", err),
+        Err(err) => return Response::error(err),
     };
 
-    let username = match form.get("username").and_then(|v| v.as_str()) {
-        Some(username) if !username.is_empty() => username,
-        Some(_) => return Response::warn("用户名不能为空"),
-        None => return Response::warn("用户名字段缺失"),
-    };
-    let email = match form.get("email").and_then(|v| v.as_str()) {
-        Some(email) if !email.is_empty() => email,
-        Some(_) => return Response::warn("邮箱不能为空"),
-        None => return Response::warn("邮箱字段缺失"),
-    };
-    let password = match form.get("password").and_then(|v| v.as_str()) {
-        Some(password) if !password.is_empty() => password,
-        Some(_) => return Response::warn("密码不能为空"),
-        None => return Response::warn("密码字段缺失"),
-    };
-
-    let code = match form.get("code").and_then(|v| v.as_str()) {
-        Some(code) if !code.is_empty() => code,
-        Some(_) => return Response::warn("验证码不能为空"),
-        None => return Response::warn("验证码字段缺失"),
-    };
+    let username = validate_field!(form, "username", "用户名");
+    let email = validate_field!(form, "email", "邮箱");
+    let password = validate_field!(form, "password", "密码");
+    let code = validate_field!(form, "code", "验证码");
 
     if code
         != match redis.get::<&str, u32>(email).await {
@@ -104,29 +85,24 @@ pub async fn register(
 
     let hashed = match hash(password, 4) {
         Ok(hashed) => hashed,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
+        Err(err) => return Response::error(err),
     };
 
     let avatar = DEFAULT_AVATAR.get_or_init(|| env("WEBSITE_USER_DEFAULT_AVATAR"));
 
-    match postgres
-        .execute(
-            "INSERT INTO users (avatar, username, email, password) VALUES ($1, $2, $3, $4)",
-            &[&avatar, &username, &email, &hashed],
-        )
-        .await
-    {
+    let user = ActiveModel {
+        avatar: Set(avatar.to_owned()),
+        username: Set(username.to_owned()),
+        email: Set(email.to_owned()),
+        password: Set(hashed),
+        permission: Set(0), // 默认权限为普通用户
+        created_at: Set(Some(chrono::Utc::now())),
+        ..Default::default()
+    };
+
+    match user.insert(postgres).await {
         Ok(_) => Response::success((), "注册成功"),
-        Err(err) => {
-            if err.to_string().contains("unique constraint") {
-                if err.to_string().contains("username") {
-                    return Response::warn("用户名已被使用");
-                } else if err.to_string().contains("email") {
-                    return Response::warn("邮箱已被注册");
-                }
-            }
-            Response::error(err.to_string().as_str(), err)
-        }
+        Err(err) => Response::error(err),
     }
 }
 
@@ -134,69 +110,54 @@ pub async fn login(
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
 ) -> Response<UserDTO> {
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
+    let postgres = &state.postgres;
 
-    let email = match form.get("email").and_then(|v| v.as_str()) {
-        Some(email) if !email.is_empty() => email,
-        Some(_) => return Response::warn("邮箱不能为空"),
-        None => return Response::warn("邮箱字段缺失"),
-    };
+    let email = validate_field!(form, "email", "邮箱");
+    let password = validate_field!(form, "password", "密码");
 
-    let password = match form.get("password").and_then(|v| v.as_str()) {
-        Some(password) if !password.is_empty() => password,
-        Some(_) => return Response::warn("密码不能为空"),
-        None => return Response::warn("密码字段缺失"),
-    };
-
-    let row = match postgres
-        .query_opt(
-            "SELECT id, avatar, username, email, password, permission FROM users WHERE email = $1 LIMIT 1",
-            &[&email],
-        )
+    // 根据邮箱查找用户
+    let user = match UserEntity::find()
+        .filter(Column::Email.eq(email))
+        .one(postgres)
         .await
     {
-        Ok(Some(row)) => row,
-        Ok(None) => return Response::warn("用户不存在"),
-        Err(err) => return Response::error(err.to_string().as_str(), err),
+        Ok(Some(user)) => user,
+        Ok(None) => return Response::warn("登录失败，用户不存在"),
+        Err(err) => return Response::error(err),
     };
 
-    let hashed = row.get::<&str, &str>("password");
-    if !verify(password, hashed)
-        .map_err(|err| Response::<String>::error(err.to_string().as_str(), err))
-        .unwrap()
-    {
+    // 验证密码
+    if !verify(password, &user.password).unwrap_or(false) {
         return Response::warn("邮箱或密码错误");
     }
-    let id = row.get::<&str, i64>("id");
-    let avatar = row.get::<&str, &str>("avatar").to_owned();
-    let username = row.get::<&str, &str>("username").to_owned();
-    let permission = row.get::<&str, i32>("permission");
 
-    let user = UserCredentials {
-        avatar: avatar.to_owned(),
-        username: username.to_owned(),
-        email: email.to_owned(),
-        permission,
+    // 创建 JWT 用户凭证
+    let user_credentials = UserCredentials {
+        avatar: user.avatar.to_owned(),
+        username: user.username.to_owned(),
+        email: user.email.to_owned(),
+        permission: user.permission,
     };
 
-    let token = match generate_jwt(row.get::<&str, i64>("id"), user) {
+    // 生成 JWT token
+    let token = match generate_jwt(user.id, user_credentials) {
         Ok(token) => token,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
+        Err(err) => return Response::error(err),
     };
-    let response = UserDTO {
-        user: User {
-            id,
-            avatar,
-            username,
-            email: email.to_owned(),
-            permission,
+
+    Response::success(
+        UserDTO {
+            user: User {
+                id: user.id,
+                avatar: user.avatar,
+                username: user.username,
+                email: user.email,
+                permission: user.permission,
+            },
+            token,
         },
-        token,
-    };
-    Response::success(response, "登录成功")
+        "登录成功",
+    )
 }
 
 pub async fn token_login(headers: HeaderMap) -> Response<UserDTO> {
@@ -207,72 +168,75 @@ pub async fn token_login(headers: HeaderMap) -> Response<UserDTO> {
 
     let claims = match verify_jwt(token.as_str()) {
         Ok(claims) => claims,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
+        Err(err) => return Response::error(err),
     };
 
     if Local::now().timestamp() > claims.exp {
         return Response::warn("JWT 已过期");
     }
 
-    let response = UserDTO {
-        user: User {
-            id: claims.sub,
-            avatar: claims.user.avatar,
-            username: claims.user.username,
-            email: claims.user.email,
-            permission: claims.user.permission,
+    Response::success(
+        UserDTO {
+            user: User {
+                id: claims.sub,
+                avatar: claims.user.avatar,
+                username: claims.user.username,
+                email: claims.user.email,
+                permission: claims.user.permission,
+            },
+            token,
         },
-        token,
-    };
-    Response::success(response, "登录成功")
+        "登录成功",
+    )
 }
-
 pub async fn reset_password(
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
 ) -> Response<()> {
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
-    let mut redis = match state.redis_pool.get().await {
+    let postgres = &state.postgres;
+    let mut redis = match state.redis.get().await {
         Ok(redis) => redis,
-        Err(err) => return Response::error("获取 Redis 连接失败", err),
-    };
-    let email = match form.get("email").and_then(|v| v.as_str()) {
-        Some(email) if !email.is_empty() => email,
-        Some(_) => return Response::warn("邮箱不能为空"),
-        None => return Response::warn("邮箱字段缺失"),
-    };
-    let password = match form.get("password").and_then(|v| v.as_str()) {
-        Some(password) if !password.is_empty() => password,
-        Some(_) => return Response::warn("密码不能为空"),
-        None => return Response::warn("密码字段缺失"),
+        Err(err) => return Response::error(err),
     };
 
-    if match form.get("code").and_then(|v| v.as_str()) {
-        Some(code) => code,
-        None => return Response::warn("验证码字段缺失"),
-    } != match redis.get::<&str, u32>(email).await {
-        Ok(code) => code.to_string(),
-        Err(_) => return Response::warn("缓存中未查询到验证码"),
-    } {
+    // 验证表单字段
+    let email = validate_field!(form, "email", "邮箱");
+    let password = validate_field!(form, "password", "密码");
+    let code = validate_field!(form, "code", "验证码");
+
+    // 验证验证码
+    if code
+        != match redis.get::<&str, u32>(email).await {
+            Ok(code) => code.to_string(),
+            Err(_) => return Response::warn("未查询到验证码"),
+        }
+    {
         return Response::warn("验证码错误");
     }
 
-    let hashed = match hash(password, 4) {
-        Ok(hashed) => hashed,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
-    };
-
-    match postgres
-        .execute(
-            "UPDATE users SET password = $1 WHERE email = $2",
-            &[&hashed, &email],
-        )
+    // 查找用户是否存在
+    let user = match UserEntity::find()
+        .filter(Column::Email.eq(email))
+        .one(postgres)
         .await
     {
-        Ok(_) => Response::success((), "修改密码成功"),
-        Err(err) => Response::error(err.to_string().as_str(), err),
+        Ok(Some(user)) => user,
+        Ok(None) => return Response::warn("用户不存在"),
+        Err(err) => return Response::error(err),
+    };
+
+    // 哈希新密码
+    let hashed = match hash(password, 4) {
+        Ok(hashed) => hashed,
+        Err(err) => return Response::error(err),
+    };
+
+    // 更新用户密码
+    let mut user_active: ActiveModel = user.into();
+    user_active.password = Set(hashed);
+
+    match user_active.update(postgres).await {
+        Ok(_) => Response::success((), "密码重置成功"),
+        Err(err) => Response::error(err),
     }
 }

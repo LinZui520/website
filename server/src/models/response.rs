@@ -28,9 +28,9 @@ impl<T: Serialize> Response<T> {
         Self::new(400, None, message.to_owned())
     }
 
-    pub fn error<E: std::fmt::Display>(message: &str, err: E) -> Self {
+    pub fn error<E: std::fmt::Display>(err: E) -> Self {
         tracing::error!("{}", err);
-        Self::new(500, None, message.to_owned())
+        Self::new(500, None, err.to_string())
     }
 }
 

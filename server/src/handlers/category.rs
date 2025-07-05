@@ -1,12 +1,17 @@
-use crate::AppState;
 use crate::core::jwt::extract_permissions_from_headers;
-use crate::models::category::Category;
+use crate::models::category::{
+    ActiveModel as CategoryActiveModel, Category, Column as CategoryColumn,
+    Entity as CategoryEntity,
+};
 use crate::models::response::Response;
 use crate::models::user::Permission;
+use crate::{AppState, validate_field};
 use axum::extract::Path;
 use axum::http::HeaderMap;
 use axum::{Extension, Json};
-use chrono::{DateTime, Utc};
+use chrono::Utc;
+use sea_orm::prelude::Expr;
+use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 use serde_json::Value;
 use std::sync::Arc;
 
@@ -20,68 +25,44 @@ pub async fn create_category(
         None => return Response::warn("权限不足"),
     };
 
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
+    let postgres = &state.postgres;
+
+    let name = validate_field!(form, "name", "分类名称");
+    let description = validate_field!(form, "description", "分类描述");
+
+    let category = CategoryActiveModel {
+        name: Set(name.to_string()),
+        description: Set(description.to_string()),
+        created_at: Set(Some(Utc::now())),
+        ..Default::default()
     };
 
-    let name = match form.get("name").and_then(|v| v.as_str()) {
-        Some(name) if !name.is_empty() => name,
-        Some(_) => return Response::warn("名称不能为空"),
-        None => return Response::warn("名称字段缺失"),
-    };
-    let description = match form.get("description").and_then(|v| v.as_str()) {
-        Some(description) if !description.is_empty() => description,
-        Some(_) => return Response::warn("描述不能为空"),
-        None => return Response::warn("描述字段缺失"),
-    };
-
-    match postgres
-        .execute(
-            "INSERT INTO categories (name, description) VALUES ($1, $2)",
-            &[&name, &description],
-        )
-        .await
-    {
-        Ok(_) => Response::success((), "添加成功"),
-        Err(err) => {
-            if err.to_string().contains("unique constraint") && err.to_string().contains("name") {
-                return Response::warn("标签已被添加");
-            }
-            Response::error(err.to_string().as_str(), err)
-        }
+    match category.insert(postgres).await {
+        Ok(_) => Response::success((), "分类创建成功"),
+        Err(err) => Response::error(err),
     }
 }
 
 pub async fn delete_category(
+    Path(id): Path<i64>,
     headers: HeaderMap,
     Extension(state): Extension<Arc<AppState>>,
-    Path(id): Path<i64>,
 ) -> Response<()> {
     let _ = match extract_permissions_from_headers(headers, Permission::Master) {
         Some(claims) => claims,
         None => return Response::warn("权限不足"),
     };
 
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
+    let postgres = &state.postgres;
 
-    let rows = match postgres
-        .execute("DELETE FROM categories WHERE id = $1", &[&id])
-        .await
-    {
-        Ok(rows) => rows,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
-    };
-    if rows != 1 {
-        return Response::warn("标签不存在");
-    };
-    Response::success((), "删除成功")
+    match CategoryEntity::delete_by_id(id).exec(postgres).await {
+        Ok(_) => Response::success((), "分类删除成功"),
+        Err(err) => Response::error(err),
+    }
 }
 
 pub async fn update_category(
+    Path(id): Path<i64>,
     headers: HeaderMap,
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
@@ -91,100 +72,45 @@ pub async fn update_category(
         None => return Response::warn("权限不足"),
     };
 
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
+    let postgres = &state.postgres;
 
-    let id = match form.get("id").and_then(|v| v.as_i64()) {
-        Some(id) => id,
-        None => return Response::warn("id字段缺失"),
-    };
-    let name = match form.get("name").and_then(|v| v.as_str()) {
-        Some(name) if !name.is_empty() => name,
-        Some(_) => return Response::warn("名称不能为空"),
-        None => return Response::warn("名称字段缺失"),
-    };
-    let description = match form.get("description").and_then(|v| v.as_str()) {
-        Some(description) if !description.is_empty() => description,
-        Some(_) => return Response::warn("描述不能为空"),
-        None => return Response::warn("描述字段缺失"),
-    };
+    let name = validate_field!(form, "name", "分类名称");
+    let description = validate_field!(form, "description", "分类描述");
 
-    let rows = match postgres
-        .execute(
-            "UPDATE categories SET name = $2, description = $3 WHERE id = $1",
-            &[&id, &name, &description],
-        )
+    match CategoryEntity::update_many()
+        .filter(CategoryColumn::Id.eq(id))
+        .col_expr(CategoryColumn::Name, Expr::value(name))
+        .col_expr(CategoryColumn::Description, Expr::value(description))
+        .exec(postgres)
         .await
     {
-        Ok(rows) => rows,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
-    };
-    if rows != 1 {
-        return Response::warn("标签不存在");
+        Ok(_) => Response::success((), "分类更新成功"),
+        Err(err) => Response::error(err),
     }
-    Response::success((), "修改标签成功")
 }
 
 pub async fn list_categories(
     Extension(state): Extension<Arc<AppState>>,
 ) -> Response<Vec<Category>> {
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
+    let postgres = &state.postgres;
 
-    let rows = match postgres
-        .query(
-            "SELECT id, name, description, created_at FROM categories",
-            &[],
-        )
-        .await
-    {
-        Ok(rows) => rows,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
-    };
-
-    let mut categories = Vec::with_capacity(rows.len());
-    for row in rows {
-        let category = Category {
-            id: row.get::<&str, i64>("id"),
-            name: row.get::<&str, &str>("name").to_owned(),
-            description: row.get::<&str, &str>("description").to_owned(),
-            created_at: row.get::<&str, DateTime<Utc>>("created_at"),
-        };
-        categories.push(category);
+    match CategoryEntity::find().all(postgres).await {
+        Ok(models) => {
+            Response::success(models.into_iter().map(Category::from).collect(), "查询成功")
+        }
+        Err(err) => Response::error(err),
     }
-    Response::success(categories, "查询成功")
 }
 
 pub async fn get_category(
-    Extension(state): Extension<Arc<AppState>>,
     Path(id): Path<i64>,
+    Extension(state): Extension<Arc<AppState>>,
 ) -> Response<Category> {
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
+    let postgres = &state.postgres;
 
-    let row = match postgres
-        .query_one(
-            "SELECT id, name, description, created_at FROM categories WHERE id = $1",
-            &[&id],
-        )
-        .await
-    {
-        Ok(row) => row,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
-    };
-
-    let category = Category {
-        id: row.get::<&str, i64>("id"),
-        name: row.get::<&str, &str>("name").to_owned(),
-        description: row.get::<&str, &str>("description").to_owned(),
-        created_at: row.get::<&str, DateTime<Utc>>("created_at"),
-    };
-
-    Response::success(category, "查询成功")
+    match CategoryEntity::find_by_id(id).one(postgres).await {
+        Ok(Some(model)) => Response::success(Category::from(model), "查询成功"),
+        Ok(None) => Response::warn("分类不存在"),
+        Err(err) => Response::error(err),
+    }
 }

@@ -8,7 +8,7 @@ use std::sync::Arc;
 
 mod blog;
 mod category;
-pub mod user;
+mod user;
 
 pub fn create_app_router(state: Arc<AppState>) -> Router {
     Router::new()

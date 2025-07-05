@@ -1,14 +1,19 @@
-use crate::AppState;
 use crate::core::jwt::extract_permissions_from_headers;
-use crate::models::blog::{Blog, BlogDTO};
-use crate::models::category::Category;
+use crate::models::blog::{
+    ActiveModel as BlogActiveModel, Blog, BlogDTO, BlogWithRelations, Column as BlogColumn,
+    Entity as BlogEntity, Relation,
+};
+use crate::models::category::Column as CategoryColumn;
 use crate::models::response::Response;
-use crate::models::user::{Permission, User};
+use crate::models::user::{Column as UserColumn, Entity as UserEntity, Permission};
+use crate::{AppState, validate_field};
 use axum::extract::Path;
 use axum::http::HeaderMap;
 use axum::{Extension, Json};
-use chrono::{DateTime, Utc};
-use deadpool_postgres::GenericClient;
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, EntityTrait, JoinType, QueryFilter, QueryOrder, QuerySelect,
+    RelationTrait, Set, TransactionTrait,
+};
 use serde_json::Value;
 use std::sync::Arc;
 
@@ -22,132 +27,90 @@ pub async fn create_blog(
         None => return Response::warn("权限不足"),
     };
 
-    let mut postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
+    let postgres = &state.postgres;
 
-    let title = match form.get("title").and_then(|v| v.as_str()) {
-        Some(title) if !title.is_empty() => title,
-        Some(_) => return Response::warn("标题字段不能为空"),
-        None => return Response::warn("标题字段缺失"),
-    };
+    let title = validate_field!(form, "title", "标题");
     let category = match form.get("category").and_then(|v| v.as_i64()) {
         Some(category) => category,
-        None => return Response::warn("标签字段缺失"),
+        None => return Response::warn("分类字段缺失"),
     };
-    let content = match form.get("content").and_then(|v| v.as_str()) {
-        Some(content) => content,
-        None => return Response::warn("内容字段缺失"),
-    };
+    let content = validate_field!(form, "content", "内容");
     let publish = form
         .get("publish")
         .and_then(|v| v.as_bool())
         .unwrap_or(false);
 
-    let transaction = match postgres.transaction().await {
-        Ok(transaction) => transaction,
-        Err(err) => return Response::error("Postgres 开启事务失败", err),
+    let blog = BlogActiveModel {
+        author: Set(claims.sub),
+        title: Set(title.to_string()),
+        category: Set(category),
+        content: Set(content.to_string()),
+        publish: Set(publish),
+        created_at: Set(Some(chrono::Utc::now())),
+        updated_at: Set(Some(chrono::Utc::now())),
+        updated_by: Set(claims.sub),
+        ..Default::default()
     };
 
-    match transaction
-        .query_opt(
-            "SELECT id FROM categories WHERE id = $1 LIMIT 1",
-            &[&category],
-        )
-        .await
-    {
-        Ok(Some(_)) => {}
-        Ok(None) => return Response::warn("标签不存在"),
-        Err(err) => return Response::error(err.to_string().as_str(), err),
-    };
-
-    let row = match transaction.query_one(
-        "INSERT INTO blogs (author, title, category, content, publish, updated_by) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, created_at, updated_at",
-        &[&claims.sub, &title, &category, &content, &publish, &claims.sub],
-    ).await {
-        Ok(row) => row,
-        Err(err) => {
-            if err.to_string().contains("unique constraint") && err.to_string().contains("title") {
-                return Response::warn("博客已被添加");
-            }
-            return Response::error(err.to_string().as_str(), err)
-        }
-    };
-    match transaction.commit().await {
-        Ok(_) => Response::success(
-            Blog {
-                id: row.get::<&str, i64>("id"),
-                author: claims.sub,
-                title: title.to_string(),
-                category,
-                content: content.to_string(),
-                publish,
-                created_at: row.get::<&str, DateTime<Utc>>("created_at"),
-                updated_at: row.get::<&str, DateTime<Utc>>("updated_at"),
-                updated_by: claims.sub,
-            },
-            "添加博客成功",
-        ),
-        Err(err) => Response::error("Postgres 事务提交失败", err),
-    }
+    Response::success(
+        Blog::from(match blog.insert(postgres).await {
+            Ok(blog) => blog,
+            Err(err) => return Response::error(err),
+        }),
+        "创建博客成功",
+    )
 }
 
 pub async fn delete_blog(
+    Path(id): Path<i64>,
     headers: HeaderMap,
     Extension(state): Extension<Arc<AppState>>,
-    Path(id): Path<i64>,
 ) -> Response<()> {
     let claims = match extract_permissions_from_headers(headers, Permission::Admin) {
         Some(claims) => claims,
         None => return Response::warn("权限不足"),
     };
 
-    let mut postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
+    let postgres = &state.postgres;
+
+    // 开启事务
+    let txn = match postgres.begin().await {
+        Ok(txn) => txn,
+        Err(err) => return Response::error(err),
     };
 
-    let transaction = match postgres.transaction().await {
-        Ok(transaction) => transaction,
-        Err(err) => return Response::error("Postgres 开启事务失败", err),
-    };
-
-    let row = match transaction
-        .query_opt(
-            "SELECT blogs.id, users.permission FROM blogs INNER JOIN users ON blogs.author = users.id WHERE blogs.id = $1 LIMIT 1",
-            &[&id],
-        )
+    let (_, author) = match BlogEntity::find_by_id(id)
+        .find_also_related(UserEntity)
+        .one(&txn)
         .await
     {
-        Ok(Some(row)) => row,
+        Ok(Some((blog, Some(author)))) => (blog, author),
+        Ok(Some((_, None))) => return Response::warn("博客作者信息异常"),
         Ok(None) => return Response::warn("博客不存在"),
-        Err(err) => return Response::error(err.to_string().as_str(), err),
+        Err(err) => return Response::error(err),
     };
 
-    let permission = row.get::<&str, i32>("permission");
-
-    if claims.user.permission < permission {
-        return Response::warn("权限不足");
-    };
-
-    let rows = match transaction
-        .execute("DELETE FROM blogs WHERE id = $1", &[&id])
-        .await
-    {
-        Ok(rows) => rows,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
-    };
-    if rows != 1 {
-        return Response::warn("博客不存在");
-    };
-    match transaction.commit().await {
-        Ok(_) => Response::success((), "删除博客成功"),
-        Err(err) => Response::error("Postgres 事务提交失败", err),
+    // 权限检查：管理员可以删除权限低于自己的博客
+    if claims.user.permission < author.permission {
+        return Response::warn("权限不足，无法删除该博客");
     }
+
+    // 删除博客
+    match BlogEntity::delete_by_id(id).exec(&txn).await {
+        Ok(_) => {}
+        Err(err) => return Response::error(err),
+    }
+
+    // 提交事务
+    if let Err(err) = txn.commit().await {
+        return Response::error(err);
+    }
+
+    Response::success((), "删除博客成功")
 }
 
 pub async fn update_blog(
+    Path(id): Path<i64>,
     headers: HeaderMap,
     Extension(state): Extension<Arc<AppState>>,
     Json(form): Json<Value>,
@@ -156,178 +119,120 @@ pub async fn update_blog(
         Some(claims) => claims,
         None => return Response::warn("权限不足"),
     };
-    let mut postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
 
-    let id = match form.get("id").and_then(|v| v.as_i64()) {
-        Some(id) => id,
-        None => return Response::warn("id字段缺失"),
-    };
-    let title = match form.get("title").and_then(|v| v.as_str()) {
-        Some(title) if !title.is_empty() => title,
-        Some(_) => return Response::warn("标题字段不能为空"),
-        None => return Response::warn("标题字段缺失"),
-    };
+    let postgres = &state.postgres;
+
+    let title = validate_field!(form, "title", "标题");
     let category = match form.get("category").and_then(|v| v.as_i64()) {
         Some(category) => category,
-        None => return Response::warn("标签字段缺失"),
+        None => return Response::warn("分类字段缺失"),
     };
-    let content = match form.get("content").and_then(|v| v.as_str()) {
-        Some(content) => content,
-        None => return Response::warn("内容字段缺失"),
-    };
+    let content = validate_field!(form, "content", "内容");
     let publish = form
         .get("publish")
         .and_then(|v| v.as_bool())
         .unwrap_or(false);
 
-    let transaction = match postgres.transaction().await {
-        Ok(transaction) => transaction,
-        Err(err) => return Response::error("Postgres 开启事务失败", err),
+    // 开启事务
+    let txn = match postgres.begin().await {
+        Ok(txn) => txn,
+        Err(err) => return Response::error(err),
     };
 
-    let row = match transaction
-        .query_opt(
-            "SELECT blogs.id, users.permission FROM blogs INNER JOIN users ON blogs.author = users.id WHERE blogs.id = $1 LIMIT 1",
-            &[&id],
-        )
+    let (blog, author) = match BlogEntity::find_by_id(id)
+        .find_also_related(UserEntity)
+        .one(&txn)
         .await
     {
-        Ok(Some(row)) => row,
+        Ok(Some((blog, Some(author)))) => (blog, author),
+        Ok(Some((_, None))) => return Response::warn("博客作者信息异常"),
         Ok(None) => return Response::warn("博客不存在"),
-        Err(err) => return Response::error(err.to_string().as_str(), err),
+        Err(err) => return Response::error(err),
     };
 
-    let permission = row.get::<&str, i32>("permission");
+    // 权限检查
+    if claims.user.permission < author.permission {
+        return Response::warn("权限不足，无法编辑该博客");
+    }
 
-    if claims.user.permission < permission {
-        return Response::warn("权限不足");
-    };
+    // 更新博客
+    let mut blog_active: BlogActiveModel = blog.into();
+    blog_active.title = Set(title.to_string());
+    blog_active.category = Set(category);
+    blog_active.content = Set(content.to_string());
+    blog_active.publish = Set(publish);
+    blog_active.updated_at = Set(Some(chrono::Utc::now()));
+    blog_active.updated_by = Set(claims.sub);
 
-    match transaction
-        .query_opt(
-            "SELECT id FROM categories WHERE id = $1 LIMIT 1",
-            &[&category],
-        )
-        .await
-    {
-        Ok(Some(_)) => {}
-        Ok(None) => return Response::warn("标签不存在"),
-        Err(err) => return Response::error(err.to_string().as_str(), err),
-    };
-
-    match transaction.execute(
-        "UPDATE blogs SET title = $2, category = $3, content = $4, publish = $5, updated_at = $6, updated_by = $7  WHERE id = $1",
-        &[&id, &title, &category, &content, &publish, &Utc::now(), &claims.sub],
-    ).await {
+    match blog_active.update(&txn).await {
         Ok(_) => {}
-        Err(err) => return Response::error(err.to_string().as_str(), err),
+        Err(err) => return Response::error(err),
     }
 
-    match transaction.commit().await {
-        Ok(_) => Response::success((), "保存博客成功"),
-        Err(err) => Response::error("Postgres 事务提交失败", err),
+    // 提交事务
+    if let Err(err) = txn.commit().await {
+        return Response::error(err);
     }
+
+    Response::success((), "更新博客成功")
 }
 
-pub async fn list_blog(Extension(state): Extension<Arc<AppState>>) -> Response<Vec<BlogDTO>> {
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
+pub async fn list_published_blogs(
+    Extension(state): Extension<Arc<AppState>>,
+) -> Response<Vec<BlogDTO>> {
+    let postgres = &state.postgres;
 
-    let rows = match postgres
-        .query(
-            "SELECT blogs.id AS blog_id, blogs.author, users.avatar, users.username, users.email, users.permission, \
-                blogs.title, blogs.category, categories.name AS category_name, categories.description AS category_description, categories.created_at AS category_created_at, \
-                blogs.content, blogs.publish, blogs.created_at AS blog_created_at, blogs.updated_at, blogs.updated_by FROM blogs \
-                INNER JOIN categories ON blogs.category = categories.id \
-                INNER JOIN users ON blogs.author = users.id WHERE blogs.publish = TRUE",
-            &[],
-        )
+    let blogs = match BlogEntity::find()
+        .filter(BlogColumn::Publish.eq(true))
+        .join(JoinType::InnerJoin, Relation::Author.def())
+        .join(JoinType::InnerJoin, Relation::Category.def())
+        .column_as(UserColumn::Id, "author_id")
+        .column_as(UserColumn::Avatar, "author_avatar")
+        .column_as(UserColumn::Username, "author_username")
+        .column_as(UserColumn::Email, "author_email")
+        .column_as(UserColumn::Permission, "author_permission")
+        .column_as(CategoryColumn::Id, "category_id")
+        .column_as(CategoryColumn::Name, "category_name")
+        .column_as(CategoryColumn::Description, "category_description")
+        .column_as(CategoryColumn::CreatedAt, "category_created_at")
+        .order_by_desc(BlogColumn::CreatedAt)
+        .into_model::<BlogWithRelations>()
+        .all(postgres)
         .await
     {
-        Ok(rows) => rows,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
+        Ok(data) => data.into_iter().map(|item| item.into_blog_dto()).collect(),
+        Err(err) => return Response::error(err),
     };
-
-    let mut blogs: Vec<BlogDTO> = Vec::with_capacity(rows.len());
-    for row in rows {
-        let blog = BlogDTO {
-            id: row.get::<&str, i64>("blog_id"),
-            author: User {
-                id: row.get::<&str, i64>("author"),
-                avatar: row.get::<&str, &str>("avatar").to_owned(),
-                username: row.get::<&str, &str>("username").to_owned(),
-                email: row.get::<&str, &str>("email").to_owned(),
-                permission: row.get::<&str, i32>("permission"),
-            },
-            title: row.get::<&str, &str>("title").to_owned(),
-            category: Category {
-                id: row.get::<&str, i64>("category"),
-                name: row.get::<&str, &str>("category_name").to_owned(),
-                description: row.get::<&str, &str>("category_description").to_owned(),
-                created_at: row.get::<&str, DateTime<Utc>>("category_created_at"),
-            },
-            content: row.get::<&str, &str>("content").to_owned(),
-            publish: row.get::<&str, bool>("publish"),
-            created_at: row.get::<&str, DateTime<Utc>>("blog_created_at"),
-            updated_at: row.get::<&str, DateTime<Utc>>("updated_at"),
-            updated_by: row.get::<&str, i64>("updated_by"),
-        };
-        blogs.push(blog);
-    }
 
     Response::success(blogs, "查询成功")
 }
 
 pub async fn get_blog(
-    Extension(state): Extension<Arc<AppState>>,
     Path(id): Path<i64>,
+    Extension(state): Extension<Arc<AppState>>,
 ) -> Response<BlogDTO> {
-    let postgres = match state.postgres_pool.get().await {
-        Ok(postgres) => postgres,
-        Err(err) => return Response::error("获取 Postgres 连接失败", err),
-    };
+    let postgres = &state.postgres;
 
-    let row = match postgres
-        .query_one(
-            "SELECT blogs.id AS blog_id, blogs.author, users.avatar, users.username, users.email, users.permission, \
-                blogs.title, blogs.category, categories.name AS category_name, categories.description AS category_description, categories.created_at AS category_created_at, \
-                blogs.content, blogs.publish, blogs.created_at AS blog_created_at, blogs.updated_at, blogs.updated_by FROM blogs \
-                INNER JOIN categories ON blogs.category = categories.id \
-                INNER JOIN users ON blogs.author = users.id WHERE blogs.id = $1",
-            &[&id],
-        )
+    let blog = match BlogEntity::find_by_id(id)
+        .filter(BlogColumn::Publish.eq(true))
+        .join(JoinType::InnerJoin, Relation::Author.def())
+        .join(JoinType::InnerJoin, Relation::Category.def())
+        .column_as(UserColumn::Id, "author_id")
+        .column_as(UserColumn::Avatar, "author_avatar")
+        .column_as(UserColumn::Username, "author_username")
+        .column_as(UserColumn::Email, "author_email")
+        .column_as(UserColumn::Permission, "author_permission")
+        .column_as(CategoryColumn::Id, "category_id")
+        .column_as(CategoryColumn::Name, "category_name")
+        .column_as(CategoryColumn::Description, "category_description")
+        .column_as(CategoryColumn::CreatedAt, "category_created_at")
+        .into_model::<BlogWithRelations>()
+        .one(postgres)
         .await
     {
-        Ok(row) => row,
-        Err(err) => return Response::error(err.to_string().as_str(), err),
-    };
-
-    let blog = BlogDTO {
-        id: row.get::<&str, i64>("blog_id"),
-        author: User {
-            id: row.get::<&str, i64>("author"),
-            avatar: row.get::<&str, &str>("avatar").to_owned(),
-            username: row.get::<&str, &str>("username").to_owned(),
-            email: row.get::<&str, &str>("email").to_owned(),
-            permission: row.get::<&str, i32>("permission"),
-        },
-        title: row.get::<&str, &str>("title").to_owned(),
-        category: Category {
-            id: row.get::<&str, i64>("category"),
-            name: row.get::<&str, &str>("category_name").to_owned(),
-            description: row.get::<&str, &str>("category_description").to_owned(),
-            created_at: row.get::<&str, DateTime<Utc>>("category_created_at"),
-        },
-        content: row.get::<&str, &str>("content").to_owned(),
-        publish: row.get::<&str, bool>("publish"),
-        created_at: row.get::<&str, DateTime<Utc>>("blog_created_at"),
-        updated_at: row.get::<&str, DateTime<Utc>>("updated_at"),
-        updated_by: row.get::<&str, i64>("updated_by"),
+        Ok(Some(blog)) => blog.into_blog_dto(),
+        Ok(None) => return Response::warn("博客不存在"),
+        Err(err) => return Response::error(err),
     };
 
     Response::success(blog, "查询成功")

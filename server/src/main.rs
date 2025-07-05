@@ -1,4 +1,5 @@
 use lettre::{AsyncSmtpTransport, Tokio1Executor};
+use sea_orm::DatabaseConnection;
 
 mod core;
 mod handlers;
@@ -7,8 +8,8 @@ mod routers;
 
 #[derive(Clone)]
 struct AppState {
-    postgres_pool: deadpool_postgres::Pool,
-    redis_pool: deadpool_redis::Pool,
+    postgres: DatabaseConnection,
+    redis: deadpool_redis::Pool,
     mailer: AsyncSmtpTransport<Tokio1Executor>,
 }
 
@@ -20,18 +21,17 @@ async fn main() {
     // 初始化异步日志系统
     let _guard = core::journal::init_async_journal();
 
-    // 创建 Postgres 连接池
-    let postgres_pool = core::postgres::create_postgres_pool();
+    // 创建 SeaORM Postgres 连接
+    let postgres = core::postgres::establish_postgres_connection().await;
 
-    // 创建 Redis 连接池
-    let redis_pool = core::redis::create_redis_pool();
+    let redis = core::redis::establish_redis_connection();
 
     // 创建邮件发送
     let mailer = core::mail::create_mailer();
 
     let state = std::sync::Arc::new(AppState {
-        postgres_pool,
-        redis_pool,
+        postgres,
+        redis,
         mailer,
     });
 

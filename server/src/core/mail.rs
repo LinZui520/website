@@ -6,9 +6,9 @@ use lettre::{
     AsyncSmtpTransport, AsyncTransport, Message, Tokio1Executor,
     transport::smtp::authentication::Credentials,
 };
-use once_cell::sync::Lazy;
 use rand::Rng;
 use regex::Regex;
+use std::sync::OnceLock;
 
 pub fn create_mailer() -> AsyncSmtpTransport<Tokio1Executor> {
     let creds = Credentials::new(env("SMTP_USER"), env("SMTP_PASSWORD"));
@@ -44,10 +44,15 @@ pub async fn send_verification_email(
 }
 
 // 编译一次正则表达式并重用
-static EMAIL_REGEX: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"^[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)+$").unwrap()
-});
+static EMAIL_REGEX: OnceLock<Regex> = OnceLock::new();
+
+fn get_email_regex() -> &'static Regex {
+    EMAIL_REGEX.get_or_init(|| {
+        Regex::new(r"^[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)+$")
+            .expect("Invalid email regex pattern")
+    })
+}
 
 pub fn is_valid_email(email: &str) -> bool {
-    email.len() < 255 && EMAIL_REGEX.is_match(email)
+    email.len() < 255 && get_email_regex().is_match(email)
 }
