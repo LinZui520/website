@@ -209,12 +209,16 @@ pub async fn list_published_blogs(
 
 pub async fn get_blog(
     Path(id): Path<i64>,
+    headers: HeaderMap,
     Extension(state): Extension<Arc<AppState>>,
 ) -> Response<BlogDTO> {
     let postgres = &state.postgres;
 
-    match BlogEntity::find_by_id(id)
-        .filter(BlogColumn::Publish.eq(true))
+    // 尝试提取权限信息（不强制要求）
+    let claims = extract_permissions_from_headers(headers, Permission::Admin);
+
+    // 构建基础查询
+    let mut query = BlogEntity::find_by_id(id)
         .join(JoinType::InnerJoin, Relation::Author.def())
         .join(JoinType::InnerJoin, Relation::Category.def())
         .column_as(UserColumn::Id, "author_id")
@@ -225,11 +229,23 @@ pub async fn get_blog(
         .column_as(CategoryColumn::Id, "category_id")
         .column_as(CategoryColumn::Name, "category_name")
         .column_as(CategoryColumn::Description, "category_description")
-        .column_as(CategoryColumn::CreatedAt, "category_created_at")
-        .into_model::<BlogWithRelations>()
-        .one(postgres)
-        .await
-    {
+        .column_as(CategoryColumn::CreatedAt, "category_created_at");
+
+    // 根据权限决定是否过滤 publish 字段
+    match claims {
+        Some(claims) if claims.user.permission > 1 => {}
+        Some(claims) if claims.user.permission <= 1 => {
+            // 权限 <= 1：只能查看自己的博客（不管是否发布）
+            query = query.filter(BlogColumn::Author.eq(claims.sub));
+        }
+        Some(_) | None => {
+            // 无权限：只能查看已发布的博客
+            query = query.filter(BlogColumn::Publish.eq(true));
+        }
+    }
+
+    // 执行查询
+    match query.into_model::<BlogWithRelations>().one(postgres).await {
         Ok(Some(blog)) => Response::success(blog.into_blog_dto(), "查询成功"),
         Ok(None) => Response::warn("博客不存在"),
         Err(err) => Response::error(err),
