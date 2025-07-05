@@ -90,8 +90,7 @@ pub async fn delete_blog(
         Err(err) => return Response::error(err),
     };
 
-    // 权限检查：管理员可以删除权限低于自己的博客
-    if claims.user.permission < author.permission {
+    if claims.user.permission <= author.permission && claims.sub != author.id {
         return Response::warn("权限不足，无法删除该博客");
     }
 
@@ -128,10 +127,10 @@ pub async fn update_blog(
         None => return Response::warn("分类字段缺失"),
     };
     let content = validate_field!(form, "content", "内容");
-    let publish = form
-        .get("publish")
-        .and_then(|v| v.as_bool())
-        .unwrap_or(false);
+    let publish = match form.get("publish").and_then(|v| v.as_bool()) {
+        Some(publish) => publish,
+        None => return Response::warn("发布字段缺失"),
+    };
 
     // 开启事务
     let txn = match postgres.begin().await {
@@ -151,7 +150,7 @@ pub async fn update_blog(
     };
 
     // 权限检查
-    if claims.user.permission < author.permission {
+    if claims.user.permission <= author.permission && claims.sub != author.id {
         return Response::warn("权限不足，无法编辑该博客");
     }
 
@@ -182,7 +181,7 @@ pub async fn list_published_blogs(
 ) -> Response<Vec<BlogDTO>> {
     let postgres = &state.postgres;
 
-    let blogs = match BlogEntity::find()
+    match BlogEntity::find()
         .filter(BlogColumn::Publish.eq(true))
         .join(JoinType::InnerJoin, Relation::Author.def())
         .join(JoinType::InnerJoin, Relation::Category.def())
@@ -200,11 +199,12 @@ pub async fn list_published_blogs(
         .all(postgres)
         .await
     {
-        Ok(data) => data.into_iter().map(|item| item.into_blog_dto()).collect(),
-        Err(err) => return Response::error(err),
-    };
-
-    Response::success(blogs, "查询成功")
+        Ok(data) => Response::success(
+            data.into_iter().map(|item| item.into_blog_dto()).collect(),
+            "查询成功",
+        ),
+        Err(err) => Response::error(err),
+    }
 }
 
 pub async fn get_blog(
@@ -213,7 +213,7 @@ pub async fn get_blog(
 ) -> Response<BlogDTO> {
     let postgres = &state.postgres;
 
-    let blog = match BlogEntity::find_by_id(id)
+    match BlogEntity::find_by_id(id)
         .filter(BlogColumn::Publish.eq(true))
         .join(JoinType::InnerJoin, Relation::Author.def())
         .join(JoinType::InnerJoin, Relation::Category.def())
@@ -230,10 +230,52 @@ pub async fn get_blog(
         .one(postgres)
         .await
     {
-        Ok(Some(blog)) => blog.into_blog_dto(),
-        Ok(None) => return Response::warn("博客不存在"),
-        Err(err) => return Response::error(err),
+        Ok(Some(blog)) => Response::success(blog.into_blog_dto(), "查询成功"),
+        Ok(None) => Response::warn("博客不存在"),
+        Err(err) => Response::error(err),
+    }
+}
+
+pub async fn list_blogs(
+    headers: HeaderMap,
+    Extension(state): Extension<Arc<AppState>>,
+) -> Response<Vec<BlogDTO>> {
+    let claims = match extract_permissions_from_headers(headers, Permission::Admin) {
+        Some(claims) => claims,
+        None => return Response::warn("权限不足"),
     };
 
-    Response::success(blog, "查询成功")
+    let postgres = &state.postgres;
+
+    // 构建基础查询
+    let mut query = BlogEntity::find()
+        .join(JoinType::InnerJoin, Relation::Author.def())
+        .join(JoinType::InnerJoin, Relation::Category.def())
+        .column_as(UserColumn::Id, "author_id")
+        .column_as(UserColumn::Avatar, "author_avatar")
+        .column_as(UserColumn::Username, "author_username")
+        .column_as(UserColumn::Email, "author_email")
+        .column_as(UserColumn::Permission, "author_permission")
+        .column_as(CategoryColumn::Id, "category_id")
+        .column_as(CategoryColumn::Name, "category_name")
+        .column_as(CategoryColumn::Description, "category_description")
+        .column_as(CategoryColumn::CreatedAt, "category_created_at")
+        .order_by_desc(BlogColumn::CreatedAt);
+
+    // 根据权限添加过滤条件
+    if claims.user.permission == 1 {
+        // Admin 权限：只显示自己的博客
+        query = query.filter(BlogColumn::Author.eq(claims.sub));
+    } else if claims.user.permission >= 2 {
+        // Master+ 权限：显示所有博客
+    }
+
+    // 执行查询
+    match query.into_model::<BlogWithRelations>().all(postgres).await {
+        Ok(data) => Response::success(
+            data.into_iter().map(|item| item.into_blog_dto()).collect(),
+            "查询成功",
+        ),
+        Err(err) => Response::error(err),
+    }
 }
