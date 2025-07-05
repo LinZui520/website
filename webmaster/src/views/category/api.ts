@@ -22,7 +22,7 @@ export const getCategory = <T> (id: number) => request<T>({
 });
 
 export const updateCategory = (id: number, name: string, description: string) => request({
-  url: `/category/update`,
+  url: `/category/update/${id}`,
   method: 'put',
-  data: { id, name, description }
+  data: { name, description }
 });

@@ -22,10 +22,9 @@ export const createBlog = <T> (title: string, content: string, category: number,
 });
 
 export const updateBlog = <T> (id: number, title: string, content: string, category: number, publish: boolean) => request<T>({
-  url: '/blog/update',
+  url: `/blog/update/${id}`,
   method: 'put',
   data: {
-    id,
     title,
     content,
     category,
