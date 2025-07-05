@@ -9,7 +9,7 @@ import { mdiDelete, mdiPlus, mdiBookEdit } from '@mdi/js';
 import { headers } from './constant';
 
 export default defineComponent({
-  name: 'IndexView',
+  name: 'BlogView',
   setup() {
     const [loading, setLoading] = useState(false);
     const [blogList, setBlogList] = useState<BlogDTO[]>([]);

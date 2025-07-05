@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'IndexView',
+  name: 'HomeView',
   setup() {
     return () => (
       <div>

@@ -23,14 +23,10 @@ export const useSnackbar = (options: SnackbarOptions) => {
 
   const SnackbarComponent = () => (
     <VSnackbar
-      modelValue={visible.value}
-      {...{
-        'onUpdate:modelValue': (val: boolean) => {
-          visible.value = val;
-        }
-      }}
       color={color.value}
       location={options.location}
+      modelValue={visible.value}
+      onUpdate:modelValue={(value) => visible.value = value}
       timeout={options.timeout}
     >
       {text.value}

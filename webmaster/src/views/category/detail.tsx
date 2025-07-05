@@ -69,8 +69,8 @@ export default defineComponent({
         <VRow justify="center">
           <VCol cols="6">
             <VForm onSubmit={submit}>
-              <VTextField label="标签名称" modelValue={name} variant="solo-filled" />
-              <VTextField label="标签描述" modelValue={description} variant="solo-filled" />
+              <VTextField label="标签名称" modelValue={name.value} onUpdate:modelValue={(value) => setName(value)} variant="solo-filled" />
+              <VTextField label="标签描述" modelValue={description.value} onUpdate:modelValue={(value) => setDescription(value)} variant="solo-filled" />
               <VRow justify="center">
                 <VBtn loading={loading.value} rounded="xl" size="large" {...{ onClick: submit, type: 'submit' }}>
                   提交

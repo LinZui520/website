@@ -16,7 +16,7 @@ export default defineComponent({
     const { toggleMarkdownTheme } = useMarkdownTheme();
     const permission = computed(() => authStore.permission);
     const menu = [
-      { title: '主页', icon: mdiHome, to: '/' },
+      { title: '主页', icon: mdiHome, to: '/home' },
       { title: '标签管理', icon: mdiTag, to: '/category' },
       { title: '博客管理', icon: mdiBookOpenPageVariantOutline, to: '/blog' }
     ];

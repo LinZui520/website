@@ -18,8 +18,8 @@ export default defineComponent({
   setup() {
     // 表单数据
     const [title, setTitle] = useState('');
-    const content = ref('');
-    const category = ref<Category | null>(null);
+    const [content, setContent] = useState('');
+    const [category, setCategory] = useState<Category | null>(null);
     const [publish, setPublish] = useState(false);
     const [categories, setCategories] = useState<Category[]>([]);
 
@@ -93,9 +93,7 @@ export default defineComponent({
         const spaces = '  ';
 
         // 创建新的文本内容
-        content.value = content.value.substring(0, start) +
-          spaces +
-          content.value.substring(end);
+        setContent(content.value.substring(0, start) + spaces + content.value.substring(end));
 
         // 设置新的光标位置
         setTimeout(() => {
@@ -117,8 +115,8 @@ export default defineComponent({
         case 'update':
           getBlog<BlogDTO>(Number(id.value)).then((res) => {
             setTitle(res.data.data.title);
-            content.value = res.data.data.content;
-            category.value = res.data.data.category;
+            setContent(res.data.data.content);
+            setCategory(res.data.data.category);
             setPublish(res.data.data.publish);
           });
           break;
@@ -167,7 +165,7 @@ export default defineComponent({
               items={categories.value}
               label="标签"
               modelValue={category.value}
-              onUpdate:modelValue={(value) => category.value = value}
+              onUpdate:modelValue={(value) => setCategory(value)}
               rounded="xl"
               style={{ height: '48px' }}
               variant="underlined"
