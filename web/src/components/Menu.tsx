@@ -78,11 +78,11 @@ const Menu = () => {
       <div
         className={
           'bg-mint-50 dark:bg-mint-950 h-screen w-screen fixed top-0 z-30 translate-x-[150%] ' +
-          'flex flex-row items-center truncate'
+          'flex flex-row items-center justify-center truncate'
         }
         id="nav"
       >
-        <nav className={'w-2/5 h-full p-4 flex flex-col items-end justify-center gap-8'}>
+        <nav className={'w-4/5 h-full p-4 flex flex-col items-center justify-center gap-8'}>
           <div className={'text-base text-mint-500'}>NAVIGATION MENU</div>
           <hr className={'w-16 border-1 border-mint-500'} />
           {menu.filter((item) => item !== null).map((item, index) => (
@@ -102,8 +102,7 @@ const Menu = () => {
             </Link>
           ))}
         </nav>
-        <div className={'w-2/5 h-full'} />
-        <div className={'w-1/5 h-full bg-mint-100 dark:bg-mint-900 p-4 flex flex-col items-start justify-center gap-8'}>
+        <div className={'w-1/5 max-w-xl h-full bg-mint-100 dark:bg-mint-900 p-4 hidden xl:flex flex-col items-start justify-center gap-8'}>
           <div className={'text-3xl text-mint-500'}>CONTACT US</div>
           <hr className={'w-16 border-2 border-mint-500'} />
           <div className={'text-base underline text-mint-950 dark:text-mint-50'}>
