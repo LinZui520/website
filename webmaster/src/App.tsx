@@ -1,13 +1,14 @@
 import { RouterView } from 'vue-router';
 import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue';
 import ErrorView from './views/error/index.tsx';
-import { VApp, VAppBar, VBtn, VList, VListItem, VMain, VNavigationDrawer, VAppBarNavIcon } from 'vuetify/components';
+import { VApp, VAppBar, VAppBarNavIcon, VList, VListItem, VMain, VNavigationDrawer } from 'vuetify/components';
 import request from './utils/axios';
 import { useAuthStore, type AuthState } from './stores/auth';
-import { mdiHome, mdiTag, mdiBookOpenPageVariantOutline } from '@mdi/js';
+import { mdiKeyboardReturn } from '@mdi/js';
 import { useTheme } from 'vuetify';
 import useMarkdownTheme from './composables/useMarkdownTheme.ts';
 import { getWebsiteUrl } from './utils/env.ts';
+import { menu, type MenuItem } from './constants/menu.ts';
 
 export default defineComponent({
   name: 'App',
@@ -16,18 +17,18 @@ export default defineComponent({
     const authStore = useAuthStore();
     const { toggleMarkdownTheme } = useMarkdownTheme();
     const permission = computed(() => authStore.permission);
-    // 控制导航抽屉的显示状态
-    const drawer = ref(false);
-    const menu = [
-      { title: '主页', icon: mdiHome, to: '/home' },
-      { title: '标签管理', icon: mdiTag, to: '/category' },
-      { title: '博客管理', icon: mdiBookOpenPageVariantOutline, to: '/blog' }
-    ];
+    const drawer = ref<boolean>(false);
+    // 检测是否为桌面端（宽度 >= 960px）
+    const isDesktop = ref<boolean>(window.innerWidth >= 960);
 
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     const toggleTheme = (event: MediaQueryListEvent | MediaQueryList) => {
       theme.global.name.value = event.matches ? 'dark' : 'light';
       toggleMarkdownTheme(event.matches);
+    };
+
+    const handleResize = () => {
+      isDesktop.value = window.innerWidth >= 960;
     };
 
     onMounted(() => {
@@ -38,47 +39,46 @@ export default defineComponent({
     onMounted(() => {
       toggleTheme(media);
       media.addEventListener('change', toggleTheme);
+      window.addEventListener('resize', handleResize);
     });
+
     onUnmounted(() => {
       media.removeEventListener('change', toggleTheme);
+      window.removeEventListener('resize', handleResize);
     });
 
     return () => permission.value ? (
       <VApp>
         <VAppBar elevation="1">
           {{
-            prepend: () => (
+            prepend: !isDesktop.value ? (() => (
               <VAppBarNavIcon block {...{ onClick: () => { drawer.value = !drawer.value; } }} />
-            ),
+            )) : undefined,
             default: () => (
               <VListItem
                 lines="two"
-                prepend-avatar={getWebsiteUrl() + `/avatar/${authStore.user?.avatar}`}
+                prepend-avatar={`${authStore.user?.avatar}`}
                 title={authStore.user?.username}
               />
             )
           }}
         </VAppBar>
-        <VNavigationDrawer modelValue={drawer.value} temporary>
+        <VNavigationDrawer
+          expandOnHover={isDesktop.value}
+          modelValue={isDesktop.value || drawer.value}
+          rail={isDesktop.value}
+          temporary={!isDesktop.value}
+        >
           {{
             default: () => (
               <VList>
-                {menu.map((item) => (
+                {menu.map((item: MenuItem) => permission.value && permission.value >= item.permission && (
                   <VListItem key={item.title} link prependIcon={item.icon} title={item.title} to={item.to} />
                 ))}
               </VList>
             ),
             append: () => (
-              <div class="pa-2">
-                <VBtn
-                  block
-                  {...{ onClick: () => {
-                    window.location.href = getWebsiteUrl();
-                  } }}
-                >
-                  退出
-                </VBtn>
-              </div>
+              <VListItem href={getWebsiteUrl()} key="/" link prependIcon={mdiKeyboardReturn} title="退出" />
             )
           }}
         </VNavigationDrawer>

@@ -34,6 +34,11 @@ const router = createRouter({
       component: () => import('../views/category/detail')
     },
     {
+      path: '/image',
+      name: 'image',
+      component: () => import('../views/image/index')
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'errorView',
       component: ErrorView

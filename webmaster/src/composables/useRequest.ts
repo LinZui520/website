@@ -29,5 +29,5 @@ export const useRequest = () => {
     });
   };
 
-  return { handleRequest, SnackbarComponent };
+  return { handleRequest, SnackbarComponent, show };
 };
