@@ -2,12 +2,14 @@ use crate::AppState;
 use crate::core::journal::journal_request;
 use crate::routers::blog::create_blog_router;
 use crate::routers::category::create_category_router;
+use crate::routers::image::create_image_router;
 use crate::routers::user::create_user_router;
 use axum::{Extension, Router, middleware};
 use std::sync::Arc;
 
 mod blog;
 mod category;
+mod image;
 mod user;
 
 pub fn create_app_router(state: Arc<AppState>) -> Router {
@@ -15,6 +17,7 @@ pub fn create_app_router(state: Arc<AppState>) -> Router {
         .nest("/api", create_user_router())
         .nest("/api", create_category_router())
         .nest("/api", create_blog_router())
+        .nest("/api", create_image_router())
         .layer(Extension(state))
         .layer(middleware::from_fn(journal_request))
 }

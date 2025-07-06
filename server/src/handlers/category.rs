@@ -39,7 +39,7 @@ pub async fn create_category(
 
     match category.insert(postgres).await {
         Ok(_) => Response::success((), "分类创建成功"),
-        Err(err) => Response::error(err),
+        Err(err) => Response::error(format!("创建分类失败: {err}")),
     }
 }
 
@@ -57,7 +57,7 @@ pub async fn delete_category(
 
     match CategoryEntity::delete_by_id(id).exec(postgres).await {
         Ok(_) => Response::success((), "分类删除成功"),
-        Err(err) => Response::error(err),
+        Err(err) => Response::error(format!("删除分类失败: {err}")),
     }
 }
 
@@ -85,7 +85,7 @@ pub async fn update_category(
         .await
     {
         Ok(_) => Response::success((), "分类更新成功"),
-        Err(err) => Response::error(err),
+        Err(err) => Response::error(format!("更新分类失败: {err}")),
     }
 }
 
@@ -98,7 +98,7 @@ pub async fn list_categories(
         Ok(models) => {
             Response::success(models.into_iter().map(Category::from).collect(), "查询成功")
         }
-        Err(err) => Response::error(err),
+        Err(err) => Response::error(format!("查询分类列表失败: {err}")),
     }
 }
 
@@ -111,6 +111,6 @@ pub async fn get_category(
     match CategoryEntity::find_by_id(id).one(postgres).await {
         Ok(Some(model)) => Response::success(Category::from(model), "查询成功"),
         Ok(None) => Response::warn("分类不存在"),
-        Err(err) => Response::error(err),
+        Err(err) => Response::error(format!("查询分类失败: {err}")),
     }
 }

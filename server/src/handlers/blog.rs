@@ -55,7 +55,7 @@ pub async fn create_blog(
     Response::success(
         Blog::from(match blog.insert(postgres).await {
             Ok(blog) => blog,
-            Err(err) => return Response::error(err),
+            Err(err) => return Response::error(format!("创建博客失败: {err}")),
         }),
         "创建博客成功",
     )
@@ -76,7 +76,7 @@ pub async fn delete_blog(
     // 开启事务
     let txn = match postgres.begin().await {
         Ok(txn) => txn,
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("开始事务失败: {err}")),
     };
 
     let (_, author) = match BlogEntity::find_by_id(id)
@@ -87,7 +87,7 @@ pub async fn delete_blog(
         Ok(Some((blog, Some(author)))) => (blog, author),
         Ok(Some((_, None))) => return Response::warn("博客作者信息异常"),
         Ok(None) => return Response::warn("博客不存在"),
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("查询博客失败: {err}")),
     };
 
     if claims.user.permission <= author.permission && claims.sub != author.id {
@@ -97,12 +97,12 @@ pub async fn delete_blog(
     // 删除博客
     match BlogEntity::delete_by_id(id).exec(&txn).await {
         Ok(_) => {}
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("删除博客失败: {err}")),
     }
 
     // 提交事务
     if let Err(err) = txn.commit().await {
-        return Response::error(err);
+        return Response::error(format!("提交事务失败: {err}"));
     }
 
     Response::success((), "删除博客成功")
@@ -135,7 +135,7 @@ pub async fn update_blog(
     // 开启事务
     let txn = match postgres.begin().await {
         Ok(txn) => txn,
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("开始事务失败: {err}")),
     };
 
     let (blog, author) = match BlogEntity::find_by_id(id)
@@ -146,7 +146,7 @@ pub async fn update_blog(
         Ok(Some((blog, Some(author)))) => (blog, author),
         Ok(Some((_, None))) => return Response::warn("博客作者信息异常"),
         Ok(None) => return Response::warn("博客不存在"),
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("查询博客失败: {err}")),
     };
 
     // 权限检查
@@ -165,12 +165,12 @@ pub async fn update_blog(
 
     match blog_active.update(&txn).await {
         Ok(_) => {}
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("更新博客失败: {err}")),
     }
 
     // 提交事务
     if let Err(err) = txn.commit().await {
-        return Response::error(err);
+        return Response::error(format!("提交事务失败: {err}"));
     }
 
     Response::success((), "更新博客成功")
@@ -203,7 +203,7 @@ pub async fn list_published_blogs(
             data.into_iter().map(|item| item.into_blog_dto()).collect(),
             "查询成功",
         ),
-        Err(err) => Response::error(err),
+        Err(err) => Response::error(format!("查询已发布博客失败: {err}")),
     }
 }
 
@@ -248,7 +248,7 @@ pub async fn get_blog(
     match query.into_model::<BlogWithRelations>().one(postgres).await {
         Ok(Some(blog)) => Response::success(blog.into_blog_dto(), "查询成功"),
         Ok(None) => Response::warn("博客不存在"),
-        Err(err) => Response::error(err),
+        Err(err) => Response::error(format!("查询博客失败: {err}")),
     }
 }
 
@@ -292,6 +292,6 @@ pub async fn list_blogs(
             data.into_iter().map(|item| item.into_blog_dto()).collect(),
             "查询成功",
         ),
-        Err(err) => Response::error(err),
+        Err(err) => Response::error(format!("查询博客列表失败: {err}")),
     }
 }

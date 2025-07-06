@@ -9,7 +9,7 @@ use axum::{Extension, Json};
 use bcrypt::{hash, verify};
 use chrono::Local;
 use deadpool_redis::redis::AsyncCommands;
-use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set, TransactionTrait};
 use serde_json::Value;
 use std::sync::{Arc, OnceLock};
 
@@ -19,7 +19,7 @@ pub async fn verification_code(
 ) -> Response<()> {
     let mut redis = match state.redis.get().await {
         Ok(redis) => redis,
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("获取Redis连接失败: {err}")),
     };
 
     let email = match form.get("email").and_then(|v| v.as_str()) {
@@ -39,13 +39,13 @@ pub async fn verification_code(
             );
         }
         Ok(false) => {}
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("Redis查询失败: {err}")),
     }
 
     let code: u32 = generate_random_code();
     match send_verification_email(&state.mailer, email.to_owned(), code.to_string()).await {
         Ok(_) => {}
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("发送验证邮件失败: {err}")),
     }
 
     match redis
@@ -53,7 +53,7 @@ pub async fn verification_code(
         .await
     {
         Ok(_) => Response::success((), "验证码发送成功"),
-        Err(err) => Response::error(err),
+        Err(err) => Response::error(format!("保存验证码失败: {err}")),
     }
 }
 
@@ -66,7 +66,7 @@ pub async fn register(
     let postgres = &state.postgres;
     let mut redis = match state.redis.get().await {
         Ok(redis) => redis,
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("获取Redis连接失败: {err}")),
     };
 
     let username = validate_field!(form, "username", "用户名");
@@ -85,7 +85,7 @@ pub async fn register(
 
     let hashed = match hash(password, 4) {
         Ok(hashed) => hashed,
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("密码加密失败: {err}")),
     };
 
     let avatar = DEFAULT_AVATAR.get_or_init(|| env("WEBSITE_USER_DEFAULT_AVATAR"));
@@ -102,7 +102,7 @@ pub async fn register(
 
     match user.insert(postgres).await {
         Ok(_) => Response::success((), "注册成功"),
-        Err(err) => Response::error(err),
+        Err(err) => Response::error(format!("用户注册失败: {err}")),
     }
 }
 
@@ -123,7 +123,7 @@ pub async fn login(
     {
         Ok(Some(user)) => user,
         Ok(None) => return Response::warn("登录失败，用户不存在"),
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("查询用户失败: {err}")),
     };
 
     // 验证密码
@@ -142,7 +142,7 @@ pub async fn login(
     // 生成 JWT token
     let token = match generate_jwt(user.id, user_credentials) {
         Ok(token) => token,
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("生成JWT失败: {err}")),
     };
 
     Response::success(
@@ -168,7 +168,7 @@ pub async fn token_login(headers: HeaderMap) -> Response<UserDTO> {
 
     let claims = match verify_jwt(token.as_str()) {
         Ok(claims) => claims,
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("JWT验证失败: {err}")),
     };
 
     if Local::now().timestamp() > claims.exp {
@@ -196,7 +196,7 @@ pub async fn reset_password(
     let postgres = &state.postgres;
     let mut redis = match state.redis.get().await {
         Ok(redis) => redis,
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("获取Redis连接失败: {err}")),
     };
 
     // 验证表单字段
@@ -214,29 +214,42 @@ pub async fn reset_password(
         return Response::warn("验证码错误");
     }
 
-    // 查找用户是否存在
+    // 哈希新密码（在事务外进行，避免长时间占用事务）
+    let hashed = match hash(password, 4) {
+        Ok(hashed) => hashed,
+        Err(err) => return Response::error(format!("密码加密失败: {err}")),
+    };
+
+    // 开启事务
+    let txn = match postgres.begin().await {
+        Ok(txn) => txn,
+        Err(err) => return Response::error(format!("开始事务失败: {err}")),
+    };
+
+    // 在事务中查找用户是否存在
     let user = match UserEntity::find()
         .filter(Column::Email.eq(email))
-        .one(postgres)
+        .one(&txn)
         .await
     {
         Ok(Some(user)) => user,
         Ok(None) => return Response::warn("用户不存在"),
-        Err(err) => return Response::error(err),
+        Err(err) => return Response::error(format!("查询用户失败: {err}")),
     };
 
-    // 哈希新密码
-    let hashed = match hash(password, 4) {
-        Ok(hashed) => hashed,
-        Err(err) => return Response::error(err),
-    };
-
-    // 更新用户密码
+    // 在事务中更新用户密码
     let mut user_active: ActiveModel = user.into();
     user_active.password = Set(hashed);
 
-    match user_active.update(postgres).await {
-        Ok(_) => Response::success((), "密码重置成功"),
-        Err(err) => Response::error(err),
+    match user_active.update(&txn).await {
+        Ok(_) => {}
+        Err(err) => return Response::error(format!("更新密码失败: {err}")),
     }
+
+    // 提交事务
+    if let Err(err) = txn.commit().await {
+        return Response::error(format!("提交事务失败: {err}"));
+    }
+
+    Response::success((), "密码重置成功")
 }

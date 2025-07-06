@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-axum = "0.8.1"
-tokio = { version = "1.44.0", features = ["rt-multi-thread"] }
+axum = { version = "0.8.1", features = ["multipart"] }
+tokio = { version = "1.44.0", features = ["rt-multi-thread", "fs"] }
 sea-orm = { version = "1.1.0", features = [
     "sqlx-postgres",      # PostgreSQL 数据库驱动 - 必需
     "runtime-tokio-rustls", # 异步运行时和TLS支持 - 必需
