@@ -2,7 +2,7 @@
 const Footer = () => {
 
   return (
-    <footer className="w-full h-32 text-mint-500 bg-mint-50 dark:bg-mint-950 flex flex-row space-x-4 items-center justify-center">
+    <footer className="w-full h-16 md:h-32 text-mint-500 bg-mint-50 dark:bg-mint-950 flex flex-row space-x-4 items-center justify-center">
       <span className="underline">Copyright © 贺阳明</span>
       <a
         className="underline"

@@ -61,11 +61,11 @@ const Menu = () => {
    */
   return (
     <header
-      className={'w-screen h-32 z-40 fixed top-0 flex flex-row items-center justify-between font-mono'}
+      className={'w-screen h-32 z-40 fixed top-0 flex flex-row items-center justify-between font-mono pointer-events-none'}
       ref={container}
     >
-      <Logo className={'ml-12 z-40'} />
-      <div className={'flex flex-row items-center justify-center mr-12 z-40 stroke-mint-950 dark:stroke-mint-50'}>
+      <Logo className={'ml-12 z-40 pointer-events-auto'} />
+      <div className={'flex flex-row items-center justify-center mr-12 z-40 stroke-mint-950 dark:stroke-mint-50 pointer-events-auto'}>
         <svg
           className={'stroke-3 h-16 w-16 cursor-pointer'}
           onClick={() => setIsOpen((val) => !val)}
@@ -78,7 +78,7 @@ const Menu = () => {
       <div
         className={
           'bg-mint-50 dark:bg-mint-950 h-screen w-screen fixed top-0 z-30 translate-x-[150%] ' +
-          'flex flex-row items-center justify-center truncate'
+          'flex flex-row items-center justify-center truncate pointer-events-auto'
         }
         id="nav"
       >
