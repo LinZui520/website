@@ -32,7 +32,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      request<AuthState>({ url: '/user/jwt-login', method: 'get' })
+      request<AuthState>({ url: '/auth/jwt-login', method: 'get' })
         .then((res) => authStore.setAuth(res.data.data.user, res.data.data.token));
     });
 
