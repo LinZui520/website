@@ -7,7 +7,6 @@ import { useAuthStore, type AuthState } from './stores/auth';
 import { mdiKeyboardReturn } from '@mdi/js';
 import { useTheme } from 'vuetify';
 import useMarkdownTheme from './composables/useMarkdownTheme.ts';
-import { getWebsiteUrl } from './utils/env.ts';
 import { menu, type MenuItem } from './constants/menu.ts';
 import { isDefined } from './utils/utils.ts';
 
@@ -79,7 +78,7 @@ export default defineComponent({
               </VList>
             ),
             append: () => (
-              <VListItem href={getWebsiteUrl()} key="/" link prependIcon={mdiKeyboardReturn} title="退出" />
+              <VListItem href={`${window.location.protocol}//${window.location.hostname}`} key="/" link prependIcon={mdiKeyboardReturn} title="退出" />
             )
           }}
         </VNavigationDrawer>
