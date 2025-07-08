@@ -9,6 +9,7 @@ import { useTheme } from 'vuetify';
 import useMarkdownTheme from './composables/useMarkdownTheme.ts';
 import { getWebsiteUrl } from './utils/env.ts';
 import { menu, type MenuItem } from './constants/menu.ts';
+import { isDefined } from './utils/utils.ts';
 
 export default defineComponent({
   name: 'App',
@@ -47,7 +48,7 @@ export default defineComponent({
       window.removeEventListener('resize', handleResize);
     });
 
-    return () => permission.value ? (
+    return () => isDefined(permission.value) ? (
       <VApp>
         <VAppBar elevation="1">
           {{
@@ -72,7 +73,7 @@ export default defineComponent({
           {{
             default: () => (
               <VList>
-                {menu.map((item: MenuItem) => permission.value && permission.value >= item.permission && (
+                {menu.map((item: MenuItem) => isDefined(permission.value) && permission.value! >= item.permission && (
                   <VListItem key={item.title} link prependIcon={item.icon} title={item.title} to={item.to} />
                 ))}
               </VList>
