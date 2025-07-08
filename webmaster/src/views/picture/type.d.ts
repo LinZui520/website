@@ -1,6 +1,6 @@
 import type { User } from '@/stores/auth';
 
-export interface Image {
+export interface Picture {
   id: number;
   author: number;
   filename: string;
@@ -8,7 +8,7 @@ export interface Image {
   created_at: string;
 }
 
-export interface ImageDTO {
+export interface PictureDTO {
   id: number;
   author: User;
   filename: string;

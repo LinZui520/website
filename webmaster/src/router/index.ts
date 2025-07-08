@@ -34,9 +34,9 @@ const router = createRouter({
       component: () => import('../views/category/detail')
     },
     {
-      path: '/image',
-      name: 'image',
-      component: () => import('../views/image/index')
+      path: '/picture',
+      name: 'picture',
+      component: () => import('../views/picture/index')
     },
     {
       path: '/:pathMatch(.*)*',

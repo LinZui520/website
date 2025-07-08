@@ -1,6 +1,6 @@
 import { defineComponent, onMounted, ref } from 'vue';
-import { deleteImage, listImages, uploadImage } from './api';
-import type { ImageDTO } from './type';
+import { deletePicture, listPictures, uploadPicture } from './api';
+import type { PictureDTO } from './type';
 import { VBtn, VCard, VCardActions, VCardText, VCol, VContainer, VDataTable, VDialog, VFileInput, VImg, VRow, VSpacer } from 'vuetify/components';
 import { useRequest } from '@/composables/useRequest';
 import { useState } from '@/composables/useState';
@@ -8,26 +8,26 @@ import { headers } from './constant';
 import { mdiContentCopy, mdiDelete, mdiPlus, mdiUpload } from '@mdi/js';
 
 export default defineComponent({
-  name: 'ImageView',
+  name: 'PictureView',
   setup() {
     const [loading, setLoading] = useState(false);
-    const [imageList, setImageList] = useState<ImageDTO[]>([]);
+    const [pictureList, setPictureList] = useState<PictureDTO[]>([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
     const [showUploadDialog, setShowUploadDialog] = useState<boolean>(false);
-    const [deleteImageId, setDeleteImageId] = useState<number>(0);
+    const [deletePictureId, setDeletePictureId] = useState<number>(0);
     const fileInput = ref<File | null>(null);
     const { handleRequest, SnackbarComponent, show } = useRequest();
 
-    const getImageList = () => {
-      handleRequest<ImageDTO[]>(
-        () => listImages<ImageDTO[]>(),
-        (res) => setImageList(res.data.data)
+    const getPictureList = () => {
+      handleRequest<PictureDTO[]>(
+        () => listPictures<PictureDTO[]>(),
+        (res) => setPictureList(res.data.data)
       );
     };
 
     const handleOpenDeleteDialog = (id: number) => {
       setShowDeleteDialog(true);
-      setDeleteImageId(id);
+      setDeletePictureId(id);
     };
 
     const handleCopyUrl = async (url: string) => {
@@ -39,11 +39,11 @@ export default defineComponent({
       }
     };
 
-    const handleDeleteImage = () => {
+    const handleDeletePicture = () => {
       setLoading(true);
       handleRequest(
-        () => deleteImage(deleteImageId.value),
-        () => setImageList(imageList.value.filter((item) => item.id !== deleteImageId.value)),
+        () => deletePicture(deletePictureId.value),
+        () => setPictureList(pictureList.value.filter((item) => item.id !== deletePictureId.value)),
         undefined,
         () => {
           setLoading(false);
@@ -52,7 +52,7 @@ export default defineComponent({
       );
     };
 
-    const handleUploadImage = () => {
+    const handleUploadPicture = () => {
       if (!fileInput.value) {
         return;
       }
@@ -62,8 +62,8 @@ export default defineComponent({
       formData.append('image', fileInput.value);
 
       handleRequest(
-        () => uploadImage(formData),
-        () => getImageList(),
+        () => uploadPicture(formData),
+        () => getPictureList(),
         undefined,
         () => {
           setLoading(false);
@@ -74,14 +74,14 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      getImageList();
+      getPictureList();
     });
 
     return () => (
       <VContainer fluid>
         <VDataTable
           headers={headers}
-          items={imageList.value}
+          items={pictureList.value}
         >
           {{
             top: () => (
@@ -96,7 +96,7 @@ export default defineComponent({
                 </VCol>
               </VRow>
             ),
-            'item.url': ({ item }: { item: ImageDTO }) => (
+            'item.url': ({ item }: { item: PictureDTO }) => (
               <VImg
                 height="240"
                 src={item.url}
@@ -104,10 +104,10 @@ export default defineComponent({
                 width="240"
               />
             ),
-            'item.filename': ({ item }: { item: ImageDTO }) => item.filename,
-            'item.author': ({ item }: { item: ImageDTO }) => item.author?.username || '未知',
-            'item.created_at': ({ item }: { item: ImageDTO }) => (new Date(item.created_at).toLocaleString()),
-            'item.actions': ({ item }: { item: ImageDTO }) => (
+            'item.filename': ({ item }: { item: PictureDTO }) => item.filename,
+            'item.author': ({ item }: { item: PictureDTO }) => item.author?.username || '未知',
+            'item.created_at': ({ item }: { item: PictureDTO }) => (new Date(item.created_at).toLocaleString()),
+            'item.actions': ({ item }: { item: PictureDTO }) => (
               <div style={{ display: 'flex', gap: '8px' }}>
                 <VBtn
                   prependIcon={mdiContentCopy}
@@ -137,7 +137,7 @@ export default defineComponent({
             <VCardActions>
               <VSpacer />
               <VBtn rounded="xl" variant="outlined" {...{ onClick: () => setShowDeleteDialog(false) }}>取消</VBtn>
-              <VBtn loading={loading.value} rounded="xl" variant="outlined" {...{ onClick: () => { handleDeleteImage(); } }}>确定</VBtn>
+              <VBtn loading={loading.value} rounded="xl" variant="outlined" {...{ onClick: () => { handleDeletePicture(); } }}>确定</VBtn>
             </VCardActions>
           </VCard>
         </VDialog>
@@ -164,7 +164,7 @@ export default defineComponent({
                 loading={loading.value}
                 rounded="xl"
                 variant="outlined"
-                {...{ onClick: () => { handleUploadImage(); } }}
+                {...{ onClick: () => { handleUploadPicture(); } }}
               >
                 上传
               </VBtn>
