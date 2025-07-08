@@ -1,7 +1,7 @@
 use crate::AppState;
 use crate::core::env::env;
 use crate::core::jwt::extract_permissions_from_headers;
-use crate::models::image::{ActiveModel, ImageDTO, ImageWithRelations, Relation};
+use crate::models::picture::{ActiveModel, PictureDTO, PictureWithRelations, Relation};
 use crate::models::response::Response;
 use crate::models::user::{Column as UserColumn, Entity as UserEntity, Permission};
 use axum::extract::Path as PathExtract;
@@ -18,14 +18,14 @@ use std::sync::{Arc, OnceLock};
 use tokio::fs;
 use tokio::io::AsyncWriteExt;
 
-static IMAGE_UPLOAD_DIRECTORY: OnceLock<String> = OnceLock::new();
-static IMAGE_BASE_PATH: OnceLock<String> = OnceLock::new();
+static PICTURE_UPLOAD_DIRECTORY: OnceLock<String> = OnceLock::new();
+static PICTURE_BASE_PATH: OnceLock<String> = OnceLock::new();
 
 /// 上传图片处理函数
 ///
 /// 接受multipart/form-data格式的图片文件，保存到本地文件系统
 /// 并在数据库中记录图片信息
-pub async fn upload_image(
+pub async fn upload_picture(
     headers: HeaderMap,
     Extension(state): Extension<Arc<AppState>>,
     mut multipart: Multipart,
@@ -39,11 +39,11 @@ pub async fn upload_image(
     let postgres = &state.postgres;
 
     // 获取环境变量中的上传目录配置
-    let image_upload_directory =
-        IMAGE_UPLOAD_DIRECTORY.get_or_init(|| env("WEBSITE_IMAGE_UPLOAD_DIRECTORY"));
+    let picture_upload_directory =
+        PICTURE_UPLOAD_DIRECTORY.get_or_init(|| env("WEBSITE_PICTURE_UPLOAD_DIRECTORY"));
 
     // 确保上传目录存在
-    if let Err(err) = fs::create_dir_all(&image_upload_directory).await {
+    if let Err(err) = fs::create_dir_all(&picture_upload_directory).await {
         return Response::error(format!("创建上传目录失败: {err}"));
     }
 
@@ -84,7 +84,7 @@ pub async fn upload_image(
     // 生成唯一文件名（使用毫秒级时间戳）
     let timestamp = chrono::Utc::now().timestamp_millis();
     let unique_filename = format!("{timestamp}.{extension}");
-    let file_path = format!("{image_upload_directory}/{unique_filename}");
+    let file_path = format!("{picture_upload_directory}/{unique_filename}");
 
     // 获取文件数据
     let data = match field.bytes().await {
@@ -112,20 +112,20 @@ pub async fn upload_image(
     }
 
     // 构建图片URL（使用环境变量配置的基础路径）
-    let image_base_path = IMAGE_BASE_PATH.get_or_init(|| env("WEBSITE_IMAGE_BASE_PATH"));
-    let image_url = format!("{image_base_path}/{unique_filename}");
+    let picture_base_path = PICTURE_BASE_PATH.get_or_init(|| env("WEBSITE_PICTURE_BASE_PATH"));
+    let picture_url = format!("{picture_base_path}/{unique_filename}");
 
     // 在数据库中保存图片记录
-    let image_active = ActiveModel {
+    let picture_active = ActiveModel {
         author: Set(claims.sub),
-        url: Set(image_url.to_owned()),
+        url: Set(picture_url.to_owned()),
         filename: Set(unique_filename.to_owned()),
         created_at: Set(Some(chrono::Utc::now())),
         ..Default::default()
     };
 
     // 插入数据库
-    match image_active.insert(postgres).await {
+    match picture_active.insert(postgres).await {
         Ok(model) => model,
         Err(err) => {
             // 如果数据库插入失败，删除已保存的文件
@@ -142,10 +142,10 @@ pub async fn upload_image(
 /// 权限控制：
 /// - Admin权限(permission == 1)：只能查看自己上传的图片
 /// - Master及以上权限(permission >= 2)：可以查看所有图片
-pub async fn list_images(
+pub async fn list_pictures(
     headers: HeaderMap,
     Extension(state): Extension<Arc<AppState>>,
-) -> Response<Vec<ImageDTO>> {
+) -> Response<Vec<PictureDTO>> {
     let claims = match extract_permissions_from_headers(headers, Permission::Admin) {
         Some(claims) => claims,
         None => return Response::warn("权限不足"),
@@ -154,27 +154,33 @@ pub async fn list_images(
     let postgres = &state.postgres;
 
     // 构建基础查询，联表查询用户信息
-    let mut query = crate::models::image::Entity::find()
+    let mut query = crate::models::picture::Entity::find()
         .join(JoinType::InnerJoin, Relation::Author.def())
         .column_as(UserColumn::Id, "author_id")
         .column_as(UserColumn::Avatar, "author_avatar")
         .column_as(UserColumn::Username, "author_username")
         .column_as(UserColumn::Email, "author_email")
         .column_as(UserColumn::Permission, "author_permission")
-        .order_by_desc(crate::models::image::Column::CreatedAt);
+        .order_by_desc(crate::models::picture::Column::CreatedAt);
 
     // 根据权限添加过滤条件
     if claims.user.permission == 1 {
         // Admin 权限：只显示自己上传的图片
-        query = query.filter(crate::models::image::Column::Author.eq(claims.sub));
+        query = query.filter(crate::models::picture::Column::Author.eq(claims.sub));
     } else if claims.user.permission >= 2 {
         // Master+ 权限：显示所有图片
     }
 
     // 执行查询
-    match query.into_model::<ImageWithRelations>().all(postgres).await {
+    match query
+        .into_model::<PictureWithRelations>()
+        .all(postgres)
+        .await
+    {
         Ok(data) => Response::success(
-            data.into_iter().map(|item| item.into_image_dto()).collect(),
+            data.into_iter()
+                .map(|item| item.into_picture_dto())
+                .collect(),
             "查询成功",
         ),
         Err(err) => Response::error(format!("查询图片列表失败: {err}")),
@@ -186,7 +192,7 @@ pub async fn list_images(
 /// 权限控制：
 /// - 需要Admin及以上权限
 /// - 只有图片作者本人或权限更高的用户才能删除
-pub async fn delete_image(
+pub async fn delete_picture(
     PathExtract(id): PathExtract<i64>,
     headers: HeaderMap,
     Extension(state): Extension<Arc<AppState>>,
@@ -205,12 +211,12 @@ pub async fn delete_image(
     };
 
     // 查询图片及其作者信息
-    let (image, author) = match crate::models::image::Entity::find_by_id(id)
+    let (picture, author) = match crate::models::picture::Entity::find_by_id(id)
         .find_also_related(UserEntity)
         .one(&txn)
         .await
     {
-        Ok(Some((image, Some(author)))) => (image, author),
+        Ok(Some((picture, Some(author)))) => (picture, author),
         Ok(Some((_, None))) => return Response::warn("图片作者信息异常"),
         Ok(None) => return Response::warn("图片不存在"),
         Err(err) => return Response::error(format!("查询图片失败: {err}")),
@@ -222,12 +228,12 @@ pub async fn delete_image(
     }
 
     // 获取图片文件路径，准备删除本地文件
-    let image_upload_directory =
-        IMAGE_UPLOAD_DIRECTORY.get_or_init(|| env("WEBSITE_IMAGE_UPLOAD_DIRECTORY"));
-    let file_path = format!("{image_upload_directory}/{}", image.filename);
+    let picture_upload_directory =
+        PICTURE_UPLOAD_DIRECTORY.get_or_init(|| env("WEBSITE_PICTURE_UPLOAD_DIRECTORY"));
+    let file_path = format!("{picture_upload_directory}/{}", picture.filename);
 
     // 删除数据库记录
-    match crate::models::image::Entity::delete_by_id(id)
+    match crate::models::picture::Entity::delete_by_id(id)
         .exec(&txn)
         .await
     {

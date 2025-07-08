@@ -1,9 +1,9 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-/// SeaORM 实体 - 对应数据库中的 images 表
+/// SeaORM 实体 - 对应数据库中的 pictures 表
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
-#[sea_orm(table_name = "images")]
+#[sea_orm(table_name = "pictures")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i64,
@@ -34,9 +34,9 @@ impl Related<crate::models::user::Entity> for Entity {
     }
 }
 
-/// API 响应用的 Image 结构体
+/// API 响应用的 Picture 结构体
 #[derive(serde::Serialize)]
-pub struct Image {
+pub struct Picture {
     pub id: i64,
     pub author: i64,
     pub url: String,
@@ -44,8 +44,8 @@ pub struct Image {
     pub created_at: chrono::DateTime<chrono::Utc>,
 }
 
-/// 从 SeaORM Model 转换为 API Image
-impl From<Model> for Image {
+/// 从 SeaORM Model 转换为 API Picture
+impl From<Model> for Picture {
     fn from(model: Model) -> Self {
         Self {
             id: model.id,
@@ -57,8 +57,8 @@ impl From<Model> for Image {
     }
 }
 
-/// 从 SeaORM Model 引用转换为 API Image
-impl From<&Model> for Image {
+/// 从 SeaORM Model 引用转换为 API Picture
+impl From<&Model> for Picture {
     fn from(model: &Model) -> Self {
         Self {
             id: model.id,
@@ -72,7 +72,7 @@ impl From<&Model> for Image {
 
 /// 用于联表查询的结构体，包含图片信息和作者信息
 #[derive(Debug, serde::Deserialize, sea_orm::FromQueryResult)]
-pub struct ImageWithRelations {
+pub struct PictureWithRelations {
     // 图片基本信息
     pub id: i64,
     pub url: String,
@@ -89,7 +89,7 @@ pub struct ImageWithRelations {
 
 /// 包含作者信息的图片 DTO
 #[derive(serde::Serialize)]
-pub struct ImageDTO {
+pub struct PictureDTO {
     pub id: i64,
     pub author: crate::models::user::User,
     pub filename: String,
@@ -97,10 +97,10 @@ pub struct ImageDTO {
     pub created_at: chrono::DateTime<chrono::Utc>,
 }
 
-impl ImageWithRelations {
-    /// 转换为 ImageDTO
-    pub fn into_image_dto(self) -> ImageDTO {
-        ImageDTO {
+impl PictureWithRelations {
+    /// 转换为 PictureDTO
+    pub fn into_picture_dto(self) -> PictureDTO {
+        PictureDTO {
             id: self.id,
             author: crate::models::user::User {
                 id: self.author_id,

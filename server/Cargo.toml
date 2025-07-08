@@ -11,7 +11,6 @@ sea-orm = { version = "1.1.0", features = [
     "runtime-tokio-rustls", # 异步运行时和TLS支持 - 必需
     "macros",            # 实体宏支持 - 必需
     "with-chrono"        # 时间类型支持 - 当前必需
-    # "with-json"        # JSON类型支持 - 可选，暂时注释
 ] }
 deadpool-redis = "0.20.0"
 serde = { version = "1.0.218", features = ["derive"] }
@@ -28,4 +27,4 @@ serde_json = "1.0.140"
 regex = "1.11.1"
 
 # 以下是静态链接需要的库
-# openssl = { version = "0.10.71", features = ["vendored"] }
+openssl = { version = "0.10.71", features = ["vendored"] }
