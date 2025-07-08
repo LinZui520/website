@@ -64,7 +64,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/root/website/database/postgresql"
+    path: "/root/website/database/postgres"
     type: DirectoryOrCreate 
 ---
 apiVersion: v1
@@ -105,6 +105,33 @@ spec:
   resources:
     requests:
       storage: 5Gi
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: images-pv
+spec:
+  storageClassName: images-storage
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/root/website/database/images"
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: images-pvc
+spec:
+  storageClassName: images-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
 ---
 
 # ================== Postgres服务 ==================
@@ -281,7 +308,7 @@ spec:
       containers:
       - name: server
         image: alpine:latest
-        workingDir: /mnt/website/server
+        workingDir: /root/website/server
         command: ["sh", "-c", "./target/x86_64-unknown-linux-musl/release/server"]
         ports:
         - containerPort: 8080
@@ -289,7 +316,9 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: server-pvc
-          mountPath: /mnt/website/server
+          mountPath: /root/website/server
+        - name: images-pvc
+          mountPath: /root/website/database/images
         resources:
           requests:
             memory: "512Mi"
@@ -301,6 +330,9 @@ spec:
       - name: server-pvc
         persistentVolumeClaim:
           claimName: server-pvc
+      - name: images-pvc
+        persistentVolumeClaim:
+          claimName: images-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -376,7 +408,8 @@ data:
 
     # HTTPS server for zhuguishihundan.com (主域名)
     server {
-      listen 443 ssl http2;
+      listen 443 ssl;
+      http2 on;
       server_name zhuguishihundan.com;
 
       # SSL 证书配置
@@ -528,20 +561,9 @@ spec:
   tls:
   - hosts:
     - zhuguishihundan.com
-    - www.zhuguishihundan.com
     secretName: website-tls-secret
   rules:
   - host: zhuguishihundan.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: nginx-service
-            port:
-              number: 80
-  - host: www.zhuguishihundan.com
     http:
       paths:
       - path: /
