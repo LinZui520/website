@@ -40,7 +40,7 @@ export default defineComponent({
       setLoading(true);
       handleRequest(
         () => deletePicture(deletePictureId.value),
-        () => setPictureList(pictureList.value.filter((item) => item.id !== deletePictureId.value)),
+        () => getPictureList(),
         undefined,
         () => {
           setLoading(false);
