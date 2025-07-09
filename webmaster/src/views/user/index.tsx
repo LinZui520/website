@@ -19,10 +19,7 @@ export default defineComponent({
     const { handleRequest, SnackbarComponent } = useRequest();
 
     const getUserList = () => {
-      handleRequest<UserDTO[]>(
-        () => listUsers<UserDTO[]>(),
-        (res) => setUserList(res.data.data)
-      );
+      listUsers<UserDTO[]>().then((res) => setUserList(res.data.data));
     };
 
     const updatePermission = () => {
@@ -99,7 +96,7 @@ export default defineComponent({
           }}
         </VDataTable>
 
-        <VDialog maxWidth="500px" modelValue={showDialog.value}>
+        <VDialog maxWidth="500px" modelValue={showDialog.value} onUpdate:modelValue={(value) => setShowDialog(value)}>
           <VCard class="pa-4" title="确认">
             <VCardText>
               确定要操作该用户吗？

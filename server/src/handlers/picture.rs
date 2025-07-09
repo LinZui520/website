@@ -47,17 +47,17 @@ pub async fn upload_picture(
         return Response::error(format!("创建上传目录失败: {err}"));
     }
 
-    // 寻找名为"image"的字段（只处理第一个）
+    // 寻找名为"picture"的字段（只处理第一个）
     let field = loop {
         match multipart.next_field().await {
             Ok(Some(field)) => {
                 let field_name = field.name().unwrap_or("");
-                if field_name == "image" {
+                if field_name == "picture" {
                     break field;
                 }
             }
             Ok(None) => {
-                return Response::warn("未找到图片文件，请在表单中添加名为image的文件字段");
+                return Response::warn("未找到图片文件，请在表单中添加名为picture的文件字段");
             }
             Err(err) => return Response::error(format!("解析multipart表单数据失败: {err}")),
         }

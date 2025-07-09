@@ -18,6 +18,10 @@ export default defineComponent({
     const router = useRouter();
     const { handleRequest, SnackbarComponent } = useRequest();
 
+    const getBlogList = () => {
+      listBlogs<BlogDTO[]>().then((res) => setBlogList(res.data.data));
+    };
+
     const handleOpenDeleteDialog = (id: number) => {
       setShowDeleteDialog(true);
       setDeleteBlogId(id);
@@ -27,7 +31,7 @@ export default defineComponent({
       setLoading(true);
       handleRequest(
         () => deleteBlog(deleteBlogId.value),
-        () => setBlogList(blogList.value.filter((item) => item.id !== deleteBlogId.value)),
+        () => getBlogList(),
         undefined,
         () => {
           setLoading(false);
@@ -37,10 +41,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      handleRequest<BlogDTO[]>(
-        () => listBlogs<BlogDTO[]>(),
-        (res) => setBlogList(res.data.data)
-      );
+      getBlogList();
     });
 
     return () => (
@@ -94,7 +95,7 @@ export default defineComponent({
             )
           }}
         </VDataTable>
-        <VDialog maxWidth="500px" modelValue={showDeleteDialog.value}>
+        <VDialog maxWidth="500px" modelValue={showDeleteDialog.value} onUpdate:modelValue={(value) => setShowDeleteDialog(value)}>
           <VCard class="pa-4" title="确认">
             <VCardText>
               是否删除该博客？

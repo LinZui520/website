@@ -18,6 +18,10 @@ export default defineComponent({
     const router = useRouter();
     const { handleRequest, SnackbarComponent } = useRequest();
 
+    const getCategoryList = () => {
+      listCategories<Category[]>().then((res) => setCategoryList(res.data.data));
+    };
+
     const handleOpenDeleteDialog = (id: number) => {
       setShowDeleteDialog(true);
       setDeleteCategoryId(id);
@@ -27,7 +31,7 @@ export default defineComponent({
       setLoading(true);
       handleRequest(
         () => deleteCategory(deleteCategoryId.value),
-        () => setCategoryList(categoryList.value.filter((item) => item.id !== deleteCategoryId.value)),
+        () => getCategoryList(),
         undefined,
         () => {
           setLoading(false);
@@ -37,10 +41,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      handleRequest<Category[]>(
-        () => listCategories<Category[]>(),
-        (res) => setCategoryList(res.data.data)
-      );
+      getCategoryList();
     });
 
     return () => (
@@ -84,7 +85,7 @@ export default defineComponent({
             )
           }}
         </VDataTable>
-        <VDialog maxWidth="500px" modelValue={showDeleteDialog.value}>
+        <VDialog maxWidth="500px" modelValue={showDeleteDialog.value} onUpdate:modelValue={(value) => setShowDeleteDialog(value)}>
           <VCard class="pa-4" title="确认">
             <VCardText>
               是否删除该标签？

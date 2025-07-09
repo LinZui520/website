@@ -18,8 +18,8 @@ export default defineComponent({
     const { toggleMarkdownTheme } = useMarkdownTheme();
     const permission = computed(() => authStore.permission);
     const drawer = ref<boolean>(false);
-    // 检测是否为桌面端（宽度 >= 960px）
-    const isDesktop = ref<boolean>(window.innerWidth >= 960);
+    // 检测是否为桌面端（宽度 >= 1280px）
+    const isDesktop = ref<boolean>(window.innerWidth >= 1280);
 
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     const toggleTheme = (event: MediaQueryListEvent | MediaQueryList) => {

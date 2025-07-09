@@ -19,10 +19,7 @@ export default defineComponent({
     const { handleRequest, SnackbarComponent, show } = useRequest();
 
     const getPictureList = () => {
-      handleRequest<PictureDTO[]>(
-        () => listPictures<PictureDTO[]>(),
-        (res) => setPictureList(res.data.data)
-      );
+      listPictures<PictureDTO[]>().then((res) => setPictureList(res.data.data));
     };
 
     const handleOpenDeleteDialog = (id: number) => {
@@ -59,7 +56,7 @@ export default defineComponent({
 
       setLoading(true);
       const formData = new FormData();
-      formData.append('image', fileInput.value);
+      formData.append('picture', fileInput.value);
 
       handleRequest(
         () => uploadPicture(formData),
@@ -129,7 +126,7 @@ export default defineComponent({
         </VDataTable>
 
         {/* 删除确认对话框 */}
-        <VDialog maxWidth="500px" modelValue={showDeleteDialog.value}>
+        <VDialog maxWidth="500px" modelValue={showDeleteDialog.value} onUpdate:modelValue={(value) => setShowDeleteDialog(value)}>
           <VCard class="pa-4" title="确认">
             <VCardText>
               是否删除该图片？
@@ -143,7 +140,7 @@ export default defineComponent({
         </VDialog>
 
         {/* 上传图片对话框 */}
-        <VDialog maxWidth="500px" modelValue={showUploadDialog.value}>
+        <VDialog maxWidth="500px" modelValue={showUploadDialog.value} onUpdate:modelValue={(value) => setShowUploadDialog(value)}>
           <VCard class="pa-4" title="上传图片">
             <VCardText>
               <VFileInput
@@ -154,6 +151,7 @@ export default defineComponent({
                 onUpdate:modelValue={(value: File | File[]) => fileInput.value = Array.isArray(value) ? value[0] || null : value}
                 prependIcon={mdiUpload}
                 variant="outlined"
+                {...{ accept: 'image/*' }}
               />
             </VCardText>
             <VCardActions>
