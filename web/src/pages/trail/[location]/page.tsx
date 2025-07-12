@@ -66,7 +66,7 @@ const Page = () => {
 
   return (
     <div
-      className={'container mx-auto p-4 md:p-12 xl:p-18'}
+      className={'container mx-auto min-h-screen p-4 md:p-12 xl:p-18'}
       ref={container}
     >
       <div className="columns-1 md:columns-2 xl:columns-3 gap-4 md:gap-12 xl:gap-18">
