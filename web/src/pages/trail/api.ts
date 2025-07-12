@@ -11,5 +11,6 @@ export const uploadPhoto = (formData: FormData) => request({
   data: formData,
   headers: {
     'Content-Type': 'multipart/form-data'
-  }
+  },
+  timeout: 60000
 });

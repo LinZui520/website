@@ -97,7 +97,7 @@ const Page = () => {
         <path d="M 4 16 L 28 16" id="line2" />
       </svg>
       <div
-        className={'fixed right-0 top-0 h-screen w-md z-30 bg-mint-100 dark:bg-mint-900 translate-x-[150%] flex flex-col justify-center items-center'}
+        className={'fixed right-0 top-0 h-screen max-w-screen w-md z-30 bg-mint-100 dark:bg-mint-900 translate-x-[150%] flex flex-col justify-center items-center'}
         id="dialog"
       >
         <input
