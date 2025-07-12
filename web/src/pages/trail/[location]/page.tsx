@@ -101,7 +101,7 @@ const Page = () => {
         id="dialog"
       >
         <input
-          autoComplete="file" className="hidden" name="file"
+          accept="image/*" autoComplete="file" className="hidden" name="file"
           onChange={(e) => setFile(e.target.files?.[0] || null)}
           ref={fileInputRef} type="file"
         />
