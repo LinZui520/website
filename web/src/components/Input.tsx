@@ -7,6 +7,7 @@ type Props = {
   value: string;
   name: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onClick?: () => void;
   className?: string;
 };
 
@@ -33,6 +34,7 @@ const Input = forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>) => {
         name={props.name}
         onBlur={() => setIsFocus(false)}
         onChange={props.onChange}
+        onClick={props.onClick}
         onFocus={() => setIsFocus(true)}
         required={true}
         type={props.type}

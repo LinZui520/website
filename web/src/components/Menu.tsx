@@ -16,6 +16,7 @@ const Menu = () => {
   const menu = [
     { href: '/', text: 'HOME' },
     { href: '/blog', text: 'BLOG' },
+    { href: '/trail', text: 'TRAIL' },
     auth.state.user ? null: { href: '/auth', text: 'LOGIN' }
   ];
 
@@ -82,25 +83,27 @@ const Menu = () => {
         }
         id="nav"
       >
-        <nav className={'w-4/5 h-full p-4 flex flex-col items-center justify-center gap-8'}>
-          <div className={'text-base text-mint-500'}>NAVIGATION MENU</div>
-          <hr className={'w-16 border-1 border-mint-500'} />
-          {menu.filter((item) => item !== null).map((item, index) => (
-            <Link
-              className={
-                'text-6xl cursor-pointer flex overflow-hidden ' +
-                'select-none group text-mint-950 dark:text-mint-50'
-              }
-              key={index}
-              tabIndex={-1}
-              to={item.href}
-            >
-              <div className={'group-hover:opacity-50 w-full flex flex-col'} id={`nav-${index}`}>
-                {item.text}
-                <div className={'w-full h-1 origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
-              </div>
-            </Link>
-          ))}
+        <nav className={'w-4/5 h-full p-4 flex flex-col items-center justify-center'}>
+          <div className={'flex flex-col items-end gap-8'}>
+            <div className={'text-base text-mint-500'}>NAVIGATION MENU</div>
+            <hr className={'w-16 border-1 border-mint-500'} />
+            {menu.filter((item) => item !== null).map((item, index) => (
+              <Link
+                className={
+                  'text-6xl cursor-pointer flex overflow-hidden ' +
+                  'select-none group text-mint-950 dark:text-mint-50'
+                }
+                key={index}
+                tabIndex={-1}
+                to={item.href}
+              >
+                <div className={'group-hover:opacity-50 w-full flex flex-col'} id={`nav-${index}`}>
+                  {item.text}
+                  <div className={'w-full h-1 origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
+                </div>
+              </Link>
+            ))}
+          </div>
         </nav>
         <div className={'w-1/5 max-w-xl h-full bg-mint-100 dark:bg-mint-900 p-4 hidden xl:flex flex-col items-start justify-center gap-8'}>
           <div className={'text-3xl text-mint-500'}>CONTACT US</div>

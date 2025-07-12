@@ -24,6 +24,7 @@ export const useRequest = () => {
   }, [notify]);
 
   return {
-    handleRequest
+    handleRequest,
+    notify
   };
 };
