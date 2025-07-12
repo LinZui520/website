@@ -39,6 +39,11 @@ const router = createRouter({
       component: () => import('../views/picture/index')
     },
     {
+      path: '/photo',
+      name: 'photo',
+      component: () => import('../views/photo/index')
+    },
+    {
       path: '/profile',
       name: 'profile',
       component: () => import('../views/profile/index')

@@ -1,4 +1,4 @@
-import { mdiBookOpenPageVariantOutline, mdiHomeOutline, mdiImageOutline, mdiTagOutline, mdiAccountGroupOutline, mdiAccountOutline } from '@mdi/js';
+import { mdiBookOpenPageVariantOutline, mdiHomeOutline, mdiImageOutline, mdiTagOutline, mdiAccountGroupOutline, mdiAccountOutline, mdiCameraOutline } from '@mdi/js';
 
 enum Permission {
   Block = -1,
@@ -29,5 +29,6 @@ export const menu: MenuItem[] = [
   { title: '用户管理', icon: mdiAccountGroupOutline, to: '/user', permission: Permission.Master },
   { title: '标签管理', icon: mdiTagOutline, to: '/category', permission: Permission.Master },
   { title: '博客管理', icon: mdiBookOpenPageVariantOutline, to: '/blog', permission: Permission.Admin },
-  { title: '图片管理', icon: mdiImageOutline, to: '/picture', permission: Permission.Admin }
+  { title: '图片管理', icon: mdiImageOutline, to: '/picture', permission: Permission.Admin },
+  { title: '照片管理', icon: mdiCameraOutline, to: '/photo', permission: Permission.Admin }
 ];
