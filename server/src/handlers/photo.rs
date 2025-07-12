@@ -7,8 +7,6 @@ use crate::models::user::{Column as UserColumn, Entity as UserEntity, Permission
 use axum::extract::Path as PathExtract;
 use axum::http::HeaderMap;
 use axum::{Extension, extract::Multipart};
-use sea_orm::ColumnTrait;
-use sea_orm::QueryFilter;
 use sea_orm::{
     ActiveModelTrait, EntityTrait, JoinType, QueryOrder, QuerySelect, RelationTrait, Set,
     TransactionTrait,
@@ -172,23 +170,16 @@ pub async fn upload_photo(
 }
 
 /// 获取照片列表
-///
-/// 权限控制：
-/// - Admin权限(permission == 1)：只能查看自己上传的照片
-/// - Master及以上权限(permission >= 2)：可以查看所有照片
-pub async fn list_photos(
-    headers: HeaderMap,
-    Extension(state): Extension<Arc<AppState>>,
-) -> Response<Vec<PhotoDTO>> {
-    let claims = match extract_permissions_from_headers(headers, Permission::Admin) {
-        Some(claims) => claims,
-        None => return Response::warn("权限不足"),
-    };
+pub async fn list_photos(Extension(state): Extension<Arc<AppState>>) -> Response<Vec<PhotoDTO>> {
+    // let claims = match extract_permissions_from_headers(headers, Permission::Admin) {
+    //     Some(claims) => claims,
+    //     None => return Response::warn("权限不足"),
+    // };
 
     let postgres = &state.postgres;
 
     // 构建基础查询，联表查询用户信息
-    let mut query = crate::models::photo::Entity::find()
+    let query = crate::models::photo::Entity::find()
         .join(JoinType::InnerJoin, Relation::Author.def())
         .column_as(UserColumn::Id, "author_id")
         .column_as(UserColumn::Avatar, "author_avatar")
@@ -198,12 +189,12 @@ pub async fn list_photos(
         .order_by_desc(crate::models::photo::Column::CreatedAt);
 
     // 根据权限添加过滤条件
-    if claims.user.permission == 1 {
-        // Admin 权限：只显示自己上传的照片
-        query = query.filter(crate::models::photo::Column::Author.eq(claims.sub));
-    } else if claims.user.permission >= 2 {
-        // Master+ 权限：显示所有照片
-    }
+    // if claims.user.permission == 1 {
+    //     // Admin 权限：只显示自己上传的照片
+    //     query = query.filter(crate::models::photo::Column::Author.eq(claims.sub));
+    // } else if claims.user.permission >= 2 {
+    //     // Master+ 权限：显示所有照片
+    // }
 
     // 执行查询
     match query.into_model::<PhotoWithRelations>().all(postgres).await {
