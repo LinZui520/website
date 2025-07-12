@@ -1,9 +1,9 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-/// SeaORM 实体 - 对应数据库中的 photo 表
+/// SeaORM 实体 - 对应数据库中的 photos 表
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
-#[sea_orm(table_name = "photo")]
+#[sea_orm(table_name = "photos")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i64,
