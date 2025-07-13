@@ -1,4 +1,5 @@
-import { ChinaGeoJSONCollection } from '../../components/trail/type';
+import { Dispatch, SetStateAction } from 'react';
+import { ChinaGeoJSONCollection, GeoJSONCollection } from '../../components/trail/type';
 import { User } from '../auth/type';
 
 export interface Photo {
@@ -24,5 +25,8 @@ export interface PhotoDTO {
 // 定义 context 类型
 export interface OutletContext {
   geoData: ChinaGeoJSONCollection | null;
-  photos: PhotoDTO[]
+  globalGeoData: GeoJSONCollection | null;
+  photos: PhotoDTO[],
+  isGlobal: boolean;
+  setIsGlobal: Dispatch<SetStateAction<boolean>>;
 }

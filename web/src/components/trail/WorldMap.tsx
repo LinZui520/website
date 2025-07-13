@@ -1,132 +1,79 @@
-import React, { useState, useEffect } from 'react';
-import { GeoJSONCollection } from './type';
+import React, { useState } from 'react';
 import { calculateBounds, convertGeoJSONToSVGPath } from './geo';
+import { GeoJSONCollection } from './type';
+import { PhotoDTO } from '../../pages/trail/type';
 
 interface WorldMapProps {
-  visitedCountries?: string[];
-  onCountryClick?: (country: string) => void;
+  geoData: GeoJSONCollection;
+  photos: PhotoDTO[];
+  onClickCountry?: (country: string) => void;
   className?: string;
 }
 
 const WorldMap: React.FC<WorldMapProps> = ({
-  visitedCountries = [],
-  onCountryClick,
-  className = ''
+  geoData,
+  photos,
+  onClickCountry,
+  className
 }) => {
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
-  const [geoData, setGeoData] = useState<GeoJSONCollection | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const loadGeoJSON = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch('/world-110m.geojson');
-
-        if (!response.ok) {
-          throw new Error(`加载失败: ${response.status} ${response.statusText}`);
-        }
-
-        const data: GeoJSONCollection = await response.json();
-
-        if (!data.features || data.features.length === 0) {
-          throw new Error('GeoJSON文件中没有找到地理数据');
-        }
-
-        setGeoData(data);
-      } catch (err) {
-        console.error('加载GeoJSON文件失败:', err);
-        setError(err instanceof Error ? err.message : '未知错误');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadGeoJSON();
-  }, []);
+  const [isChinaOrTaiwanHovered, setIsChinaOrTaiwanHovered] = useState(false);
 
   const getCountryFill = (country: string) => {
-    if (visitedCountries.includes(country)) {
-      return '#10b981';
+    if ((country === 'China' || country === 'Taiwan') && isChinaOrTaiwanHovered) {
+      return '#3b82f6';
     }
     if (hoveredCountry === country) {
       return '#3b82f6';
     }
+    if (photos.some(photo => photo.location === country)) {
+      return '#22c55e';
+    }
+    if (country === 'China' || country === 'Taiwan') {
+      return '#22c55e';
+    }
     return '#e5e7eb';
   };
-
-  // 加载状态
-  if (loading) {
-    return (
-      <div className={`w-full ${className}`}>
-        <div className="w-full h-64 border border-gray-200 rounded-lg bg-gray-50 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">正在加载世界地图数据...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // 错误状态
-  if (error || !geoData) {
-    return (
-      <div className={`w-full ${className}`}>
-        <div className="w-full h-64 border border-red-200 rounded-lg bg-red-50 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-red-600 text-lg font-medium mb-2">地图加载失败</div>
-            <p className="text-red-500 text-sm mb-4">{error || '未知错误'}</p>
-            <button
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
-              onClick={() => window.location.reload()}
-            >
-              重新加载
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   const bounds = calculateBounds(geoData.features);
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`${className}`}>
       <svg
-        className="w-full h-auto border border-gray-200 rounded-lg bg-blue-50"
-        style={{ aspectRatio: '5/3' }}
-        viewBox="0 0 1000 600"
+        className="w-full h-full mx-auto"
+        style={{ aspectRatio: '8/5' }}
+        viewBox="0 0 800 500"
       >
-        <rect fill="#dbeafe" height="600" width="1000" />
+        <rect className={'fill-mint-100 dark:fill-mint-900'} height="500" width="800" />
 
-        {geoData.features.map((feature, index) => {
+        {geoData.features.map((feature) => {
           const countryName = feature.properties.name;
-          const countryPath = convertGeoJSONToSVGPath(feature.geometry.coordinates, bounds, { padding: 30, svgWidth: 1000, svgHeight: 600 });
+          const countryPath = convertGeoJSONToSVGPath(feature.geometry.coordinates, bounds, { padding: 30, svgWidth: 800, svgHeight: 500 });
 
           if (!countryPath) return null;
 
           return (
             <path
-              className="transition-all duration-200 cursor-pointer hover:stroke-2"
+              className="transition-all duration-200 cursor-pointer stroke-1 hover:stroke-2 stroke-mint-50 dark:stroke-mint-950"
               d={countryPath}
               fill={getCountryFill(countryName)}
-              key={feature.id || `country-${index}`}
-              onClick={() => onCountryClick?.(countryName)}
-              onMouseEnter={() => setHoveredCountry(countryName)}
-              onMouseLeave={() => setHoveredCountry(null)}
-              stroke="#ffffff"
-              strokeWidth="0.5"
+              key={feature.id}
+              onClick={() => onClickCountry?.(countryName)}
+              onMouseEnter={() => {
+                setHoveredCountry(countryName === 'Taiwan' ? 'China' : countryName);
+                setIsChinaOrTaiwanHovered(countryName === 'China' || countryName === 'Taiwan');
+              }}
+              onMouseLeave={() => {
+                setHoveredCountry(null);
+                setIsChinaOrTaiwanHovered(false);
+              }}
             />
           );
         })}
 
         {hoveredCountry && (
           <text
-            className="fill-[#1f2937] text-base font-bold pointer-events-none"
+            className="fill-mint-950 dark:fill-mint-50 text-base font-bold pointer-events-none"
             x="20"
             y="30"
           >
