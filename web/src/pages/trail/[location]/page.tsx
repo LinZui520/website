@@ -132,7 +132,7 @@ const Page = () => {
       </div>
 
       <svg
-        className={'fixed left-12 bottom-8 h-16 w-16 fill-none stroke-3 stroke-mint-950 dark:stroke-mint-50 cursor-pointer'}
+        className={'fixed left-12 bottom-8 h-16 w-16 fill-none stroke-3 stroke-mint-950 dark:stroke-mint-50 cursor-pointer z-[35]'}
         onClick={() => navigate(-1)}
         viewBox="0 0 32 32"
       >
