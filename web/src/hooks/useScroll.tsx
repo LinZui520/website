@@ -34,6 +34,7 @@ const useScroll = (
   duration: number
 ): {
   scrollTo: (position: number) => void;
+  refresh: () => void;
   ScrollbarWrapper: ({ children }: { children: ReactNode }) => JSX.Element,
   Scrollbar: () => JSX.Element | null
 } => {
@@ -43,13 +44,33 @@ const useScroll = (
   const target = useRef<number>(0);
   const [scrollHeight, setScrollHeight] = useState(0);
   const [clientHeight, setClientHeight] = useState(0);
-  const [isScrollBarVisible, setIsScrollBarVisible] = useState(false);
   const hideScrollbarTimer = useRef<NodeJS.Timeout | string | number | undefined>(undefined);
   const isThumbGrabbed = useRef(false);
   const thumb = useRef<HTMLButtonElement | null>(null);
   // mouseY scrollTop 分别记录当鼠标点击滚动条时的鼠标Y轴坐标和已经滚动的位置
   const mouseY = useRef<number>(0);
   const scrollTop = useRef<number>(0);
+
+  const clearHideScrollbarTimer = useCallback(() => {
+    if (hideScrollbarTimer.current) {
+      clearTimeout(hideScrollbarTimer.current);
+    }
+  }, [hideScrollbarTimer]);
+
+  // 延迟隐藏滚动条
+  const delayHiddenScrollbar = useCallback(() => {
+    hideScrollbarTimer.current = setTimeout(() => {
+      if (!thumb.current) { return; }
+      thumb.current.style.width = '0px';
+    }, 1000);
+  }, [hideScrollbarTimer]);
+
+  // 显示滚动条
+  const showScrollbar = useCallback(() => {
+    if (!thumb.current) { return; }
+    thumb.current.style.width = '8px';
+    clearHideScrollbarTimer();
+  }, [clearHideScrollbarTimer]);
 
   const createAnimation = useCallback((element: HTMLElement, end: number) => {
     const start = element.scrollTop;
@@ -84,11 +105,8 @@ const useScroll = (
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      setIsScrollBarVisible(true);
-      if (hideScrollbarTimer.current) {
-        clearTimeout(hideScrollbarTimer.current);
-      }
-      hideScrollbarTimer.current = setTimeout(() => setIsScrollBarVisible(false), 1000);
+      showScrollbar();
+      delayHiddenScrollbar();
       scrollTo(Math.max(0, Math.min(scrollHeight - clientHeight, target.current + event.deltaY)));
     };
     element.addEventListener('wheel', handleWheel, { passive: false });
@@ -96,25 +114,27 @@ const useScroll = (
     return () => {
       element.removeEventListener('wheel', handleWheel);
     };
-  }, [clientHeight, container, scrollHeight, scrollTo]);
+  }, [clientHeight, container, delayHiddenScrollbar, scrollHeight, scrollTo, showScrollbar]);
 
   useEffect(() => {
-    if (!thumb.current) { return; }
-    const scrollbarThumb = thumb.current;
-    if (isScrollBarVisible) {
-      scrollbarThumb.style.width = '8px';
-    } else {
-      scrollbarThumb.style.width = '0px';
-    }
-  }, [isScrollBarVisible]);
+    return () => clearHideScrollbarTimer();
+  }, [clearHideScrollbarTimer]);
 
-  useEffect(() => {
-    return () => {
-      if (hideScrollbarTimer.current) {
-        clearTimeout(hideScrollbarTimer.current);
-      }
-    };
-  }, []);
+  // 刷新滚动条
+  const refresh = useCallback(() => {
+    if (!container.current) { return; }
+    const element = container.current;
+    const isDocumentElement = element === document.documentElement;
+    const value = isDocumentElement ? window.innerHeight : element.clientHeight;
+    setClientHeight(value);
+    /**
+     * 因为当非 document.documentElement 使用这个 hook 时
+     * Scrollbar 组件使用 sticky 定位。 sticky 定位不会脱离文档流
+     * 所以这个时候元素的长度就会增加一个 clientHeight 的长度
+     * 所以需要减去
+     */
+    setScrollHeight(element.scrollHeight - (isDocumentElement ? 0 : value));
+  }, [container]);
 
   /**
    * 以下是处理滚动条行为的代码
@@ -122,37 +142,24 @@ const useScroll = (
   useLayoutEffect(() => {
     if (!container.current) { return; }
     const element = container.current;
-    const isDocumentElement = element === document.documentElement;
-    const updateDimensions = () => {
-      const value = isDocumentElement ? window.innerHeight : element.clientHeight;
-      setClientHeight(value);
-      /**
-       * 因为当非 document.documentElement 使用这个 hook 时
-       * Scrollbar 组件使用 sticky 定位。 sticky 定位不会脱离文档流
-       * 所以这个时候元素的长度就会增加一个 clientHeight 的长度
-       * 所以需要减去
-       */
-      setScrollHeight(element.scrollHeight - (isDocumentElement ? 0 : value));
-    };
+    refresh();
 
-    updateDimensions();
-
-    if (isDocumentElement) {
+    if (element === document.documentElement) {
       // 如果容器是document.documentElement，监听窗口大小变化
-      window.addEventListener('resize', updateDimensions);
+      window.addEventListener('resize', refresh);
     }
     // 使用 ResizeObserver 监听普通容器大小变化
-    const resizeObserver = new ResizeObserver(updateDimensions);
+    const resizeObserver = new ResizeObserver(refresh);
     resizeObserver.observe(element);
 
     return () => {
-      if (isDocumentElement) {
-        window.removeEventListener('resize', updateDimensions);
+      if (element === document.documentElement) {
+        window.removeEventListener('resize', refresh);
       }
       resizeObserver.unobserve(element);
       resizeObserver.disconnect();
     };
-  }, [container]);
+  }, [container, refresh]);
 
   useLayoutEffect(() => {
     if (!thumb.current) { return; }
@@ -192,11 +199,8 @@ const useScroll = (
       isThumbGrabbed.current = true;
       document.body.style.cursor = 'grabbing';
       scrollbarThumb.style.cursor = 'grabbing';
-      // 拖拽时显示滚动条
-      setIsScrollBarVisible(true);
-      if (hideScrollbarTimer.current) {
-        clearTimeout(hideScrollbarTimer.current);
-      }
+      // 点击滚动条的时候清除隐藏滚动条定时器
+      clearHideScrollbarTimer();
     };
     const handleThumbMouseMove = (event: MouseEvent) => {
       if (!isThumbGrabbed.current) { return; }
@@ -209,22 +213,19 @@ const useScroll = (
       scrollbarThumb.style.cursor = 'grab';
       // 拖拽结束且没有hover，则1秒后隐藏滚动条
       if (scrollbarThumb.style.width !== '10px') {
-        hideScrollbarTimer.current = setTimeout(() => setIsScrollBarVisible(false), 1000);
+        delayHiddenScrollbar();
       }
     };
     const handleThumbMouseEnter = () => {
       scrollbarThumb.style.width = '10px';
       // 鼠标悬停时显示滚动条并清除隐藏定时器
-      setIsScrollBarVisible(true);
-      if (hideScrollbarTimer.current) {
-        clearTimeout(hideScrollbarTimer.current);
-      }
+      clearHideScrollbarTimer();
     };
     const handleThumbMouseLeave = () => {
       scrollbarThumb.style.width = '8px';
       // 鼠标离开时如果没有在拖拽，则1秒后隐藏滚动条
       if (!isThumbGrabbed.current) {
-        hideScrollbarTimer.current = setTimeout(() => setIsScrollBarVisible(false), 1000);
+        delayHiddenScrollbar();
       }
     };
 
@@ -241,7 +242,7 @@ const useScroll = (
       window.removeEventListener('mousemove', handleThumbMouseMove);
       window.removeEventListener('mouseup', handleThumbMouseUp);
     };
-  }, [clientHeight, container, isThumbGrabbed, scrollHeight, scrollTo]);
+  }, [clearHideScrollbarTimer, clientHeight, container, delayHiddenScrollbar, isThumbGrabbed, scrollHeight, scrollTo]);
 
   const Scrollbar = useCallback(() => {
 
@@ -281,6 +282,7 @@ const useScroll = (
 
   return {
     scrollTo,
+    refresh,
     ScrollbarWrapper,
     Scrollbar
   };
