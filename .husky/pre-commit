@@ -1,0 +1,67 @@
+#!/usr/bin/env sh
+
+set -e
+
+# 获取暂存区文件列表
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+
+# ----------------------------
+# 前端检查（仅当 web/ 目录有改动时触发）
+# ----------------------------
+if echo "$STAGED_FILES" | grep -q '^web/'; then
+  echo "前端web代码改动：运行 ESLint 和测试..."
+
+  FRONTEND_FILES=$(echo "$STAGED_FILES" | grep '^web/' | sed 's|^web/||')
+
+  cd web || exit
+
+  npm run lint-staged
+
+  # 仅运行关联测试
+  if [ -n "$FRONTEND_FILES" ]; then
+    npx jest --findRelatedTests $FRONTEND_FILES --passWithNoTests
+  fi
+
+  cd ..
+fi
+
+# ----------------------------
+# 前端检查（仅当 webmaster/ 目录有改动时触发）
+# ----------------------------
+if echo "$STAGED_FILES" | grep -q '^webmaster/'; then
+  echo "前端webmaster代码改动：运行 ESLint ..."
+
+  FRONTEND_FILES=$(echo "$STAGED_FILES" | grep '^webmaster/' | sed 's|^webmaster/||')
+
+  cd webmaster || exit
+
+  npm run lint-staged
+
+  cd ..
+fi
+
+# ----------------------------
+# 后端检查（仅当 server/ 目录有改动时触发）
+# ----------------------------
+if echo "$STAGED_FILES" | grep -q '^server/'; then
+  echo "后端代码改动：运行格式化和单元测试..."
+
+  cd server || exit
+
+  cargo fmt --check
+  cargo clippy -- -D warnings
+
+  # # 获取修改的 Rust 文件路径（相对 server/ 目录）
+  # RUST_FILES=$(echo "$STAGED_FILES" | grep '^server/.*\.rs$' | sed 's|^server/||')
+
+  # # 提取模块路径（如 src/foo/bar.rs → foo::bar）
+  # MODULES=$(echo "$RUST_FILES" | sed 's|src/\(.*\)\.rs|\1|; s|/|::|g')
+
+  # # 仅运行关联模块的测试
+  # if [ -n "$MODULES" ]; then
+  #   cargo test $MODULES
+  # fi
+  cargo test
+
+  cd ..
+fi

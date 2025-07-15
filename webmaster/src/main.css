@@ -1,0 +1,32 @@
+
+html, body {
+  overflow: hidden;
+}
+
+.markdown-editor {
+  /* 移除默认边框 */
+  border: 1px solid #ccc !important;
+
+  /* 移除聚焦时的边框高亮 */
+  outline: none !important;
+
+  /* 移除Chrome和Safari的默认聚焦环 */
+  box-shadow: none !important;
+
+  /* 禁用调整大小的拖拽标志 */
+  resize: none !important;
+
+  /* 移除Firefox的默认聚焦样式 */
+  -moz-appearance: none !important;
+  appearance: none !important;
+
+  /* 如果使用Vuetify，覆盖其聚焦样式 */
+  &:focus, &:focus-visible, &:focus-within {
+    border-color: #ccc !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  /* 确保过渡效果不会再次应用高亮 */
+  transition: none !important;
+}

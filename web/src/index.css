@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* @custom-variant dark (&:where(.dark, .dark *)); */
+
+@theme {
+  --color-mint-950: #1D1D1F;
+  --color-mint-900: #333336;
+
+  --color-mint-500: #6c6c6c;
+
+  --color-mint-100: #F5F5F7;
+  --color-mint-50: #FAFAFC;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #FAFAFC inset !important;
+  -webkit-text-fill-color: #1D1D1F !important;
+  transition: background-color 5000s ease-in-out 0s; /* 延长动画时间防止闪烁 */
+}
+
+@media (prefers-color-scheme: dark) {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #1D1D1F inset !important;
+    -webkit-text-fill-color: #FAFAFC !important;
+  }
+}
+
+html,
+body,
+*[style*="overflow"],
+*[style*="overflow-y"],
+*[style*="overflow-x"],
+div[style*="overflow"],
+.overflow-auto,
+.overflow-scroll,
+.overflow-y-auto,
+.overflow-y-scroll,
+.overflow-x-auto,
+.overflow-x-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*[style*="overflow"]::-webkit-scrollbar,
+*[style*="overflow-y"]::-webkit-scrollbar,
+*[style*="overflow-x"]::-webkit-scrollbar,
+div[style*="overflow"]::-webkit-scrollbar,
+.overflow-auto::-webkit-scrollbar,
+.overflow-scroll::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-y-scroll::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-x-scroll::-webkit-scrollbar {
+  display: none;
+}
+

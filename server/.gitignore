@@ -1,0 +1,15 @@
+# Local
+.DS_Store
+*.local
+*.log*
+
+# Dist
+target/
+journals/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+.env

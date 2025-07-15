@@ -1,0 +1,30 @@
+[package]
+name = "server"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = { version = "0.8.1", features = ["multipart"] }
+tokio = { version = "1.44.0", features = ["rt-multi-thread", "fs"] }
+sea-orm = { version = "1.1.0", features = [
+    "sqlx-postgres",      # PostgreSQL 数据库驱动 - 必需
+    "runtime-tokio-rustls", # 异步运行时和TLS支持 - 必需
+    "macros",            # 实体宏支持 - 必需
+    "with-chrono"        # 时间类型支持 - 当前必需
+] }
+deadpool-redis = "0.20.0"
+serde = { version = "1.0.218", features = ["derive"] }
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["local-time"] }
+tracing-appender = "0.2.3"
+chrono = { version = "0.4.40", features = ["serde"] }
+dotenvy = "0.15.7"
+bcrypt = "0.17.0"
+jsonwebtoken = "9.3.1"
+lettre = { version = "0.11.14", features = ["builder", "smtp-transport", "tokio1-native-tls"] }
+rand = "0.9.0"
+serde_json = "1.0.140"
+regex = "1.11.1"
+
+# 以下是静态链接需要的库
+openssl = { version = "0.10.71", features = ["vendored"] }
