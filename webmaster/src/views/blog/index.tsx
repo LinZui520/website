@@ -7,6 +7,7 @@ import { useState } from '@/composables/useState';
 import { useRouter } from 'vue-router';
 import { mdiDelete, mdiPlus, mdiBookEdit } from '@mdi/js';
 import { headers } from './constant';
+import type { Tag } from '../tag/type';
 
 export default defineComponent({
   name: 'BlogView',
@@ -63,10 +64,12 @@ export default defineComponent({
                 </VCol>
               </VRow>
             ),
-            'item.category.name': ({ item }: { item: BlogDTO }) => (
-              <VChip>
-                {item.category.name}
-              </VChip>
+            'item.tags': ({ item }: { item: BlogDTO }) => (
+              <div class="d-flex ga-4">
+                {item.tags.map((tag: Tag) => (
+                  <VChip key={tag.id}>{tag.name}</VChip>
+                ))}
+              </div>
             ),
             'item.publish': ({ item }: { item: BlogDTO }) => (
               <VChip color={item.publish ? 'success' : 'warning'}>

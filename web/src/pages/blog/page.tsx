@@ -24,18 +24,20 @@ const Page = () => {
               <li className="border-2 border-mint-950 dark:border-mint-50 hover:-translate-y-4 transition-transform duration-300 ease-in-out" key={blog.id}>
                 <Link
                   className={
-                    'h-48 p-6 cursor-pointer select-none group hover:bg-mint-100 dark:hover:bg-mint-900 ' +
+                    'h-56 p-6 cursor-pointer select-none group hover:bg-mint-100 dark:hover:bg-mint-900 ' +
                     'bg-mint-50 dark:bg-mint-950 flex flex-col justify-between'}
                   title={`${blog.title} - ${blog.author.username}`}
                   to={`/blog/${blog.id}`}
                 >
-                  <div className="flex flex-col items-start gap-3">
-                    <h3 className="text-lg font-medium text-mint-950 dark:text-mint-50 line-clamp-2 group-hover:text-mint-500 transition-colors duration-200">
-                      {blog.title}
-                    </h3>
-                    <span className="px-2 py-1 text-xs bg-mint-500 text-mint-50 rounded font-mono">
-                      {blog.category.name}
-                    </span>
+                  <h3 className="text-lg font-medium text-mint-950 dark:text-mint-50 line-clamp-2 group-hover:text-mint-500 transition-colors duration-200">
+                    {blog.title}
+                  </h3>
+                  <div className="flex flex-row flex-wrap gap-2">
+                    {blog.tags.map((tag) => (
+                      <span className="px-2 py-1 text-xs bg-mint-500 text-mint-50 rounded font-mono max-w-48 truncate" key={tag.id}>
+                        {tag.name}
+                      </span>
+                    ))}
                   </div>
                   <div className="flex flex-row justify-between items-center text-sm text-mint-500">
                     <span className="underline">{blog.author.username}</span>

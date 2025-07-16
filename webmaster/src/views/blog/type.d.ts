@@ -1,11 +1,10 @@
 import type { User } from '@/stores/auth';
-import type { Category } from '../category/type';
+import type { Tag } from '../tag/type';
 
 export interface Blog {
   id: number;
   author: number;
   title: string;
-  category: number;
   content: string;
   publish: boolean;
   created_at: string;
@@ -17,7 +16,7 @@ export interface BlogDTO {
   id: number;
   author: User;
   title: string;
-  category: Category;
+  tags: Tag[];
   content: string;
   publish: boolean;
   created_at: string;

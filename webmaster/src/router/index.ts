@@ -24,14 +24,14 @@ const router = createRouter({
       component: () => import('../views/blog/detail')
     },
     {
-      path: '/category',
-      name: 'category',
-      component: () => import('../views/category/index')
+      path: '/tag',
+      name: 'tag',
+      component: () => import('../views/tag/index')
     },
     {
-      path: '/category/detail',
-      name: 'categoryDetail',
-      component: () => import('../views/category/detail')
+      path: '/tag/detail',
+      name: 'tagDetail',
+      component: () => import('../views/tag/detail')
     },
     {
       path: '/picture',

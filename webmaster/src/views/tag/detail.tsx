@@ -3,18 +3,17 @@ import { useState } from '@/composables/useState';
 import { defineComponent, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { VBtn, VCol, VContainer, VForm, VRow, VTextField } from 'vuetify/components';
-import { createCategory, getCategory, updateCategory } from './api';
-import type { Category } from './type';
+import { createTag, getTag, updateTag } from './api';
+import type { Tag } from './type';
 import ErrorView from '../error';
 
 type PageType = 'create' | 'update';
 
 export default defineComponent({
-  name: 'CategoryDetail',
+  name: 'TagDetail',
   setup() {
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
     const route = useRoute();
     const { handleRequest, SnackbarComponent } = useRequest();
     const { type, id } = route.query as { type: PageType; id: string };
@@ -25,22 +24,16 @@ export default defineComponent({
       switch (type) {
         case 'create':
           handleRequest(
-            () => createCategory(name.value, description.value),
-            () => {
-              setName('');
-              setDescription('');
-            },
+            () => createTag(name.value),
+            () => setName(''),
             undefined,
             () => setLoading(false)
           );
           break;
         case 'update':
-          handleRequest<Category>(
-            () => updateCategory(Number(id), name.value, description.value),
-            () => {
-              setName('');
-              setDescription('');
-            },
+          handleRequest<Tag>(
+            () => updateTag(Number(id), name.value),
+            () => setName(''),
             undefined,
             () => setLoading(false)
           );
@@ -53,12 +46,9 @@ export default defineComponent({
         case 'create':
           return;
         case 'update':
-          handleRequest<Category>(
-            () => getCategory(Number(id)),
-            (res) => {
-              setName(res.data.data.name);
-              setDescription(res.data.data.description);
-            }
+          handleRequest<Tag>(
+            () => getTag(Number(id)),
+            (res) => setName(res.data.data.name)
           );
           break;
       }
@@ -70,7 +60,6 @@ export default defineComponent({
           <VCol cols="6">
             <VForm onSubmit={submit}>
               <VTextField label="标签名称" modelValue={name.value} onUpdate:modelValue={(value) => setName(value)} variant="solo-filled" />
-              <VTextField label="标签描述" modelValue={description.value} onUpdate:modelValue={(value) => setDescription(value)} variant="solo-filled" />
               <VRow justify="center">
                 <VBtn loading={loading.value} rounded="xl" size="large" {...{ onClick: submit, type: 'submit' }}>
                   提交

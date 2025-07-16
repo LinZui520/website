@@ -1,6 +1,6 @@
 import { User } from '../auth/type';
 
-export interface Category {
+export interface Tag {
   id: number;
   name: string;
   description: string;
@@ -11,7 +11,7 @@ export interface BlogDTO {
   id: number;
   author: User,
   title: string;
-  category: Category;
+  tags: Tag[];
   content: string;
   published: boolean;
   created_at: string;

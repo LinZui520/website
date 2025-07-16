@@ -1,4 +1,3 @@
-use crate::models::category::Category;
 use crate::models::user::User;
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -11,7 +10,6 @@ pub struct Model {
     pub id: i64,
     pub author: i64,                                       // 作者ID (外键到users表)
     pub title: String,                                     // 博客标题
-    pub category: i64,                                     // 分类ID (外键到categories表)
     pub content: String,                                   // 博客内容
     pub publish: bool,                                     // 是否发布
     pub created_at: Option<chrono::DateTime<chrono::Utc>>, // 创建时间
@@ -30,14 +28,6 @@ pub enum Relation {
     )]
     Author,
 
-    /// 博客属于一个分类 (多对一关系)
-    #[sea_orm(
-        belongs_to = "crate::models::category::Entity",
-        from = "Column::Category",
-        to = "crate::models::category::Column::Id"
-    )]
-    Category,
-
     /// 博客有一个更新者 (多对一关系)
     #[sea_orm(
         belongs_to = "crate::models::user::Entity",
@@ -45,6 +35,10 @@ pub enum Relation {
         to = "crate::models::user::Column::Id"
     )]
     UpdatedByUser,
+
+    /// 博客通过中间表关联多个标签 (多对多关系)
+    #[sea_orm(has_many = "crate::models::blog_tag::Entity")]
+    BlogTags,
 }
 
 impl ActiveModelBehavior for ActiveModel {}
@@ -56,10 +50,14 @@ impl Related<crate::models::user::Entity> for Entity {
     }
 }
 
-// 实现与 Category 实体的关系
-impl Related<crate::models::category::Entity> for Entity {
+// 实现与 Tag 实体的多对多关系（通过中间表）
+impl Related<crate::models::tag::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Category.def()
+        crate::models::blog_tag::Relation::Tag.def()
+    }
+
+    fn via() -> Option<RelationDef> {
+        Some(crate::models::blog_tag::Relation::Blog.def().rev())
     }
 }
 
@@ -69,7 +67,6 @@ pub struct Blog {
     pub id: i64,
     pub author: i64,
     pub title: String,
-    pub category: i64,
     pub content: String,
     pub publish: bool,
     pub created_at: chrono::DateTime<chrono::Utc>,
@@ -83,7 +80,7 @@ pub struct BlogDTO {
     pub id: i64,
     pub author: User,
     pub title: String,
-    pub category: Category,
+    pub tags: Vec<crate::models::tag::Tag>,
     pub content: String,
     pub publish: bool,
     pub created_at: chrono::DateTime<chrono::Utc>,
@@ -98,7 +95,6 @@ impl From<Model> for Blog {
             id: model.id,
             author: model.author,
             title: model.title,
-            category: model.category,
             content: model.content,
             publish: model.publish,
             created_at: model.created_at.unwrap_or_else(chrono::Utc::now),
@@ -115,7 +111,6 @@ impl From<&Model> for Blog {
             id: model.id,
             author: model.author,
             title: model.title.clone(),
-            category: model.category,
             content: model.content.clone(),
             publish: model.publish,
             created_at: model.created_at.unwrap_or_else(chrono::Utc::now),
@@ -143,17 +138,11 @@ pub struct BlogWithRelations {
     pub author_username: String,
     pub author_email: String,
     pub author_permission: i32,
-
-    // Category 字段
-    pub category_id: i64,
-    pub category_name: String,
-    pub category_description: String,
-    pub category_created_at: chrono::DateTime<chrono::Utc>,
 }
 
 impl BlogWithRelations {
-    /// 转换为 BlogDTO
-    pub fn into_blog_dto(self) -> BlogDTO {
+    /// 转换为 BlogDTO（需要单独查询标签）
+    pub fn into_blog_dto(self, tags: Vec<crate::models::tag::Tag>) -> BlogDTO {
         BlogDTO {
             id: self.id,
             author: User::new(
@@ -164,12 +153,7 @@ impl BlogWithRelations {
                 self.author_permission,
             ),
             title: self.title,
-            category: Category::new(
-                self.category_id,
-                self.category_name,
-                self.category_description,
-                self.category_created_at,
-            ),
+            tags, // 传入的标签数组
             content: self.content,
             publish: self.publish,
             created_at: self.created_at,

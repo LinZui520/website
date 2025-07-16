@@ -1,6 +1,6 @@
 import { defineComponent, onMounted } from 'vue';
-import { deleteCategory, listCategories } from './api';
-import type { Category } from './type';
+import { deleteTag, listTags } from './api';
+import type { Tag } from './type';
 import { VBtn, VCard, VCardActions, VCardText, VChip, VCol, VContainer, VDataTable, VDialog, VRow, VSpacer } from 'vuetify/components';
 import { useRequest } from '@/composables/useRequest';
 import { useState } from '@/composables/useState';
@@ -9,29 +9,29 @@ import { useRouter } from 'vue-router';
 import { mdiDelete, mdiPlus, mdiTagEdit } from '@mdi/js';
 
 export default defineComponent({
-  name: 'CategoryView',
+  name: 'TagView',
   setup() {
     const [loading, setLoading] = useState(false);
-    const [categoryList, setCategoryList] = useState<Category[]>([]);
+    const [tagList, setTagList] = useState<Tag[]>([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
-    const [deleteCategoryId, setDeleteCategoryId] = useState<number>(0);
+    const [deleteTagId, setDeleteTagId] = useState<number>(0);
     const router = useRouter();
     const { handleRequest, SnackbarComponent } = useRequest();
 
-    const getCategoryList = () => {
-      listCategories<Category[]>().then((res) => setCategoryList(res.data.data));
+    const getTagList = () => {
+      listTags<Tag[]>().then((res) => setTagList(res.data.data));
     };
 
     const handleOpenDeleteDialog = (id: number) => {
       setShowDeleteDialog(true);
-      setDeleteCategoryId(id);
+      setDeleteTagId(id);
     };
 
-    const handleDeleteCategory = () => {
+    const handleDeleteTag = () => {
       setLoading(true);
       handleRequest(
-        () => deleteCategory(deleteCategoryId.value),
-        () => getCategoryList(),
+        () => deleteTag(deleteTagId.value),
+        () => getTagList(),
         undefined,
         () => {
           setLoading(false);
@@ -41,14 +41,14 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      getCategoryList();
+      getTagList();
     });
 
     return () => (
       <VContainer fluid>
         <VDataTable
           headers={headers}
-          items={categoryList.value}
+          items={tagList.value}
         >
           {{
             top: () => (
@@ -59,18 +59,18 @@ export default defineComponent({
                 <VCol cols="12" md="6">
                 </VCol>
                 <VCol cols="12" md="2">
-                  <VBtn prependIcon={mdiPlus} {...{ onClick: () => router.push({ name: 'categoryDetail', query: { type: 'create' } }) }}>添加标签</VBtn>
+                  <VBtn prependIcon={mdiPlus} {...{ onClick: () => router.push({ name: 'tagDetail', query: { type: 'create' } }) }}>添加标签</VBtn>
                 </VCol>
               </VRow>
             ),
-            'item.name': ({ item }: { item: Category }) => (<VChip>{item.name}</VChip>),
-            'item.created_at': ({ item }: { item: Category }) => (new Date(item.created_at).toLocaleString()),
-            'item.actions': ({ item }: { item: Category }) => (
+            'item.name': ({ item }: { item: Tag }) => (<VChip>{item.name}</VChip>),
+            'item.created_at': ({ item }: { item: Tag }) => (new Date(item.created_at).toLocaleString()),
+            'item.actions': ({ item }: { item: Tag }) => (
               <>
                 <VBtn
                   prependIcon={mdiTagEdit}
                   variant="text"
-                  {...{ onClick: () => router.push({ name: 'categoryDetail', query: { type: 'update', id: item.id } }) }}
+                  {...{ onClick: () => router.push({ name: 'tagDetail', query: { type: 'update', id: item.id } }) }}
                 >
                   修改
                 </VBtn>
@@ -93,7 +93,7 @@ export default defineComponent({
             <VCardActions>
               <VSpacer />
               <VBtn rounded="xl" variant="outlined" {...{ onClick: () => setShowDeleteDialog(false) }}>取消</VBtn>
-              <VBtn loading={loading.value} rounded="xl" variant="outlined" {...{ onClick: () => { handleDeleteCategory(); } }}>确定</VBtn>
+              <VBtn loading={loading.value} rounded="xl" variant="outlined" {...{ onClick: () => { handleDeleteTag(); } }}>确定</VBtn>
             </VCardActions>
           </VCard>
         </VDialog>
