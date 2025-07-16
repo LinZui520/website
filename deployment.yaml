@@ -372,6 +372,13 @@ data:
       server_name zhuguishihundan.com www.zhuguishihundan.com;
 
       # ======================
+      # 全局 CORS 头部配置
+      # ======================
+      add_header 'Access-Control-Allow-Origin' '*' always;
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
+
+      # ======================
       # GZIP 压缩配置
       # ======================
       gzip on;
@@ -389,22 +396,12 @@ data:
         root /usr/share/nginx/html;
         try_files $uri $uri/ /index.html;
         index index.html;
-
-        # 添加CORS头部支持
-        add_header 'Access-Control-Allow-Origin' '*' always;
-        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
-        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
       }
 
       location /admin {
         alias /usr/share/nginx/html/admin;
         try_files $uri $uri/ /admin/index.html;
         index index.html;
-
-        # 添加CORS头部支持
-        add_header 'Access-Control-Allow-Origin' '*' always;
-        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
-        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
       }
 
       location /picture {
@@ -414,11 +411,6 @@ data:
         # 添加缓存头部
         expires 1y;
         add_header Cache-Control "public, immutable";
-
-        # 添加CORS头部支持
-        add_header 'Access-Control-Allow-Origin' '*' always;
-        add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
-        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
       }
 
       location /avatar {
@@ -428,11 +420,6 @@ data:
         # 添加缓存头部
         expires 1y;
         add_header Cache-Control "public, immutable";
-
-        # 添加CORS头部支持
-        add_header 'Access-Control-Allow-Origin' '*' always;
-        add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
-        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
       }
 
       location /photo {
@@ -442,11 +429,6 @@ data:
         # 添加缓存头部
         expires 1y;
         add_header Cache-Control "public, immutable";
-
-        # 添加CORS头部支持
-        add_header 'Access-Control-Allow-Origin' '*' always;
-        add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
-        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
       }
 
       location /api {
@@ -566,4 +548,3 @@ spec:
             name: nginx-service
             port:
               number: 80
-              
