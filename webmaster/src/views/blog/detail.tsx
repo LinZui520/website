@@ -5,8 +5,8 @@ import { defineComponent, onMounted, onUnmounted, ref, watch, watchEffect } from
 import { useRoute, useRouter } from 'vue-router';
 import { VBtn, VCheckbox, VCombobox, VContainer, VTextField } from 'vuetify/components';
 import ErrorView from '../error';
-import type { Category } from '../category/type';
-import { listCategories } from '../category/api';
+import type { Tag } from '../tag/type';
+import { listTags } from '../tag/api';
 import { useRequest } from '@/composables/useRequest';
 import type { Blog, BlogDTO } from './type';
 import { createBlog, getBlog, updateBlog } from './api';
@@ -19,9 +19,9 @@ export default defineComponent({
     // 表单数据
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [category, setCategory] = useState<Category | null>(null);
+    const [tags, setTags] = useState<Tag[]>([]);
     const [publish, setPublish] = useState(false);
-    const [categories, setCategories] = useState<Category[]>([]);
+    const [tagList, setTagList] = useState<Tag[]>([]);
 
     // 预览数据
     const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ export default defineComponent({
       switch (type.value) {
         case 'create':
           handleRequest<Blog>(
-            () => createBlog(title.value, content.value, category.value?.id ?? 0, publish.value),
+            () => createBlog(title.value, content.value, tags.value.map(item => item.id), publish.value),
             (res) => router.replace({ query: { type: 'update', id: res.data.data.id } }),
             undefined,
             () => setLoading(false)
@@ -50,13 +50,21 @@ export default defineComponent({
           break;
         case 'update':
           handleRequest<Blog>(
-            () => updateBlog(Number(id.value), title.value, content.value, category.value?.id ?? 0, publish.value),
+            () => updateBlog(Number(id.value), title.value, content.value, tags.value.map(item => item.id), publish.value),
             undefined,
             undefined,
             () => setLoading(false)
           );
           break;
       }
+    };
+
+    const getBlogInfo = async () => {
+      const res = await getBlog<BlogDTO>(Number(id.value));
+      setTitle(res.data.data.title);
+      setContent(res.data.data.content);
+      setPublish(res.data.data.publish);
+      setTags(res.data.data.tags);
     };
 
     watchEffect(async () => setMarkdownText(await markdown(content.value)));
@@ -105,7 +113,7 @@ export default defineComponent({
     onUnmounted(() => document.removeEventListener('keydown', handleKeydown));
 
     onMounted(() => {
-      listCategories<Category[]>().then((res) => setCategories(res.data.data));
+      listTags<Tag[]>().then((res) => setTagList(res.data.data));
     });
 
     onMounted(() => {
@@ -113,12 +121,7 @@ export default defineComponent({
         case 'create':
           break;
         case 'update':
-          getBlog<BlogDTO>(Number(id.value)).then((res) => {
-            setTitle(res.data.data.title);
-            setContent(res.data.data.content);
-            setCategory(res.data.data.category);
-            setPublish(res.data.data.publish);
-          });
+          getBlogInfo();
           break;
       }
     });
@@ -160,16 +163,16 @@ export default defineComponent({
             <VCombobox
               chips
               class="mr-4"
-              itemTitle={(item: Category) => item.name.length > 5 ? item.name.substring(0, 5) + '...' : item.name}
-              itemValue={(item: Category) => item.id}
-              items={categories.value}
+              itemTitle="name"
+              itemValue="id"
+              items={tagList.value}
               label="标签"
-              modelValue={category.value}
-              onUpdate:modelValue={(value) => setCategory(value)}
+              modelValue={tags.value}
+              multiple
+              onUpdate:modelValue={(value) => setTags(value)}
               rounded="xl"
-              style={{ height: '48px' }}
+              style={{ height: '48px', minWidth: '200px' }}
               variant="underlined"
-              width="200px"
             />
             <VCheckbox class="mr-4" label="发布" modelValue={publish.value} onUpdate:modelValue={(value) => setPublish(Boolean(value))} />
           </div>

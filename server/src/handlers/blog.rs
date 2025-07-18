@@ -3,8 +3,9 @@ use crate::models::blog::{
     ActiveModel as BlogActiveModel, Blog, BlogDTO, BlogWithRelations, Column as BlogColumn,
     Entity as BlogEntity, Relation,
 };
-use crate::models::category::Column as CategoryColumn;
+use crate::models::blog_tag::{ActiveModel as BlogTagActiveModel, Entity as BlogTagEntity};
 use crate::models::response::Response;
+use crate::models::tag::{Entity as TagEntity, Tag};
 use crate::models::user::{Column as UserColumn, Entity as UserEntity, Permission};
 use crate::{AppState, validate_field};
 use axum::extract::Path;
@@ -30,9 +31,17 @@ pub async fn create_blog(
     let postgres = &state.postgres;
 
     let title = validate_field!(form, "title", "标题");
-    let category = match form.get("category").and_then(|v| v.as_i64()) {
-        Some(category) => category,
-        None => return Response::warn("分类字段缺失"),
+    let tag_ids = match form.get("tag_ids").and_then(|v| v.as_array()) {
+        Some(arr) => {
+            let mut ids = Vec::new();
+            for item in arr {
+                if let Some(id) = item.as_i64() {
+                    ids.push(id);
+                }
+            }
+            ids
+        }
+        None => Vec::new(), // 允许没有标签
     };
     let content = validate_field!(form, "content", "内容");
     let publish = form
@@ -40,10 +49,16 @@ pub async fn create_blog(
         .and_then(|v| v.as_bool())
         .unwrap_or(false);
 
+    // 开启事务
+    let txn = match postgres.begin().await {
+        Ok(txn) => txn,
+        Err(err) => return Response::error(format!("开始事务失败: {err}")),
+    };
+
+    // 创建博客
     let blog = BlogActiveModel {
         author: Set(claims.sub),
         title: Set(title.to_string()),
-        category: Set(category),
         content: Set(content.to_string()),
         publish: Set(publish),
         created_at: Set(Some(chrono::Utc::now())),
@@ -52,13 +67,29 @@ pub async fn create_blog(
         ..Default::default()
     };
 
-    Response::success(
-        Blog::from(match blog.insert(postgres).await {
-            Ok(blog) => blog,
-            Err(err) => return Response::error(format!("创建博客失败: {err}")),
-        }),
-        "创建博客成功",
-    )
+    let created_blog = match blog.insert(&txn).await {
+        Ok(blog) => blog,
+        Err(err) => return Response::error(format!("创建博客失败: {err}")),
+    };
+
+    // 创建博客标签关联
+    for tag_id in tag_ids {
+        let blog_tag = BlogTagActiveModel {
+            blog_id: Set(created_blog.id),
+            tag_id: Set(tag_id),
+        };
+
+        if let Err(err) = blog_tag.insert(&txn).await {
+            return Response::error(format!("创建博客标签关联失败: {err}"));
+        }
+    }
+
+    // 提交事务
+    if let Err(err) = txn.commit().await {
+        return Response::error(format!("提交事务失败: {err}"));
+    }
+
+    Response::success(Blog::from(created_blog), "创建博客成功")
 }
 
 pub async fn delete_blog(
@@ -94,6 +125,16 @@ pub async fn delete_blog(
         return Response::warn("权限不足，无法删除该博客");
     }
 
+    // 先删除博客标签关联
+    match BlogTagEntity::delete_many()
+        .filter(crate::models::blog_tag::Column::BlogId.eq(id))
+        .exec(&txn)
+        .await
+    {
+        Ok(_) => {}
+        Err(err) => return Response::error(format!("删除博客标签关联失败: {err}")),
+    }
+
     // 删除博客
     match BlogEntity::delete_by_id(id).exec(&txn).await {
         Ok(_) => {}
@@ -122,9 +163,17 @@ pub async fn update_blog(
     let postgres = &state.postgres;
 
     let title = validate_field!(form, "title", "标题");
-    let category = match form.get("category").and_then(|v| v.as_i64()) {
-        Some(category) => category,
-        None => return Response::warn("分类字段缺失"),
+    let tag_ids = match form.get("tag_ids").and_then(|v| v.as_array()) {
+        Some(arr) => {
+            let mut ids = Vec::new();
+            for item in arr {
+                if let Some(id) = item.as_i64() {
+                    ids.push(id);
+                }
+            }
+            ids
+        }
+        None => Vec::new(), // 允许没有标签
     };
     let content = validate_field!(form, "content", "内容");
     let publish = match form.get("publish").and_then(|v| v.as_bool()) {
@@ -157,7 +206,6 @@ pub async fn update_blog(
     // 更新博客
     let mut blog_active: BlogActiveModel = blog.into();
     blog_active.title = Set(title.to_string());
-    blog_active.category = Set(category);
     blog_active.content = Set(content.to_string());
     blog_active.publish = Set(publish);
     blog_active.updated_at = Set(Some(chrono::Utc::now()));
@@ -166,6 +214,28 @@ pub async fn update_blog(
     match blog_active.update(&txn).await {
         Ok(_) => {}
         Err(err) => return Response::error(format!("更新博客失败: {err}")),
+    }
+
+    // 删除现有的标签关联
+    match BlogTagEntity::delete_many()
+        .filter(crate::models::blog_tag::Column::BlogId.eq(id))
+        .exec(&txn)
+        .await
+    {
+        Ok(_) => {}
+        Err(err) => return Response::error(format!("删除原有标签关联失败: {err}")),
+    }
+
+    // 创建新的标签关联
+    for tag_id in tag_ids {
+        let blog_tag = BlogTagActiveModel {
+            blog_id: Set(id),
+            tag_id: Set(tag_id),
+        };
+
+        if let Err(err) = blog_tag.insert(&txn).await {
+            return Response::error(format!("创建博客标签关联失败: {err}"));
+        }
     }
 
     // 提交事务
@@ -181,30 +251,88 @@ pub async fn list_published_blogs(
 ) -> Response<Vec<BlogDTO>> {
     let postgres = &state.postgres;
 
-    match BlogEntity::find()
+    // 查询已发布的博客基本信息
+    let blogs_data = match BlogEntity::find()
         .filter(BlogColumn::Publish.eq(true))
         .join(JoinType::InnerJoin, Relation::Author.def())
-        .join(JoinType::InnerJoin, Relation::Category.def())
         .column_as(UserColumn::Id, "author_id")
         .column_as(UserColumn::Avatar, "author_avatar")
         .column_as(UserColumn::Username, "author_username")
         .column_as(UserColumn::Email, "author_email")
         .column_as(UserColumn::Permission, "author_permission")
-        .column_as(CategoryColumn::Id, "category_id")
-        .column_as(CategoryColumn::Name, "category_name")
-        .column_as(CategoryColumn::Description, "category_description")
-        .column_as(CategoryColumn::CreatedAt, "category_created_at")
         .order_by_desc(BlogColumn::CreatedAt)
         .into_model::<BlogWithRelations>()
         .all(postgres)
         .await
     {
-        Ok(data) => Response::success(
-            data.into_iter().map(|item| item.into_blog_dto()).collect(),
-            "查询成功",
-        ),
-        Err(err) => Response::error(format!("查询已发布博客失败: {err}")),
+        Ok(data) => data,
+        Err(err) => return Response::error(format!("查询已发布博客失败: {err}")),
+    };
+
+    // 获取所有博客ID
+    let blog_ids: Vec<i64> = blogs_data.iter().map(|blog| blog.id).collect();
+
+    // 批量获取所有博客的标签
+    let blogs_tags = match get_blogs_tags(&blog_ids, postgres).await {
+        Ok(tags) => tags,
+        Err(err) => return Response::error(format!("查询博客标签失败: {err}")),
+    };
+
+    // 组装BlogDTO
+    let blog_dtos: Vec<BlogDTO> = blogs_data
+        .into_iter()
+        .map(|blog| {
+            let tags = blogs_tags.get(&blog.id).cloned().unwrap_or_default();
+            blog.into_blog_dto(tags)
+        })
+        .collect();
+
+    Response::success(blog_dtos, "查询成功")
+}
+
+/// 获取博客的标签列表
+async fn get_blog_tags(
+    blog_id: i64,
+    db: &sea_orm::DatabaseConnection,
+) -> Result<Vec<Tag>, sea_orm::DbErr> {
+    TagEntity::find()
+        .join(
+            JoinType::InnerJoin,
+            crate::models::tag::Relation::BlogTags.def(),
+        )
+        .filter(crate::models::blog_tag::Column::BlogId.eq(blog_id))
+        .all(db)
+        .await
+        .map(|tags| tags.into_iter().map(Tag::from).collect())
+}
+
+/// 获取多个博客的标签（批量查询优化）
+async fn get_blogs_tags(
+    blog_ids: &[i64],
+    db: &sea_orm::DatabaseConnection,
+) -> Result<std::collections::HashMap<i64, Vec<Tag>>, sea_orm::DbErr> {
+    use std::collections::HashMap;
+
+    // 查询所有相关的博客标签关联
+    let blog_tags = BlogTagEntity::find()
+        .filter(crate::models::blog_tag::Column::BlogId.is_in(blog_ids.iter().cloned()))
+        .find_also_related(TagEntity)
+        .all(db)
+        .await?;
+
+    // 组织成HashMap
+    let mut result: HashMap<i64, Vec<Tag>> = HashMap::new();
+
+    for (blog_tag, tag) in blog_tags {
+        if let Some(tag) = tag {
+            result
+                .entry(blog_tag.blog_id)
+                .or_default()
+                .push(Tag::from(tag));
+        }
     }
+
+    Ok(result)
 }
 
 pub async fn get_blog(
@@ -220,16 +348,11 @@ pub async fn get_blog(
     // 构建基础查询
     let mut query = BlogEntity::find_by_id(id)
         .join(JoinType::InnerJoin, Relation::Author.def())
-        .join(JoinType::InnerJoin, Relation::Category.def())
         .column_as(UserColumn::Id, "author_id")
         .column_as(UserColumn::Avatar, "author_avatar")
         .column_as(UserColumn::Username, "author_username")
         .column_as(UserColumn::Email, "author_email")
-        .column_as(UserColumn::Permission, "author_permission")
-        .column_as(CategoryColumn::Id, "category_id")
-        .column_as(CategoryColumn::Name, "category_name")
-        .column_as(CategoryColumn::Description, "category_description")
-        .column_as(CategoryColumn::CreatedAt, "category_created_at");
+        .column_as(UserColumn::Permission, "author_permission");
 
     // 根据权限决定是否过滤 publish 字段
     match claims {
@@ -245,11 +368,19 @@ pub async fn get_blog(
     }
 
     // 执行查询
-    match query.into_model::<BlogWithRelations>().one(postgres).await {
-        Ok(Some(blog)) => Response::success(blog.into_blog_dto(), "查询成功"),
-        Ok(None) => Response::warn("博客不存在"),
-        Err(err) => Response::error(format!("查询博客失败: {err}")),
-    }
+    let blog_data = match query.into_model::<BlogWithRelations>().one(postgres).await {
+        Ok(Some(blog)) => blog,
+        Ok(None) => return Response::warn("博客不存在"),
+        Err(err) => return Response::error(format!("查询博客失败: {err}")),
+    };
+
+    // 获取博客的标签
+    let tags = match get_blog_tags(id, postgres).await {
+        Ok(tags) => tags,
+        Err(err) => return Response::error(format!("查询博客标签失败: {err}")),
+    };
+
+    Response::success(blog_data.into_blog_dto(tags), "查询成功")
 }
 
 pub async fn list_blogs(
@@ -266,16 +397,11 @@ pub async fn list_blogs(
     // 构建基础查询
     let mut query = BlogEntity::find()
         .join(JoinType::InnerJoin, Relation::Author.def())
-        .join(JoinType::InnerJoin, Relation::Category.def())
         .column_as(UserColumn::Id, "author_id")
         .column_as(UserColumn::Avatar, "author_avatar")
         .column_as(UserColumn::Username, "author_username")
         .column_as(UserColumn::Email, "author_email")
         .column_as(UserColumn::Permission, "author_permission")
-        .column_as(CategoryColumn::Id, "category_id")
-        .column_as(CategoryColumn::Name, "category_name")
-        .column_as(CategoryColumn::Description, "category_description")
-        .column_as(CategoryColumn::CreatedAt, "category_created_at")
         .order_by_desc(BlogColumn::CreatedAt);
 
     // 根据权限添加过滤条件
@@ -287,11 +413,28 @@ pub async fn list_blogs(
     }
 
     // 执行查询
-    match query.into_model::<BlogWithRelations>().all(postgres).await {
-        Ok(data) => Response::success(
-            data.into_iter().map(|item| item.into_blog_dto()).collect(),
-            "查询成功",
-        ),
-        Err(err) => Response::error(format!("查询博客列表失败: {err}")),
-    }
+    let blogs_data = match query.into_model::<BlogWithRelations>().all(postgres).await {
+        Ok(data) => data,
+        Err(err) => return Response::error(format!("查询博客列表失败: {err}")),
+    };
+
+    // 获取所有博客ID
+    let blog_ids: Vec<i64> = blogs_data.iter().map(|blog| blog.id).collect();
+
+    // 批量获取所有博客的标签
+    let blogs_tags = match get_blogs_tags(&blog_ids, postgres).await {
+        Ok(tags) => tags,
+        Err(err) => return Response::error(format!("查询博客标签失败: {err}")),
+    };
+
+    // 组装BlogDTO
+    let blog_dtos: Vec<BlogDTO> = blogs_data
+        .into_iter()
+        .map(|blog| {
+            let tags = blogs_tags.get(&blog.id).cloned().unwrap_or_default();
+            blog.into_blog_dto(tags)
+        })
+        .collect();
+
+    Response::success(blog_dtos, "查询成功")
 }

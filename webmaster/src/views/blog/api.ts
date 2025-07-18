@@ -1,38 +1,38 @@
 import request from '@/utils/axios';
 
 export const listBlogs = <T> () => request<T>({
-  url: '/blog/list',
+  url: '/blog',
   method: 'get'
 });
 
 export const deleteBlog = (id: number) => request({
-  url: `/blog/delete/${id}`,
+  url: `/blog/${id}`,
   method: 'delete'
 });
 
-export const createBlog = <T> (title: string, content: string, category: number, publish: boolean) => request<T>({
-  url: '/blog/create',
+export const createBlog = <T> (title: string, content: string, tags: number[], publish: boolean) => request<T>({
+  url: '/blog',
   method: 'post',
   data: {
     title,
-    category,
+    tag_ids: tags,
     content,
     publish
   }
 });
 
-export const updateBlog = <T> (id: number, title: string, content: string, category: number, publish: boolean) => request<T>({
-  url: `/blog/update/${id}`,
+export const updateBlog = <T> (id: number, title: string, content: string, tags: number[], publish: boolean) => request<T>({
+  url: `/blog/${id}`,
   method: 'put',
   data: {
     title,
     content,
-    category,
+    tag_ids: tags,
     publish
   }
 });
 
 export const getBlog = <T> (id: number) => request<T>({
-  url: `/blog/get/${id}`,
+  url: `/blog/${id}`,
   method: 'get'
 });
