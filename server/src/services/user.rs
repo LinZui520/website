@@ -1,5 +1,7 @@
 use crate::AppState;
+use crate::core::redis::clear_cache;
 use crate::models::user::{ActiveModel, Entity as UserEntity, UserVO};
+use crate::services::blog::BlogService;
 use anyhow::{Result, anyhow};
 use sea_orm::{ActiveModelTrait, EntityTrait, QueryOrder, Set};
 use std::sync::Arc;
@@ -66,6 +68,12 @@ impl UserService {
 
         user_active.update(postgres).await?;
 
+        // 异步清除相关缓存，不阻塞主函数
+        tokio::spawn(async move {
+            // 清除博客列表缓存，因为博客中包含用户头像信息
+            let _ = clear_cache(state.clone(), BlogService::CACHE_KEY_PUBLISHED_LIST).await;
+        });
+
         Ok(())
     }
 
@@ -111,6 +119,12 @@ impl UserService {
         };
 
         user_active.update(postgres).await?;
+
+        // 异步清除相关缓存，不阻塞主函数
+        tokio::spawn(async move {
+            // 清除博客列表缓存，因为博客中包含用户头像信息
+            let _ = clear_cache(state.clone(), BlogService::CACHE_KEY_PUBLISHED_LIST).await;
+        });
 
         Ok(())
     }

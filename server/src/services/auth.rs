@@ -1,8 +1,10 @@
 use crate::core::env::env;
 use crate::core::jwt::{UserCredentials, generate_jwt, parse_jwt, verify_jwt};
 use crate::core::mail::{generate_random_code, is_valid_email, send_verification_email};
+use crate::core::redis::clear_cache;
 use crate::models::auth::AuthVO;
 use crate::models::user::{ActiveModel, Column, Entity as UserEntity, UserDTO, UserVO};
+use crate::services::blog::BlogService;
 use crate::{AppState, validate_option_field};
 use anyhow::{Result, anyhow};
 use axum::extract::Multipart;
@@ -331,6 +333,12 @@ impl AuthService {
 
         // 提交事务
         txn.commit().await?;
+
+        // 异步清除相关缓存，不阻塞主函数
+        tokio::spawn(async move {
+            // 清除博客列表缓存，因为博客中包含用户头像信息
+            let _ = clear_cache(state.clone(), BlogService::CACHE_KEY_PUBLISHED_LIST).await;
+        });
 
         // 事务提交成功后，删除旧头像文件（如果不是默认头像的话）
         let default_avatar = DEFAULT_AVATAR.get_or_init(|| env("WEBSITE_USER_DEFAULT_AVATAR"));
