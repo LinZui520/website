@@ -1,19 +1,19 @@
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { OutletContext } from '../type';
+import { OutletContext, PhotoVO } from '../type';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { useRequest } from '../../../hooks/useRequest';
 import { uploadPhoto } from '../api';
-import { useScrollContext } from '../../../contexts/ScrollProvider';
+import BackArrow from '../../../components/BackArrow';
+import UpArrow from '../../../components/UpArrow';
 
 const Page = () => {
   const { location } = useParams();
   const { photos } = useOutletContext<OutletContext>();
   const [isOpen, setIsOpen] = useState(false);
-  const isUpAnimating = useRef(false);
   const container = useRef<HTMLDivElement | null>(null);
   const timeline = useRef<GSAPTimeline | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -21,9 +21,7 @@ const Page = () => {
   const [file, setFile] = useState<File | null>(null);
   const [photo, setPhoto] = useState('');
   const [description, setDescription] = useState('');
-  const navigate = useNavigate();
   const { handleRequest, notify } = useRequest();
-  const { scrollTo } = useScrollContext();
 
   useEffect(() => setPhoto(file?.name || ''), [file]);
 
@@ -45,29 +43,6 @@ const Page = () => {
 
   useGSAP(() => isOpen ? timeline.current?.play() : timeline.current?.reverse(), { scope: container, dependencies: [isOpen] });
 
-  const animateUpArrow = () => {
-    if (isUpAnimating.current) return;
-    isUpAnimating.current = true;
-    // 清理之前的动画，避免内存泄漏
-    gsap.killTweensOf('#up');
-
-    const animate = gsap.timeline({
-      onComplete: () => {
-        isUpAnimating.current = false;
-      }
-    });
-
-    animate
-      .fromTo('#up',
-        { y: 0 },
-        { y: -64, duration: 0.25, ease: 'power2.inOut' }
-      )
-      .fromTo('#up',
-        { y: 64 },
-        { y: 0, duration: 0.25, ease: 'power2.inOut' }
-      );
-  };
-
   const upload = async () => {
     if (!file || !location) {
       notify('参数为空');
@@ -85,6 +60,9 @@ const Page = () => {
         setFile(null);
         setPhoto('');
         setDescription('');
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       },
       undefined,
       undefined
@@ -97,12 +75,12 @@ const Page = () => {
       ref={container}
     >
       <div className="columns-1 md:columns-2 xl:columns-3 gap-4 md:gap-12 xl:gap-18">
-        {localPhotos.map(photo => (
-          <div className="relative overflow-hidden shadow-md group break-inside-avoid mb-4 md:mb-12 xl:mb-18" key={photo.id}>
+        {localPhotos.map((photo: PhotoVO) => (
+          <div className="relative overflow-hidden shadow-md group break-inside-avoid mb-4 md:mb-12 xl:mb-18" key={photo.photo_id}>
             <img
-              alt={photo.filename}
+              alt={photo.photo_id}
               className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
-              src={photo.url}
+              src={photo.photo_url}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-mint-950/30 via-transparent to-mint-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
               {photo.description && (
@@ -115,30 +93,9 @@ const Page = () => {
         ))}
       </div>
 
-      <div
-        className={'fixed right-12 bottom-8 h-16 w-16 overflow-hidden cursor-pointer'}
-        onClick={() => {
-          scrollTo(0);
-          animateUpArrow();
-        }}
-      >
-        <svg
-          className="h-16 w-16 fill-none stroke-3 stroke-mint-950 dark:stroke-mint-50"
-          id="up" viewBox="0 0 32 32"
-        >
-          <path d="M 16 28 L 16 8" />
-          <path d="M 8 16 L 16 8 L 24 16" />
-        </svg>
-      </div>
+      <UpArrow />
 
-      <svg
-        className={'fixed left-12 bottom-8 h-16 w-16 fill-none stroke-3 stroke-mint-950 dark:stroke-mint-50 cursor-pointer'}
-        onClick={() => navigate(-1)}
-        viewBox="0 0 32 32"
-      >
-        <path d="M 28 16 L 8 16" />
-        <path d="M 16 8 L 8 16 L 16 24" />
-      </svg>
+      <BackArrow />
 
       <svg
         className={'fixed right-12 top-28 h-16 w-16 stroke-3 stroke-mint-950 dark:stroke-mint-50 cursor-pointer z-[35]'}

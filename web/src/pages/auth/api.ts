@@ -6,10 +6,10 @@ export const userVerifyCode = (email: string) => request({
   data: { email }
 });
 
-export const userRegister = (username: string, email: string, code: string, password: string) => request({
+export const userRegister = (username: string, email: string, verification_code: string, password: string) => request({
   url: '/auth/register',
   method: 'POST',
-  data: { username, email, code, password }
+  data: { username, email, verification_code, password }
 });
 
 export const userLogin = <T> (email: string, password: string) => request<T>({
@@ -23,8 +23,8 @@ export const userJWTLogin = <T> () => request<T>({
   method: 'GET'
 });
 
-export const userResetPassword = (email: string, code: string, password: string) => request({
+export const userResetPassword = (email: string, verification_code: string, password: string) => request({
   url: '/auth/reset-password',
   method: 'PUT',
-  data: { email, code, password }
+  data: { email, verification_code, password }
 });

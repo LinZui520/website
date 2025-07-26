@@ -1,6 +1,6 @@
 import { defineComponent, onMounted } from 'vue';
 import { deletePhoto, listPhotos } from './api';
-import type { PhotoDTO } from './type';
+import type { PhotoVO } from './type';
 import {
   VBtn, VCard, VCardActions, VCardText, VCol, VContainer, VDataTable,
   VDialog, VImg, VRow, VSpacer
@@ -14,16 +14,16 @@ export default defineComponent({
   name: 'PhotoView',
   setup() {
     const [loading, setLoading] = useState(false);
-    const [photoList, setPhotoList] = useState<PhotoDTO[]>([]);
+    const [photoList, setPhotoList] = useState<PhotoVO[]>([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
-    const [deletePhotoId, setDeletePhotoId] = useState<number>(0);
+    const [deletePhotoId, setDeletePhotoId] = useState<string>('');
     const { handleRequest, SnackbarComponent } = useRequest();
 
     const getPhotoList = () => {
-      listPhotos<PhotoDTO[]>().then((res) => setPhotoList(res.data.data));
+      listPhotos<PhotoVO[]>().then((res) => setPhotoList(res.data.data));
     };
 
-    const handleOpenDeleteDialog = (id: number) => {
+    const handleOpenDeleteDialog = (id: string) => {
       setShowDeleteDialog(true);
       setDeletePhotoId(id);
     };
@@ -63,23 +63,23 @@ export default defineComponent({
                 </VCol>
               </VRow>
             ),
-            'item.url': ({ item }: { item: PhotoDTO }) => (
+            'item.photo_url': ({ item }: { item: PhotoVO }) => (
               <VImg
                 height="240"
-                src={item.url}
+                src={item.photo_url}
                 style={{ objectFit: 'cover' }}
                 width="240"
               />
             ),
-            'item.description': ({ item }: { item: PhotoDTO }) => item.description || '无描述',
-            'item.location': ({ item }: { item: PhotoDTO }) => item.location,
-            'item.author': ({ item }: { item: PhotoDTO }) => item.author?.username || '未知',
-            'item.created_at': ({ item }: { item: PhotoDTO }) => (new Date(item.created_at).toLocaleString()),
-            'item.actions': ({ item }: { item: PhotoDTO }) => (
+            'item.description': ({ item }: { item: PhotoVO }) => item.description || '无描述',
+            'item.location': ({ item }: { item: PhotoVO }) => item.location,
+            'item.created_by': ({ item }: { item: PhotoVO }) => item.created_by?.username || '未知',
+            'item.created_at': ({ item }: { item: PhotoVO }) => (new Date(item.created_at).toLocaleString()),
+            'item.actions': ({ item }: { item: PhotoVO }) => (
               <VBtn
                 prependIcon={mdiDelete}
                 variant="text"
-                {...{ onClick: () => handleOpenDeleteDialog(item.id) }}
+                {...{ onClick: () => handleOpenDeleteDialog(item.photo_id) }}
               >
                 删除
               </VBtn>

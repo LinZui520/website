@@ -1,17 +1,17 @@
 import request from '@/utils/axios';
 
 export const listPictures = <T> () => request<T>({
-  url: '/picture/list',
+  url: '/picture',
   method: 'get'
 });
 
-export const deletePicture = (id: number) => request({
-  url: `/picture/delete/${id}`,
+export const deletePicture = (id: string) => request({
+  url: `/picture/${id}`,
   method: 'delete'
 });
 
 export const uploadPicture = (formData: FormData) => request({
-  url: '/picture/upload',
+  url: '/picture',
   method: 'post',
   data: formData,
   headers: {

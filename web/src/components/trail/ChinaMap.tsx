@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ChinaGeoJSONCollection } from './type';
 import { calculateBounds, convertGeoJSONToSVGPath } from './geo';
-import { PhotoDTO } from '../../pages/trail/type';
+import { PhotoVO } from '../../pages/trail/type';
 
 interface ChinaMapProps {
   geoData: ChinaGeoJSONCollection;
-  photos: PhotoDTO[];
+  photos: PhotoVO[];
   onClickProvince: (province: string) => void;
   className?: string;
 }

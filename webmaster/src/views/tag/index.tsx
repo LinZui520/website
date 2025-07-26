@@ -1,6 +1,6 @@
 import { defineComponent, onMounted } from 'vue';
 import { deleteTag, listTags } from './api';
-import type { Tag } from './type';
+import type { TagVO } from './type';
 import { VBtn, VCard, VCardActions, VCardText, VChip, VCol, VContainer, VDataTable, VDialog, VRow, VSpacer } from 'vuetify/components';
 import { useRequest } from '@/composables/useRequest';
 import { useState } from '@/composables/useState';
@@ -12,17 +12,17 @@ export default defineComponent({
   name: 'TagView',
   setup() {
     const [loading, setLoading] = useState(false);
-    const [tagList, setTagList] = useState<Tag[]>([]);
+    const [tagList, setTagList] = useState<TagVO[]>([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
-    const [deleteTagId, setDeleteTagId] = useState<number>(0);
+    const [deleteTagId, setDeleteTagId] = useState<string>('');
     const router = useRouter();
     const { handleRequest, SnackbarComponent } = useRequest();
 
     const getTagList = () => {
-      listTags<Tag[]>().then((res) => setTagList(res.data.data));
+      listTags<TagVO[]>().then((res) => setTagList(res.data.data));
     };
 
-    const handleOpenDeleteDialog = (id: number) => {
+    const handleOpenDeleteDialog = (id: string) => {
       setShowDeleteDialog(true);
       setDeleteTagId(id);
     };
@@ -54,7 +54,7 @@ export default defineComponent({
             top: () => (
               <VRow class="pa-4">
                 <VCol cols="12" md="4">
-                  <VCard title="标签管理" variant="text" />
+                  <VCard title="博客标签管理" variant="text" />
                 </VCol>
                 <VCol cols="12" md="6">
                 </VCol>
@@ -63,21 +63,20 @@ export default defineComponent({
                 </VCol>
               </VRow>
             ),
-            'item.name': ({ item }: { item: Tag }) => (<VChip>{item.name}</VChip>),
-            'item.created_at': ({ item }: { item: Tag }) => (new Date(item.created_at).toLocaleString()),
-            'item.actions': ({ item }: { item: Tag }) => (
+            'item.tag_name': ({ item }: { item: TagVO }) => (<VChip>{item.tag_name}</VChip>),
+            'item.actions': ({ item }: { item: TagVO }) => (
               <>
                 <VBtn
                   prependIcon={mdiTagEdit}
                   variant="text"
-                  {...{ onClick: () => router.push({ name: 'tagDetail', query: { type: 'update', id: item.id } }) }}
+                  {...{ onClick: () => router.push({ name: 'tagDetail', query: { type: 'update', id: item.tag_id } }) }}
                 >
                   修改
                 </VBtn>
                 <VBtn
                   prependIcon={mdiDelete}
                   variant="text"
-                  {...{ onClick: () => handleOpenDeleteDialog(item.id) }}
+                  {...{ onClick: () => handleOpenDeleteDialog(item.tag_id) }}
                 >
                   删除
                 </VBtn>

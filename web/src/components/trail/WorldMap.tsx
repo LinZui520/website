@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { calculateBounds, convertGeoJSONToSVGPath } from './geo';
 import { GeoJSONCollection } from './type';
-import { PhotoDTO } from '../../pages/trail/type';
+import { PhotoVO } from '../../pages/trail/type';
 
 interface WorldMapProps {
   geoData: GeoJSONCollection;
-  photos: PhotoDTO[];
+  photos: PhotoVO[];
   onClickCountry?: (country: string) => void;
   className?: string;
 }

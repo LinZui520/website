@@ -1,10 +1,10 @@
 import { useRequest } from '@/composables/useRequest';
 import { useState } from '@/composables/useState';
 import { defineComponent, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { VBtn, VCol, VContainer, VForm, VRow, VTextField } from 'vuetify/components';
 import { createTag, getTag, updateTag } from './api';
-import type { Tag } from './type';
+import type { TagVO } from './type';
 import ErrorView from '../error';
 
 type PageType = 'create' | 'update';
@@ -15,8 +15,11 @@ export default defineComponent({
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState('');
     const route = useRoute();
+    const router = useRouter();
     const { handleRequest, SnackbarComponent } = useRequest();
     const { type, id } = route.query as { type: PageType; id: string };
+
+    const back = () => router.back();
 
     const submit = (event: Event) => {
       event.preventDefault();
@@ -25,15 +28,15 @@ export default defineComponent({
         case 'create':
           handleRequest(
             () => createTag(name.value),
-            () => setName(''),
+            () => setTimeout(() => back(), 1000),
             undefined,
             () => setLoading(false)
           );
           break;
         case 'update':
-          handleRequest<Tag>(
-            () => updateTag(Number(id), name.value),
-            () => setName(''),
+          handleRequest<TagVO>(
+            () => updateTag(id, name.value),
+            () => setTimeout(() => back(), 1000),
             undefined,
             () => setLoading(false)
           );
@@ -46,10 +49,7 @@ export default defineComponent({
         case 'create':
           return;
         case 'update':
-          handleRequest<Tag>(
-            () => getTag(Number(id)),
-            (res) => setName(res.data.data.name)
-          );
+          getTag<TagVO>(id).then((res) => setName(res.data.data.tag_name));
           break;
       }
     });

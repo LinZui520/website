@@ -1,6 +1,5 @@
 
-export interface Tag {
-  id: number;
-  name: string;
-  created_at: string;
+export interface TagVO {
+  tag_id: string;
+  tag_name: string;
 }

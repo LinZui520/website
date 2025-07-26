@@ -1,62 +1,87 @@
-use sea_orm::entity::prelude::*;
+use chrono::{DateTime, Utc};
+use sea_orm::prelude::*;
 use serde::{Deserialize, Serialize};
 
-/// SeaORM 实体 - 对应数据库中的 tags 表
+/// 标签数据库模型
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[sea_orm(table_name = "tags")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i64,
-    pub name: String,
-    pub created_at: Option<chrono::DateTime<chrono::Utc>>,
+    #[sea_orm(unique)]
+    pub tag_id: String,
+    #[sea_orm(unique)]
+    pub tag_name: String,
+    pub created_at: DateTime<Utc>,
+    pub created_by: i64,
+    pub updated_at: DateTime<Utc>,
+    pub updated_by: i64,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    /// 标签通过中间表关联多篇博客文章 (多对多关系)
-    #[sea_orm(has_many = "crate::models::blog_tag::Entity")]
-    BlogTags,
+    #[sea_orm(
+        belongs_to = "super::user::Entity",
+        from = "Column::CreatedBy",
+        to = "super::user::Column::Id"
+    )]
+    User,
+    #[sea_orm(has_many = "super::blog_tag::Entity")]
+    BlogTag,
+}
+
+impl Related<super::user::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::User.def()
+    }
+}
+
+impl Related<super::blog_tag::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::BlogTag.def()
+    }
+}
+
+// 通过 blog_tags 表关联到 blogs 表
+impl Related<super::blog::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::blog_tag::Relation::Blog.def()
+    }
+
+    fn via() -> Option<RelationDef> {
+        Some(super::blog_tag::Relation::Tag.def().rev())
+    }
 }
 
 impl ActiveModelBehavior for ActiveModel {}
 
-// 实现与 Blog 实体的多对多关系（通过中间表）
-impl Related<crate::models::blog::Entity> for Entity {
-    fn to() -> RelationDef {
-        crate::models::blog_tag::Relation::Blog.def()
-    }
+/// 统一的标签数据传输对象 - 用于所有API请求
+/// 根据不同场景使用不同字段组合：
+/// - 创建标签：tag_name
+/// - 更新标签：tag_name
+#[derive(Debug, Serialize, Deserialize)]
+pub struct TagDTO {
+    pub tag_name: Option<String>,
+}
 
-    fn via() -> Option<RelationDef> {
-        Some(crate::models::blog_tag::Relation::Tag.def().rev())
+/// 标签视图对象 - 用于前端展示
+#[derive(Debug, Clone, Serialize, Deserialize, sea_orm::FromQueryResult)]
+pub struct TagVO {
+    pub tag_id: String,
+    pub tag_name: String,
+}
+
+impl TagVO {
+    pub fn new(tag_id: String, tag_name: String) -> Self {
+        Self { tag_id, tag_name }
     }
 }
 
-/// API 响应用的 Tag 结构体（用于 JSON 序列化）
-#[derive(Clone, serde::Serialize)]
-pub struct Tag {
-    pub id: i64,
-    pub name: String,
-    pub created_at: chrono::DateTime<chrono::Utc>,
-}
-
-/// 从 SeaORM Model 转换为 API Tag
-impl From<Model> for Tag {
-    fn from(model: Model) -> Self {
+impl From<Model> for TagVO {
+    fn from(tag: Model) -> Self {
         Self {
-            id: model.id,
-            name: model.name,
-            created_at: model.created_at.unwrap_or_else(chrono::Utc::now),
-        }
-    }
-}
-
-/// 从 SeaORM Model 引用转换为 API Tag
-impl From<&Model> for Tag {
-    fn from(model: &Model) -> Self {
-        Self {
-            id: model.id,
-            name: model.name.clone(),
-            created_at: model.created_at.unwrap_or_else(chrono::Utc::now),
+            tag_id: tag.tag_id,
+            tag_name: tag.tag_name,
         }
     }
 }

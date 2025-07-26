@@ -23,7 +23,7 @@ export default defineComponent({
 
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     const toggleTheme = (event: MediaQueryListEvent | MediaQueryList) => {
-      theme.global.name.value = event.matches ? 'dark' : 'light';
+      theme.change(event.matches ? 'dark' : 'light');
       toggleMarkdownTheme(event.matches);
     };
 
@@ -60,7 +60,7 @@ export default defineComponent({
             default: () => (
               <VListItem
                 lines="two"
-                prepend-avatar={authStore.user?.avatar}
+                prepend-avatar={authStore.user?.avatar_url}
                 title={authStore.user?.username}
               />
             )

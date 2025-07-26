@@ -1,15 +1,8 @@
+import type { UserVO } from '@/views/user/type';
 import { defineStore } from 'pinia';
 
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  avatar: string;
-  permission: number;
-}
-
 export interface AuthState {
-  user: User | null;
+  user: UserVO | null;
   token: string | null;
 }
 
@@ -22,7 +15,7 @@ export const useAuthStore = defineStore('auth', {
     permission: (state) => state.user?.permission
   },
   actions: {
-    setAuth(user: User | null, token: string | null) {
+    setAuth(user: UserVO | null, token: string | null) {
       this.user = user;
       this.token = token;
     },

@@ -3,10 +3,10 @@ import { userJWTLogin, userLogin } from '../pages/auth/api.ts';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { useRequest } from '../hooks/useRequest.ts';
-import { User, UserDTO } from '../pages/auth/type';
+import { UserVO, AuthVO } from '../pages/auth/type';
 
-type State = { user: User | null };
-type Action = { type: 'LOGIN'; payload: User } | { type: 'LOGOUT' };
+type State = { user: UserVO | null };
+type Action = { type: 'LOGIN'; payload: UserVO } | { type: 'LOGOUT' };
 const initialState: State = { user: null };
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -30,8 +30,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const [cookies, setCookies] = useCookies(['token']);
 
-  const login = useCallback((email: string, password: string) => handleRequest<UserDTO>(
-    () => userLogin<UserDTO>(email, password),
+  const login = useCallback((email: string, password: string) => handleRequest<AuthVO>(
+    () => userLogin<AuthVO>(email, password),
     (res) => {
       dispatch({ type: 'LOGIN', payload: res.data.data.user });
       setCookies('token', res.data.data.token, { path: '/', expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) });
@@ -45,7 +45,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!cookies.token) { return; }
-    userJWTLogin<UserDTO>()
+    userJWTLogin<AuthVO>()
       .then((res) => dispatch({ type: 'LOGIN', payload: res.data.data.user }))
       .catch(() => {});
   }, [cookies]);

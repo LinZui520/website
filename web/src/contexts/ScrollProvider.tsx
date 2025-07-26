@@ -3,6 +3,7 @@ import useScroll from '../hooks/useScroll';
 
 interface ScrollContextType {
   scrollTo: (position: number) => void;
+  refresh: () => void;
 }
 
 const ScrollContext = createContext<ScrollContextType | null>(null);
@@ -17,14 +18,14 @@ export const useScrollContext = () => {
 
 const ScrollProvider = ({ children }: { children: ReactNode }) => {
   const container = useRef(document.documentElement);
-  const { scrollTo, Scrollbar } = useScroll(
+  const { scrollTo, Scrollbar, refresh } = useScroll(
     container,
     (x: number) => 1 - Math.pow(1 - x, 3),
-    500
+    300
   );
 
   return (
-    <ScrollContext.Provider value={{ scrollTo }}>
+    <ScrollContext.Provider value={{ scrollTo, refresh }}>
       {children}
       <Scrollbar />
     </ScrollContext.Provider>

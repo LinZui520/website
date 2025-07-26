@@ -21,11 +21,11 @@ impl<T: Serialize> Response<T> {
     }
 
     pub fn success(data: T, message: &str) -> Self {
-        Self::new(200, Some(data), message.to_owned())
+        Self::new(200, Some(data), message.to_string())
     }
 
     pub fn warn(message: &str) -> Self {
-        Self::new(400, None, message.to_owned())
+        Self::new(400, None, message.to_string())
     }
 
     pub fn error<E: std::fmt::Display>(err: E) -> Self {

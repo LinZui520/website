@@ -5,24 +5,24 @@ export const listTags = <T> () => request<T>({
   method: 'get'
 });
 
-export const deleteTag = (id: number) => request({
+export const deleteTag = (id: string) => request({
   url: `/tag/${id}`,
   method: 'delete'
 });
 
-export const createTag = (name: string) => request({
+export const createTag = (tag_name: string) => request({
   url: '/tag',
   method: 'post',
-  data: { name }
+  data: { tag_name }
 });
 
-export const getTag = <T> (id: number) => request<T>({
+export const getTag = <T> (id: string) => request<T>({
   url: `/tag/${id}`,
   method: 'get'
 });
 
-export const updateTag = (id: number, name: string) => request({
+export const updateTag = (id: string, tag_name: string) => request({
   url: `/tag/${id}`,
   method: 'put',
-  data: { name }
+  data: { tag_name }
 });

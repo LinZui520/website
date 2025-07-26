@@ -1,29 +1,29 @@
 import { defineComponent, onMounted } from 'vue';
-import { deleteBlog, listBlogs } from './api';
-import type { BlogDTO } from './type';
+import { deleteBlog, readBlogs } from './api';
+import type { BlogVO } from './type';
 import { VBtn, VCard, VCardActions, VCardText, VChip, VCol, VContainer, VDataTable, VDialog, VRow, VSpacer } from 'vuetify/components';
 import { useRequest } from '@/composables/useRequest';
 import { useState } from '@/composables/useState';
 import { useRouter } from 'vue-router';
 import { mdiDelete, mdiPlus, mdiBookEdit } from '@mdi/js';
 import { headers } from './constant';
-import type { Tag } from '../tag/type';
+import type { TagVO } from '../tag/type';
 
 export default defineComponent({
   name: 'BlogView',
   setup() {
     const [loading, setLoading] = useState(false);
-    const [blogList, setBlogList] = useState<BlogDTO[]>([]);
+    const [blogList, setBlogList] = useState<BlogVO[]>([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
-    const [deleteBlogId, setDeleteBlogId] = useState<number>(0);
+    const [deleteBlogId, setDeleteBlogId] = useState<string>('');
     const router = useRouter();
     const { handleRequest, SnackbarComponent } = useRequest();
 
     const getBlogList = () => {
-      listBlogs<BlogDTO[]>().then((res) => setBlogList(res.data.data));
+      readBlogs<BlogVO[]>().then((res) => setBlogList(res.data.data));
     };
 
-    const handleOpenDeleteDialog = (id: number) => {
+    const handleOpenDeleteDialog = (id: string) => {
       setShowDeleteDialog(true);
       setDeleteBlogId(id);
     };
@@ -64,33 +64,33 @@ export default defineComponent({
                 </VCol>
               </VRow>
             ),
-            'item.tags': ({ item }: { item: BlogDTO }) => (
+            'item.tags': ({ item }: { item: BlogVO }) => (
               <div class="d-flex ga-4">
-                {item.tags.map((tag: Tag) => (
-                  <VChip key={tag.id}>{tag.name}</VChip>
+                {item.tags.map((tag: TagVO) => (
+                  <VChip key={tag.tag_id}>{tag.tag_name}</VChip>
                 ))}
               </div>
             ),
-            'item.publish': ({ item }: { item: BlogDTO }) => (
+            'item.publish': ({ item }: { item: BlogVO }) => (
               <VChip color={item.publish ? 'success' : 'warning'}>
                 {item.publish ? '已发布' : '草稿'}
               </VChip>
             ),
-            'item.created_at': ({ item }: { item: BlogDTO }) => (new Date(item.created_at).toLocaleString()),
-            'item.updated_at': ({ item }: { item: BlogDTO }) => (new Date(item.updated_at).toLocaleString()),
-            'item.actions': ({ item }: { item: BlogDTO }) => (
+            'item.created_at': ({ item }: { item: BlogVO }) => (new Date(item.created_at).toLocaleString()),
+            'item.updated_at': ({ item }: { item: BlogVO }) => (new Date(item.updated_at).toLocaleString()),
+            'item.actions': ({ item }: { item: BlogVO }) => (
               <>
                 <VBtn
                   prependIcon={mdiBookEdit}
                   variant="text"
-                  {...{ onClick: () => router.push({ name: 'blogDetail', query: { type: 'update', id: item.id } }) }}
+                  {...{ onClick: () => router.push({ name: 'blogDetail', query: { type: 'update', id: item.blog_id } }) }}
                 >
                   编辑
                 </VBtn>
                 <VBtn
                   prependIcon={mdiDelete}
                   variant="text"
-                  {...{ onClick: () => handleOpenDeleteDialog(item.id) }}
+                  {...{ onClick: () => handleOpenDeleteDialog(item.blog_id) }}
                 >
                   删除
                 </VBtn>

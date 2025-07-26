@@ -1,13 +1,13 @@
 
-export interface User {
-  id: string;
-  avatar: string;
+export interface UserVO {
+  id: number;
+  avatar_url: string;
   username: string;
   email: string;
-  power: number;
+  permission: number;
 }
 
-export interface UserDTO {
-  user: User;
+export interface AuthVO {
+  user: UserVO;
   token: string;
 }

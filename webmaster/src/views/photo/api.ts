@@ -1,11 +1,11 @@
 import request from '@/utils/axios';
 
 export const listPhotos = <T> () => request<T>({
-  url: '/photo/list',
+  url: '/photo',
   method: 'get'
 });
 
-export const deletePhoto = (id: number) => request({
-  url: `/photo/delete/${id}`,
+export const deletePhoto = (id: string) => request({
+  url: `/photo/${id}`,
   method: 'delete'
 });

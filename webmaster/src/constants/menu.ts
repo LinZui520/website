@@ -27,7 +27,7 @@ export const menu: MenuItem[] = [
   { title: '主页', icon: mdiHomeOutline, to: '/home', permission: Permission.User },
   { title: '个人资料', icon: mdiAccountOutline, to: '/profile', permission: Permission.User },
   { title: '用户管理', icon: mdiAccountGroupOutline, to: '/user', permission: Permission.Master },
-  { title: '标签管理', icon: mdiTagOutline, to: '/tag', permission: Permission.Master },
+  { title: '标签管理', icon: mdiTagOutline, to: '/tag', permission: Permission.Admin },
   { title: '博客管理', icon: mdiBookOpenPageVariantOutline, to: '/blog', permission: Permission.Admin },
   { title: '图片管理', icon: mdiImageOutline, to: '/picture', permission: Permission.Admin },
   { title: '照片管理', icon: mdiCameraOutline, to: '/photo', permission: Permission.Admin }

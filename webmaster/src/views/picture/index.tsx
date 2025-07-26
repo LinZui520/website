@@ -1,6 +1,6 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import { deletePicture, listPictures, uploadPicture } from './api';
-import type { PictureDTO } from './type';
+import type { PictureVO } from './type';
 import { VBtn, VCard, VCardActions, VCardText, VCol, VContainer, VDataTable, VDialog, VFileInput, VImg, VRow, VSpacer } from 'vuetify/components';
 import { useRequest } from '@/composables/useRequest';
 import { useState } from '@/composables/useState';
@@ -11,18 +11,18 @@ export default defineComponent({
   name: 'PictureView',
   setup() {
     const [loading, setLoading] = useState(false);
-    const [pictureList, setPictureList] = useState<PictureDTO[]>([]);
+    const [pictureList, setPictureList] = useState<PictureVO[]>([]);
     const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
     const [showUploadDialog, setShowUploadDialog] = useState<boolean>(false);
-    const [deletePictureId, setDeletePictureId] = useState<number>(0);
+    const [deletePictureId, setDeletePictureId] = useState<string>('');
     const fileInput = ref<File | null>(null);
     const { handleRequest, SnackbarComponent, show } = useRequest();
 
     const getPictureList = () => {
-      listPictures<PictureDTO[]>().then((res) => setPictureList(res.data.data));
+      listPictures<PictureVO[]>().then((res) => setPictureList(res.data.data));
     };
 
-    const handleOpenDeleteDialog = (id: number) => {
+    const handleOpenDeleteDialog = (id: string) => {
       setShowDeleteDialog(true);
       setDeletePictureId(id);
     };
@@ -84,7 +84,7 @@ export default defineComponent({
             top: () => (
               <VRow class="pa-4">
                 <VCol cols="12" md="4">
-                  <VCard title="图片管理" variant="text" />
+                  <VCard title="博客图片素材库" variant="text" />
                 </VCol>
                 <VCol cols="12" md="6">
                 </VCol>
@@ -93,30 +93,29 @@ export default defineComponent({
                 </VCol>
               </VRow>
             ),
-            'item.url': ({ item }: { item: PictureDTO }) => (
+            'item.picture_url': ({ item }: { item: PictureVO }) => (
               <VImg
                 height="240"
-                src={item.url}
+                src={item.picture_url}
                 style={{ objectFit: 'cover' }}
                 width="240"
               />
             ),
-            'item.filename': ({ item }: { item: PictureDTO }) => item.filename,
-            'item.author': ({ item }: { item: PictureDTO }) => item.author?.username || '未知',
-            'item.created_at': ({ item }: { item: PictureDTO }) => (new Date(item.created_at).toLocaleString()),
-            'item.actions': ({ item }: { item: PictureDTO }) => (
+            'item.created_by': ({ item }: { item: PictureVO }) => item.created_by?.username || '未知',
+            'item.created_at': ({ item }: { item: PictureVO }) => (new Date(item.created_at).toLocaleString()),
+            'item.actions': ({ item }: { item: PictureVO }) => (
               <div style={{ display: 'flex', gap: '8px' }}>
                 <VBtn
                   prependIcon={mdiContentCopy}
                   variant="text"
-                  {...{ onClick: () => handleCopyUrl(item.url) }}
+                  {...{ onClick: () => handleCopyUrl(item.picture_url) }}
                 >
                   复制URL
                 </VBtn>
                 <VBtn
                   prependIcon={mdiDelete}
                   variant="text"
-                  {...{ onClick: () => handleOpenDeleteDialog(item.id) }}
+                  {...{ onClick: () => handleOpenDeleteDialog(item.picture_id) }}
                 >
                   删除
                 </VBtn>

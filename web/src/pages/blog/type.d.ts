@@ -1,20 +1,18 @@
-import { User } from '../auth/type';
+import { UserVO } from '../auth/type';
 
-export interface Tag {
-  id: number;
-  name: string;
-  description: string;
-  created_at: string;
+export interface TagVO {
+  tag_id: number;
+  tag_name: string;
 }
 
-export interface BlogDTO {
-  id: number;
-  author: User,
+export interface BlogVO {
+  blog_id: string;
   title: string;
-  tags: Tag[];
   content: string;
-  published: boolean;
+  publish: boolean;
+  tags: TagVO[];
   created_at: string;
+  created_by: UserVO;
   updated_at: string;
   updated_by: number;
 }

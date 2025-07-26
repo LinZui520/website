@@ -49,7 +49,7 @@ const Page = () => {
       case 'Register': {
         handleRequest(
           () => userRegister(state.username, state.email, state.code, state.password),
-          () => dispatch({ type: 'CLEAR_VALUES' }),
+          () => changePageType('Login'),
           undefined,
           () => setIsLoading(false)
         );

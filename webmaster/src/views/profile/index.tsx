@@ -13,7 +13,6 @@ export default defineComponent({
     const [uploadLoading, setUploadLoading] = useState(false);
     const [username, setUsername] = useState(authStore.user?.username || '');
     const [email, setEmail] = useState(authStore.user?.email || '');
-    const avatar = ref(authStore.user?.avatar || '');
     const fileInputRef = ref<HTMLInputElement | null>(null);
 
     const { handleRequest, SnackbarComponent } = useRequest();
@@ -49,7 +48,7 @@ export default defineComponent({
                       <VAvatar class="mb-4" size="120">
                         <img
                           alt="头像"
-                          src={avatar.value}
+                          src={authStore.user?.avatar_url}
                           style={{
                             width: '100%',
                             height: '100%',

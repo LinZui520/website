@@ -1,25 +1,15 @@
 import { Dispatch, SetStateAction } from 'react';
 import { ChinaGeoJSONCollection, GeoJSONCollection } from '../../components/trail/type';
-import { User } from '../auth/type';
+import { UserVO } from '../auth/type';
 
-export interface Photo {
-  id: number;
-  author: number;
-  filename: string;
-  url: string;
+export interface PhotoVO {
+  photo_id: string;
+  photo_url: string;
   description?: string;
   location: string;
   created_at: string;
-}
-
-export interface PhotoDTO {
-  id: number;
-  author: User;
-  filename: string;
-  url: string;
-  description?: string;
-  location: string;
-  created_at: string;
+  created_by: UserVO;
+  updated_at: string;
 }
 
 // 定义 context 类型

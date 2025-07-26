@@ -5,11 +5,11 @@ import { defineComponent, onMounted, onUnmounted, ref, watch, watchEffect } from
 import { useRoute, useRouter } from 'vue-router';
 import { VBtn, VCheckbox, VCombobox, VContainer, VTextField } from 'vuetify/components';
 import ErrorView from '../error';
-import type { Tag } from '../tag/type';
+import type { TagVO } from '../tag/type';
 import { listTags } from '../tag/api';
 import { useRequest } from '@/composables/useRequest';
-import type { Blog, BlogDTO } from './type';
-import { createBlog, getBlog, updateBlog } from './api';
+import type { BlogVO } from './type';
+import { createBlog, readBlog, updateBlog } from './api';
 
 type PageType = 'create' | 'update';
 
@@ -19,9 +19,9 @@ export default defineComponent({
     // 表单数据
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [tags, setTags] = useState<Tag[]>([]);
+    const [tags, setTags] = useState<TagVO[]>([]);
     const [publish, setPublish] = useState(false);
-    const [tagList, setTagList] = useState<Tag[]>([]);
+    const [tagList, setTagList] = useState<TagVO[]>([]);
 
     // 预览数据
     const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const type = ref<PageType>();
-    const id = ref<string>();
+    const id = ref<string>('');
 
     const { handleRequest, SnackbarComponent } = useRequest();
 
@@ -41,16 +41,16 @@ export default defineComponent({
       setLoading(true);
       switch (type.value) {
         case 'create':
-          handleRequest<Blog>(
-            () => createBlog(title.value, content.value, tags.value.map(item => item.id), publish.value),
-            (res) => router.replace({ query: { type: 'update', id: res.data.data.id } }),
+          handleRequest<string>(
+            () => createBlog(title.value, content.value, tags.value.map((item: TagVO) => item.tag_id), publish.value),
+            (res) => router.replace({ query: { type: 'update', id: res.data.data } }),
             undefined,
             () => setLoading(false)
           );
           break;
         case 'update':
-          handleRequest<Blog>(
-            () => updateBlog(Number(id.value), title.value, content.value, tags.value.map(item => item.id), publish.value),
+          handleRequest<BlogVO>(
+            () => updateBlog(id.value, title.value, content.value, tags.value.map(item => item.tag_id), publish.value),
             undefined,
             undefined,
             () => setLoading(false)
@@ -60,7 +60,7 @@ export default defineComponent({
     };
 
     const getBlogInfo = async () => {
-      const res = await getBlog<BlogDTO>(Number(id.value));
+      const res = await readBlog<BlogVO>(id.value);
       setTitle(res.data.data.title);
       setContent(res.data.data.content);
       setPublish(res.data.data.publish);
@@ -113,7 +113,7 @@ export default defineComponent({
     onUnmounted(() => document.removeEventListener('keydown', handleKeydown));
 
     onMounted(() => {
-      listTags<Tag[]>().then((res) => setTagList(res.data.data));
+      listTags<TagVO[]>().then((res) => setTagList(res.data.data));
     });
 
     onMounted(() => {
@@ -163,7 +163,7 @@ export default defineComponent({
             <VCombobox
               chips
               class="mr-4"
-              itemTitle="name"
+              itemTitle="tag_name"
               itemValue="id"
               items={tagList.value}
               label="标签"

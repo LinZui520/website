@@ -1,12 +1,12 @@
 import request from '../../utils/axios';
 
 export const listPhotos = <T> () => request<T>({
-  url: '/photo/list',
+  url: '/photo',
   method: 'get'
 });
 
 export const uploadPhoto = (formData: FormData) => request({
-  url: '/photo/upload',
+  url: '/photo',
   method: 'post',
   data: formData,
   headers: {

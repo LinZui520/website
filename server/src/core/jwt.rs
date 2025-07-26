@@ -12,7 +12,7 @@ pub struct UserCredentials {
     pub avatar: String,
     pub username: String,
     pub email: String,
-    pub permission: i32,
+    pub permission: i16,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -37,13 +37,13 @@ pub fn generate_jwt(sub: i64, user: UserCredentials) -> Result<String, Error> {
     let audience = JWT_AUDIENCE.get_or_init(|| env("JWT_AUDIENCE"));
 
     let claims = Claims {
-        iss: domain.to_owned(),
+        iss: domain.clone(),
         sub,
         user,
         exp: (Local::now() + Duration::hours(24 * 7)).timestamp(),
         iat: Local::now().timestamp(),
         nbf: Local::now().timestamp(),
-        aud: audience.to_owned(),
+        aud: audience.clone(),
         jti: 0,
     };
 
@@ -101,7 +101,7 @@ pub fn extract_permissions_from_headers(
     let token = parse_jwt(headers)?;
 
     match verify_jwt(token.as_str()) {
-        Ok(claims) if claims.user.permission >= permission as i32 => Some(claims),
+        Ok(claims) if claims.user.permission >= permission as i16 => Some(claims),
         Ok(_) | Err(_) => None,
     }
 }

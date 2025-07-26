@@ -1,7 +1,7 @@
 import request from '@/utils/axios';
 
 export const listUsers = <T> () => request<T>({
-  url: '/user/list',
+  url: '/user',
   method: 'get'
 });
 

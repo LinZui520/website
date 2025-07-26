@@ -1,6 +1,6 @@
 import { defineComponent, onMounted } from 'vue';
 import { listUsers, increaseUserPermission, decreaseUserPermission } from './api';
-import type { UserDTO } from './type';
+import type { UserVO } from './type';
 import { VAvatar, VBtn, VCard, VCardActions, VCardText, VChip, VCol, VContainer, VDataTable, VDialog, VRow, VSpacer } from 'vuetify/components';
 import { useRequest } from '@/composables/useRequest';
 import { useState } from '@/composables/useState';
@@ -11,7 +11,7 @@ import { mdiThumbDown, mdiThumbUp } from '@mdi/js';
 export default defineComponent({
   name: 'UserView',
   setup() {
-    const [userList, setUserList] = useState<UserDTO[]>([]);
+    const [userList, setUserList] = useState<UserVO[]>([]);
     const [loading, setLoading] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const [currentUserId, setCurrentUserId] = useState<number>(0);
@@ -19,7 +19,7 @@ export default defineComponent({
     const { handleRequest, SnackbarComponent } = useRequest();
 
     const getUserList = () => {
-      listUsers<UserDTO[]>().then((res) => setUserList(res.data.data));
+      listUsers<UserVO[]>().then((res) => setUserList(res.data.data));
     };
 
     const updatePermission = () => {
@@ -57,17 +57,17 @@ export default defineComponent({
                 </VCol>
               </VRow>
             ),
-            'item.avatar': ({ item }: { item: UserDTO }) => (
+            'item.avatar': ({ item }: { item: UserVO }) => (
               <VAvatar size="40">
-                <img alt={item.username} height="40" src={item.avatar} width="40" />
+                <img alt={item.username} height="40" src={item.avatar_url} width="40" />
               </VAvatar>
             ),
-            'item.permission': ({ item }: { item: UserDTO }) => (
+            'item.permission': ({ item }: { item: UserVO }) => (
               <VChip size="small">
                 {permissionMap[item.permission.toString()] || '未知'}
               </VChip>
             ),
-            'item.actions': ({ item }: { item: UserDTO }) => (
+            'item.actions': ({ item }: { item: UserVO }) => (
               <>
                 <VBtn
                   prependIcon={mdiThumbDown}

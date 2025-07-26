@@ -1,7 +1,6 @@
 export const headers = [
-  { title: 'ID', key: 'id' },
   { title: '标题', key: 'title' },
-  { title: '作者', key: 'author.username' },
+  { title: '作者', key: 'created_by.username' },
   { title: '标签', key: 'tags' },
   { title: '状态', key: 'publish' },
   { title: '创建时间', key: 'created_at' },

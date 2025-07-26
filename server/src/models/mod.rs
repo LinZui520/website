@@ -1,3 +1,4 @@
+pub mod auth;
 pub mod blog;
 pub mod blog_tag;
 pub mod photo;

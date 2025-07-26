@@ -1,10 +1,11 @@
 use lettre::{AsyncSmtpTransport, Tokio1Executor};
 use sea_orm::DatabaseConnection;
 
+mod controllers;
 mod core;
-mod handlers;
 mod models;
 mod routers;
+mod services;
 
 #[derive(Clone)]
 struct AppState {

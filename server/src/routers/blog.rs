@@ -1,15 +1,17 @@
-use crate::handlers::blog::{
-    create_blog, delete_blog, get_blog, list_blogs, list_published_blogs, update_blog,
+use crate::AppState;
+use crate::controllers::blog::{
+    create_blog, delete_blog, read_blog, read_blog_by_id, read_published_blog, update_blog,
 };
 use axum::Router;
 use axum::routing::{delete, get, post, put};
+use std::sync::Arc;
 
-pub fn create_blog_router() -> Router {
+pub fn create_blog_router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/blog", post(create_blog))
-        .route("/blog/{id}", delete(delete_blog))
-        .route("/blog/{id}", put(update_blog))
-        .route("/blog/published", get(list_published_blogs))
-        .route("/blog", get(list_blogs))
-        .route("/blog/{id}", get(get_blog))
+        .route("/blog", get(read_blog))
+        .route("/blog/published", get(read_published_blog))
+        .route("/blog/{blog_id}", get(read_blog_by_id))
+        .route("/blog/{blog_id}", put(update_blog))
+        .route("/blog/{blog_id}", delete(delete_blog))
 }

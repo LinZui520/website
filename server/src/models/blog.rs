@@ -1,164 +1,131 @@
-use crate::models::user::User;
-use sea_orm::entity::prelude::*;
+use crate::models::{tag::TagVO, user::UserVO};
+use chrono::{DateTime, Utc};
+use sea_orm::prelude::*;
 use serde::{Deserialize, Serialize};
 
-/// SeaORM 实体 - 对应数据库中的 blogs 表
+/// 博客数据库模型
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[sea_orm(table_name = "blogs")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i64,
-    pub author: i64,                                       // 作者ID (外键到users表)
-    pub title: String,                                     // 博客标题
-    pub content: String,                                   // 博客内容
-    pub publish: bool,                                     // 是否发布
-    pub created_at: Option<chrono::DateTime<chrono::Utc>>, // 创建时间
-    pub updated_at: Option<chrono::DateTime<chrono::Utc>>, // 更新时间
-    pub updated_by: i64,                                   // 最后更新人ID (外键到users表)
+    #[sea_orm(unique)]
+    pub blog_id: String,
+    #[sea_orm(unique)]
+    pub title: String,
+    pub content: Option<String>,
+    pub publish: bool,
+    pub created_at: DateTime<Utc>,
+    pub created_by: i64,
+    pub updated_at: DateTime<Utc>,
+    pub updated_by: i64,
 }
 
-/// 定义表关系
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    /// 博客属于一个作者 (多对一关系)
     #[sea_orm(
-        belongs_to = "crate::models::user::Entity",
-        from = "Column::Author",
-        to = "crate::models::user::Column::Id"
+        belongs_to = "super::user::Entity",
+        from = "Column::CreatedBy",
+        to = "super::user::Column::Id"
     )]
-    Author,
+    User,
+    #[sea_orm(has_many = "super::blog_tag::Entity")]
+    BlogTag,
+}
 
-    /// 博客有一个更新者 (多对一关系)
-    #[sea_orm(
-        belongs_to = "crate::models::user::Entity",
-        from = "Column::UpdatedBy",
-        to = "crate::models::user::Column::Id"
-    )]
-    UpdatedByUser,
+impl Related<super::user::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::User.def()
+    }
+}
 
-    /// 博客通过中间表关联多个标签 (多对多关系)
-    #[sea_orm(has_many = "crate::models::blog_tag::Entity")]
-    BlogTags,
+impl Related<super::blog_tag::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::BlogTag.def()
+    }
+}
+
+// 通过 blog_tags 表关联到 tags 表
+impl Related<super::tag::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::blog_tag::Relation::Tag.def()
+    }
+
+    fn via() -> Option<RelationDef> {
+        Some(super::blog_tag::Relation::Blog.def().rev())
+    }
 }
 
 impl ActiveModelBehavior for ActiveModel {}
 
-// 实现与 User 实体的关系（作者关系）
-impl Related<crate::models::user::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Author.def()
-    }
-}
-
-// 实现与 Tag 实体的多对多关系（通过中间表）
-impl Related<crate::models::tag::Entity> for Entity {
-    fn to() -> RelationDef {
-        crate::models::blog_tag::Relation::Tag.def()
-    }
-
-    fn via() -> Option<RelationDef> {
-        Some(crate::models::blog_tag::Relation::Blog.def().rev())
-    }
-}
-
-/// API 响应用的 Blog 结构体（简化版，包含外键ID）
-#[derive(serde::Serialize)]
-pub struct Blog {
-    pub id: i64,
-    pub author: i64,
-    pub title: String,
-    pub content: String,
-    pub publish: bool,
-    pub created_at: chrono::DateTime<chrono::Utc>,
-    pub updated_at: chrono::DateTime<chrono::Utc>,
-    pub updated_by: i64,
-}
-
-/// API 响应用的 BlogDTO 结构体（完整版，包含关联对象）
-#[derive(serde::Serialize)]
+/// 统一的博客数据传输对象 - 用于所有API请求
+/// 根据不同场景使用不同字段组合：
+/// - 创建博客：title, content, publish, tag_ids
+/// - 更新博客：title, content, publish, tag_ids
+#[derive(Debug, Serialize, Deserialize)]
 pub struct BlogDTO {
-    pub id: i64,
-    pub author: User,
-    pub title: String,
-    pub tags: Vec<crate::models::tag::Tag>,
-    pub content: String,
-    pub publish: bool,
-    pub created_at: chrono::DateTime<chrono::Utc>,
-    pub updated_at: chrono::DateTime<chrono::Utc>,
-    pub updated_by: i64,
+    pub title: Option<String>,
+    pub content: Option<String>,
+    pub publish: Option<bool>,
+    pub tag_ids: Option<Vec<String>>,
 }
 
-/// 从 SeaORM Model 转换为简化的 Blog
-impl From<Model> for Blog {
-    fn from(model: Model) -> Self {
+/// 博客视图对象 - 用于前端展示
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct BlogVO {
+    pub blog_id: String,
+    pub title: String,
+    pub content: Option<String>,
+    pub publish: bool,
+    pub tags: Vec<TagVO>,
+    pub created_at: DateTime<Utc>,
+    pub created_by: UserVO,
+    pub updated_at: DateTime<Utc>,
+}
+
+/// 用于联表查询的结构体，包含博客信息和用户信息
+#[derive(Debug, sea_orm::FromQueryResult)]
+pub struct BlogWithUser {
+    // 博客信息
+    pub blog_id: String,
+    pub title: String,
+    pub content: Option<String>,
+    pub publish: bool,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+    // 用户信息
+    pub user_id: i64,
+    pub user_avatar_url: String,
+    pub user_username: String,
+    pub user_email: String,
+    pub user_permission: i16,
+}
+
+impl From<BlogWithUser> for BlogVO {
+    fn from(blog_with_user: BlogWithUser) -> Self {
         Self {
-            id: model.id,
-            author: model.author,
-            title: model.title,
-            content: model.content,
-            publish: model.publish,
-            created_at: model.created_at.unwrap_or_else(chrono::Utc::now),
-            updated_at: model.updated_at.unwrap_or_else(chrono::Utc::now),
-            updated_by: model.updated_by,
+            blog_id: blog_with_user.blog_id,
+            title: blog_with_user.title,
+            content: blog_with_user.content,
+            publish: blog_with_user.publish,
+            tags: Vec::new(),
+            created_at: blog_with_user.created_at,
+            created_by: UserVO {
+                id: blog_with_user.user_id,
+                avatar_url: blog_with_user.user_avatar_url,
+                username: blog_with_user.user_username,
+                email: blog_with_user.user_email,
+                permission: blog_with_user.user_permission,
+            },
+            updated_at: blog_with_user.updated_at,
         }
     }
 }
 
-/// 从 SeaORM Model 引用转换为简化的 Blog
-impl From<&Model> for Blog {
-    fn from(model: &Model) -> Self {
-        Self {
-            id: model.id,
-            author: model.author,
-            title: model.title.clone(),
-            content: model.content.clone(),
-            publish: model.publish,
-            created_at: model.created_at.unwrap_or_else(chrono::Utc::now),
-            updated_at: model.updated_at.unwrap_or_else(chrono::Utc::now),
-            updated_by: model.updated_by,
-        }
-    }
-}
-
-// 自定义模型用于接收联表查询结果
-#[derive(sea_orm::FromQueryResult)]
-pub struct BlogWithRelations {
-    // Blog 字段
-    pub id: i64,
-    pub title: String,
-    pub content: String,
-    pub publish: bool,
-    pub created_at: chrono::DateTime<chrono::Utc>,
-    pub updated_at: chrono::DateTime<chrono::Utc>,
-    pub updated_by: i64,
-
-    // User 字段（作者）
-    pub author_id: i64,
-    pub author_avatar: String,
-    pub author_username: String,
-    pub author_email: String,
-    pub author_permission: i32,
-}
-
-impl BlogWithRelations {
-    /// 转换为 BlogDTO（需要单独查询标签）
-    pub fn into_blog_dto(self, tags: Vec<crate::models::tag::Tag>) -> BlogDTO {
-        BlogDTO {
-            id: self.id,
-            author: User::new(
-                self.author_id,
-                self.author_avatar,
-                self.author_username,
-                self.author_email,
-                self.author_permission,
-            ),
-            title: self.title,
-            tags, // 传入的标签数组
-            content: self.content,
-            publish: self.publish,
-            created_at: self.created_at,
-            updated_at: self.updated_at,
-            updated_by: self.updated_by,
-        }
+impl BlogVO {
+    /// 设置博客的标签信息
+    pub fn with_tags(mut self, tags: Vec<TagVO>) -> Self {
+        self.tags = tags;
+        self
     }
 }
