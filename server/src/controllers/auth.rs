@@ -1,4 +1,7 @@
+use crate::AppState;
+use crate::core::jwt::extract_permissions_from_headers;
 use crate::handle_service_result;
+use crate::models::user::Permission;
 use crate::models::{
     auth::AuthVO,
     response::Response,
@@ -11,8 +14,6 @@ use axum::{
     http::HeaderMap,
 };
 use std::sync::Arc;
-
-use crate::AppState;
 
 pub async fn verification_code(
     State(state): State<Arc<AppState>>,
@@ -57,8 +58,14 @@ pub async fn upload_avatar(
     headers: HeaderMap,
     multipart: Multipart,
 ) -> Response<UserVO> {
+    // 权限验证：需要User及以上权限（用户只能更新自己的头像）
+    let claims = match extract_permissions_from_headers(headers, Permission::User) {
+        Some(claims) => claims,
+        None => return Response::warn("权限不足"),
+    };
+
     handle_service_result!(
-        AuthService::upload_avatar(state, headers, multipart).await,
+        AuthService::upload_avatar(state, multipart, claims.sub).await,
         "头像更新成功"
     )
 }

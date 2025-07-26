@@ -1,10 +1,8 @@
 use crate::core::env::env;
-use crate::core::jwt::{
-    UserCredentials, extract_permissions_from_headers, generate_jwt, parse_jwt, verify_jwt,
-};
+use crate::core::jwt::{UserCredentials, generate_jwt, parse_jwt, verify_jwt};
 use crate::core::mail::{generate_random_code, is_valid_email, send_verification_email};
 use crate::models::auth::AuthVO;
-use crate::models::user::{ActiveModel, Column, Entity as UserEntity, Permission, UserDTO, UserVO};
+use crate::models::user::{ActiveModel, Column, Entity as UserEntity, UserDTO, UserVO};
 use crate::{AppState, validate_option_field};
 use anyhow::{Result, anyhow};
 use axum::extract::Multipart;
@@ -242,16 +240,10 @@ impl AuthService {
     /// 更新用户头像服务
     pub async fn upload_avatar(
         state: Arc<AppState>,
-        headers: HeaderMap,
         mut multipart: Multipart,
+        user_id: i64,
     ) -> Result<UserVO> {
         let postgres = &state.postgres;
-
-        // 权限验证：需要User及以上权限（用户只能更新自己的头像）
-        let claims = match extract_permissions_from_headers(headers, Permission::User) {
-            Some(claims) => claims,
-            None => return Err(anyhow!("WARN:权限不足")),
-        };
 
         // 获取环境变量中的头像上传目录配置
         let avatar_upload_directory =
@@ -325,7 +317,7 @@ impl AuthService {
         let txn = postgres.begin().await?;
 
         // 在事务中查询数据库中用户的当前头像信息
-        let current_user = match UserEntity::find_by_id(claims.sub).one(&txn).await? {
+        let current_user = match UserEntity::find_by_id(user_id).one(&txn).await? {
             Some(user) => user,
             None => return Err(anyhow!("WARN:用户不存在")),
         };
