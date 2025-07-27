@@ -12,6 +12,47 @@
   --color-mint-50: #FAFAFC;
 }
 
+/* ================================= */
+/* Markdown 列表样式修复 */
+/* ================================= */
+.markdown-body ul,
+.markdown-body ol {
+  display: block !important;
+  margin: 16px 0 !important;
+  padding-left: 2em !important;
+}
+
+.markdown-body ul {
+  list-style-type: disc !important;
+}
+
+.markdown-body ol {
+  list-style-type: decimal !important;
+}
+
+.markdown-body li {
+  display: list-item !important;
+  margin: 0.25em 0 !important;
+}
+
+.markdown-body ul ul,
+.markdown-body ol ol,
+.markdown-body ul ol,
+.markdown-body ol ul {
+  margin: 0 !important;
+  padding-left: 2em !important;
+}
+
+.markdown-body ul ul {
+  list-style-type: circle !important;
+}
+
+.markdown-body ul ul ul {
+  list-style-type: square !important;
+}
+
+/* ================================= */
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
