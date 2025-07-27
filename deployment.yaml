@@ -364,7 +364,7 @@ spec:
             memory: "512Mi"
             cpu: "500m"
           limits:
-            memory: "1.2Gi"
+            memory: "1200Mi"
             cpu: "600m"
       volumes:
       - name: server-pvc
