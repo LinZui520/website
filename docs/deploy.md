@@ -31,6 +31,7 @@ source ~/.bashrc
 nvm install --lts
 nvm alias default node
 node -v
+npm config set registry http://registry.npmmirror.com
 ```
 
 分别编译 `website/web` 和 `website/webmaster`
