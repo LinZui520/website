@@ -2,7 +2,7 @@ use crate::AppState;
 use crate::core::env::env;
 use anyhow::Result;
 use deadpool_redis::redis::AsyncCommands;
-use deadpool_redis::{Config, Pool, Runtime};
+use deadpool_redis::{Config, Pool, PoolConfig, Runtime};
 use serde::Serialize;
 use std::sync::Arc;
 
@@ -14,12 +14,21 @@ pub fn establish_redis_connection() -> Pool {
         env("REDIS_HOST"),
         env("REDIS_PORT")
     );
-    let cfg = Config::from_url(url.as_str());
 
-    cfg.create_pool(Some(Runtime::Tokio1)).unwrap_or_else(|_| {
-        tracing::error!("Failed to create Redis connection");
-        std::process::exit(1)
-    })
+    // 创建 Redis 配置
+    let mut cfg = Config::from_url(url.as_str());
+
+    // 配置连接池参数以提高并发性能
+    cfg.pool = Some(PoolConfig {
+        max_size: 50,
+        ..Default::default()
+    });
+
+    cfg.create_pool(Some(Runtime::Tokio1))
+        .unwrap_or_else(|err| {
+            tracing::error!("Failed to create Redis connection pool: {}", err);
+            std::process::exit(1)
+        })
 }
 
 /// 设置缓存 - 通用缓存函数

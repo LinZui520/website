@@ -15,7 +15,7 @@ sea-orm = { version = "1.1.0", features = [
 deadpool-redis = "0.20.0"
 serde = { version = "1.0.218", features = ["derive"] }
 tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.19", features = ["local-time"] }
+tracing-subscriber = { version = "0.3.19", features = ["fmt", "env-filter"] }
 tracing-appender = "0.2.3"
 chrono = { version = "0.4.40", features = ["serde"] }
 dotenvy = "0.15.7"
@@ -30,3 +30,24 @@ uuid = { version = "1.0", features = ["v4"] }
 
 # 以下是静态链接需要的库
 openssl = { version = "0.10.71", features = ["vendored"] }
+
+# 性能优化配置
+[profile.release]
+# 运行时性能优化
+opt-level = 3              # 最高优化级别
+lto = "fat"               # 全程序链接时优化，显著提升运行时性能
+codegen-units = 1         # 单个代码生成单元，最大化优化效果
+panic = "abort"           # 异常时直接终止，减少二进制大小和运行时开销
+strip = true              # 移除调试符号，减少二进制大小
+
+# 开发环境优化 - 平衡编译速度和调试体验
+[profile.dev]
+opt-level = 1             # 轻度优化，提升开发时的运行性能
+debug = 1                 # 减少调试信息，加快编译
+incremental = true        # 启用增量编译
+codegen-units = 256       # 并行编译，加快编译速度
+
+# 依赖项编译优化 - 对依赖项进行优化编译
+[profile.dev.package."*"]
+opt-level = 3             # 依赖项使用高优化级别
+debug = false             # 依赖项不包含调试信息
