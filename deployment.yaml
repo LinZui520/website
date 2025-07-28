@@ -261,11 +261,11 @@ spec:
           subPath: init.sql
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "400m"
+            memory: "256Mi"
+            cpu: "200m"
           limits:
-            memory: "800Mi"
-            cpu: "500m"
+            memory: "512Mi"
+            cpu: "300m"
       volumes:
       - name: postgres-pvc
         persistentVolumeClaim:
@@ -311,11 +311,11 @@ spec:
         - containerPort: 6379
         resources:
           requests:
-            memory: "256Mi"
-            cpu: "200m"
+            memory: "128Mi"
+            cpu: "100m"
           limits:
-            memory: "512Mi"
-            cpu: "300m"
+            memory: "256Mi"
+            cpu: "150m"
 ---
 apiVersion: v1
 kind: Service
@@ -336,7 +336,7 @@ kind: Deployment
 metadata:
   name: server
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: server
@@ -361,11 +361,11 @@ spec:
           mountPath: /root/website/database/images
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "500m"
+            memory: "128Mi"
+            cpu: "200m"
           limits:
-            memory: "1200Mi"
-            cpu: "600m"
+            memory: "512Mi"
+            cpu: "400m"
       volumes:
       - name: server-pvc
         persistentVolumeClaim:
@@ -413,7 +413,7 @@ data:
       gzip on;
       gzip_comp_level 6;
       gzip_min_length 1024;
-      gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+      gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript application/json;
       gzip_proxied any;
       gzip_vary on;
       gzip_disable "MSIE [1-6]\.";
@@ -505,11 +505,11 @@ spec:
         - containerPort: 80
         resources:
           requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
             memory: "128Mi"
             cpu: "200m"
-          limits:
-            memory: "256Mi"
-            cpu: "250m"
       volumes:
       - name: web-pvc
         persistentVolumeClaim:
