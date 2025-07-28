@@ -65,7 +65,7 @@ const Menu = () => {
       className={'w-screen h-32 z-40 fixed top-0 flex flex-row items-center justify-between font-mono pointer-events-none'}
       ref={container}
     >
-      <Logo className={'ml-12 z-40 pointer-events-auto'} />
+      <Logo className={'ml-12 h-8 w-16 z-40 pointer-events-auto'} />
       <div className={'flex flex-row items-center justify-center mr-12 z-40 stroke-mint-950 dark:stroke-mint-50 pointer-events-auto'}>
         <svg
           className={'stroke-3 h-16 w-16 cursor-pointer'}
