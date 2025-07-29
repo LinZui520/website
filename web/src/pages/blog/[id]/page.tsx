@@ -20,7 +20,7 @@ const Page = () => {
   }, [blog]);
 
   return (
-    <main className="w-full min-h-screen bg-mint-50 dark:bg-mint-950 flex flex-col items-center pt-32 pb-32">
+    <main className="w-full min-h-screen bg-mint-50 dark:bg-mint-950 flex flex-col items-center pt-32 pb-32 cursor-default">
       <div className="min-h-[calc(100vh-256px)] w-11/12 max-w-4xl flex flex-col">
         {/* 标题区域 */}
         <h1 className="text-4xl font-bold text-mint-950 dark:text-mint-50 mb-8">

@@ -7,18 +7,18 @@ const Page = () => {
   const container = useRef<HTMLElement | null>(null);
 
   useGSAP(() => {
-    gsap.from('#main-title-1', { opacity: 0, y: 50, duration: 1, delay: 1 });
-    gsap.from('#main-title-2', { opacity: 0, y: 50, duration: 1, delay: 1.2 });
-    gsap.from('#main-title-3', { opacity: 0, y: 50, duration: 1, delay: 1.4 });
-    gsap.from('#main-title-4', { opacity: 0, y: 50, duration: 1, delay: 1.6 });
-    gsap.from('#main-title-5', { opacity: 0, y: 50, duration: 1, delay: 1.8 });
+    gsap.from('#main-title-1', { opacity: 0, y: 50, duration: 1, delay: 0 });
+    gsap.from('#main-title-2', { opacity: 0, y: 50, duration: 1, delay: 0.4 });
+    gsap.from('#main-title-3', { opacity: 0, y: 50, duration: 1, delay: 0.8 });
+    gsap.from('#main-title-4', { opacity: 0, y: 50, duration: 1, delay: 1.2 });
+    gsap.from('#main-title-5', { opacity: 0, y: 50, duration: 1, delay: 1.6 });
     gsap.from('#main-title-6', { opacity: 0, y: 50, duration: 1, delay: 2.0 });
-    gsap.from('#bottom-quote', { opacity: 0, y: 30, duration: 1, delay: 2.2 });
+    gsap.from('#bottom-quote', { opacity: 0, y: 30, duration: 1, delay: 2.4 });
   }, { scope: container });
 
   return (
     <>
-      <main className="bg-mint-50 dark:bg-mint-950 text-mint-950 dark:text-mint-50 min-h-[calc(100vh-4rem)] w-screen flex flex-col items-center pt-32 pb-32" ref={container}>
+      <main className="bg-mint-50 dark:bg-mint-950 text-mint-950 dark:text-mint-50 min-h-[calc(100vh-4rem)] w-screen flex flex-col items-center pt-32 pb-32 cursor-default" ref={container}>
 
         {/* Main Content */}
         <div className="px-6 md:px-8">
