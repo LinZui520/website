@@ -133,15 +133,22 @@ const useScroll = (
     if (!container.current) { return; }
     const element = container.current;
     const isDocumentElement = element === document.documentElement;
-    const value = isDocumentElement ? window.innerHeight : element.clientHeight;
-    setClientHeight(value);
+    const clientValue = isDocumentElement ? window.innerHeight : element.clientHeight;
+    const scrollValue = element.scrollHeight - (isDocumentElement ? 0 : clientValue);
+    setClientHeight(clientValue);
     /**
      * 因为当非 document.documentElement 使用这个 hook 时
      * Scrollbar 组件使用 sticky 定位。 sticky 定位不会脱离文档流
      * 所以这个时候元素的长度就会增加一个 clientHeight 的长度
      * 所以需要减去
      */
-    setScrollHeight(element.scrollHeight - (isDocumentElement ? 0 : value));
+    setScrollHeight(scrollValue);
+
+    // 同步滚动条状态
+    if (!container.current || !thumb.current) { return; }
+    const scrollbarThumb = thumb.current;
+    scrollbarThumb.style.height = (clientValue / scrollValue * 100) + '%';
+    scrollbarThumb.style.top = (element.scrollTop / scrollValue * 100) + '%';
   }, [container]);
 
   /**
