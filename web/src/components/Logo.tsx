@@ -80,7 +80,7 @@ const Logo = (props: Props) => {
 
   return (
     <div
-      className={`${props.className || ''} flex flex-col items-center justify-center font-serif cursor-pointer`}
+      className={`${props.className || ''} flex flex-col items-center justify-center font-serif cursor-default`}
       ref={containerRef}
     >
       {/* 圆圈动画区域 */}

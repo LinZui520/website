@@ -85,7 +85,7 @@ const Menu = () => {
       >
         <nav className={'w-4/5 h-full p-4 flex flex-col items-center justify-center'}>
           <div className={'flex flex-col items-end gap-8'}>
-            <div className={'text-base text-mint-500'}>NAVIGATION MENU</div>
+            <div className={'text-base text-mint-500 cursor-default'}>NAVIGATION MENU</div>
             <hr className={'w-16 border-1 border-mint-500'} />
             {menu.filter((item) => item !== null).map((item, index) => (
               <Link
@@ -106,7 +106,7 @@ const Menu = () => {
           </div>
         </nav>
         <div className={'w-1/5 max-w-xl h-full bg-mint-100 dark:bg-mint-900 p-4 hidden xl:flex flex-col items-start justify-center gap-8'}>
-          <div className={'text-3xl text-mint-500'}>CONTACT US</div>
+          <div className={'text-3xl text-mint-500 cursor-default'}>CONTACT US</div>
           <hr className={'w-16 border-2 border-mint-500'} />
           <div className={'text-base underline text-mint-950 dark:text-mint-50'}>
             <a aria-label="gmail" href="mailto:yangminghe20@gmail.com" rel="noopener noreferrer" target="_blank">
@@ -114,7 +114,7 @@ const Menu = () => {
             </a>
           </div>
           <div className={'text-base text-mint-950 dark:text-mint-50'}>
-            <span>Copyright © </span>
+            <span className="cursor-default">Copyright © </span>
             <a aria-label="github" className={'underline'} href="https://github.com/LinZui520" rel="noopener noreferrer" target="_blank">
               LinZui520
             </a>

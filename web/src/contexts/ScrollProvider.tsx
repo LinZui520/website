@@ -1,5 +1,6 @@
-import { createContext, useContext, useRef, ReactNode } from 'react';
+import { createContext, useContext, useRef, ReactNode, useEffect } from 'react';
 import useScroll from '../hooks/useScroll';
+import { useLocation } from 'react-router-dom';
 
 interface ScrollContextType {
   scrollTo: (position: number) => void;
@@ -23,6 +24,11 @@ const ScrollProvider = ({ children }: { children: ReactNode }) => {
     (x: number) => 1 - Math.pow(1 - x, 3),
     300
   );
+
+  const { pathname } = useLocation();
+  useEffect(() => {
+    scrollTo(0);
+  }, [pathname, scrollTo]);
 
   return (
     <ScrollContext.Provider value={{ scrollTo, refresh }}>
