@@ -34,6 +34,7 @@ const useScroll = (
   duration: number
 ): {
   scrollTo: (position: number) => void;
+  scrollToNoAnimation: (position: number) => void;
   refresh: () => void;
   ScrollbarWrapper: ({ children }: { children: ReactNode }) => JSX.Element,
   Scrollbar: () => JSX.Element | null
@@ -96,6 +97,13 @@ const useScroll = (
 
     requestAnimationFrame(createAnimation(element, position));
   }), [createAnimation, container]);
+
+  const scrollToNoAnimation = useCallback((position: number) => {
+    if (!container.current) { return; }
+    const element = container.current;
+    target.current = position;
+    element.scrollTop = position;
+  }, [container]);
 
   useEffect(() => {
     if (!container.current) { return; }
@@ -282,6 +290,7 @@ const useScroll = (
 
   return {
     scrollTo,
+    scrollToNoAnimation,
     refresh,
     ScrollbarWrapper,
     Scrollbar
