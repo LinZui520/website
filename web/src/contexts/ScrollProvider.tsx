@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 interface ScrollContextType {
   scrollTo: (position: number) => void;
+  scrollToNoAnimation: (position: number) => void;
   refresh: () => void;
 }
 
@@ -19,7 +20,7 @@ export const useScrollContext = () => {
 
 const ScrollProvider = ({ children }: { children: ReactNode }) => {
   const container = useRef(document.documentElement);
-  const { scrollTo, Scrollbar, refresh } = useScroll(
+  const { scrollTo, scrollToNoAnimation, Scrollbar, refresh } = useScroll(
     container,
     (x: number) => 1 - Math.pow(1 - x, 3),
     300
@@ -27,11 +28,11 @@ const ScrollProvider = ({ children }: { children: ReactNode }) => {
 
   const { pathname } = useLocation();
   useEffect(() => {
-    scrollTo(0);
-  }, [pathname, scrollTo]);
+    scrollToNoAnimation(0);
+  }, [pathname, scrollToNoAnimation]);
 
   return (
-    <ScrollContext.Provider value={{ scrollTo, refresh }}>
+    <ScrollContext.Provider value={{ scrollTo, scrollToNoAnimation, refresh }}>
       {children}
       <Scrollbar />
     </ScrollContext.Provider>
