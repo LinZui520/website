@@ -190,6 +190,60 @@ impl PhotoService {
         Ok(photos)
     }
 
+    /// 更新照片服务 - 根据权限控制更新照片描述信息
+    /// 权限控制：只能更新权限低于当前用户的照片作者创建的照片，或者自己创建的照片
+    pub async fn update_photo(
+        state: Arc<AppState>,
+        photo_id: String,
+        user_id: i64,
+        user_permission: i16,
+        photo_dto: crate::models::photo::PhotoDTO,
+    ) -> Result<()> {
+        let postgres = &state.postgres;
+
+        // 开始事务
+        let txn = postgres.begin().await?;
+
+        // 先查询照片是否存在，同时联表查询创建者的权限信息
+        let (photo, user) = match crate::models::photo::Entity::find()
+            .find_also_related(crate::models::user::Entity)
+            .filter(crate::models::photo::Column::PhotoId.eq(photo_id.clone()))
+            .one(&txn)
+            .await?
+        {
+            Some((photo, Some(user))) => (photo, user),
+            Some((_, None)) => return Err(anyhow!("WARN:照片创建者不存在")),
+            None => return Err(anyhow!("WARN:照片不存在")),
+        };
+
+        // 权限验证：如果不是创建者本人，且当前用户权限小于等于创建者权限，则拒绝操作
+        if photo.created_by != user_id && user_permission <= user.permission {
+            return Err(anyhow!(
+                "WARN:权限不足，只能更新自己创建的照片或权限低于自己的用户创建的照片"
+            ));
+        }
+
+        // 更新照片记录 - 只更新描述字段
+        let mut photo_active: ActiveModel = photo.into();
+
+        if let Some(description) = photo_dto.description {
+            photo_active.description = Set(Some(description));
+        }
+
+        photo_active.updated_at = Set(chrono::Utc::now());
+        photo_active.updated_by = Set(user_id);
+
+        photo_active.update(&txn).await?;
+
+        // 提交事务
+        txn.commit().await?;
+
+        // 异步清除照片列表缓存，不阻塞主函数
+        tokio::spawn(async move { clear_cache(state.clone(), Self::CACHE_KEY_LIST).await });
+
+        Ok(())
+    }
+
     /// 删除照片服务 - 根据 photo_id 删除照片记录和文件
     pub async fn delete_photo(
         state: Arc<AppState>,

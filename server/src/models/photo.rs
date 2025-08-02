@@ -40,6 +40,12 @@ impl Related<super::user::Entity> for Entity {
 
 impl ActiveModelBehavior for ActiveModel {}
 
+/// 照片数据传输对象 - 用于更新照片请求
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PhotoDTO {
+    pub description: Option<String>,
+}
+
 /// 照片视图对象 - 用于前端展示
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct PhotoVO {
