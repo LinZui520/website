@@ -9,6 +9,7 @@ import { useRequest } from '../../../hooks/useRequest';
 import { uploadPhoto } from '../api';
 import BackArrow from '../../../components/BackArrow';
 import UpArrow from '../../../components/UpArrow';
+import useAuth from '../../../hooks/useAuth';
 
 const Page = () => {
   const { location } = useParams();
@@ -22,6 +23,7 @@ const Page = () => {
   const [photo, setPhoto] = useState('');
   const [description, setDescription] = useState('');
   const { handleRequest, notify } = useRequest();
+  const auth = useAuth();
 
   useEffect(() => setPhoto(file?.name || ''), [file]);
 
@@ -34,9 +36,13 @@ const Page = () => {
     timeline.current = gsap.timeline();
 
     timeline.current
-      .to('#dialog', { x: 0, duration: 0.7, ease: 'power2.inOut' }, 0)
-      .to('#line1', { rotate: -135, transformOrigin: '50% 50%', duration: 0.7, ease: 'power2.inOut' }, 0)
-      .to('#line2', { rotate: -135, transformOrigin: '50% 50%', duration: 0.7, ease: 'power2.inOut' }, 0);
+      .to('#dialog', { x: 0, duration: 0.7, ease: 'power2.inOut' }, 0);
+
+    if (auth.state.user?.permission) {
+      timeline.current
+        .to('#line1', { rotate: -135, transformOrigin: '50% 50%', duration: 0.7, ease: 'power2.inOut' }, 0)
+        .to('#line2', { rotate: -135, transformOrigin: '50% 50%', duration: 0.7, ease: 'power2.inOut' }, 0);
+    }
 
     return () => timeline.current?.kill();
   }, { scope: container });
@@ -84,9 +90,16 @@ const Page = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-b from-mint-950/30 via-transparent to-mint-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
               {photo.description && (
-                <span className="text-mint-50 text-base">
-                  {photo.description}
-                </span>
+                <div className="relative text-mint-50 text-base">
+                  <span>
+                    {photo.description}
+                    {/* 添加与用户名长度相等的空格，防止挤压 */}
+                    {Array(photo.created_by.username.length * 2 + 6).fill('\u00A0').join('')}
+                  </span>
+                  <span className="absolute bottom-0 right-0 text-mint-200 text-sm">
+                    📸 {photo.created_by.username}
+                  </span>
+                </div>
               )}
             </div>
           </div>
@@ -97,14 +110,17 @@ const Page = () => {
 
       <BackArrow />
 
-      <svg
-        className={'fixed right-12 top-28 h-16 w-16 stroke-3 stroke-mint-950 dark:stroke-mint-50 cursor-pointer z-[35]'}
-        onClick={() => setIsOpen((value) => !value)}
-        viewBox="0 0 32 32"
-      >
-        <path d="M 16 4 L 16 28" id="line1" />
-        <path d="M 4 16 L 28 16" id="line2" />
-      </svg>
+      {auth.state.user?.permission ? (
+        <svg
+          className={'fixed right-12 top-28 h-16 w-16 stroke-3 stroke-mint-950 dark:stroke-mint-50 cursor-pointer z-[35]'}
+          onClick={() => setIsOpen((value) => !value)}
+          viewBox="0 0 32 32"
+        >
+          <path d="M 16 4 L 16 28" id="line1" />
+          <path d="M 4 16 L 28 16" id="line2" />
+        </svg>
+      ) : null
+      }
       <div
         className={'fixed right-0 top-0 h-screen max-w-screen w-md z-30 bg-mint-100 dark:bg-mint-900 translate-x-[150%] flex flex-col justify-center items-center'}
         id="dialog"
