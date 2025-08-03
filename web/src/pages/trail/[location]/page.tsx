@@ -36,13 +36,9 @@ const Page = () => {
     timeline.current = gsap.timeline();
 
     timeline.current
-      .to('#dialog', { x: 0, duration: 0.7, ease: 'power2.inOut' }, 0);
-
-    if (auth.state.user?.permission) {
-      timeline.current
-        .to('#line1', { rotate: -135, transformOrigin: '50% 50%', duration: 0.7, ease: 'power2.inOut' }, 0)
-        .to('#line2', { rotate: -135, transformOrigin: '50% 50%', duration: 0.7, ease: 'power2.inOut' }, 0);
-    }
+      .to('#dialog', { x: 0, duration: 0.7, ease: 'power2.inOut' }, 0)
+      .to('#line1', { rotate: -135, transformOrigin: '50% 50%', duration: 0.7, ease: 'power2.inOut' }, 0)
+      .to('#line2', { rotate: -135, transformOrigin: '50% 50%', duration: 0.7, ease: 'power2.inOut' }, 0);
 
     return () => timeline.current?.kill();
   }, { scope: container });
@@ -110,17 +106,14 @@ const Page = () => {
 
       <BackArrow />
 
-      {auth.state.user?.permission ? (
-        <svg
-          className={'fixed right-12 top-28 h-16 w-16 stroke-3 stroke-mint-950 dark:stroke-mint-50 cursor-pointer z-[35]'}
-          onClick={() => setIsOpen((value) => !value)}
-          viewBox="0 0 32 32"
-        >
-          <path d="M 16 4 L 16 28" id="line1" />
-          <path d="M 4 16 L 28 16" id="line2" />
-        </svg>
-      ) : null
-      }
+      <svg
+        className={`${auth.state.user?.permission ? 'fixed' : 'hidden'} right-12 top-28 h-16 w-16 stroke-3 stroke-mint-950 dark:stroke-mint-50 cursor-pointer z-[35]`}
+        onClick={() => setIsOpen((value) => !value)}
+        viewBox="0 0 32 32"
+      >
+        <path d="M 16 4 L 16 28" id="line1" />
+        <path d="M 4 16 L 28 16" id="line2" />
+      </svg>
       <div
         className={'fixed right-0 top-0 h-screen max-w-screen w-md z-30 bg-mint-100 dark:bg-mint-900 translate-x-[150%] flex flex-col justify-center items-center'}
         id="dialog"
