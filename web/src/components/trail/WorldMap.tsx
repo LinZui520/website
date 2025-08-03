@@ -44,7 +44,7 @@ const WorldMap: React.FC<WorldMapProps> = ({
         style={{ aspectRatio: '8/5' }}
         viewBox="0 0 800 500"
       >
-        <rect className={'fill-mint-100 dark:fill-mint-900'} height="500" width="800" />
+        <rect className={'fill-mint-50 dark:fill-mint-950'} height="500" width="800" />
 
         {geoData.features.map((feature) => {
           const countryName = feature.properties.name;

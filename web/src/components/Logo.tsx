@@ -7,6 +7,8 @@ type Props = {
   className?: string;
 };
 
+type Theme = 'light' | 'dark';
+
 const Logo = (props: Props) => {
   const [isHover, setIsHover] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -14,6 +16,20 @@ const Logo = (props: Props) => {
   const grayCircleRef = useRef<HTMLDivElement>(null);
   const blackCircle1Ref = useRef<HTMLDivElement>(null);
   const blackCircle2Ref = useRef<HTMLDivElement>(null);
+  const [theme, setTheme] = useState<Theme>('light');
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleMediaChange = (event: MediaQueryListEvent | MediaQueryList) => {
+      setTheme(event.matches ? 'dark' : 'light');
+    };
+
+    handleMediaChange(media);
+    media.addEventListener('change', handleMediaChange);
+    return () => {
+      media.removeEventListener('change', handleMediaChange);
+    };
+  }, []);
 
   useGSAP(() => {
     const container = containerRef.current;
@@ -44,7 +60,7 @@ const Logo = (props: Props) => {
       // 灰色球变成黑色球（根据主题变色）
       .to(grayCircleRef.current, {
         duration: 0,
-        backgroundColor: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#FAFAFC' : '#1D1D1F',
+        backgroundColor: theme === 'dark' ? '#FAFAFC' : '#1D1D1F',
         ease: 'none'
       }, 0.55)
       .to(grayCircleRef.current, {
@@ -60,7 +76,7 @@ const Logo = (props: Props) => {
       .to('#char-4', { duration: 0, opacity: 1, ease: 'power2.inOut' }, 1.2)
       .to('#char-5', { duration: 0, opacity: 1, ease: 'power2.inOut' }, 1.25);
 
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [theme] });
 
   useEffect(() => {
     const container = containerRef.current;
