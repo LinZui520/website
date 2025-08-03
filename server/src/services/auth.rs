@@ -184,7 +184,17 @@ impl AuthService {
             return Err(anyhow!("WARN:用户已被封禁"));
         }
 
-        Ok(AuthVO::new(UserVO::from(user), token))
+        // 重新生成包含最新用户信息的 JWT token
+        let user_credentials = UserCredentials {
+            avatar: user.avatar_url.clone(),
+            username: user.username.clone(),
+            email: user.email.clone(),
+            permission: user.permission,
+        };
+
+        let new_token = generate_jwt(user.id, user_credentials)?;
+
+        Ok(AuthVO::new(UserVO::from(user), new_token))
     }
 
     /// 重置密码服务
