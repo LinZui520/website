@@ -85,18 +85,16 @@ const Page = () => {
               src={photo.photo_url}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-mint-950/30 via-transparent to-mint-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-              {photo.description && (
-                <div className="relative text-mint-50 text-base">
-                  <span>
-                    {photo.description}
-                    {/* 添加与用户名长度相等的空格，防止挤压 */}
-                    {Array(photo.created_by.username.length * 2 + 6).fill('\u00A0').join('')}
-                  </span>
-                  <span className="absolute bottom-0 right-0 text-mint-200 text-sm">
-                    📸 {photo.created_by.username}
-                  </span>
-                </div>
-              )}
+              <div className="relative text-mint-50 text-base">
+                <span>
+                  {photo.description}
+                  {/* 添加与用户名长度相等的空格，防止挤压 */}
+                  {Array(photo.created_by.username.length * 2 + 6).fill('\u00A0').join('')}
+                </span>
+                <span className="absolute bottom-0 right-0 text-mint-200 text-sm">
+                  📸 {photo.created_by.username}
+                </span>
+              </div>
             </div>
           </div>
         ))}
