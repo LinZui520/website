@@ -41,6 +41,24 @@ pub async fn read_board(State(state): State<Arc<AppState>>) -> Response<Vec<Boar
     handle_service_result!(BoardService::read_board(state).await, "留言板查询成功")
 }
 
+/// 根据 board_id 查询单个留言板处理函数
+///
+/// 根据路径参数中的 board_id 查询指定留言板的详细信息
+/// 这是公开接口，不需要权限验证
+///
+/// 路径参数：
+/// - board_id: 留言板唯一标识符
+pub async fn read_board_by_id(
+    State(state): State<Arc<AppState>>,
+    Path(board_id): Path<String>,
+) -> Response<BoardVO> {
+    // 调用服务层查询指定留言板详情
+    handle_service_result!(
+        BoardService::read_board_by_id(state, board_id).await,
+        "留言板查询成功"
+    )
+}
+
 /// 更新留言板处理函数
 ///
 /// 根据路径参数中的 board_id 更新留言板信息

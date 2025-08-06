@@ -106,6 +106,39 @@ impl BoardService {
         Ok(boards)
     }
 
+    /// 根据 board_id 查询单个留言板 - 联表查询用户信息
+    pub async fn read_board_by_id(state: Arc<AppState>, board_id: String) -> Result<BoardVO> {
+        let postgres = &state.postgres;
+
+        // 构建基础查询，联表查询用户信息
+        let query = crate::models::board::Entity::find()
+            .filter(crate::models::board::Column::BoardId.eq(board_id.clone()))
+            .join(
+                JoinType::InnerJoin,
+                crate::models::board::Relation::User.def(),
+            )
+            .select_only()
+            // 选择留言板信息字段
+            .column_as(crate::models::board::Column::BoardId, "board_id")
+            .column_as(crate::models::board::Column::Name, "name")
+            .column_as(crate::models::board::Column::Description, "description")
+            .column_as(crate::models::board::Column::CreatedAt, "created_at")
+            .column_as(crate::models::board::Column::UpdatedAt, "updated_at")
+            // 选择用户信息字段
+            .column_as(crate::models::user::Column::Id, "user_id")
+            .column_as(crate::models::user::Column::AvatarUrl, "user_avatar_url")
+            .column_as(crate::models::user::Column::Username, "user_username")
+            .column_as(crate::models::user::Column::Email, "user_email")
+            .column_as(crate::models::user::Column::Permission, "user_permission");
+
+        let board = query.into_model::<BoardWithUser>().one(postgres).await?;
+
+        match board {
+            Some(board_with_user) => Ok(board_with_user.into()),
+            None => Err(anyhow!("WARN:留言板不存在: {}", board_id)),
+        }
+    }
+
     /// 更新留言板服务 - 根据权限控制更新留言板信息
     /// 权限控制：只能更新权限低于当前用户的留言板作者创建的留言板，或者自己创建的留言板
     pub async fn update_board(
