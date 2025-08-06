@@ -10,7 +10,6 @@ type Props = {
 type Theme = 'light' | 'dark';
 
 const Logo = (props: Props) => {
-  const [isHover, setIsHover] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const timeline = useRef<GSAPTimeline | undefined>(undefined);
   const grayCircleRef = useRef<HTMLDivElement>(null);
@@ -32,8 +31,6 @@ const Logo = (props: Props) => {
   }, []);
 
   useGSAP(() => {
-    const container = containerRef.current;
-    if (!container) return;
     timeline.current = gsap.timeline();
 
     timeline.current
@@ -76,27 +73,15 @@ const Logo = (props: Props) => {
       .to('#char-4', { duration: 0, opacity: 1, ease: 'power2.inOut' }, 1.2)
       .to('#char-5', { duration: 0, opacity: 1, ease: 'power2.inOut' }, 1.25);
 
+    timeline.current.pause();
+    return () => timeline.current?.kill();
   }, { scope: containerRef, dependencies: [theme] });
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const play = () => setIsHover(true);
-    const reverse = () => setIsHover(false);
-    container.addEventListener('mouseenter', play);
-    container.addEventListener('mouseleave', reverse);
-
-    return () => {
-      container.removeEventListener('mouseenter', play);
-      container.removeEventListener('mouseleave', reverse);
-    };
-  }, []);
-
-  useGSAP(() => isHover ? timeline.current?.play() : timeline.current?.reverse(), { scope: containerRef, dependencies: [isHover] });
 
   return (
     <div
       className={`${props.className || ''} flex flex-col items-center justify-center font-serif cursor-default`}
+      onMouseEnter={() => timeline.current?.play()}
+      onMouseLeave={() => timeline.current?.reverse()}
       ref={containerRef}
     >
       {/* 圆圈动画区域 */}
