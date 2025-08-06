@@ -157,13 +157,14 @@ data:
       updated_by BIGINT NOT NULL DEFAULT 0
     );
 
+    CREATE INDEX idx_users_permission ON users(permission);
     CREATE INDEX idx_users_created_at ON users(created_at);
 
     CREATE TABLE IF NOT EXISTS photos (
       id BIGSERIAL PRIMARY KEY,
       photo_id VARCHAR(64) NOT NULL UNIQUE,
       photo_url VARCHAR(64) NOT NULL UNIQUE,
-      description VARCHAR(256) NULL,
+      description TEXT NULL,
       location VARCHAR(64) NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
       created_by BIGINT NOT NULL DEFAULT 0,
@@ -197,8 +198,10 @@ data:
       updated_by BIGINT NOT NULL DEFAULT 0
     );
 
+    CREATE INDEX idx_blogs_publish_created_at ON blogs(publish, created_at DESC);
     CREATE INDEX idx_blogs_publish ON blogs(publish);
     CREATE INDEX idx_blogs_created_at ON blogs(created_at);
+    CREATE INDEX idx_blogs_created_by ON blogs(created_by);
 
     CREATE TABLE IF NOT EXISTS blog_tags (
       id BIGSERIAL PRIMARY KEY,
@@ -225,6 +228,35 @@ data:
 
     CREATE INDEX idx_pictures_created_at ON pictures(created_at);
 
+    CREATE TABLE IF NOT EXISTS boards (
+      id BIGSERIAL PRIMARY KEY,
+      board_id VARCHAR(64) NOT NULL UNIQUE,
+      name VARCHAR(128) NOT NULL UNIQUE,
+      description TEXT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      created_by BIGINT NOT NULL DEFAULT 0,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_by BIGINT NOT NULL DEFAULT 0
+    );
+
+    CREATE INDEX idx_boards_created_at ON boards(created_at);
+
+    CREATE TABLE IF NOT EXISTS comments (
+      id BIGSERIAL PRIMARY KEY,
+      comment_id VARCHAR(64) NOT NULL UNIQUE,
+      content TEXT NOT NULL,
+      target_id VARCHAR(64) NOT NULL,
+      parent_id VARCHAR(64) NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      created_by BIGINT NOT NULL DEFAULT 0,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_by BIGINT NOT NULL DEFAULT 0
+    );
+
+    CREATE INDEX idx_comments_target_comment ON comments(target_id, comment_id);
+    CREATE INDEX idx_comments_target_time ON comments(target_id, created_at);
+    CREATE INDEX idx_comments_parent_id ON comments(parent_id);
+    CREATE INDEX idx_comments_created_at ON comments(created_at);
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -330,6 +362,7 @@ spec:
       port: 6379
       targetPort: 6379
 ---
+
 # ================== Rust服务 ==================
 apiVersion: apps/v1
 kind: Deployment
@@ -387,7 +420,6 @@ spec:
       port: 8080
       targetPort: 8080
 ---
-
 
 # ================== Nginx服务 ==================
 apiVersion: v1

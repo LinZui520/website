@@ -21,7 +21,7 @@ pub struct PhotoService;
 
 impl PhotoService {
     /// 照片列表缓存键
-    const CACHE_KEY_LIST: &'static str = "photos:list";
+    pub const CACHE_KEY_LIST: &'static str = "photos:list";
 
     /// 照片列表缓存过期时间（秒）- 无限缓存，依赖主动清除
     const CACHE_EXPIRE_LIST: Option<u64> = None;
