@@ -5,6 +5,8 @@ use crate::core::redis::clear_cache;
 use crate::models::auth::AuthVO;
 use crate::models::user::{ActiveModel, Column, Entity as UserEntity, UserDTO, UserVO};
 use crate::services::blog::BlogService;
+use crate::services::board::BoardService;
+use crate::services::photo::PhotoService;
 use crate::{AppState, validate_option_field};
 use anyhow::{Result, anyhow};
 use axum::extract::Multipart;
@@ -184,7 +186,17 @@ impl AuthService {
             return Err(anyhow!("WARN:用户已被封禁"));
         }
 
-        Ok(AuthVO::new(UserVO::from(user), token))
+        // 重新生成包含最新用户信息的 JWT token
+        let user_credentials = UserCredentials {
+            avatar: user.avatar_url.clone(),
+            username: user.username.clone(),
+            email: user.email.clone(),
+            permission: user.permission,
+        };
+
+        let new_token = generate_jwt(user.id, user_credentials)?;
+
+        Ok(AuthVO::new(UserVO::from(user), new_token))
     }
 
     /// 重置密码服务
@@ -338,6 +350,10 @@ impl AuthService {
         tokio::spawn(async move {
             // 清除博客列表缓存，因为博客中包含用户头像信息
             let _ = clear_cache(state.clone(), BlogService::CACHE_KEY_PUBLISHED_LIST).await;
+            // 清除照片列表缓存，因为照片中包含用户信息
+            let _ = clear_cache(state.clone(), PhotoService::CACHE_KEY_LIST).await;
+            // 清除留言板列表缓存，因为留言板中包含用户信息
+            let _ = clear_cache(state.clone(), BoardService::CACHE_KEY_LIST).await;
         });
 
         // 事务提交成功后，删除旧头像文件（如果不是默认头像的话）

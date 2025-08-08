@@ -3,18 +3,17 @@ use chrono::{DateTime, Utc};
 use sea_orm::prelude::*;
 use serde::{Deserialize, Serialize};
 
-/// 照片数据库模型
+/// 留言板数据库模型
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
-#[sea_orm(table_name = "photos")]
+#[sea_orm(table_name = "boards")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i64,
     #[sea_orm(unique)]
-    pub photo_id: String,
+    pub board_id: String,
     #[sea_orm(unique)]
-    pub photo_url: String,
+    pub name: String,
     pub description: Option<String>,
-    pub location: String,
     pub created_at: DateTime<Utc>,
     pub created_by: i64,
     pub updated_at: DateTime<Utc>,
@@ -25,8 +24,7 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(
         belongs_to = "super::user::Entity",
-        from = "Column::CreatedBy\
-        ",
+        from = "Column::CreatedBy",
         to = "super::user::Column::Id"
     )]
     User,
@@ -40,32 +38,31 @@ impl Related<super::user::Entity> for Entity {
 
 impl ActiveModelBehavior for ActiveModel {}
 
-/// 照片数据传输对象 - 用于更新照片请求
+/// 留言板数据传输对象 - 用于更新留言板请求
 #[derive(Debug, Serialize, Deserialize)]
-pub struct PhotoDTO {
+pub struct BoardDTO {
+    pub name: String,
     pub description: Option<String>,
 }
 
-/// 照片视图对象 - 用于前端展示
+/// 留言板视图对象 - 用于前端展示
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct PhotoVO {
-    pub photo_id: String,
-    pub photo_url: String,
+pub struct BoardVO {
+    pub board_id: String,
+    pub name: String,
     pub description: Option<String>,
-    pub location: String,
     pub created_at: DateTime<Utc>,
     pub created_by: UserVO,
     pub updated_at: DateTime<Utc>,
 }
 
-/// 用于联表查询的结构体，包含照片信息和用户信息
+/// 用于联表查询的结构体，包含留言板信息和用户信息
 #[derive(Debug, sea_orm::FromQueryResult)]
-pub struct PhotoWithUser {
-    // 照片信息
-    pub photo_id: String,
-    pub photo_url: String,
+pub struct BoardWithUser {
+    // 留言板信息
+    pub board_id: String,
+    pub name: String,
     pub description: Option<String>,
-    pub location: String,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
     // 用户信息
@@ -76,22 +73,21 @@ pub struct PhotoWithUser {
     pub user_permission: i16,
 }
 
-impl From<PhotoWithUser> for PhotoVO {
-    fn from(photo_with_user: PhotoWithUser) -> Self {
+impl From<BoardWithUser> for BoardVO {
+    fn from(board_with_user: BoardWithUser) -> Self {
         Self {
-            photo_id: photo_with_user.photo_id,
-            photo_url: photo_with_user.photo_url,
-            description: photo_with_user.description,
-            location: photo_with_user.location,
-            created_at: photo_with_user.created_at,
+            board_id: board_with_user.board_id,
+            name: board_with_user.name,
+            description: board_with_user.description,
+            created_at: board_with_user.created_at,
             created_by: UserVO {
-                id: photo_with_user.user_id,
-                avatar_url: photo_with_user.user_avatar_url,
-                username: photo_with_user.user_username,
-                email: photo_with_user.user_email,
-                permission: photo_with_user.user_permission,
+                id: board_with_user.user_id,
+                avatar_url: board_with_user.user_avatar_url,
+                username: board_with_user.user_username,
+                email: board_with_user.user_email,
+                permission: board_with_user.user_permission,
             },
-            updated_at: photo_with_user.updated_at,
+            updated_at: board_with_user.updated_at,
         }
     }
 }

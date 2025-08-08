@@ -54,6 +54,16 @@ const router = createRouter({
       component: () => import('../views/user/index')
     },
     {
+      path: '/board',
+      name: 'board',
+      component: () => import('../views/board/index')
+    },
+    {
+      path: '/board/detail',
+      name: 'boardDetail',
+      component: () => import('../views/board/detail')
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'errorView',
       component: ErrorView

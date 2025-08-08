@@ -2,6 +2,8 @@ use crate::AppState;
 use crate::core::redis::clear_cache;
 use crate::models::user::{ActiveModel, Entity as UserEntity, UserVO};
 use crate::services::blog::BlogService;
+use crate::services::board::BoardService;
+use crate::services::photo::PhotoService;
 use anyhow::{Result, anyhow};
 use sea_orm::{ActiveModelTrait, EntityTrait, QueryOrder, Set};
 use std::sync::Arc;
@@ -72,6 +74,10 @@ impl UserService {
         tokio::spawn(async move {
             // 清除博客列表缓存，因为博客中包含用户头像信息
             let _ = clear_cache(state.clone(), BlogService::CACHE_KEY_PUBLISHED_LIST).await;
+            // 清除照片列表缓存，因为照片中包含用户信息
+            let _ = clear_cache(state.clone(), PhotoService::CACHE_KEY_LIST).await;
+            // 清除留言板列表缓存，因为留言板中包含用户信息
+            let _ = clear_cache(state.clone(), BoardService::CACHE_KEY_LIST).await;
         });
 
         Ok(())
@@ -124,6 +130,10 @@ impl UserService {
         tokio::spawn(async move {
             // 清除博客列表缓存，因为博客中包含用户头像信息
             let _ = clear_cache(state.clone(), BlogService::CACHE_KEY_PUBLISHED_LIST).await;
+            // 清除照片列表缓存，因为照片中包含用户信息
+            let _ = clear_cache(state.clone(), PhotoService::CACHE_KEY_LIST).await;
+            // 清除留言板列表缓存，因为留言板中包含用户信息
+            let _ = clear_cache(state.clone(), BoardService::CACHE_KEY_LIST).await;
         });
 
         Ok(())

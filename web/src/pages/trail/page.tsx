@@ -63,9 +63,9 @@ const Page = () => {
           </div>
 
           {/* Toggle Button */}
-          <div className="fixed right-12 top-32 z-10 h-16 w-16 flex items-center justify-center">
+          <div className="fixed right-12 top-28 z-10 h-16 w-16 flex items-center justify-center">
             <span
-              className={`bg-mint-50 dark:bg-mint-950 text-5xl cursor-pointer select-none`}
+              className={`text-mint-950 dark:text-mint-50 text-5xl cursor-pointer select-none`}
               onClick={() => setIsGlobal((value) => !value)}
               title={isGlobal ? '切换到中国地图' : '切换到世界地图'}
             >

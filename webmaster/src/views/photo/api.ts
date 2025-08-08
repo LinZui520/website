@@ -9,3 +9,9 @@ export const deletePhoto = (id: string) => request({
   url: `/photo/${id}`,
   method: 'delete'
 });
+
+export const updatePhoto = (id: string, description: string) => request({
+  url: `/photo/${id}`,
+  method: 'put',
+  data: { description }
+});
