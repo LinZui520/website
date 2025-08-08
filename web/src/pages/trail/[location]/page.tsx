@@ -51,6 +51,11 @@ const Page = () => {
       return;
     }
 
+    if (file.size > 1024 * 1024) {
+      notify('图片大小不能超过1MB');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('photo', file);
     formData.append('description', description);
