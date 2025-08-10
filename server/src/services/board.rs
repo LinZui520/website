@@ -80,8 +80,8 @@ impl BoardService {
             .column_as(crate::models::user::Column::Username, "user_username")
             .column_as(crate::models::user::Column::Email, "user_email")
             .column_as(crate::models::user::Column::Permission, "user_permission")
-            // 按创建时间倒序排列
-            .order_by_desc(crate::models::board::Column::CreatedAt);
+            // 按创建时间正序排列
+            .order_by_asc(crate::models::board::Column::CreatedAt);
 
         let boards = query
             .into_model::<BoardWithUser>()

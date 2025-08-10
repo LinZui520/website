@@ -17,9 +17,9 @@ const Layout = () => {
   }, []);
 
   return (
-    <main className="w-screen h-auto flex flex-col justify-center items-center bg-mint-50 dark:bg-mint-950">
+    <>
       <Outlet context={{ geoData, globalGeoData, photos, isGlobal, setIsGlobal }} />
-    </main>
+    </>
   );
 };
 

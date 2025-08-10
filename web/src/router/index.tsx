@@ -6,6 +6,9 @@ import BlogDetailPage from '../pages/blog/[id]/page.tsx';
 import TrailLayout from '../pages/trail/layout.tsx';
 import TrailPage from '../pages/trail/page.tsx';
 import TrailLocationPage from '../pages/trail/[location]/page.tsx';
+import BoardLayout from '../pages/board/layout.tsx';
+import BoardPage from '../pages/board/page.tsx';
+import BoardDetailPage from '../pages/board/[id]/page.tsx';
 import AuthPage from '../pages/auth/page.tsx';
 import ErrorPage from '../pages/error/page.tsx';
 
@@ -37,6 +40,20 @@ const router = createBrowserRouter([
           {
             path: ':location',
             element: <TrailLocationPage />
+          }
+        ]
+      },
+      {
+        path: 'board',
+        element: <BoardLayout />,
+        children: [
+          {
+            path: '',
+            element: <BoardPage />
+          },
+          {
+            path: ':id',
+            element: <BoardDetailPage />
           }
         ]
       },

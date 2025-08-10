@@ -77,7 +77,7 @@ const Page = () => {
   };
 
   return (
-    <div
+    <main
       className={'container mx-auto min-h-screen p-4 md:p-12 xl:p-18'}
       ref={container}
     >
@@ -105,7 +105,7 @@ const Page = () => {
         ))}
       </div>
 
-      <UpArrow />
+      <UpArrow className="fixed right-12 bottom-8" />
 
       <BackArrow />
 
@@ -140,7 +140,7 @@ const Page = () => {
           <Button label="上传" onClick={upload} type="button" />
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
