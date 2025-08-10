@@ -112,6 +112,55 @@ pub async fn clear_cache(state: Arc<AppState>, key: &str) -> Result<()> {
     }
 }
 
+/// 清除模式匹配的所有缓存 - 批量缓存清除函数
+///
+/// # 参数
+/// - `state`: 应用状态，包含Redis连接池
+/// - `pattern`: 缓存键的匹配模式（支持 * 通配符）
+///
+/// # 返回值
+/// - `Ok(())`: 始终返回成功（错误会被内部处理）
+///
+/// # 示例
+/// ```rust
+/// // 清除所有评论缓存
+/// clear_cache_pattern(state, "comments:target:*").await?;
+/// // 清除特定用户的缓存
+/// clear_cache_pattern(state, "user:123:*").await?;
+/// ```
+pub async fn clear_cache_pattern(state: Arc<AppState>, pattern: &str) -> Result<()> {
+    let mut redis = match state.redis.get().await {
+        Ok(redis) => redis,
+        Err(err) => {
+            tracing::error!("获取Redis连接失败: {err}");
+            return Ok(());
+        }
+    };
+
+    // 使用 KEYS 命令获取所有匹配模式的键
+    let keys: Vec<String> = match redis.keys(pattern).await {
+        Ok(keys) => keys,
+        Err(err) => {
+            tracing::error!("获取匹配缓存键失败: pattern={pattern}, error={err}");
+            return Ok(());
+        }
+    };
+
+    // 如果没有匹配的键，直接返回
+    if keys.is_empty() {
+        return Ok(());
+    }
+
+    // 批量删除所有匹配的键
+    match redis.del::<Vec<String>, u32>(keys.clone()).await {
+        Ok(_) => Ok(()),
+        Err(err) => {
+            tracing::error!("批量清除缓存失败: pattern={pattern}, keys={keys:?}, error={err}");
+            Ok(())
+        }
+    }
+}
+
 /// 获取缓存 - 通用缓存获取函数
 ///
 /// # 参数

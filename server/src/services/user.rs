@@ -1,8 +1,9 @@
 use crate::AppState;
-use crate::core::redis::clear_cache;
+use crate::core::redis::{clear_cache, clear_cache_pattern};
 use crate::models::user::{ActiveModel, Entity as UserEntity, UserVO};
 use crate::services::blog::BlogService;
 use crate::services::board::BoardService;
+use crate::services::comment::CommentService;
 use crate::services::photo::PhotoService;
 use anyhow::{Result, anyhow};
 use sea_orm::{ActiveModelTrait, EntityTrait, QueryOrder, Set};
@@ -78,6 +79,8 @@ impl UserService {
             let _ = clear_cache(state.clone(), PhotoService::CACHE_KEY_LIST).await;
             // 清除留言板列表缓存，因为留言板中包含用户信息
             let _ = clear_cache(state.clone(), BoardService::CACHE_KEY_LIST).await;
+            // 清除所有评论缓存，因为评论中包含用户信息
+            let _ = clear_cache_pattern(state.clone(), CommentService::CACHE_PATTERN_ALL).await;
         });
 
         Ok(())
@@ -134,6 +137,8 @@ impl UserService {
             let _ = clear_cache(state.clone(), PhotoService::CACHE_KEY_LIST).await;
             // 清除留言板列表缓存，因为留言板中包含用户信息
             let _ = clear_cache(state.clone(), BoardService::CACHE_KEY_LIST).await;
+            // 清除所有评论缓存，因为评论中包含用户信息
+            let _ = clear_cache_pattern(state.clone(), CommentService::CACHE_PATTERN_ALL).await;
         });
 
         Ok(())

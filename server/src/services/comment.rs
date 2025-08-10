@@ -19,6 +19,9 @@ impl CommentService {
     /// 评论列表缓存键前缀
     const CACHE_KEY_PREFIX: &'static str = "comments:target:";
 
+    /// 评论列表缓存模式（用于批量清除所有评论缓存）
+    pub const CACHE_PATTERN_ALL: &'static str = "comments:target:*";
+
     /// 评论列表缓存过期时间（秒）- 30分钟
     const CACHE_EXPIRE_LIST: Option<u64> = Some(1800);
 
