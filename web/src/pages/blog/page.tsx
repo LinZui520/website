@@ -23,7 +23,7 @@ const Page = () => {
   return (
     <>
       <main className="w-screen bg-mint-50 dark:bg-mint-950 flex flex-col items-center pt-16 pb-16" ref={containerRef}>
-        <div className="min-h-[calc(100vh-8rem)] flex flex-col items-center w-full max-w-7xl px-6 md:px-8">
+        <div className="min-h-[calc(100vh-16rem)] flex flex-col items-center w-full max-w-7xl px-6 md:px-8">
 
           {/* Hero Section */}
           <div className="w-full flex flex-col items-center text-center mb-16 md:mb-24">

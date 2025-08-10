@@ -30,8 +30,28 @@ impl CommentService {
     ) -> Result<()> {
         let postgres = &state.postgres;
 
+        // 验证输入参数不能为空
+        if comment_dto.content.trim().is_empty() {
+            return Err(anyhow!("WARN:评论内容不能为空"));
+        }
+
+        if comment_dto.target_id.trim().is_empty() {
+            return Err(anyhow!("WARN:目标ID不能为空"));
+        }
+
         // 使用事务确保数据一致性和性能
         let txn = postgres.begin().await?;
+
+        // 验证 target_id 是否存在于 board 表中
+        let board_exists = crate::models::board::Entity::find()
+            .filter(crate::models::board::Column::BoardId.eq(&comment_dto.target_id))
+            .one(&txn)
+            .await?
+            .is_some();
+
+        if !board_exists {
+            return Err(anyhow!("WARN:目标对象不存在"));
+        }
 
         // 验证父评论是否存在（如果指定了parent_id）
         if let Some(ref parent_id) = comment_dto.parent_id {
@@ -150,8 +170,8 @@ impl CommentService {
             .column_as(crate::models::user::Column::Username, "user_username")
             .column_as(crate::models::user::Column::Email, "user_email")
             .column_as(crate::models::user::Column::Permission, "user_permission")
-            // 按创建时间正序排列（早的在前面）
-            .order_by_asc(crate::models::comment::Column::CreatedAt);
+            // 按创建时间正序排列（早的在后面）
+            .order_by_desc(crate::models::comment::Column::CreatedAt);
 
         let comment_data = query.into_model::<CommentWithUser>().all(&txn).await?;
 

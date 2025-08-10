@@ -53,7 +53,7 @@ const Page = () => {
           dangerouslySetInnerHTML={{ __html: markdownText }}
         />
       </div>
-      <UpArrow />
+      <UpArrow className="fixed right-12 bottom-8" />
       <BackArrow />
     </main>
   );

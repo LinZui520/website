@@ -14,10 +14,11 @@ const Menu = () => {
   const auth = useAuth();
 
   const menu = [
-    { href: '/', text: 'HOME' },
-    { href: '/blog', text: 'BLOG' },
-    { href: '/trail', text: 'TRAIL' },
-    auth.state.user ? null: { href: '/auth', text: 'LOGIN' }
+    { href: '/', text: '主页' },
+    { href: '/blog', text: '博客' },
+    { href: '/trail', text: '足迹' },
+    { href: '/board', text: '留言' },
+    auth.state.user ? null: { href: '/auth', text: '登录' }
   ];
 
   const location = useLocation();
@@ -97,7 +98,7 @@ const Menu = () => {
                 tabIndex={-1}
                 to={item.href}
               >
-                <div className={'group-hover:opacity-50 w-full flex flex-col'} id={`nav-${index}`}>
+                <div className={'group-hover:opacity-50 w-full flex flex-col font-serif'} id={`nav-${index}`}>
                   {item.text}
                   <div className={'w-full h-1 origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
                 </div>
