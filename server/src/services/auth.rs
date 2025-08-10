@@ -1,11 +1,12 @@
 use crate::core::env::env;
 use crate::core::jwt::{UserCredentials, generate_jwt, parse_jwt, verify_jwt};
 use crate::core::mail::{generate_random_code, is_valid_email, send_verification_email};
-use crate::core::redis::clear_cache;
+use crate::core::redis::{clear_cache, clear_cache_pattern};
 use crate::models::auth::AuthVO;
 use crate::models::user::{ActiveModel, Column, Entity as UserEntity, UserDTO, UserVO};
 use crate::services::blog::BlogService;
 use crate::services::board::BoardService;
+use crate::services::comment::CommentService;
 use crate::services::photo::PhotoService;
 use crate::{AppState, validate_option_field};
 use anyhow::{Result, anyhow};
@@ -354,6 +355,8 @@ impl AuthService {
             let _ = clear_cache(state.clone(), PhotoService::CACHE_KEY_LIST).await;
             // 清除留言板列表缓存，因为留言板中包含用户信息
             let _ = clear_cache(state.clone(), BoardService::CACHE_KEY_LIST).await;
+            // 清除所有评论缓存，因为评论中包含用户信息
+            let _ = clear_cache_pattern(state.clone(), CommentService::CACHE_PATTERN_ALL).await;
         });
 
         // 事务提交成功后，删除旧头像文件（如果不是默认头像的话）
