@@ -51,7 +51,7 @@ const Page = () => {
 
               const layout = layouts[index % layouts.length];
               // 统一的mint主题配色
-              const style = { bg: 'bg-mint-50', text: 'text-mint-950', border: 'border-mint-500' };
+              const style = { bg: 'bg-mint-50 dark:bg-mint-950', text: 'text-mint-950 dark:text-mint-50', border: 'border-mint-500' };
               const isLarge = layout.includes('span-2');
 
               return (
@@ -68,7 +68,7 @@ const Page = () => {
                     to={`/board/${board.board_id}`}
                   >
                     {/* 顶部装饰条 */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-mint-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-mint-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-right group-hover:origin-left" />
 
                     {/* 右上角图标 */}
                     <div className="absolute top-4 right-4">
@@ -92,17 +92,6 @@ const Page = () => {
                         {board.description ?? '暂无描述'}
                       </p>
                     </div>
-
-                    {/* 悬停效果 */}
-                    <div className="absolute inset-0 bg-mint-500/0 group-hover:bg-mint-500/5 transition-all duration-300 pointer-events-none" />
-
-                    {/* 动态边框光效 */}
-                    <div
-                      className="absolute inset-0 border-2 border-mint-500/0 group-hover:border-mint-500/30 transition-all duration-500 pointer-events-none"
-                      style={{
-                        borderRadius: `${20 + (index % 3) * 5}px`
-                      }}
-                    />
                   </Link>
                 </article>
               );

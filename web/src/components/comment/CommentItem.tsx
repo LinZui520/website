@@ -62,12 +62,15 @@ const CommentItem = (props: Props) => {
                 </span> :
                 null
               }
-              <span
-                className="text-mint-500 hover:text-mint-500/50 cursor-pointer select-none"
-                onClick={props.onReply}
-              >
-                回复
-              </span>
+              {props.user ?
+                <span
+                  className="text-mint-500 hover:text-mint-500/50 cursor-pointer select-none"
+                  onClick={props.onReply}
+                >
+                  回复
+                </span> :
+                null
+              }
             </div>
           </div>
 
