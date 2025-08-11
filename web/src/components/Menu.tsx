@@ -18,7 +18,7 @@ const Menu = () => {
     { href: '/blog', text: '博客' },
     { href: '/trail', text: '足迹' },
     { href: '/board', text: '留言' },
-    auth.state.user ? null: { href: '/auth', text: '登录' }
+    auth.state.user ? null : { href: '/auth', text: '登录' }
   ];
 
   const location = useLocation();
@@ -84,7 +84,7 @@ const Menu = () => {
         }
         id="nav"
       >
-        <nav className={'w-4/5 h-full p-4 flex flex-col items-center justify-center'}>
+        <nav className={'relative w-4/5 h-full p-4 flex flex-col items-center justify-center'}>
           <div className={'flex flex-col items-end gap-8'}>
             <div className={'text-base text-mint-500 cursor-default'}>NAVIGATION MENU</div>
             <hr className={'w-16 border-1 border-mint-500'} />
@@ -104,6 +104,15 @@ const Menu = () => {
                 </div>
               </Link>
             ))}
+          </div>
+          <div
+            className="absolute right-12 bottom-8 flex flex-col justify-center items-center group select-none hover:opacity-50"
+            onClick={() => {
+              window.location.href = '/admin';
+            }}
+          >
+            <span className="text-xl text-mint-950 dark:text-mint-50 cursor-pointer">控制台</span>
+            <div className={'w-full h-1 origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
           </div>
         </nav>
         <div className={'w-1/5 max-w-xl h-full bg-mint-100 dark:bg-mint-900 p-4 hidden xl:flex flex-col items-start justify-center gap-8'}>

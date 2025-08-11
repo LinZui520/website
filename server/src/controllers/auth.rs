@@ -69,3 +69,20 @@ pub async fn upload_avatar(
         "头像更新成功"
     )
 }
+
+pub async fn update_username(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+    Json(payload): Json<UserDTO>,
+) -> Response<UserVO> {
+    // 权限验证：需要User及以上权限（用户只能更新自己的用户名）
+    let claims = match extract_permissions_from_headers(headers, Permission::User) {
+        Some(claims) => claims,
+        None => return Response::warn("权限不足"),
+    };
+
+    handle_service_result!(
+        AuthService::update_username(state, payload, claims.sub).await,
+        "用户名更新成功"
+    )
+}

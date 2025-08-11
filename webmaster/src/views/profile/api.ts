@@ -8,3 +8,9 @@ export const uploadAvatar = (formData: FormData) => request({
     'Content-Type': 'multipart/form-data'
   }
 });
+
+export const updateUsername = (username: string) => request({
+  url: '/auth/profile/username',
+  method: 'put',
+  data: { username }
+});

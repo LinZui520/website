@@ -1,6 +1,6 @@
 use crate::AppState;
 use crate::controllers::auth::{
-    jwt_login, login, register, reset_password, upload_avatar, verification_code,
+    jwt_login, login, register, reset_password, update_username, upload_avatar, verification_code,
 };
 use axum::Router;
 use axum::routing::{get, post, put};
@@ -14,4 +14,5 @@ pub fn create_auth_router() -> Router<Arc<AppState>> {
         .route("/auth/jwt-login", get(jwt_login))
         .route("/auth/reset-password", put(reset_password))
         .route("/auth/profile/avatar", put(upload_avatar))
+        .route("/auth/profile/username", put(update_username))
 }
