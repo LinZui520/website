@@ -105,15 +105,17 @@ const Menu = () => {
               </Link>
             ))}
           </div>
-          <div
-            className="absolute right-12 bottom-8 flex flex-col justify-center items-center group select-none hover:opacity-50"
-            onClick={() => {
-              window.location.href = '/admin';
-            }}
-          >
-            <span className="text-xl text-mint-950 dark:text-mint-50 cursor-pointer">控制台</span>
-            <div className={'w-full h-1 origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
-          </div>
+          {auth.state.user && (
+            <div
+              className="absolute right-12 bottom-8 flex flex-col justify-center items-center group select-none hover:opacity-50"
+              onClick={() => {
+                window.location.href = '/admin';
+              }}
+            >
+              <span className="text-xl text-mint-950 dark:text-mint-50 cursor-pointer">控制台</span>
+              <div className={'w-full h-1 origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
+            </div>
+          )}
         </nav>
         <div className={'w-1/5 max-w-xl h-full bg-mint-100 dark:bg-mint-900 p-4 hidden xl:flex flex-col items-start justify-center gap-8'}>
           <div className={'text-3xl text-mint-500 cursor-default'}>CONTACT US</div>
