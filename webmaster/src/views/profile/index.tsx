@@ -4,7 +4,8 @@ import { useAuthStore } from '@/stores/auth';
 import { useState } from '@/composables/useState';
 import { useRequest } from '@/composables/useRequest';
 import { mdiCamera, mdiContentSave, mdiLogout } from '@mdi/js';
-import { uploadAvatar } from './api';
+import { updateUsername, uploadAvatar } from './api';
+import type { UserVO } from '../user/type';
 
 export default defineComponent({
   name: 'ProfileView',
@@ -23,15 +24,22 @@ export default defineComponent({
       const formData = new FormData();
       formData.append('avatar', file);
 
-      handleRequest(
+      handleRequest<UserVO>(
         () => uploadAvatar(formData),
-        undefined,
+        (res) => authStore.setUser(res.data.data),
         undefined,
         () => setUploadLoading(false)
       );
     };
 
     const handleSave = () => {
+      setUploadLoading(true);
+      handleRequest<UserVO>(
+        () => updateUsername(username.value),
+        (res) => authStore.setUser(res.data.data),
+        undefined,
+        () => setUploadLoading(false)
+      );
     };
 
     return () => (
@@ -78,7 +86,6 @@ export default defineComponent({
                 <VRow>
                   <VCol cols="12">
                     <VTextField
-                      disabled
                       label="用户名"
                       modelValue={username.value}
                       onUpdate:modelValue={(value) => setUsername(value)}
@@ -109,7 +116,6 @@ export default defineComponent({
                       退出登录
                     </VBtn>
                     <VBtn
-                      disabled
                       prependIcon={mdiContentSave}
                       variant="text"
                       {...{ onClick: () => handleSave() }}

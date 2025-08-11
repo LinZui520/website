@@ -372,4 +372,65 @@ impl AuthService {
 
         Ok(UserVO::from(updated_user))
     }
+
+    /// 更新用户名服务
+    pub async fn update_username(
+        state: Arc<AppState>,
+        user_dto: UserDTO,
+        user_id: i64,
+    ) -> Result<UserVO> {
+        let postgres = &state.postgres;
+
+        let username = validate_option_field!(user_dto.username, "用户名");
+
+        // 开启事务
+        let txn = postgres.begin().await?;
+
+        // 检查用户名是否已存在（排除当前用户）
+        let existing_user = UserEntity::find()
+            .filter(Column::Username.eq(&username))
+            .filter(Column::Id.ne(user_id))
+            .one(&txn)
+            .await?;
+
+        if existing_user.is_some() {
+            return Err(anyhow!("WARN:用户名已存在"));
+        }
+
+        // 查询当前用户
+        let current_user = match UserEntity::find_by_id(user_id).one(&txn).await? {
+            Some(user) => user,
+            None => return Err(anyhow!("WARN:用户不存在")),
+        };
+
+        // 检查用户是否被封禁
+        if current_user.permission < 0 {
+            return Err(anyhow!("WARN:用户已被封禁，无法修改用户名"));
+        }
+
+        // 更新用户名
+        let mut user_active: ActiveModel = current_user.into();
+        user_active.username = Set(username);
+        user_active.updated_at = Set(chrono::Utc::now());
+        user_active.updated_by = Set(user_id);
+
+        let updated_user = user_active.update(&txn).await?;
+
+        // 提交事务
+        txn.commit().await?;
+
+        // 异步清除相关缓存，不阻塞主函数
+        tokio::spawn(async move {
+            // 清除博客列表缓存，因为博客中包含用户信息
+            let _ = clear_cache(state.clone(), BlogService::CACHE_KEY_PUBLISHED_LIST).await;
+            // 清除照片列表缓存，因为照片中包含用户信息
+            let _ = clear_cache(state.clone(), PhotoService::CACHE_KEY_LIST).await;
+            // 清除留言板列表缓存，因为留言板中包含用户信息
+            let _ = clear_cache(state.clone(), BoardService::CACHE_KEY_LIST).await;
+            // 清除所有评论缓存，因为评论中包含用户信息
+            let _ = clear_cache_pattern(state.clone(), CommentService::CACHE_PATTERN_ALL).await;
+        });
+
+        Ok(UserVO::from(updated_user))
+    }
 }
