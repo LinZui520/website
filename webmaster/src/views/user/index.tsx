@@ -59,7 +59,16 @@ export default defineComponent({
             ),
             'item.avatar': ({ item }: { item: UserVO }) => (
               <VAvatar size="40">
-                <img alt={item.username} height="40" src={item.avatar_url} width="40" />
+                <img
+                  alt={item.username}
+                  height="40"
+                  src={item.avatar_url}
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: 'center'
+                  }}
+                  width="40"
+                />
               </VAvatar>
             ),
             'item.permission': ({ item }: { item: UserVO }) => (

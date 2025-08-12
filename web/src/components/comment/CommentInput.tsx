@@ -41,7 +41,7 @@ const CommentInput = (props: Props) => {
 
   return (
     <div className={'flex flex-row items-start gap-4 mb-4 w-full text-mint-950 dark:text-mint-50 ' + props.className}>
-      <img alt="头像" className="w-10 h-10 rounded-full cursor-default" src={auth.state.user?.avatar_url} />
+      <img alt="头像" className="w-10 h-10 rounded-full object-cover object-center cursor-default" src={auth.state.user?.avatar_url} />
       <div className="min-h-50 w-[calc(100%-56px)] flex flex-col">
         <div className="h-10 w-full flex flex-row items-center gap-4 cursor-default">
           <span>{props.parentComment ? '回复评论' : '添加评论'}</span>

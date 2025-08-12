@@ -31,7 +31,7 @@ const Page = () => {
         <div className="flex items-center gap-3 mb-4">
           <img
             alt={blog?.created_by.username}
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-10 h-10 rounded-full object-cover object-center"
             src={blog?.created_by.avatar_url}
           />
           <span className="text-2xl text-mint-900 dark:text-mint-100">

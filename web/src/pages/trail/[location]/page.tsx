@@ -86,7 +86,7 @@ const Page = () => {
           <div className="relative overflow-hidden shadow-md group break-inside-avoid mb-4 md:mb-12 xl:mb-18" key={photo.photo_id}>
             <img
               alt={photo.photo_id}
-              className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-auto object-cover object-center transition-transform duration-300 group-hover:scale-105"
               src={photo.photo_url}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-mint-950/30 via-transparent to-mint-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
