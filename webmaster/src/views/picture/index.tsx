@@ -97,7 +97,7 @@ export default defineComponent({
               <VImg
                 height="240"
                 src={item.picture_url}
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
                 width="240"
               />
             ),

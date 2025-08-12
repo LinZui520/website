@@ -36,7 +36,7 @@ const CommentItem = (props: Props) => {
 
       {/* 评论 */}
       <div className="w-full flex flex-row items-start gap-4">
-        <img alt="头像" className="w-10 h-10 rounded-full" src={props.comment.created_by.avatar_url} />
+        <img alt="头像" className="w-10 h-10 rounded-full object-cover object-center cursor-default" src={props.comment.created_by.avatar_url} />
         <div className="w-[calc(100%-56px)] flex flex-col border border-mint-950/20 dark:border-mint-50/20 rounded-md bg-mint-50 dark:bg-mint-950">
           {/* 评论头部 */}
           <div className="w-full flex items-center justify-between px-4 py-2 border-b rounded-t-md border-mint-950/20 dark:border-mint-50/20 bg-mint-100 dark:bg-mint-900 cursor-default">

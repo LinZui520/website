@@ -60,9 +60,23 @@ export default defineComponent({
             default: () => (
               <VListItem
                 lines="two"
-                prepend-avatar={authStore.user?.avatar_url}
                 title={authStore.user?.username}
-              />
+              >
+                {{
+                  prepend: () => (
+                    <img
+                      alt="用户头像"
+                      src={authStore.user?.avatar_url}
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        objectFit: 'cover',
+                        objectPosition: 'center'
+                      }}
+                    />
+                  )
+                }}
+              </VListItem>
             )
           }}
         </VAppBar>
