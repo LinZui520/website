@@ -46,9 +46,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!cookies.token) { return; }
     userJWTLogin<AuthVO>()
-      .then((res) => dispatch({ type: 'LOGIN', payload: res.data.data.user }))
+      .then((res) => {
+        dispatch({ type: 'LOGIN', payload: res.data.data.user });
+        setCookies('token', res.data.data.token, { path: '/', expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) });
+      })
       .catch(() => {});
-  }, [cookies]);
+  }, [cookies, setCookies]);
 
   return (
     <AuthContext.Provider value={{ state, dispatch, login, logout }}>

@@ -44,6 +44,7 @@ const Page = () => {
     switch (pageType) {
       case 'Login': {
         login(state.email, state.password);
+        setIsLoading(false);
         break;
       }
       case 'Register': {
