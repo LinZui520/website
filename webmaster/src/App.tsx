@@ -71,7 +71,8 @@ export default defineComponent({
                         width: '40px',
                         height: '40px',
                         objectFit: 'cover',
-                        objectPosition: 'center'
+                        objectPosition: 'center',
+                        borderRadius: '50%'
                       }}
                     />
                   )
