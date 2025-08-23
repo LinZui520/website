@@ -369,7 +369,7 @@ kind: Deployment
 metadata:
   name: server
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: server
@@ -427,78 +427,221 @@ kind: ConfigMap
 metadata:
   name: nginx-config
 data:
-  default.conf: |
-    server {
-      listen 80;
-      server_name zhuguishihundan.com www.zhuguishihundan.com;
+  nginx.conf: |
+    # ======================
+    # 针对2C4G 200M带宽服务器优化配置
+    # ======================
+    worker_processes 2;  # 匹配CPU核心数
+    worker_rlimit_nofile 8192;  # 适当降低文件描述符限制
+    worker_cpu_affinity 01 10;  # CPU亲和性绑定
 
-      # ======================
-      # 全局 CORS 头部配置
-      # ======================
-      add_header 'Access-Control-Allow-Origin' '*' always;
-      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
-      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
+    events {
+        worker_connections 2048;  # 降低连接数以适应内存限制
+        use epoll;
+        multi_accept on;
+        accept_mutex off;  # 关闭accept锁以提高性能
+    }
 
-      # ======================
-      # GZIP 压缩配置
-      # ======================
-      gzip on;
-      gzip_comp_level 6;
-      gzip_min_length 1024;
-      gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript application/json;
-      gzip_proxied any;
-      gzip_vary on;
-      gzip_disable "MSIE [1-6]\.";
+    http {
+        # ======================
+        # 基础配置
+        # ======================
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
 
-      # ======================
-      # 路由配置
-      # ======================
-      location / {
-        root /usr/share/nginx/html;
-        try_files $uri $uri/ /index.html;
-        index index.html;
-      }
+        # ======================
+        # 针对小内存服务器的性能优化
+        # ======================
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 30;  # 降低keepalive时间以释放连接
+        keepalive_requests 500;  # 降低每个连接的请求数
 
-      location /admin {
-        alias /usr/share/nginx/html/admin;
-        try_files $uri $uri/ /admin/index.html;
-        index index.html;
-      }
+        # 针对200M带宽优化的速率限制
+        limit_rate_after 10m;  # 前10MB不限速
+        limit_rate 20m;  # 后续限制为20MB/s，为200M带宽的80%
 
-      location /picture {
-        alias /usr/share/nginx/html/images/picture;
-        try_files $uri $uri/ =404;
+        # 文件描述符缓存（适度降低）
+        open_file_cache max=5000 inactive=30s;
+        open_file_cache_valid 20s;
+        open_file_cache_min_uses 2;
+        open_file_cache_errors on;
 
-        # 添加缓存头部
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-      }
+        # 客户端缓冲区（针对4G内存优化）
+        client_body_buffer_size 64k;  # 降低缓冲区大小
+        client_max_body_size 20m;  # 降低最大请求体大小
+        client_header_buffer_size 2k;  # 降低头部缓冲区
+        large_client_header_buffers 4 16k;  # 降低大头部缓冲区
 
-      location /avatar {
-        alias /usr/share/nginx/html/images/avatar;
-        try_files $uri $uri/ =404;
+        # 输出缓冲区（内存优化）
+        output_buffers 2 16k;  # 降低输出缓冲区
+        postpone_output 1460;
 
-        # 添加缓存头部
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-      }
+        # ======================
+        # GZIP 压缩配置（优化）
+        # ======================
+        gzip on;
+        gzip_vary on;
+        gzip_comp_level 6;
+        gzip_min_length 1024;
+        gzip_proxied any;
+        gzip_types
+            text/plain
+            text/css
+            text/xml
+            text/javascript
+            application/json
+            application/javascript
+            application/xml+rss
+            application/atom+xml
+            image/svg+xml;
+        gzip_disable "MSIE [1-6]\.";
 
-      location /photo {
-        alias /usr/share/nginx/html/images/photo;
-        try_files $uri $uri/ =404;
+        # ======================
+        # 连接管理优化（针对2C4G服务器）
+        # ======================
+        reset_timedout_connection on;  # 重置超时连接
+        client_body_timeout 30s;       # 客户端请求体超时
+        client_header_timeout 30s;     # 客户端请求头超时
+        send_timeout 30s;              # 发送超时
 
-        # 添加缓存头部
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-      }
+        # 内存使用优化
+        server_tokens off;              # 隐藏nginx版本信息
 
-      location /api {
-        proxy_pass http://server-service:8080;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-      }
+        # ======================
+        # 日志配置（全部关闭以提升性能）
+        # ======================
+        access_log off;
+        error_log off;
+
+        server {
+            listen 80;
+            server_name zhuguishihundan.com www.zhuguishihundan.com;
+
+            # ======================
+            # 全局 CORS 头部配置
+            # ======================
+            add_header 'Access-Control-Allow-Origin' '*' always;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
+
+            # ======================
+            # 路由配置
+            # ======================
+            location / {
+                root /usr/share/nginx/html;
+                try_files $uri $uri/ /index.html;
+                index index.html;
+            }
+
+            location /admin {
+                alias /usr/share/nginx/html/admin;
+                try_files $uri $uri/ /admin/index.html;
+                index index.html;
+            }
+
+            # ======================
+            # 图片服务优化配置
+            # ======================
+            location /picture {
+                alias /usr/share/nginx/html/images/picture;
+                try_files $uri $uri/ =404;
+
+                # 缓存配置
+                expires 1y;
+                add_header Cache-Control "public, immutable";
+                add_header Vary "Accept-Encoding";
+
+                # 性能优化
+                sendfile on;
+                tcp_nopush on;
+                tcp_nodelay on;
+
+                # 支持 Range 请求（断点续传）
+                add_header Accept-Ranges bytes;
+
+                # 预压缩支持
+                gzip_static on;
+
+                # 安全头部
+                add_header X-Content-Type-Options nosniff;
+
+                # 关闭日志提高性能
+                access_log off;
+            }
+
+            location /avatar {
+                alias /usr/share/nginx/html/images/avatar;
+                try_files $uri $uri/ =404;
+
+                # 缓存配置
+                expires 1y;
+                add_header Cache-Control "public, immutable";
+                add_header Vary "Accept-Encoding";
+
+                # 性能优化
+                sendfile on;
+                tcp_nopush on;
+                tcp_nodelay on;
+
+                # 支持 Range 请求（断点续传）
+                add_header Accept-Ranges bytes;
+
+                # 预压缩支持
+                gzip_static on;
+
+                # 安全头部
+                add_header X-Content-Type-Options nosniff;
+
+                # 关闭日志提高性能
+                access_log off;
+            }
+
+            location /photo {
+                alias /usr/share/nginx/html/images/photo;
+                try_files $uri $uri/ =404;
+
+                # 缓存配置
+                expires 1y;
+                add_header Cache-Control "public, immutable";
+                add_header Vary "Accept-Encoding";
+
+                # 性能优化
+                sendfile on;
+                tcp_nopush on;
+                tcp_nodelay on;
+
+                # 支持 Range 请求（断点续传）
+                add_header Accept-Ranges bytes;
+
+                # 预压缩支持
+                gzip_static on;
+
+                # 安全头部
+                add_header X-Content-Type-Options nosniff;
+
+                # 关闭日志提高性能
+                access_log off;
+            }
+
+            location /api {
+                proxy_pass http://server-service:8080;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+
+                # 代理优化
+                proxy_buffering on;
+                proxy_buffer_size 4k;
+                proxy_buffers 8 4k;
+                proxy_busy_buffers_size 8k;
+                proxy_connect_timeout 30s;
+                proxy_send_timeout 30s;
+                proxy_read_timeout 30s;
+            }
+        }
     }
 ---
 apiVersion: apps/v1
@@ -506,7 +649,7 @@ kind: Deployment
 metadata:
   name: nginx
 spec:
-  replicas: 2
+  replicas: 3
   selector: 
     matchLabels:
       app: nginx
@@ -528,8 +671,8 @@ spec:
         - name: images-pvc
           mountPath: /usr/share/nginx/html/images
         - name: nginx-config
-          mountPath: /etc/nginx/conf.d/default.conf
-          subPath: default.conf
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
         - name: website-tls-secret
           mountPath: /etc/nginx/ssl
           readOnly: true
@@ -537,11 +680,11 @@ spec:
         - containerPort: 80
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "100m"
+            memory: "128Mi"  # 增加请求内存以支持优化配置
+            cpu: "150m"      # 适当增加CPU请求
           limits:
-            memory: "128Mi"
-            cpu: "200m"
+            memory: "256Mi"  # 增加内存限制以处理更多连接
+            cpu: "300m"      # 增加CPU限制但不超过单核
       volumes:
       - name: web-pvc
         persistentVolumeClaim:

@@ -10,6 +10,8 @@ import { uploadPhoto } from '../api';
 import BackArrow from '../../../components/BackArrow';
 import UpArrow from '../../../components/UpArrow';
 import useAuth from '../../../hooks/useAuth';
+import useProgressiveImageLoader from '../../../hooks/useProgressiveImageLoader';
+import useMasonryLayout from '../../../hooks/useMasonryLayout';
 
 const Page = () => {
   const { location } = useParams();
@@ -32,6 +34,15 @@ const Page = () => {
     .sort(() => Math.random() - 0.5)
   , [photos, location]);
 
+  // 使用渐进式图片加载
+  const { loadedPictures } = useProgressiveImageLoader(localPhotos);
+
+  // 使用瀑布流布局，匹配原本的 gap-4 md:gap-12 xl:gap-18
+  const { containerRef: masonryRef } = useMasonryLayout(loadedPictures, {
+    columnCount: { default: 1, 768: 2, 1280: 3 },
+    gap: { default: 16, 768: 48, 1280: 72 }
+  });
+
   useGSAP(() => {
     timeline.current = gsap.timeline();
 
@@ -51,8 +62,8 @@ const Page = () => {
       return;
     }
 
-    if (file.size > 1024 * 1024) {
-      notify('图片大小不能超过1MB');
+    if (file.size > 5 * 1024 * 1024) {
+      notify('图片大小不能超过5MB');
       return;
     }
 
@@ -81,9 +92,9 @@ const Page = () => {
       className={'container mx-auto min-h-screen p-4 md:p-12 xl:p-18'}
       ref={container}
     >
-      <div className="columns-1 md:columns-2 xl:columns-3 gap-4 md:gap-12 xl:gap-18">
-        {localPhotos.map((photo: PhotoVO) => (
-          <div className="relative overflow-hidden shadow-md group break-inside-avoid mb-4 md:mb-12 xl:mb-18" key={photo.photo_id}>
+      <div className="relative" ref={masonryRef}>
+        {loadedPictures.map((photo: PhotoVO) => (
+          <div className="hidden overflow-hidden shadow-md group mb-4 md:mb-12 xl:mb-18" key={photo.photo_id}>
             <img
               alt={photo.photo_id}
               className="w-full h-auto object-cover object-center transition-transform duration-300 group-hover:scale-105"

@@ -70,6 +70,7 @@ export default defineComponent({
                       style={{
                         width: '40px',
                         height: '40px',
+                        marginRight: '10px',
                         objectFit: 'cover',
                         objectPosition: 'center',
                         borderRadius: '50%'
