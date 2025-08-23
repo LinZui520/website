@@ -54,6 +54,11 @@ export default defineComponent({
         return;
       }
 
+      if (fileInput.value.size > 5 * 1024 * 1024) {
+        show('图片大小不能超过5MB');
+        return;
+      }
+
       setLoading(true);
       const formData = new FormData();
       formData.append('picture', fileInput.value);
