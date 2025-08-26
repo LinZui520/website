@@ -16,31 +16,25 @@ interface MasonryLayoutOptions {
 
 const useMasonryLayout = (items: PhotoVO[], options: MasonryLayoutOptions = {}) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const {
-    columnCount = { default: 1, 768: 2, 1280: 3 },
-    gap = { default: 16, 768: 48, 1280: 72 }
-  } = options;
 
-  const getColumnCount = useCallback(() => {
-    const width = window.innerWidth;
-    if (width >= 1280) return columnCount[1280];
-    if (width >= 768) return columnCount[768];
-    return columnCount.default;
-  }, [columnCount]);
+  // 使用 useRef 存储配置，避免依赖项变化
+  const configRef = useRef({
+    columnCount: options.columnCount || { default: 1, 768: 2, 1280: 3 },
+    gap: options.gap || { default: 16, 768: 48, 1280: 72 }
+  });
 
-  const getGap = useCallback(() => {
-    const width = window.innerWidth;
-    if (width >= 1280) return gap[1280];
-    if (width >= 768) return gap[768];
-    return gap.default;
-  }, [gap]);
-
+  // 创建稳定的 layoutItems 函数，没有外部依赖
   const layoutItems = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const cols = getColumnCount();
-    const currentGap = getGap();
+    const { columnCount, gap } = configRef.current;
+    const width = window.innerWidth;
+
+    // 直接计算列数和间距，避免依赖外部函数
+    const cols = width >= 1280 ? columnCount[1280] : width >= 768 ? columnCount[768] : columnCount.default;
+    const currentGap = width >= 1280 ? gap[1280] : width >= 768 ? gap[768] : gap.default;
+
     const containerWidth = container.offsetWidth;
     const itemWidth = (containerWidth - currentGap * (cols - 1)) / cols;
 
@@ -67,17 +61,17 @@ const useMasonryLayout = (items: PhotoVO[], options: MasonryLayoutOptions = {}) 
       // 更新容器高度
       container.style.height = `${Math.max(...columnHeights)}px`;
     });
-  }, [getColumnCount, getGap]);
+  }, []);
 
   useEffect(() => {
     // 监听窗口大小变化
     window.addEventListener('resize', layoutItems);
 
     return () => window.removeEventListener('resize', layoutItems);
-  }, [items, layoutItems]);
+  }, [layoutItems]);
 
   // 当新项目添加时重新布局
-  useEffect(() => layoutItems(), [items, items.length, layoutItems]);
+  useEffect(() => layoutItems(), [items.length, layoutItems]);
 
   return { containerRef, layoutItems };
 };
