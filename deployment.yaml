@@ -257,6 +257,16 @@ data:
     CREATE INDEX idx_comments_target_time ON comments(target_id, created_at);
     CREATE INDEX idx_comments_parent_id ON comments(parent_id);
     CREATE INDEX idx_comments_created_at ON comments(created_at);
+
+    -- 重置所有表的序列到正确的值（解决导入数据后主键冲突问题）
+    SELECT setval('users_id_seq', COALESCE((SELECT MAX(id) FROM users), 0) + 1);
+    SELECT setval('photos_id_seq', COALESCE((SELECT MAX(id) FROM photos), 0) + 1);
+    SELECT setval('tags_id_seq', COALESCE((SELECT MAX(id) FROM tags), 0) + 1);
+    SELECT setval('blogs_id_seq', COALESCE((SELECT MAX(id) FROM blogs), 0) + 1);
+    SELECT setval('blog_tags_id_seq', COALESCE((SELECT MAX(id) FROM blog_tags), 0) + 1);
+    SELECT setval('pictures_id_seq', COALESCE((SELECT MAX(id) FROM pictures), 0) + 1);
+    SELECT setval('boards_id_seq', COALESCE((SELECT MAX(id) FROM boards), 0) + 1);
+    SELECT setval('comments_id_seq', COALESCE((SELECT MAX(id) FROM comments), 0) + 1);
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -282,6 +292,36 @@ spec:
           value: "123456"
         - name: POSTGRES_HOST_AUTH_METHOD
           value: "trust"
+        # PostgreSQL性能优化配置
+        - name: POSTGRES_SHARED_BUFFERS
+          value: "128MB"              # 共享缓冲区，约为内存的25%
+        - name: POSTGRES_EFFECTIVE_CACHE_SIZE
+          value: "1GB"                # 有效缓存大小，约为内存的75%
+        - name: POSTGRES_WORK_MEM
+          value: "4MB"                # 工作内存
+        - name: POSTGRES_MAINTENANCE_WORK_MEM
+          value: "64MB"               # 维护工作内存
+        - name: POSTGRES_WAL_BUFFERS
+          value: "16MB"               # WAL缓冲区
+        - name: POSTGRES_CHECKPOINT_COMPLETION_TARGET
+          value: "0.9"                # 检查点完成目标
+        - name: POSTGRES_RANDOM_PAGE_COST
+          value: "1.1"                # SSD优化
+        # 关闭日志以提升性能
+        - name: POSTGRES_LOG_STATEMENT
+          value: "none"               # 关闭SQL语句日志
+        - name: POSTGRES_LOG_MIN_DURATION_STATEMENT
+          value: "-1"                 # 关闭慢查询日志
+        - name: POSTGRES_LOG_CHECKPOINTS
+          value: "off"                # 关闭检查点日志
+        - name: POSTGRES_LOG_CONNECTIONS
+          value: "off"                # 关闭连接日志
+        - name: POSTGRES_LOG_DISCONNECTIONS
+          value: "off"                # 关闭断开连接日志
+        - name: POSTGRES_LOG_LOCK_WAITS
+          value: "off"                # 关闭锁等待日志
+        - name: POSTGRES_LOGGING_COLLECTOR
+          value: "off"                # 关闭日志收集器
         ports:
         - containerPort: 5432
         volumeMounts:
@@ -429,7 +469,7 @@ metadata:
 data:
   nginx.conf: |
     # ======================
-    # 针对2C4G 200M带宽服务器优化配置
+    # 服务器优化配置
     # ======================
     worker_processes 2;  # 匹配CPU核心数
     worker_rlimit_nofile 8192;  # 适当降低文件描述符限制
@@ -458,9 +498,9 @@ data:
         keepalive_timeout 30;  # 降低keepalive时间以释放连接
         keepalive_requests 500;  # 降低每个连接的请求数
 
-        # 针对200M带宽优化的速率限制
+        # 速率限制
         limit_rate_after 10m;  # 前10MB不限速
-        limit_rate 20m;  # 后续限制为20MB/s，为200M带宽的80%
+        limit_rate 20m;  # 后续限制为20MB/s
 
         # 文件描述符缓存（适度降低）
         open_file_cache max=5000 inactive=30s;
@@ -468,7 +508,7 @@ data:
         open_file_cache_min_uses 2;
         open_file_cache_errors on;
 
-        # 客户端缓冲区（针对4G内存优化）
+        # 客户端缓冲区
         client_body_buffer_size 64k;  # 降低缓冲区大小
         client_max_body_size 20m;  # 降低最大请求体大小
         client_header_buffer_size 2k;  # 降低头部缓冲区
@@ -499,7 +539,7 @@ data:
         gzip_disable "MSIE [1-6]\.";
 
         # ======================
-        # 连接管理优化（针对2C4G服务器）
+        # 连接管理优化
         # ======================
         reset_timedout_connection on;  # 重置超时连接
         client_body_timeout 30s;       # 客户端请求体超时
@@ -566,9 +606,6 @@ data:
 
                 # 安全头部
                 add_header X-Content-Type-Options nosniff;
-
-                # 关闭日志提高性能
-                access_log off;
             }
 
             location /avatar {
@@ -593,9 +630,6 @@ data:
 
                 # 安全头部
                 add_header X-Content-Type-Options nosniff;
-
-                # 关闭日志提高性能
-                access_log off;
             }
 
             location /photo {
@@ -620,9 +654,6 @@ data:
 
                 # 安全头部
                 add_header X-Content-Type-Options nosniff;
-
-                # 关闭日志提高性能
-                access_log off;
             }
 
             location /api {

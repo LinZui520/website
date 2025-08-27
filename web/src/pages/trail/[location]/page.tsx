@@ -89,12 +89,12 @@ const Page = () => {
 
   return (
     <main
-      className={'container mx-auto min-h-screen p-4 md:p-12 xl:p-18'}
+      className={'container mx-auto min-h-screen pt-4 md:pt-12 xl:pt-18'}
       ref={container}
     >
       <div className="relative" ref={masonryRef}>
         {loadedPictures.map((photo: PhotoVO) => (
-          <div className="hidden overflow-hidden shadow-md group mb-4 md:mb-12 xl:mb-18" key={photo.photo_id}>
+          <div className="hidden overflow-hidden shadow-md group" key={photo.photo_id}>
             <img
               alt={photo.photo_id}
               className="w-full h-auto object-cover object-center transition-transform duration-300 group-hover:scale-105"
