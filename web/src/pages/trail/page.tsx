@@ -29,7 +29,7 @@ const Page = () => {
               足迹
             </h1>
             <div className="text-xl md:text-2xl text-mint-500 font-light tracking-wide cursor-default group" id="trail-subtitle">
-              记录每一次远行
+              你可以不懂摄影 但一定要记录生活
               <div
                 className={'w-full h-px origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'}
               />

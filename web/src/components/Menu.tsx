@@ -17,7 +17,7 @@ const Menu = () => {
     { href: '/', text: '主页' },
     { href: '/blog', text: '博客' },
     { href: '/trail', text: '足迹' },
-    { href: '/board', text: '留言' },
+    auth.state.user ? { href: '/board', text: '留言' } : null,
     auth.state.user ? null : { href: '/auth', text: '登录' }
   ];
 
