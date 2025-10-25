@@ -1,6 +1,6 @@
-import { createContext, useContext, useRef, ReactNode, useEffect } from 'react';
-import useScroll from '../hooks/useScroll';
+import { createContext, useContext, ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import useGlobalScrollbar from '../hooks/useScrollbar/useGloablScrollbar';
 
 interface ScrollContextType {
   scrollTo: (position: number) => void;
@@ -19,9 +19,7 @@ export const useScrollContext = () => {
 };
 
 const ScrollProvider = ({ children }: { children: ReactNode }) => {
-  const container = useRef(document.documentElement);
-  const { scrollTo, scrollToNoAnimation, Scrollbar, refresh } = useScroll(
-    container,
+  const { scrollTo, scrollToNoAnimation, Scrollbar, refresh } = useGlobalScrollbar(
     (x: number) => 1 - Math.pow(1 - x, 3),
     300
   );
