@@ -89,7 +89,7 @@ const Page = () => {
 
   return (
     <main
-      className={'container mx-auto min-h-screen pt-4 md:pt-12 xl:pt-18'}
+      className={'bg-mint-50 dark:bg-mint-950 mx-auto min-h-screen pt-4 md:pt-12 xl:pt-18'}
       ref={container}
     >
       <div className="relative" ref={masonryRef}>
