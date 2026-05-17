@@ -89,7 +89,7 @@ const Page = () => {
 
   return (
     <main
-      className={'bg-mint-50 dark:bg-mint-950 mx-auto min-h-screen pt-4 md:pt-12 xl:pt-18'}
+      className={'bg-mint-50 dark:bg-mint-950 mx-auto min-h-screen pt-4 md:pt-12 xl:pt-18 pl-4 md:pl-12 xl:pl-18 pr-4 md:pr-12 xl:pr-18'}
       ref={container}
     >
       <div className="relative" ref={masonryRef}>

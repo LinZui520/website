@@ -13,7 +13,7 @@ const Page = () => {
   const containerRef = useRef<HTMLElement | null>(null);
 
   useGSAP(() => {
-    gsap.from('#trail-title', { opacity: 0, y: 50, duration: 1, delay: 0 });
+    // gsap.from('#trail-title', { opacity: 0, y: 50, duration: 1, delay: 0 });
     gsap.from('#trail-subtitle', { opacity: 0, y: 30, duration: 1, delay: 0.4 });
     gsap.from('#trail-map', { opacity: 0, scale: 0.9, duration: 1, delay: 0.8 });
   }, { scope: containerRef });
