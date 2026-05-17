@@ -25,9 +25,6 @@ const Page = () => {
 
           {/* Hero Section */}
           <div className="w-full flex flex-col items-center text-center mb-16 md:mb-24">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif tracking-tight text-mint-950 dark:text-mint-50 mb-6 cursor-default" id="trail-title">
-              足迹
-            </h1>
             <div className="text-xl md:text-2xl text-mint-500 font-light tracking-wide cursor-default group" id="trail-subtitle">
               你可以不懂摄影 但一定要记录生活
               <div
