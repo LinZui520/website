@@ -6,6 +6,7 @@ import ChinaMap from '../../components/trail/ChinaMap';
 import { OutletContext } from './type';
 import WorldMap from '../../components/trail/WorldMap';
 import Footer from '../../components/Footer';
+import FlipToggle from '../../components/FlipToggle';
 
 const Page = () => {
   const { geoData, globalGeoData, photos, isGlobal, setIsGlobal } = useOutletContext<OutletContext>();
@@ -60,15 +61,15 @@ const Page = () => {
           </div>
 
           {/* Toggle Button */}
-          <div className="fixed right-12 top-28 z-10 h-16 w-16 flex items-center justify-center">
-            <span
-              className={`text-mint-950 dark:text-mint-50 text-5xl cursor-pointer select-none`}
-              onClick={() => setIsGlobal((value) => !value)}
-              title={isGlobal ? '切换到中国地图' : '切换到世界地图'}
-            >
-              {isGlobal ? 'C' : 'W'}
-            </span>
-          </div>
+          <FlipToggle
+            className="fixed right-12 top-28 z-10"
+            onChange={setIsGlobal}
+            options={[
+              { label: '中国', value: false },
+              { label: '世界', value: true }
+            ]}
+            value={isGlobal}
+          />
 
         </div>
       </main>
