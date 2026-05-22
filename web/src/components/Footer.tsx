@@ -2,8 +2,8 @@
 const Footer = () => {
 
   return (
-    <footer className="w-full h-16 md:h-32 text-mint-500 bg-mint-50 dark:bg-mint-950 flex flex-row space-x-4 items-center justify-center">
-      <span className="underline cursor-default">Copyright © 贺阳明</span>
+    <footer className="w-full h-16 md:h-32 text-mint-500 bg-mint-50 dark:bg-mint-950 flex flex-row gap-[12%] items-center justify-center">
+      <span className="hidden md:inline underline cursor-default">Copyright © 贺阳明</span>
       <a
         className="underline"
         href="https://beian.miit.gov.cn/"
@@ -12,7 +12,8 @@ const Footer = () => {
       >
         赣ICP备2023014673号-2
       </a>
-      <a aria-label="github" href="https://github.com/LinZui520/website" rel="noopener noreferrer" target="_blank">
+      <a aria-label="github" className="hidden lg:inline-flex items-center gap-2" href="https://github.com/LinZui520/website" rel="noopener noreferrer" target="_blank">
+        <span className="underline">GitHub</span>
         <svg
           className="h-5 w-5 fill-mint-950 dark:fill-mint-50"
           viewBox="0 0 496 512"

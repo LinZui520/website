@@ -17,61 +17,66 @@ interface MasonryLayoutOptions {
 const useMasonryLayout = (items: PhotoVO[], options: MasonryLayoutOptions = {}) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // 使用 useRef 存储配置，避免依赖项变化
-  const configRef = useRef({
-    columnCount: options.columnCount || { default: 1, 768: 2, 1280: 3 },
-    gap: options.gap || { default: 16, 768: 48, 1280: 72 }
-  });
+  // 每次渲染都同步最新 options，避免 layoutItems 闭包内读到旧值
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
 
-  // 创建稳定的 layoutItems 函数，没有外部依赖
   const layoutItems = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const { columnCount, gap } = configRef.current;
+    const columnCount = optionsRef.current.columnCount || { default: 1, 768: 2, 1280: 3 };
+    const gap = optionsRef.current.gap || { default: 16, 768: 48, 1280: 72 };
     const width = window.innerWidth;
 
-    // 直接计算列数和间距，避免依赖外部函数
     const cols = width >= 1280 ? columnCount[1280] : width >= 768 ? columnCount[768] : columnCount.default;
     const currentGap = width >= 1280 ? gap[1280] : width >= 768 ? gap[768] : gap.default;
 
     const containerWidth = container.offsetWidth;
     const itemWidth = (containerWidth - currentGap * (cols - 1)) / cols;
-
-    // 初始化列高度数组
     const columnHeights = new Array(cols).fill(0);
 
-    // 获取所有子元素
-    const items = Array.from(container.children) as HTMLElement[];
+    const children = Array.from(container.children) as HTMLElement[];
 
-    items.forEach((item) => {
-      // 找到最短的列
-      const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
+    children.forEach((child) => {
+      const shortestCol = columnHeights.indexOf(Math.min(...columnHeights));
 
-      // 设置元素样式
-      item.style.display = 'block';
-      item.style.position = 'absolute';
-      item.style.width = `${itemWidth}px`;
-      item.style.left = `${shortestColumnIndex * (itemWidth + currentGap)}px`;
-      item.style.top = `${columnHeights[shortestColumnIndex]}px`;
+      child.style.display = 'block';
+      child.style.position = 'absolute';
+      child.style.width = `${itemWidth}px`;
+      child.style.left = `${shortestCol * (itemWidth + currentGap)}px`;
+      child.style.top = `${columnHeights[shortestCol]}px`;
 
-      // 更新列高度
-      const itemHeight = item.offsetHeight;
-      columnHeights[shortestColumnIndex] += itemHeight + currentGap;
-      // 更新容器高度
-      container.style.height = `${Math.max(...columnHeights)}px`;
+      // 图片未加载完时高度不准确，加载后重新布局
+      const pendingImgs = (Array.from(child.querySelectorAll('img')) as HTMLImageElement[])
+        .filter((img) => !img.complete);
+      pendingImgs.forEach((img) => {
+        img.addEventListener('load', layoutItems, { once: true });
+        img.addEventListener('error', layoutItems, { once: true });
+      });
+
+      columnHeights[shortestCol] += child.offsetHeight + currentGap;
     });
+
+    // 循环结束后统一写一次容器高度（columnHeights 末尾已含 gap，保留作为底部间距）
+    container.style.height = `${children.length > 0 ? Math.max(...columnHeights) : 0}px`;
   }, []);
 
+  // 用 ResizeObserver 监听容器宽度变化，比 window.resize 更精准
   useEffect(() => {
-    // 监听窗口大小变化
-    window.addEventListener('resize', layoutItems);
+    const container = containerRef.current;
+    if (!container) return;
 
-    return () => window.removeEventListener('resize', layoutItems);
+    const observer = new ResizeObserver(layoutItems);
+    observer.observe(container);
+
+    return () => observer.disconnect();
   }, [layoutItems]);
 
-  // 当新项目添加时重新布局
-  useEffect(() => layoutItems(), [items.length, layoutItems]);
+  // items 数量变化时重新布局
+  useEffect(() => {
+    layoutItems();
+  }, [items.length, layoutItems]);
 
   return { containerRef, layoutItems };
 };

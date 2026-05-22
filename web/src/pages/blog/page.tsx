@@ -11,7 +11,7 @@ const Page = () => {
   const containerRef = useRef<HTMLElement | null>(null);
 
   useGSAP(() => {
-    gsap.from('#blog-title', { opacity: 0, y: 50, duration: 1, delay: 0 });
+    // gsap.from('#blog-title', { opacity: 0, y: 50, duration: 1, delay: 0 });
     gsap.from('#blog-subtitle', { opacity: 0, y: 30, duration: 1, delay: 0.4 });
     gsap.from('.blog-card', { opacity: 0, y: 30, duration: 1, delay: 0.8 });
   }, { scope: containerRef });
@@ -27,9 +27,9 @@ const Page = () => {
 
           {/* Hero Section */}
           <div className="w-full flex flex-col items-center text-center mb-16 md:mb-24">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif tracking-tight text-mint-950 dark:text-mint-50 mb-6 cursor-default" id="blog-title">
+            {/* <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif tracking-tight text-mint-950 dark:text-mint-50 mb-6 cursor-default" id="blog-title">
               博客
-            </h1>
+            </h1> */}
             <div className="text-xl md:text-2xl text-mint-500 font-light tracking-wide cursor-default group" id="blog-subtitle">
               深度学习如同呼吸般自然
               <div
