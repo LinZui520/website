@@ -3,12 +3,13 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { BlogVO } from './type';
 import { listBlogs } from './api.ts';
-import { Link } from 'react-router-dom';
+import { useAnimatedNavigate } from '../../contexts/TransitionProvider.tsx';
 import Footer from '../../components/Footer.tsx';
 
 const Page = () => {
   const [blogs, setBlogs] = useState<BlogVO[]>();
   const containerRef = useRef<HTMLElement | null>(null);
+  const navigate = useAnimatedNavigate();
 
   useGSAP(() => {
     // gsap.from('#blog-title', { opacity: 0, y: 50, duration: 1, delay: 0 });
@@ -45,10 +46,9 @@ const Page = () => {
                 className="group cursor-pointer bg-mint-50 dark:bg-mint-950 border border-mint-950 dark:border-mint-50 hover:border-mint-500 transition-all duration-300 hover:shadow-lg"
                 key={blog.blog_id}
               >
-                <Link
+                <div
                   className="p-8 h-72 flex flex-col justify-between hover:bg-mint-100 dark:hover:bg-mint-900 transition-colors duration-300"
-                  title={`${blog.title} - ${blog.created_by.username}`}
-                  to={`/blog/${blog.blog_id}`}
+                  onClick={() => navigate(`/blog/${blog.blog_id}`)}
                 >
                   {/* Title */}
                   <div className="mb-4">
@@ -81,7 +81,7 @@ const Page = () => {
                       {new Date(blog.created_at).toLocaleDateString()}
                     </time>
                   </div>
-                </Link>
+                </div>
               </article>
             ))}
           </div>

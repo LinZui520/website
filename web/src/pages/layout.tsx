@@ -5,6 +5,7 @@ import { CookiesProvider } from 'react-cookie';
 import NotificationProvider from '../contexts/NotificationProvider.tsx';
 import AuthProvider from '../contexts/AuthProvider.tsx';
 import ScrollProvider from '../contexts/ScrollProvider.tsx';
+import TransitionProvider from '../contexts/TransitionProvider.tsx';
 import useMarkdownTheme from '../hooks/useMarkdownTheme.ts';
 
 const Layout = () => {
@@ -19,8 +20,10 @@ const Layout = () => {
       <NotificationProvider>
         <AuthProvider>
           <ScrollProvider>
-            <Menu />
-            <Outlet />
+            <TransitionProvider>
+              <Menu />
+              <Outlet />
+            </TransitionProvider>
           </ScrollProvider>
         </AuthProvider>
       </NotificationProvider>
