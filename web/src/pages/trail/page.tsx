@@ -1,4 +1,5 @@
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
+import { useAnimatedNavigate, useAnimatedNavigateBack } from '../../contexts/TransitionProvider';
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -6,11 +7,12 @@ import ChinaMap from '../../components/trail/ChinaMap';
 import { OutletContext } from './type';
 import WorldMap from '../../components/trail/WorldMap';
 import Footer from '../../components/Footer';
-import FlipToggle from '../../components/FlipToggle';
+import BackArrow from '../../components/BackArrow';
 
 const Page = () => {
   const { geoData, globalGeoData, photos, isGlobal, setIsGlobal } = useOutletContext<OutletContext>();
-  const navigate = useNavigate();
+  const navigate = useAnimatedNavigate();
+  const navigateBack = useAnimatedNavigateBack();
   const containerRef = useRef<HTMLElement | null>(null);
 
   useGSAP(() => {
@@ -43,7 +45,7 @@ const Page = () => {
                 geoData={globalGeoData}
                 onClickCountry={(countryName) => {
                   if (countryName === 'China' || countryName === 'Taiwan') {
-                    setIsGlobal(false);
+                    navigate(() => setIsGlobal(false));
                     return;
                   }
                   navigate(`/trail/${countryName}`);
@@ -60,16 +62,12 @@ const Page = () => {
             }
           </div>
 
-          {/* Toggle Button */}
-          <FlipToggle
-            className="fixed right-12 top-28 z-10"
-            onChange={setIsGlobal}
-            options={[
-              { label: '中国', value: false },
-              { label: '世界', value: true }
-            ]}
-            value={isGlobal}
-          />
+          {/* Back to World Map */}
+          {!isGlobal && (
+            <BackArrow
+              onClick={() => navigateBack(() => setIsGlobal(true))}
+            />
+          )}
 
         </div>
       </main>
