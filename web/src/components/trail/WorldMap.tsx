@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { calculateBounds, convertGeoJSONToSVGPath } from './geo';
 import { GeoJSONCollection } from './type';
 import { PhotoVO } from '../../pages/trail/type';
+import { SVG_CONFIG } from './constant';
 
 interface WorldMapProps {
   geoData: GeoJSONCollection;
@@ -10,82 +11,85 @@ interface WorldMapProps {
   className?: string;
 }
 
-const WorldMap: React.FC<WorldMapProps> = ({
-  geoData,
-  photos,
-  onClickCountry,
-  className
-}) => {
+const WorldMap: React.FC<WorldMapProps> = ({ geoData, photos, onClickCountry, className }) => {
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [isChinaOrTaiwanHovered, setIsChinaOrTaiwanHovered] = useState(false);
 
-  const getCountryFill = (country: string) => {
-    if ((country === 'China' || country === 'Taiwan') && isChinaOrTaiwanHovered) {
-      return '#3b82f6';
-    }
-    if (hoveredCountry === country) {
-      return '#3b82f6';
-    }
-    if (photos.some(photo => photo.location === country)) {
-      return '#22c55e';
-    }
-    if (country === 'China' || country === 'Taiwan') {
-      return '#22c55e';
-    }
-    return '#e5e7eb';
+  const bounds = calculateBounds(geoData.features);
+  const photosByCountry = new Map<string, number>();
+  photos.forEach((p) => {
+    photosByCountry.set(p.location, (photosByCountry.get(p.location) ?? 0) + 1);
+  });
+
+  const visitedCount = geoData.features.filter((f) => {
+    if (f.properties.name === 'Taiwan') return false;
+    return f.properties.name === 'China' || photosByCountry.has(f.properties.name);
+  }).length;
+  const totalPhotos = photos.length;
+
+  const getFill = (country: string) => {
+    if ((country === 'China' || country === 'Taiwan') && isChinaOrTaiwanHovered) return 'var(--map-hovered)';
+    if (hoveredCountry === country) return 'var(--map-hovered)';
+    if (photosByCountry.has(country)) return 'var(--map-visited)';
+    if (country === 'China' || country === 'Taiwan') return 'var(--map-visited)';
+    return 'var(--map-unvisited)';
   };
 
-  const bounds = calculateBounds(geoData.features);
+  const displayName = hoveredCountry === 'China' && isChinaOrTaiwanHovered ? 'China' : hoveredCountry;
 
   return (
-    <div className={`${className}`}>
-      <svg
-        className="w-full h-full mx-auto"
-        style={{ aspectRatio: '8/5' }}
-        viewBox="0 0 800 500"
-      >
-        <rect className={'fill-mint-50 dark:fill-mint-950'} height="500" width="800" />
+    <div className={className}>
+      <div className="relative w-full">
 
-        {geoData.features.map((feature) => {
-          const countryName = feature.properties.name;
-          const countryPath = convertGeoJSONToSVGPath(feature.geometry.coordinates, bounds, { padding: 30, svgWidth: 800, svgHeight: 500 });
+        {/* Info panel */}
+        <div className="absolute top-0 left-0 z-10 pointer-events-none border-b border-mint-950 dark:border-mint-50 pb-1 min-w-24">
+          <div className="font-mono text-sm tracking-wide text-mint-950 dark:text-mint-50">
+            {displayName ?? `${visitedCount} 个国家`}
+          </div>
+          <div className="font-mono text-xs text-mint-500">
+            {displayName
+              ? (displayName === 'China'
+                ? '点击展开'
+                : `${photosByCountry.get(displayName) ?? 0} 张照片`)
+              : `共 ${totalPhotos} 张`}
+          </div>
+        </div>
 
-          if (!countryPath) return null;
+        <svg className="w-full block" style={{ aspectRatio: '8/5' }} viewBox="0 0 800 500">
+          <rect className="fill-mint-50 dark:fill-mint-950" height="500" width="800" />
 
-          return (
-            <path
-              className="transition-all duration-200 cursor-pointer stroke-1 hover:stroke-2 stroke-mint-50 dark:stroke-mint-950"
-              d={countryPath}
-              fill={getCountryFill(countryName)}
-              key={feature.id}
-              onClick={() => onClickCountry?.(countryName)}
-              onMouseEnter={() => {
-                setHoveredCountry(countryName === 'Taiwan' ? 'China' : countryName);
-                setIsChinaOrTaiwanHovered(countryName === 'China' || countryName === 'Taiwan');
-              }}
-              onMouseLeave={() => {
-                setHoveredCountry(null);
-                setIsChinaOrTaiwanHovered(false);
-              }}
-            />
-          );
-        })}
-
-        {hoveredCountry && (
-          <text
-            className="fill-mint-950 dark:fill-mint-50 text-base font-bold pointer-events-none"
-            x="20"
-            y="30"
-          >
-            {hoveredCountry}
-          </text>
-        )}
-      </svg>
-
-      {/* <div className="mt-4 text-center text-sm text-gray-600">
-        <p>显示国家: {geoData.features.length} 个</p>
-        <p>数据来源: https://enjalot.github.io/wwsd/data/world/world-110m.geojson</p>
-      </div> */}
+          {geoData.features.map((feature) => {
+            const name = feature.properties.name;
+            const path = convertGeoJSONToSVGPath(feature.geometry.coordinates, bounds, SVG_CONFIG);
+            if (!path) return null;
+            return (
+              <path
+                className="transition-colors duration-200 cursor-pointer"
+                d={path}
+                fill={getFill(name)}
+                key={feature.id}
+                onClick={() => onClickCountry?.(name)}
+                onMouseEnter={() => {
+                  setHoveredCountry(name === 'Taiwan' ? 'China' : name);
+                  setIsChinaOrTaiwanHovered(name === 'China' || name === 'Taiwan');
+                }}
+                onMouseLeave={() => {
+                  setHoveredCountry(null);
+                  setIsChinaOrTaiwanHovered(false);
+                }}
+                strokeWidth={
+                  (name === 'China' || name === 'Taiwan') && isChinaOrTaiwanHovered
+                    ? 1.5
+                    : hoveredCountry === name
+                      ? 1.5
+                      : 0.8
+                }
+                style={{ stroke: 'var(--map-stroke)' }}
+              />
+            );
+          })}
+        </svg>
+      </div>
     </div>
   );
 };

@@ -35,7 +35,7 @@ const Page = () => {
   , [photos, location]);
 
   // 使用渐进式图片加载
-  const { loadedPictures } = useProgressiveImageLoader(localPhotos);
+  const { loadedPictures, isLoading } = useProgressiveImageLoader(localPhotos);
 
   // 使用瀑布流布局，匹配原本的 gap-4 md:gap-12 xl:gap-18
   const { containerRef: masonryRef } = useMasonryLayout(loadedPictures, {
@@ -115,6 +115,17 @@ const Page = () => {
           </div>
         ))}
       </div>
+
+      {isLoading && (
+        <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
+          <svg
+            className="w-16 h-16 fill-none stroke-2 stroke-mint-950 dark:stroke-mint-50 animate-spin"
+            viewBox="0 0 32 32"
+          >
+            <circle cx="16" cy="16" r="12" strokeDasharray="56.5 18.9" strokeLinecap="round" />
+          </svg>
+        </div>
+      )}
 
       <UpArrow className="fixed right-12 bottom-8" />
 
