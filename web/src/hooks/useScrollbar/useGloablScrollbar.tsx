@@ -54,7 +54,7 @@ const useGlobalScrollbar = (
           aria-label="scrollbar"
           className={
             'w-0 absolute right-0 rounded-sm duration-300 transition-[height,width,transform] ' +
-            'bg-[#7f7f7f] opacity-50 hover:cursor-grab'
+            'bg-[#7f7f7f] opacity-50'
           }
           ref={thumbRef}
           tabIndex={-1}

@@ -21,7 +21,7 @@ const Page = () => {
     scrollEntry('#main-title-1', { x: -120, opacity: 0, duration: 0.9, ease: 'power3.out' });
     scrollEntry('#main-title-2', { x: 120, opacity: 0, duration: 0.9, ease: 'power3.out' });
     scrollEntry('#main-title-3', { rotationX: -90, opacity: 0, duration: 0.8, ease: 'power3.out', transformOrigin: 'bottom center' });
-    scrollEntry('#main-title-4', { y: 80, opacity: 0, duration: 1.1, ease: 'elastic.out(1, 0.5)' });
+    scrollEntry('#main-title-4', { y: 80, opacity: 0, duration: 1.0, ease: 'expo.out' });
     scrollEntry('#main-title-5', { scale: 0.6, opacity: 0, duration: 0.8, ease: 'back.out(1.7)' });
     scrollEntry('#main-title-6', { letterSpacing: '0.4em', opacity: 0, duration: 1, ease: 'power2.out' });
     scrollEntry('#bottom-quote', { x: 80, skewX: -8, opacity: 0, duration: 0.9, ease: 'power2.out' });
@@ -60,19 +60,14 @@ const Page = () => {
     // 自诩为设计师: scale 脉冲
     gsap.timeline({ repeat: -1, repeatDelay: 2.5, delay: 3.5 })
       .to('#main-title-3', { scale: 1.04, duration: 0.35, ease: 'power2.out' })
-      .to('#main-title-3', { scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.5)' });
+      .to('#main-title-3', { scale: 1, duration: 0.7, ease: 'power2.out' });
 
     // Less is more: 弹性强调
     gsap.timeline({ repeat: -1, repeatDelay: 3, delay: 4.5 })
       .to('#bottom-quote', { scale: 1.07, rotation: -2, duration: 0.35, ease: 'power2.out' })
-      .to('#bottom-quote', { scale: 1, rotation: 0, duration: 0.9, ease: 'elastic.out(1, 0.4)' });
+      .to('#bottom-quote', { scale: 1, rotation: 0, duration: 0.7, ease: 'back.out(1.4)' });
 
   }, { scope: container });
-
-  // ── 悬停动画 ──────────────────────────────────────────
-  const onEnter = (e: React.MouseEvent<HTMLHeadingElement>) => gsap.to(e.currentTarget, { skewX: -4, x: 14, duration: 0.3, ease: 'power2.out' });
-
-  const onLeave = (e: React.MouseEvent<HTMLHeadingElement>) => gsap.to(e.currentTarget, { skewX: 0, x: 0, duration: 0.7, ease: 'elastic.out(1, 0.4)' });
 
   return (
     <>
@@ -86,8 +81,6 @@ const Page = () => {
             <h2
               className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tight"
               id="main-title-1"
-              onMouseEnter={onEnter}
-              onMouseLeave={onLeave}
             >
               我叫贺阳明
             </h2>
@@ -95,8 +88,6 @@ const Page = () => {
             <h2
               className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tight"
               id="main-title-2"
-              onMouseEnter={onEnter}
-              onMouseLeave={onLeave}
             >
               美团软件工程师
             </h2>
@@ -104,8 +95,6 @@ const Page = () => {
             <h2
               className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tight"
               id="main-title-3"
-              onMouseEnter={onEnter}
-              onMouseLeave={onLeave}
             >
               自诩为设计师
             </h2>
@@ -113,8 +102,6 @@ const Page = () => {
             <h2
               className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tight"
               id="main-title-4"
-              onMouseEnter={onEnter}
-              onMouseLeave={onLeave}
             >
               完美主义者
             </h2>
@@ -129,8 +116,6 @@ const Page = () => {
             <h2
               className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tight"
               id="main-title-6"
-              onMouseEnter={(e) => gsap.to(e.currentTarget, { letterSpacing: '0.08em', duration: 0.4, ease: 'power2.out' })}
-              onMouseLeave={(e) => gsap.to(e.currentTarget, { letterSpacing: '-0.025em', duration: 0.5, ease: 'power2.inOut' })}
             >
               优雅至上
             </h2>
@@ -140,8 +125,6 @@ const Page = () => {
             <p
               className="text-4xl md:text-5xl lg:text-6xl text-mint-500 font-serif italic tracking-tight inline-block"
               id="bottom-quote"
-              onMouseEnter={(e) => gsap.to(e.currentTarget, { rotation: -2, scale: 1.04, duration: 0.4, ease: 'power2.out' })}
-              onMouseLeave={(e) => gsap.to(e.currentTarget, { rotation: 0, scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.4)' })}
             >
               Less is more
             </p>

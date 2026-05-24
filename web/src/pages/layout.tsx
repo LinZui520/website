@@ -7,6 +7,7 @@ import AuthProvider from '../contexts/AuthProvider.tsx';
 import ScrollProvider from '../contexts/ScrollProvider.tsx';
 import TransitionProvider from '../contexts/TransitionProvider.tsx';
 import useMarkdownTheme from '../hooks/useMarkdownTheme.ts';
+import Cursor from '../components/Cursor.tsx';
 
 const Layout = () => {
   useMarkdownTheme();
@@ -21,6 +22,7 @@ const Layout = () => {
         <AuthProvider>
           <ScrollProvider>
             <TransitionProvider>
+              <Cursor />
               <Menu />
               <Outlet />
             </TransitionProvider>
