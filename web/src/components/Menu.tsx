@@ -150,7 +150,7 @@ const Menu = () => {
           <div className={'text-base text-mint-950 dark:text-mint-50'}>
             <span className="cursor-default">Copyright © </span>
             <a aria-label="github" className={'underline'} href="https://github.com/LinZui520" rel="noopener noreferrer" target="_blank">
-              LinZui520
+              贺阳明
             </a>
           </div>
         </div>
