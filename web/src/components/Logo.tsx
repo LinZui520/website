@@ -12,6 +12,7 @@ type Theme = 'light' | 'dark';
 const Logo = (props: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const timeline = useRef<GSAPTimeline | undefined>(undefined);
+  const isHovered = useRef(false);
   const grayCircleRef = useRef<HTMLDivElement>(null);
   const blackCircle1Ref = useRef<HTMLDivElement>(null);
   const blackCircle2Ref = useRef<HTMLDivElement>(null);
@@ -74,14 +75,28 @@ const Logo = (props: Props) => {
       .to('#char-5', { duration: 0, opacity: 1, ease: 'power2.inOut' }, 1.25);
 
     timeline.current.pause();
-    return () => timeline.current?.kill();
+
+    // 自动播放：每隔 6s 触发一次，播完后自动 reverse，hover 期间跳过
+    const autoTrigger = gsap.timeline({ repeat: -1, repeatDelay: 5.5, delay: 2 })
+      .call(() => {
+        if (isHovered.current || timeline.current?.isActive()) return;
+        timeline.current?.restart();
+        gsap.delayedCall((timeline.current?.totalDuration() ?? 1.4) + 0.5, () => {
+          if (!isHovered.current) timeline.current?.reverse();
+        });
+      });
+
+    return () => {
+      timeline.current?.kill();
+      autoTrigger.kill();
+    };
   }, { scope: containerRef, dependencies: [theme] });
 
   return (
     <div
       className={`${props.className || ''} flex flex-col items-center justify-center font-serif cursor-default`}
-      onMouseEnter={() => timeline.current?.play()}
-      onMouseLeave={() => timeline.current?.reverse()}
+      onMouseEnter={() => { isHovered.current = true; timeline.current?.play(); }}
+      onMouseLeave={() => { isHovered.current = false; timeline.current?.reverse(); }}
       ref={containerRef}
     >
       {/* 圆圈动画区域 */}

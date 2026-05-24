@@ -11,6 +11,8 @@ const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const container = useRef<HTMLElement | null>(null);
   const timeline = useRef<GSAPTimeline | undefined>(undefined);
+  const idleTimeline = useRef<GSAPTimeline | undefined>(undefined);
+  const idleResume = useRef<GSAPTween | undefined>(undefined);
   const auth = useAuth();
 
   const menu = [
@@ -42,10 +44,29 @@ const Menu = () => {
       timeline.current?.from(`#nav-${index}`, { x: '150%', ease: 'power2.out', duration: 0.5 }, 0.5 + 0.1 * index);
     });
 
-    return () => timeline.current?.kill();
+    // ── 按钮闲置动画：两线靠近后弹开 ────────────────────────
+    idleTimeline.current = gsap.timeline({ repeat: -1, repeatDelay: 2.8, delay: 3 })
+      .to('#line1', { attr: { d: 'M 6 14 L 26 14' }, duration: 0.38, ease: 'power2.inOut' })
+      .to('#line2', { attr: { d: 'M 6 18 L 26 18' }, duration: 0.38, ease: 'power2.inOut' }, 0)
+      .to('#line1', { attr: { d: 'M 6 10 L 26 10' }, duration: 0.55, ease: 'back.out(3.5)' })
+      .to('#line2', { attr: { d: 'M 6 22 L 26 22' }, duration: 0.55, ease: 'back.out(3.5)' }, '<');
+
+    return () => {
+      timeline.current?.kill();
+      idleTimeline.current?.kill();
+    };
   }, { scope: container });
 
-  useGSAP(() => isOpen ? timeline.current?.play() : timeline.current?.reverse(), { scope: container, dependencies: [isOpen] });
+  useGSAP(() => {
+    if (isOpen) {
+      idleResume.current?.kill();
+      idleTimeline.current?.pause();
+      timeline.current?.play();
+    } else {
+      timeline.current?.reverse();
+      idleResume.current = gsap.delayedCall(0.85, () => idleTimeline.current?.resume());
+    }
+  }, { scope: container, dependencies: [isOpen] });
 
   /**
    * const toggleTheme = (theme: Theme) => {
