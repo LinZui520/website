@@ -60,11 +60,12 @@ const Menu = () => {
   useGSAP(() => {
     if (isOpen) {
       idleResume.current?.kill();
-      idleTimeline.current?.pause();
+      idleTimeline.current?.seek(0).pause();
       timeline.current?.play();
     } else {
       timeline.current?.reverse();
-      idleResume.current = gsap.delayedCall(0.85, () => idleTimeline.current?.resume());
+      idleTimeline.current?.seek(0).pause();
+      idleResume.current = gsap.delayedCall(3, () => idleTimeline.current?.play());
     }
   }, { scope: container, dependencies: [isOpen] });
 
