@@ -37,23 +37,30 @@ const Page = () => {
     const fromHeight = formRef.current.offsetHeight;
     gsap.set(formRef.current, { height: fromHeight });
 
+    // step 1: 旧内容移出
     gsap.to(contentRef.current, {
-      x: outX, opacity: 0, duration: 0.22, ease: 'power2.in',
+      x: outX, opacity: 0, duration: 0.2, ease: 'power2.in',
       onComplete: () => {
         dispatch({ type: 'CLEAR_VALUES' });
         setPageType(value);
-        // double rAF: wait for React re-render + DOM paint before measuring new height
         requestAnimationFrame(() => requestAnimationFrame(() => {
           if (!formRef.current || !contentRef.current) return;
-          // temporarily release height to measure natural size, then re-pin
           gsap.set(formRef.current, { height: 'auto' });
           const toHeight = formRef.current.offsetHeight;
           gsap.set(formRef.current, { height: fromHeight });
+
+          // step 2: 边框撑开（间隔 0.08s）
           gsap.to(formRef.current, {
-            height: toHeight, duration: 0.4, ease: 'power2.inOut',
-            onComplete: () => { gsap.set(formRef.current, { clearProps: 'height' }); }
+            height: toHeight, duration: 0.38, ease: 'power2.inOut', delay: 0.08,
+            onComplete: () => {
+              gsap.set(formRef.current, { clearProps: 'height' });
+              // step 3: 新内容滑入（间隔 0.06s）
+              gsap.fromTo(contentRef.current,
+                { x: inX, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.35, ease: 'power2.out', delay: 0.06 }
+              );
+            }
           });
-          gsap.fromTo(contentRef.current, { x: inX, opacity: 0 }, { x: 0, opacity: 1, duration: 0.38, ease: 'power2.out' });
         }));
       }
     });
