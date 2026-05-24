@@ -35,6 +35,10 @@
   --map-stroke: #1D1D1F;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  * { cursor: none !important; }
+}
+
 /* ================================= */
 /* Markdown 列表样式修复 */
 /* ================================= */

@@ -5,6 +5,7 @@ import FontButton from '../../components/FontButton.tsx';
 import { userRegister, userResetPassword, userVerifyCode } from './api.ts';
 import useAuth from '../../hooks/useAuth.ts';
 import { useRequest } from '../../hooks/useRequest.ts';
+import gsap from 'gsap';
 
 type PageType = 'Login' | 'Register' | 'Reset Password';
 
@@ -21,6 +22,7 @@ const reducer = (state: State, action: Action) => {
 const Page = () => {
   const [pageType, setPageType] = useState<PageType>('Login');
   const formRef = useRef<HTMLFormElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,8 +30,40 @@ const Page = () => {
   const { login } = useAuth();
 
   const changePageType = (value: PageType) => {
-    dispatch({ type: 'CLEAR_VALUES' });
-    setPageType(value);
+    if (!formRef.current || !contentRef.current) return;
+    const isBack = value === 'Login';
+    const outX = isBack ? 40 : -40;
+    const inX = isBack ? -40 : 40;
+    const fromHeight = formRef.current.offsetHeight;
+    gsap.set(formRef.current, { height: fromHeight });
+
+    // step 1: 旧内容移出
+    gsap.to(contentRef.current, {
+      x: outX, opacity: 0, duration: 0.2, ease: 'power2.in',
+      onComplete: () => {
+        dispatch({ type: 'CLEAR_VALUES' });
+        setPageType(value);
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          if (!formRef.current || !contentRef.current) return;
+          gsap.set(formRef.current, { height: 'auto' });
+          const toHeight = formRef.current.offsetHeight;
+          gsap.set(formRef.current, { height: fromHeight });
+
+          // step 2: 边框撑开（间隔 0.08s）
+          gsap.to(formRef.current, {
+            height: toHeight, duration: 0.38, ease: 'power2.inOut', delay: 0.08,
+            onComplete: () => {
+              gsap.set(formRef.current, { clearProps: 'height' });
+              // step 3: 新内容滑入（间隔 0.06s）
+              gsap.fromTo(contentRef.current,
+                { x: inX, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.35, ease: 'power2.out', delay: 0.06 }
+              );
+            }
+          });
+        }));
+      }
+    });
   };
 
   const submit = async (event: MouseEvent<HTMLButtonElement>) => {
@@ -86,74 +120,76 @@ const Page = () => {
   return (
     <main className="bg-mint-50 dark:bg-mint-950 h-screen w-screen flex flex-col items-center justify-center relative">
       <form
-        className={'flex flex-col items-start justify-center border p-16 border-mint-950 dark:border-mint-50'}
+        className={'flex flex-col items-start justify-center border p-16 border-mint-950 dark:border-mint-50 overflow-x-hidden'}
         ref={formRef}
       >
-        {/* 用户名 */}
-        {pageType === 'Register' ? (
-          <Input
-            autoComplete={'name'} className={'w-64 mb-8'} label={'用户名'} name={'username'}
-            onChange={handleInputChangeEvent}
-            type={'text'} value={state.username}
-          />
-        ) : null}
-
-        {/* 邮箱 */}
-        <Input
-          autoComplete={'email'} className={'w-64 mb-8'} label={'邮箱'} name={'email'}
-          onChange={handleInputChangeEvent}
-          type={'email'} value={state.email}
-        />
-
-        {/* 验证码 */}
-        {pageType !== 'Login' ? (
-          <div className={'w-full flex flex-row items-center justify-start'}>
+        <div ref={contentRef}>
+          {/* 用户名 */}
+          {pageType === 'Register' ? (
             <Input
-              autoComplete={'one-time-code'} className={'w-32 mb-8 mr-8'} label={'验证码'} name={'code'}
+              autoComplete={'name'} className={'w-64 mb-8'} label={'用户名'} name={'username'}
               onChange={handleInputChangeEvent}
-              type={'text'} value={state.code}
+              type={'text'} value={state.username}
             />
-            <Button
-              isLoading={isLoading}
-              onClick={handleSentVerifyCode}
-              type="button"
-            />
-          </div>
-        ) : null}
+          ) : null}
 
-        {/* 密码 */}
-        {pageType === 'Login' ? (
+          {/* 邮箱 */}
           <Input
-            autoComplete={'current-password'} className={'w-64 mb-8'} label={'密码'} name={'password'}
+            autoComplete={'email'} className={'w-64 mb-8'} label={'邮箱'} name={'email'}
             onChange={handleInputChangeEvent}
-            type={'password'} value={state.password}
+            type={'email'} value={state.email}
           />
-        ) : (
-          <Input
-            autoComplete={'new-password'} className={'w-64 mb-8'} label={'密码'} name={'password'}
-            onChange={handleInputChangeEvent}
-            type={'password'} value={state.password}
-          />
-        )}
 
-        <div className={'w-full mb-8 flex flex-row items-center justify-between'}>
+          {/* 验证码 */}
           {pageType !== 'Login' ? (
-            <>
-              <FontButton className={'ml-6'} label={'返回'} onClick={() => changePageType('Login')} />
-            </>
+            <div className={'w-full flex flex-row items-center justify-start'}>
+              <Input
+                autoComplete={'one-time-code'} className={'w-32 mb-8 mr-8'} label={'验证码'} name={'code'}
+                onChange={handleInputChangeEvent}
+                type={'text'} value={state.code}
+              />
+              <Button
+                isLoading={isLoading}
+                onClick={handleSentVerifyCode}
+                type="button"
+              />
+            </div>
+          ) : null}
+
+          {/* 密码 */}
+          {pageType === 'Login' ? (
+            <Input
+              autoComplete={'current-password'} className={'w-64 mb-8'} label={'密码'} name={'password'}
+              onChange={handleInputChangeEvent}
+              type={'password'} value={state.password}
+            />
           ) : (
-            <>
-              <FontButton className={'ml-6'} label={'忘记密码'} onClick={() => changePageType('Reset Password')} />
-              <FontButton className={'mr-6'} label={'注册账号'} onClick={() => changePageType('Register')} />
-            </>
+            <Input
+              autoComplete={'new-password'} className={'w-64 mb-8'} label={'密码'} name={'password'}
+              onChange={handleInputChangeEvent}
+              type={'password'} value={state.password}
+            />
           )}
+
+          <div className={'w-full mb-8 flex flex-row items-center justify-between'}>
+            {pageType !== 'Login' ? (
+              <>
+                <FontButton className={'ml-6'} label={'返回'} onClick={() => changePageType('Login')} />
+              </>
+            ) : (
+              <>
+                <FontButton className={'ml-6'} label={'忘记密码'} onClick={() => changePageType('Reset Password')} />
+                <FontButton className={'mr-6'} label={'注册账号'} onClick={() => changePageType('Register')} />
+              </>
+            )}
+          </div>
+          <Button
+            isLoading={isLoading}
+            label={pageType}
+            onClick={submit}
+            type="submit"
+          />
         </div>
-        <Button
-          isLoading={isLoading}
-          label={pageType}
-          onClick={submit}
-          type="submit"
-        />
       </form>
     </main>
   );

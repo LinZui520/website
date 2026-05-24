@@ -1,10 +1,7 @@
 import { RefObject, useEffect, useRef } from 'react';
 import {
   SCROLLBAR_THUMB_HOVER_WIDTH,
-  SCROLLBAR_THUMB_WIDTH,
-  CURSOR_GRABBING,
-  CURSOR_GRAB,
-  CURSOR_AUTO
+  SCROLLBAR_THUMB_WIDTH
 } from './constant';
 
 const useHandleGrab = (
@@ -29,9 +26,6 @@ const useHandleGrab = (
       dragStartScrollTop.current = container.scrollTop;
       dragStartMouseY.current = event.clientY;
       isThumbGrabbed.current = true;
-      document.body.style.cursor = CURSOR_GRABBING;
-      scrollbarThumb.style.cursor = CURSOR_GRABBING;
-      // 点击滚动条的时候清除隐藏滚动条定时器
       clearHideScrollbarTimer();
     };
 
@@ -46,9 +40,6 @@ const useHandleGrab = (
 
     const handleThumbMouseUp = () => {
       isThumbGrabbed.current = false;
-      document.body.style.cursor = CURSOR_AUTO;
-      scrollbarThumb.style.cursor = CURSOR_GRAB;
-      // 拖拽结束且没有hover，则1秒后隐藏滚动条
       if (scrollbarThumb.style.width !== SCROLLBAR_THUMB_HOVER_WIDTH) {
         delayHiddenScrollbar();
       }

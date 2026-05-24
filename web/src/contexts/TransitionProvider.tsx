@@ -60,7 +60,7 @@ const TransitionProvider = ({ children }: { children: ReactNode }) => {
         style={{ transform: 'scaleY(0)' }}
       />
       <div
-        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none font-mono font-light text-4xl tracking-[0.3em] text-mint-50 dark:text-mint-950"
+        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none font-mono font-light text-xl md:text-4xl lg:text-5xl tracking-[0.3em] text-mint-50 dark:text-mint-950"
         ref={centerTextRef}
         style={{ zIndex: 51, opacity: 0 }}
       >
