@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { useLocation, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.ts';
 import Logo from './Logo.tsx';
+import { random } from '../utils/animation';
 
 // type Theme = 'light' | 'dark';
 
@@ -45,7 +46,12 @@ const Menu = () => {
     });
 
     // ── 按钮闲置动画：两线靠近后弹开 ────────────────────────
-    idleTimeline.current = gsap.timeline({ repeat: -1, repeatDelay: 2.8, delay: 3 })
+    idleTimeline.current = gsap.timeline({
+      paused: true,
+      onComplete: () => {
+        idleResume.current = gsap.delayedCall(random(2), () => idleTimeline.current?.restart());
+      }
+    })
       .to('#line1', { attr: { d: 'M 6 14 L 26 14' }, duration: 0.38, ease: 'power2.inOut' })
       .to('#line2', { attr: { d: 'M 6 18 L 26 18' }, duration: 0.38, ease: 'power2.inOut' }, 0)
       .to('#line1', { attr: { d: 'M 6 10 L 26 10' }, duration: 0.55, ease: 'back.out(3.5)' })
@@ -65,7 +71,7 @@ const Menu = () => {
     } else {
       timeline.current?.reverse();
       idleTimeline.current?.seek(0).pause();
-      idleResume.current = gsap.delayedCall(3, () => idleTimeline.current?.play());
+      idleResume.current = gsap.delayedCall(random(2), () => idleTimeline.current?.play());
     }
   }, { scope: container, dependencies: [isOpen] });
 

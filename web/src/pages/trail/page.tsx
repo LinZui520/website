@@ -23,11 +23,11 @@ const Page = () => {
 
   return (
     <>
-      <main className="w-screen min-h-[calc(100vh-4rem)] bg-mint-50 dark:bg-mint-950 flex flex-col items-center pt-16 pb-16" ref={containerRef}>
-        <div className="flex flex-col items-center justify-around w-full min-h-[calc(100vh-12rem)] max-w-7xl px-6 md:px-8">
+      <main className="w-screen h-[calc(100vh-4rem)] md:h-[calc(100vh-8rem)] pt-16 bg-mint-50 dark:bg-mint-950 flex flex-col items-center overflow-hidden" ref={containerRef}>
+        <div className="flex flex-col items-center w-full h-full max-w-7xl px-6 md:px-8 gap-6 md:gap-10">
 
           {/* Hero Section */}
-          <div className="w-full flex flex-col items-center text-center mb-16 md:mb-24">
+          <div className="w-full flex flex-col items-center text-center shrink-0">
             <div className="text-xl md:text-2xl text-mint-500 font-light tracking-wide cursor-default group" id="trail-subtitle">
               你可以不懂摄影 但一定要记录生活
               <div
@@ -37,7 +37,7 @@ const Page = () => {
           </div>
 
           {/* Map Section */}
-          <div className="w-full flex justify-center items-center" id="trail-map">
+          <div className="w-full flex-1 min-h-0 flex justify-center items-center" id="trail-map">
             {isGlobal ?
               globalGeoData &&
               <WorldMap

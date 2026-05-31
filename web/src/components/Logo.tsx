@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { random } from '../utils/animation';
 
 type Props = {
   className?: string;
@@ -76,19 +77,30 @@ const Logo = (props: Props) => {
 
     timeline.current.pause();
 
-    // 自动播放：每隔 6s 触发一次，播完后自动 reverse，hover 期间跳过
-    const autoTrigger = gsap.timeline({ repeat: -1, repeatDelay: 5.5, delay: 2 })
-      .call(() => {
-        if (isHovered.current || timeline.current?.isActive()) return;
+    // 自动播放：每次循环使用随机延迟，hover 期间跳过
+    let autoTrigger: GSAPTween | undefined;
+
+    const playIfFree = () => {
+      if (!isHovered.current && !timeline.current?.isActive()) {
         timeline.current?.restart();
         gsap.delayedCall((timeline.current?.totalDuration() ?? 1.4) + 0.5, () => {
           if (!isHovered.current) timeline.current?.reverse();
         });
+      }
+    };
+
+    const scheduleAuto = (delay: number) => {
+      autoTrigger = gsap.delayedCall(delay, () => {
+        playIfFree();
+        scheduleAuto(random(3));
       });
+    };
+
+    scheduleAuto(random(3));
 
     return () => {
       timeline.current?.kill();
-      autoTrigger.kill();
+      autoTrigger?.kill();
     };
   }, { scope: containerRef, dependencies: [theme] });
 

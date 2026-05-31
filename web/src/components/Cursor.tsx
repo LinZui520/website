@@ -6,12 +6,12 @@ const Cursor = () => {
   const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
     const dot = dotRef.current!;
     const ring = ringRef.current!;
 
     gsap.set([dot, ring], { opacity: 0 });
+
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
     let mouseX = 0, mouseY = 0;
     let ringX = 0, ringY = 0;
