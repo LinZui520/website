@@ -13,8 +13,6 @@ const Page = () => {
   const container = useRef<HTMLElement | null>(null);
 
   useGSAP(() => {
-    gsap.set(container.current, { perspective: 1200 });
-
     // ── 幕布入场（首次访问播放，路由返回时直接隐藏）────────────
     const hasPlayed = sessionStorage.getItem('curtain-played');
     if (!hasPlayed) {
@@ -23,6 +21,9 @@ const Page = () => {
     } else {
       gsap.set('#curtain', { yPercent: -100 });
     }
+
+    // 每行的视差强度系数，越靠下偏移量越大，产生景深感
+    const PARALLAX_FACTORS = [0.4, 0.7, 1.0, 1.4, 1.8, 2.2];
 
     // ── SplitText 字符分层入场 ─────────────────────────────
     const titleConfigs = [
@@ -92,11 +93,18 @@ const Page = () => {
     const onMouseMove = (e: MouseEvent) => {
       const xR = e.clientX / window.innerWidth - 0.5;
       const yR = e.clientY / window.innerHeight - 0.5;
-      gsap.to('#titles-container', { rotateX: -yR * 6, rotateY: xR * 10, duration: 1.0, ease: 'power2.out' });
-      gsap.to('#bottom-quote', { x: xR * 25, y: yR * 12, duration: 1.0, ease: 'power2.out', overwrite: 'auto' });
+
+      // 每行独立偏移，取代整体 3D 旋转
+      titleConfigs.forEach(({ id }, i) => {
+        const f = PARALLAX_FACTORS[i];
+        gsap.to(id, { x: xR * 18 * f, y: yR * 8 * f, duration: 1.0, ease: 'power2.out', overwrite: 'auto' });
+      });
+      gsap.to('#bottom-quote', { x: xR * 30, y: yR * 14, duration: 1.0, ease: 'power2.out', overwrite: 'auto' });
     };
     const onMouseLeave = () => {
-      gsap.to('#titles-container', { rotateX: 0, rotateY: 0, duration: 1.5, ease: 'power2.out' });
+      titleConfigs.forEach(({ id }) => {
+        gsap.to(id, { x: 0, y: 0, duration: 1.5, ease: 'power2.out', overwrite: 'auto' });
+      });
       gsap.to('#bottom-quote', { x: 0, y: 0, duration: 1.2, ease: 'power2.out', overwrite: 'auto' });
     };
     container.current?.addEventListener('mousemove', onMouseMove);
@@ -156,7 +164,7 @@ const Page = () => {
         />
         <div className="px-6 md:px-8">
 
-          <div className="space-y-4 md:space-y-6" id="titles-container" style={{ transformStyle: 'preserve-3d' }}>
+          <div className="space-y-4 md:space-y-6" id="titles-container">
             <h2 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tight" id="main-title-1">我叫贺阳明</h2>
             <h2 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tight" id="main-title-2">美团软件工程师</h2>
             <h2 className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tight" id="main-title-3">自诩为设计师</h2>
