@@ -26,21 +26,22 @@ const Page = () => {
 
     // ── SplitText 字符分层入场 ─────────────────────────────
     const titleConfigs = [
-      { id: '#main-title-1', from: { x: -80, opacity: 0 }, stagger: 0.035, duration: 0.6, ease: 'power3.out' },
-      { id: '#main-title-2', from: { x: 80, opacity: 0 }, stagger: { each: 0.035, from: 'end' as const }, duration: 0.6, ease: 'power3.out' },
-      { id: '#main-title-3', from: { rotationX: -90, opacity: 0, transformOrigin: 'bottom center' }, stagger: 0.04, duration: 0.7, ease: 'power3.out' },
-      { id: '#main-title-4', from: { y: 60, opacity: 0 }, stagger: 0.04, duration: 0.8, ease: 'expo.out' },
-      { id: '#main-title-5', from: { scale: 0, opacity: 0 }, stagger: { each: 0.06, from: 'center' as const }, duration: 0.6, ease: 'back.out(1.7)' },
-      { id: '#main-title-6', from: { y: -50, rotation: -12, opacity: 0 }, stagger: { each: 0.05, from: 'random' as const }, duration: 0.6, ease: 'power2.out' }
+      { id: '#main-title-1', from: { x: -80, opacity: 0 }, stagger: 0.035, duration: 0.6, ease: 'power3.out', delay: 0.2 },
+      { id: '#main-title-2', from: { x: 80, opacity: 0 }, stagger: { each: 0.035, from: 'end' as const }, duration: 0.6, ease: 'power3.out', delay: 0.32 },
+      { id: '#main-title-3', from: { rotationX: -90, opacity: 0, transformOrigin: 'bottom center' }, stagger: 0.04, duration: 0.7, ease: 'power3.out', delay: 0.44 },
+      { id: '#main-title-4', from: { y: 60, opacity: 0 }, stagger: 0.04, duration: 0.8, ease: 'expo.out', delay: 0.56 },
+      { id: '#main-title-5', from: { scale: 0, opacity: 0 }, stagger: { each: 0.06, from: 'center' as const }, duration: 0.6, ease: 'back.out(1.7)', delay: 0.68 },
+      { id: '#main-title-6', from: { y: -50, rotation: -12, opacity: 0 }, stagger: { each: 0.05, from: 'random' as const }, duration: 0.6, ease: 'power2.out', delay: 0.8 }
     ];
 
-    const splits = titleConfigs.map(({ id, from, stagger, duration, ease }) => {
+    const splits = titleConfigs.map(({ id, from, stagger, duration, ease, delay }) => {
       const split = new SplitText(id, { type: 'chars' });
       gsap.from(split.chars, {
         ...from,
         stagger,
         duration,
         ease,
+        delay,
         scrollTrigger: { trigger: id, start: 'top 88%', once: true }
       });
       return split;
@@ -48,6 +49,7 @@ const Page = () => {
 
     gsap.from('#bottom-quote', {
       x: 80, skewX: -8, opacity: 0, duration: 0.9, ease: 'power2.out',
+      delay: 0.92,
       scrollTrigger: { trigger: '#bottom-quote', start: 'top 88%', once: true }
     });
 
