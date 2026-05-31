@@ -54,7 +54,7 @@ export default [
       '@stylistic/no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0 }],
       '@stylistic/no-trailing-spaces': 'error',
       '@stylistic/object-curly-spacing': ['error', 'always'],
-      '@stylistic/quotes': ['error', 'single', { 'avoidEscape': true, 'allowTemplateLiterals': true }],
+      '@stylistic/quotes': ['error', 'single', { 'avoidEscape': true, 'allowTemplateLiterals': 'always' }],
       '@stylistic/semi': ['error', 'always'],
       '@stylistic/semi-style': ['error', 'last'],
       '@stylistic/spaced-comment': ['error', 'always']
