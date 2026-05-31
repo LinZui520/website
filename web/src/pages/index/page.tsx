@@ -15,6 +15,14 @@ const Page = () => {
   useGSAP(() => {
     gsap.set(container.current, { perspective: 1200 });
 
+    // ── 幕布入场 ──────────────────────────────────────────
+    gsap.to('#curtain', {
+      yPercent: -100,
+      duration: 0.9,
+      ease: 'expo.inOut',
+      delay: 0.1
+    });
+
     // ── SplitText 字符分层入场 ─────────────────────────────
     const titleConfigs = [
       { id: '#main-title-1', from: { x: -80, opacity: 0 }, stagger: 0.035, duration: 0.6, ease: 'power3.out' },
@@ -136,9 +144,13 @@ const Page = () => {
   return (
     <>
       <main
-        className="bg-mint-50 dark:bg-mint-950 text-mint-950 dark:text-mint-50 min-h-[calc(100vh-4rem)] w-screen flex flex-col items-center pt-32 pb-32 cursor-default"
+        className="relative bg-mint-50 dark:bg-mint-950 text-mint-950 dark:text-mint-50 min-h-[calc(100vh-4rem)] w-screen flex flex-col items-center pt-32 pb-32 cursor-default"
         ref={container}
       >
+        <div
+          className="absolute inset-0 bg-mint-50 dark:bg-mint-950 z-50 pointer-events-none"
+          id="curtain"
+        />
         <div className="px-6 md:px-8">
 
           <div className="space-y-4 md:space-y-6" id="titles-container" style={{ transformStyle: 'preserve-3d' }}>
