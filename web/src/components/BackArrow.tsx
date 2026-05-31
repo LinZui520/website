@@ -14,6 +14,7 @@ const BackArrow = ({ onClick, className }: Props) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const idleTimeline = useRef<GSAPTimeline | undefined>(undefined);
   const idleResume = useRef<GSAPTween | undefined>(undefined);
+  const resetToOrigin = useRef<(() => void) | null>(null);
   const isHovered = useRef(false);
 
   useGSAP(() => {
@@ -37,6 +38,13 @@ const BackArrow = ({ onClick, className }: Props) => {
       const d = vProxy.δ;
       vArms.setAttribute('stroke-dasharray', `${Math.max(0, vLen - 2 * d)} 99999`);
       vArms.setAttribute('stroke-dashoffset', String(-d));
+    };
+
+    // seek(0) 不触发 onUpdate，需手动将 proxy + DOM 还原到初始态
+    resetToOrigin.current = () => {
+      vProxy.δ = 0;
+      syncVArms();
+      gsap.set(line, { strokeDashoffset: 0 });
     };
 
     idleTimeline.current = gsap.timeline({
@@ -76,7 +84,8 @@ const BackArrow = ({ onClick, className }: Props) => {
       tl.reverse();
     } else {
       // 动画已暂停/未开始：直接进入 hover 放大
-      tl?.seek(0).pause();
+      tl?.pause();
+      resetToOrigin.current?.();
       gsap.to(svgRef.current, {
         scale: 1.2, transformOrigin: 'center center',
         duration: 0.25, ease: 'power2.out', overwrite: true
@@ -90,8 +99,10 @@ const BackArrow = ({ onClick, className }: Props) => {
       scale: 1, transformOrigin: 'center center',
       duration: 0.4, ease: 'back.out(2)', overwrite: true
     });
-    idleTimeline.current?.seek(0).pause();
-    idleResume.current = gsap.delayedCall(random(), () => idleTimeline.current?.play());
+    // pause() 后手动 reset，确保 vProxy + DOM 回到初始态（seek 不触发 onUpdate）
+    idleTimeline.current?.pause();
+    resetToOrigin.current?.();
+    idleResume.current = gsap.delayedCall(random(), () => idleTimeline.current?.restart());
   };
 
   const handleClick = () => {
