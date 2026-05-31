@@ -4,17 +4,19 @@ import { ChinaGeoJSONCollection, GeoJSONCollection } from '../../components/trai
 import { PhotoVO } from './type';
 import { listPhotos } from './api';
 
+const TRAIL_IS_GLOBAL_KEY = 'ZHUGUI_TRAIL_IS_GLOBAL';
+
 const Layout = () => {
   const [geoData, setGeoData] = useState<ChinaGeoJSONCollection | null>(null);
   const [globalGeoData, setGlobalGeoData] = useState<GeoJSONCollection | null>(null);
   const [photos, setPhotos] = useState<PhotoVO[]>([]);
   const [isGlobal, setIsGlobal] = useState<boolean>(() => {
-    const stored = localStorage.getItem('trail_is_global');
+    const stored = localStorage.getItem(TRAIL_IS_GLOBAL_KEY);
     return stored !== null ? stored === 'true' : true;
   });
 
   useEffect(() => {
-    localStorage.setItem('trail_is_global', String(isGlobal));
+    localStorage.setItem(TRAIL_IS_GLOBAL_KEY, String(isGlobal));
   }, [isGlobal]);
 
   useEffect(() => {
