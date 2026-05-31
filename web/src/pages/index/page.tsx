@@ -15,13 +15,14 @@ const Page = () => {
   useGSAP(() => {
     gsap.set(container.current, { perspective: 1200 });
 
-    // ── 幕布入场 ──────────────────────────────────────────
-    gsap.to('#curtain', {
-      yPercent: -100,
-      duration: 0.9,
-      ease: 'expo.inOut',
-      delay: 0.1
-    });
+    // ── 幕布入场（首次访问播放，路由返回时直接隐藏）────────────
+    const hasPlayed = sessionStorage.getItem('curtain-played');
+    if (!hasPlayed) {
+      gsap.to('#curtain', { yPercent: -100, duration: 0.9, ease: 'expo.inOut', delay: 0.1 });
+      sessionStorage.setItem('curtain-played', '1');
+    } else {
+      gsap.set('#curtain', { yPercent: -100 });
+    }
 
     // ── SplitText 字符分层入场 ─────────────────────────────
     const titleConfigs = [
@@ -144,7 +145,7 @@ const Page = () => {
   return (
     <>
       <main
-        className="relative bg-mint-50 dark:bg-mint-950 text-mint-950 dark:text-mint-50 min-h-[calc(100vh-4rem)] w-screen flex flex-col items-center pt-32 pb-32 cursor-default"
+        className="relative overflow-hidden bg-mint-50 dark:bg-mint-950 text-mint-950 dark:text-mint-50 min-h-[calc(100vh-4rem)] w-screen flex flex-col items-center pt-32 pb-32 cursor-default"
         ref={container}
       >
         <div
