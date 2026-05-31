@@ -34,7 +34,7 @@ const createRng = (seed: number) => {
 const rng = createRng(initSeed());
 
 /**
- * 返回 [3, 5) * extra 秒的随机延迟
+ * 返回 [3, 5) * scale 秒的随机延迟
  * 每次调用值不同，序列由用户专属 seed 决定
  */
-export const random = (extra = 1): number => (3 + rng() * 2) * extra;
+export const random = (scale = 1): number => (3 + rng() * 2) * scale;
