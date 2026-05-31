@@ -84,10 +84,21 @@ const Page = () => {
       .to('#main-title-3', { scale: 1.04, duration: 0.35, ease: 'power2.out' })
       .to('#main-title-3', { scale: 1, duration: 0.7, ease: 'power2.out' });
 
-    // Less is more: 弹性强调
+    // Less is more: 弹性强调 + letterSpacing 脉冲
     gsap.timeline({ repeat: -1, repeatDelay: 3, delay: 4.5 })
-      .to('#bottom-quote', { scale: 1.07, rotation: -2, duration: 0.35, ease: 'power2.out' })
-      .to('#bottom-quote', { scale: 1, rotation: 0, duration: 0.7, ease: 'back.out(1.4)' });
+      .to('#bottom-quote', { scale: 1.07, rotation: -2, letterSpacing: '0.06em', duration: 0.35, ease: 'power2.out' })
+      .to('#bottom-quote', { scale: 1, rotation: 0, letterSpacing: '0em', duration: 0.9, ease: 'back.out(1.4)' });
+
+    // Less is more: 持续缓慢呼吸（letterSpacing 微展缩）
+    gsap.to('#bottom-quote', {
+      letterSpacing: '0.03em',
+      duration: 3.5,
+      ease: 'sine.inOut',
+      repeat: -1,
+      yoyo: true,
+      delay: 5,
+      overwrite: 'auto'
+    });
 
     // ── 鼠标视差（3D 倾斜 + quote 飘移）─────────────────────
     const onMouseMove = (e: MouseEvent) => {
