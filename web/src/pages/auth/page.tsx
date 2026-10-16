@@ -31,9 +31,25 @@ const Page = () => {
 
   const changePageType = (value: PageType) => {
     if (!formRef.current || !contentRef.current) return;
-    const isBack = value === 'Login';
-    const outX = isBack ? 40 : -40;
-    const inX = isBack ? -40 : 40;
+    /*
+     * 三个面板排在一条横轴上：忘记密码(-1) · 登录(0) · 注册(+1)。
+     *
+     * 移出方向 = (当前面板位置 − 目标面板位置) × SLIDE —— 即朝目标所在的那一侧滑走，
+     * 新内容从反方向滑入。于是「返回」天然就是进场动画的倒放，不需要单独判方向：
+     *
+     *   登录 → 注册      登录左移，注册从右滑入
+     *   登录 → 忘记密码  登录右移，忘记密码从左滑入
+     *   注册 → 登录      注册右移（倒放），登录从左滑回
+     *   忘记密码 → 登录  忘记密码左移（倒放），登录从右滑回
+     */
+    const SLIDE = 40;
+    const PANEL_X: Record<PageType, number> = {
+      'Reset Password': -1,
+      'Login': 0,
+      'Register': 1
+    };
+    const outX = (PANEL_X[pageType] - PANEL_X[value]) * SLIDE;
+    const inX = -outX;
     const fromHeight = formRef.current.offsetHeight;
     gsap.set(formRef.current, { height: fromHeight });
 

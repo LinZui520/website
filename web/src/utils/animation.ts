@@ -34,7 +34,8 @@ const createRng = (seed: number) => {
 const rng = createRng(initSeed());
 
 /**
- * 返回 [3, 5) * scale 秒的随机延迟
+ * 返回 [6.18, 10) * scale 秒的随机延迟
  * 每次调用值不同，序列由用户专属 seed 决定
+ * 6.18 = 10/φ，3.82 = 10/φ² —— 区间按黄金分割切分
  */
-export const random = (scale = 1): number => (3 + rng() * 2) * scale;
+export const random = (scale = 1): number => (6.18 + rng() * 3.82) * scale;
