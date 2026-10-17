@@ -8,6 +8,7 @@ import { OutletContext } from './type';
 import WorldMap from '../../components/trail/WorldMap';
 import Footer from '../../components/Footer';
 import BackArrow from '../../components/BackArrow';
+import FadeInText from '../../components/FadeInText';
 
 const Page = () => {
   const { geoData, globalGeoData, photos, isGlobal, setIsGlobal } = useOutletContext<OutletContext>();
@@ -16,8 +17,6 @@ const Page = () => {
   const containerRef = useRef<HTMLElement | null>(null);
 
   useGSAP(() => {
-    // gsap.from('#trail-title', { opacity: 0, y: 50, duration: 1, delay: 0 });
-    gsap.from('#trail-subtitle', { opacity: 0, y: 30, duration: 1, delay: 0.4 });
     gsap.from('#trail-map', { opacity: 0, scale: 0.9, duration: 1, delay: 0.8 });
   }, { scope: containerRef });
 
@@ -29,7 +28,7 @@ const Page = () => {
           {/* Hero Section */}
           <div className="w-full flex flex-col items-center text-center shrink-0">
             <div className="text-xl md:text-2xl text-mint-500 font-light tracking-wide cursor-default group" id="trail-subtitle">
-              你可以不懂摄影 但一定要记录生活
+              <FadeInText text="你可以不懂摄影 但一定要记录生活" />
               <div
                 className={'w-full h-px origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'}
               />

@@ -1,3 +1,4 @@
+import FadeInText from './FadeInText';
 
 const Footer = () => {
 
@@ -5,12 +6,11 @@ const Footer = () => {
     <footer className="w-full h-16 md:h-32 text-mint-500 bg-mint-50 dark:bg-mint-950 flex flex-row gap-[12%] items-center justify-center">
       {/* <span className="hidden md:inline underline cursor-default">Copyright © 贺阳明</span> */}
       <a
-        className="underline"
         href="https://beian.miit.gov.cn/"
         rel="noopener noreferrer"
         target="_blank"
       >
-        赣ICP备2023014673号-2
+        <FadeInText charClassName="underline" text="赣ICP备2023014673号-2" />
       </a>
       {/* <a aria-label="github" className="hidden lg:inline-flex items-center gap-2" href="https://github.com/LinZui520/website" rel="noopener noreferrer" target="_blank">
         <span className="underline">GitHub</span>

@@ -4,6 +4,10 @@ import gsap from 'gsap';
 import { useLocation, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.ts';
 import Logo from './Logo.tsx';
+import FadeInText from './FadeInText.tsx';
+import FadeInBlock from './FadeInBlock.tsx';
+import FadeInSequence, { timelineVisualEnd } from './FadeInSequence.tsx';
+import { FADE_IN_FROM, FADE_IN_TO } from './fadeIn.ts';
 import { random } from '../utils/animation';
 
 // type Theme = 'light' | 'dark';
@@ -105,62 +109,95 @@ const Menu = () => {
           <path d="M 6 22 L 26 22" id="line2" />
         </svg>
       </div>
-      <div
-        className={
-          'bg-mint-50 dark:bg-mint-950 h-screen w-screen fixed top-0 z-30 translate-x-[150%] ' +
-          'flex flex-row items-center justify-center truncate pointer-events-auto'
-        }
-        id="nav"
-      >
-        <nav className={'relative w-4/5 h-full p-4 flex flex-col items-center justify-center'}>
-          <div className={'flex flex-col items-end gap-8'}>
-            <div className={'text-base text-mint-500 cursor-default'}>NAVIGATION MENU</div>
-            <hr className={'w-16 border-1 border-mint-500'} />
-            {menu.filter((item) => item !== null).map((item, index) => (
-              <Link
-                className={
-                  'text-6xl cursor-pointer flex overflow-hidden ' +
-                  'select-none group text-mint-950 dark:text-mint-50'
-                }
-                key={index}
-                tabIndex={-1}
-                to={item.href}
-              >
-                <div className={'group-hover:opacity-50 w-full flex flex-col font-serif'} id={`nav-${index}`}>
-                  {item.text}
-                  <div className={'w-full h-1 origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
-                </div>
-              </Link>
-            ))}
-          </div>
-          {auth.state.user && (
-            <div
-              className="absolute right-12 bottom-8 flex flex-col justify-center items-center group select-none hover:opacity-50"
-              onClick={() => {
-                window.location.href = '/admin';
-              }}
-            >
-              <span className="text-xl text-mint-950 dark:text-mint-50 cursor-pointer">控制台</span>
-              <div className={'w-full h-1 origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
+      {/* 菜单使用独立队列，避免打开菜单时点击路由把新页面的入场动画排到菜单文字后面 */}
+      <FadeInSequence>
+        <div
+          className={
+            'bg-mint-50 dark:bg-mint-950 h-screen w-screen fixed top-0 z-30 translate-x-[150%] ' +
+            'flex flex-row items-center justify-center truncate pointer-events-auto'
+          }
+          id="nav"
+        >
+          <nav className={'relative w-4/5 h-full p-4 flex flex-col items-center justify-center'}>
+            <div className={'flex flex-col items-end gap-8'}>
+              <div className={'text-base text-mint-500 cursor-default'}>NAVIGATION MENU</div>
+              <hr className={'w-16 border-1 border-mint-500'} />
+              {menu.filter((item) => item !== null).map((item, index) => (
+                <Link
+                  className={
+                    'text-6xl cursor-pointer flex overflow-hidden ' +
+                    'select-none group text-mint-950 dark:text-mint-50'
+                  }
+                  key={index}
+                  tabIndex={-1}
+                  to={item.href}
+                >
+                  <div className={'group-hover:opacity-50 w-full flex flex-col font-serif'} id={`nav-${index}`}>
+                    {item.text}
+                    <div className={'w-full h-1 origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
+                  </div>
+                </Link>
+              ))}
             </div>
-          )}
-        </nav>
-        <div className={'w-1/5 max-w-xl h-full bg-mint-100 dark:bg-mint-900 p-4 hidden xl:flex flex-col items-start justify-center gap-8'}>
-          <div className={'text-3xl text-mint-500 cursor-default'}>CONTACT US</div>
-          <hr className={'w-16 border-2 border-mint-500'} />
-          <div className={'text-base underline text-mint-950 dark:text-mint-50'}>
-            <a aria-label="gmail" href="mailto:yangminghe20@gmail.com" rel="noopener noreferrer" target="_blank">
-              yangminghe20@gmail.com
-            </a>
-          </div>
-          <div className={'text-base text-mint-950 dark:text-mint-50'}>
-            <span className="cursor-default">Copyright © </span>
-            <a aria-label="github" className={'underline'} href="https://github.com/LinZui520" rel="noopener noreferrer" target="_blank">
-              贺阳明
-            </a>
+            {auth.state.user && (
+              <div
+                className="absolute right-12 bottom-8 flex flex-col justify-center items-center group select-none hover:opacity-50"
+                onClick={() => {
+                  window.location.href = '/admin';
+                }}
+              >
+                <span className="text-xl text-mint-950 dark:text-mint-50 cursor-pointer">控制台</span>
+                <div className={'w-full h-1 origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
+              </div>
+            )}
+          </nav>
+          <div className={'w-1/5 max-w-xl h-full bg-mint-100 dark:bg-mint-900 p-4 hidden xl:flex flex-col items-start justify-center gap-8'}>
+            <FadeInBlock
+              build={() => {
+                const timeline = gsap.timeline({ paused: true });
+
+                timeline
+                  .fromTo('.contact-char', { ...FADE_IN_FROM }, { ...FADE_IN_TO })
+                  .fromTo('.contact-rule', { scaleX: 0 }, {
+                    scaleX: 1,
+                    duration: 0.9,
+                    ease: 'expo.out'
+                  }, '-=0.85');
+
+                const visualEnd = timelineVisualEnd(timeline);
+
+                return {
+                  duration: visualEnd,
+                  play: () => {
+                    timeline.play();
+                  }
+                };
+              }}
+              className={'flex flex-col items-start gap-8'}
+            >
+              <div className={'text-3xl text-mint-500 cursor-default'}>
+                {'CONTACT US'.split('').map((char, index) => (
+                  <span className={'contact-char inline-block'} key={`${char}-${index}`}>
+                    {char === ' ' ? ' ' : char}
+                  </span>
+                ))}
+              </div>
+              <hr className={'contact-rule w-16 border-2 border-mint-500 origin-left'} />
+            </FadeInBlock>
+            <div className={'text-base text-mint-950 dark:text-mint-50'}>
+              <a aria-label="gmail" href="mailto:yangminghe20@gmail.com" rel="noopener noreferrer" target="_blank">
+                <FadeInText charClassName="underline" text="yangminghe20@gmail.com" />
+              </a>
+            </div>
+            <div className={'text-base text-mint-950 dark:text-mint-50'}>
+              <FadeInText text="Copyright © " />
+              <a aria-label="github" href="https://github.com/LinZui520" rel="noopener noreferrer" target="_blank">
+                <FadeInText charClassName="underline" text="贺阳明" />
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      </FadeInSequence>
     </header>
   );
 };

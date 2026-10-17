@@ -2,6 +2,9 @@ import { Fragment, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import Footer from '../../components/Footer';
+import FadeInBlock from '../../components/FadeInBlock';
+import { timelineVisualEnd } from '../../components/FadeInSequence';
+import { FADE_IN_FROM, FADE_IN_TO } from '../../components/fadeIn';
 
 const NAME = '贺阳明';
 const ROLES = ['自诩为设计师', '完美主义者', '强迫症患者'];
@@ -26,36 +29,41 @@ const ROLES = ['自诩为设计师', '完美主义者', '强迫症患者'];
  */
 const Page = () => {
   const container = useRef<HTMLElement | null>(null);
+  const hasPlayed = useRef(sessionStorage.getItem('curtain-played') !== null);
 
   useGSAP(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const hasPlayed = sessionStorage.getItem('curtain-played') !== null;
 
     // 幕布：首次访问滑上去，返回时直接隐藏；减弱动态效果时不做这层转场
-    if (hasPlayed || reduce) {
+    if (hasPlayed.current || reduce) {
       gsap.set('#curtain', { yPercent: -100 });
     } else {
       gsap.to('#curtain', { yPercent: -100, duration: 0.9, ease: 'expo.inOut', delay: 0.1 });
     }
     sessionStorage.setItem('curtain-played', '1');
+  }, { scope: container });
 
-    // 减弱动态效果：元素保持自然状态（就是终态），不播入场
-    if (reduce) return;
+  // 首访时等幕布升起一半再开始，否则入场被幕布挡住
+  const buildHero = () => {
+    const heroDelay = hasPlayed.current ? 0 : 0.5;
+    const timeline = gsap.timeline({ paused: true, delay: heroDelay, defaults: { ease: 'expo.out' } });
 
-    // 首访时等幕布升起一半再开始，否则入场被幕布挡住
-    gsap.timeline({ delay: hasPlayed ? 0 : 0.5, defaults: { ease: 'expo.out' } })
-      .from('.hp-char', {
-        opacity: 0,
-        y: 18,
-        scaleY: 1.1,
-        filter: 'blur(10px)',
-        duration: 1.5,
-        stagger: 0.09
-      })
+    timeline
+      .fromTo('.hp-char', { ...FADE_IN_FROM }, { ...FADE_IN_TO })
       .from('.hp-rule', { scaleX: 0, duration: 0.9 }, '-=0.85')
       .from('.hp-role', { opacity: 0, y: 8, duration: 0.8, stagger: 0.08 }, '-=0.65')
       .from('.hp-sep', { opacity: 0, duration: 0.4, stagger: 0.08 }, '-=0.6');
-  }, { scope: container });
+
+    // 按最后一个子动画的视觉到位时间占位
+    const visualEnd = timelineVisualEnd(timeline);
+
+    return {
+      duration: visualEnd + heroDelay,
+      play: () => {
+        timeline.play();
+      }
+    };
+  };
 
   return (
     <>
@@ -68,7 +76,7 @@ const Page = () => {
           id="curtain"
         />
 
-        <div className="w-full flex flex-col items-center text-center">
+        <FadeInBlock build={buildHero} className="w-full flex flex-col items-center text-center">
           <h1 className="whitespace-nowrap font-extralight leading-none text-[length:calc(var(--r)*1.618)]">
             {NAME.split('').map((char, index) => (
               <span className="hp-char inline-block mx-[0.08em]" key={`${char}-${index}`}>{char}</span>
@@ -90,7 +98,7 @@ const Page = () => {
               </Fragment>
             ))}
           </div>
-        </div>
+        </FadeInBlock>
       </main>
       <Footer />
     </>
