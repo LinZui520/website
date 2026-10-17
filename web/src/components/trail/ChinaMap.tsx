@@ -3,6 +3,7 @@ import { ChinaGeoJSONCollection } from './type';
 import { calculateBounds, convertGeoJSONToSVGPath } from './geo';
 import { PhotoVO } from '../../pages/trail/type';
 import { SVG_CONFIG } from './constant';
+import { getPhotoFill } from './color';
 
 interface ChinaMapProps {
   geoData: ChinaGeoJSONCollection;
@@ -15,17 +16,20 @@ const ChinaMap: React.FC<ChinaMapProps> = ({ geoData, photos, onClickProvince, c
   const [hoveredProvince, setHoveredProvince] = useState<string | null>(null);
 
   const bounds = calculateBounds(geoData.features);
+  const provinceNames = new Set(geoData.features.map((f) => f.properties.name));
   const photosByProvince = new Map<string, number>();
   photos.forEach((p) => {
+    // 只统计本图的 location，避免国家名照片把省份的色阶分母抬高
+    if (!provinceNames.has(p.location)) return;
     photosByProvince.set(p.location, (photosByProvince.get(p.location) ?? 0) + 1);
   });
   const visitedCount = geoData.features.filter((f) => photosByProvince.has(f.properties.name)).length;
   const totalPhotos = photos.length;
+  const maxCount = Math.max(0, ...photosByProvince.values());
 
   const getFill = (province: string) => {
     if (hoveredProvince === province) return 'var(--map-hovered)';
-    if (photosByProvince.has(province)) return 'var(--map-visited)';
-    return 'var(--map-unvisited)';
+    return getPhotoFill(photosByProvince.get(province) ?? 0, maxCount);
   };
 
   return (

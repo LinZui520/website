@@ -14,7 +14,7 @@
 
 :root {
   --map-unvisited: #e2e2e4;
-  --map-visited: #6c6c6c;
+  --map-ink: var(--color-mint-900);
   --map-hovered: #1D1D1F;
   --map-stroke: #FAFAFC;
 }
@@ -22,7 +22,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --map-unvisited: #2a2a2c;
-    --map-visited: #8a8a8c;
+    --map-ink: var(--color-mint-100);
     --map-hovered: #FAFAFC;
     --map-stroke: #1D1D1F;
   }
@@ -30,7 +30,7 @@
 
 .dark {
   --map-unvisited: #2a2a2c;
-  --map-visited: #8a8a8c;
+  --map-ink: var(--color-mint-100);
   --map-hovered: #FAFAFC;
   --map-stroke: #1D1D1F;
 }

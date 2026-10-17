@@ -8,6 +8,7 @@ import ScrollProvider from '../contexts/ScrollProvider.tsx';
 import TransitionProvider from '../contexts/TransitionProvider.tsx';
 import useMarkdownTheme from '../hooks/useMarkdownTheme.ts';
 import Cursor from '../components/Cursor.tsx';
+import FadeInSequence from '../components/FadeInSequence.tsx';
 
 const Layout = () => {
   useMarkdownTheme();
@@ -24,7 +25,9 @@ const Layout = () => {
             <TransitionProvider>
               <Cursor />
               <Menu />
-              <Outlet />
+              <FadeInSequence>
+                <Outlet />
+              </FadeInSequence>
             </TransitionProvider>
           </ScrollProvider>
         </AuthProvider>

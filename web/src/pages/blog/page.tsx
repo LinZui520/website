@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
-import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import FadeInText from '../../components/FadeInText';
 import { BlogVO } from './type';
 import { listBlogs } from './api.ts';
 import { useAnimatedNavigate } from '../../contexts/TransitionProvider.tsx';
@@ -10,10 +10,6 @@ const Page = () => {
   const [blogs, setBlogs] = useState<BlogVO[]>();
   const containerRef = useRef<HTMLElement | null>(null);
   const navigate = useAnimatedNavigate();
-
-  useGSAP(() => {
-    gsap.from('#blog-subtitle', { opacity: 0, y: 30, duration: 1, delay: 0.4 });
-  }, { scope: containerRef });
 
   useLayoutEffect(() => {
     if (!blogs?.length) return;
@@ -35,7 +31,7 @@ const Page = () => {
           {/* Hero Section */}
           <div className="w-full flex flex-col items-center text-center mb-16 md:mb-24">
             <div className="text-xl md:text-2xl text-mint-500 font-light tracking-wide cursor-default group" id="blog-subtitle">
-              深度学习如同呼吸般自然
+              <FadeInText text="深度学习如同呼吸般自然" />
               <div className={'w-full h-px origin-right group-hover:origin-left transition-transform scale-x-0 group-hover:scale-x-100 duration-500 bg-mint-950 dark:bg-mint-50'} />
             </div>
           </div>

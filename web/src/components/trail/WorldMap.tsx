@@ -3,6 +3,7 @@ import { calculateBounds, convertGeoJSONToSVGPath } from './geo';
 import { GeoJSONCollection } from './type';
 import { PhotoVO } from '../../pages/trail/type';
 import { SVG_CONFIG } from './constant';
+import { FORCED_VISITED_INTENSITY, fillWithIntensity, getPhotoFill } from './color';
 
 interface WorldMapProps {
   geoData: GeoJSONCollection;
@@ -16,8 +17,11 @@ const WorldMap: React.FC<WorldMapProps> = ({ geoData, photos, onClickCountry, cl
   const [isChinaOrTaiwanHovered, setIsChinaOrTaiwanHovered] = useState(false);
 
   const bounds = calculateBounds(geoData.features);
+  const countryNames = new Set(geoData.features.map((f) => f.properties.name));
   const photosByCountry = new Map<string, number>();
   photos.forEach((p) => {
+    // 只统计本图的 location，避免省份名照片把国家的色阶分母抬高
+    if (!countryNames.has(p.location)) return;
     photosByCountry.set(p.location, (photosByCountry.get(p.location) ?? 0) + 1);
   });
 
@@ -26,12 +30,14 @@ const WorldMap: React.FC<WorldMapProps> = ({ geoData, photos, onClickCountry, cl
     return f.properties.name === 'China' || photosByCountry.has(f.properties.name);
   }).length;
   const totalPhotos = photos.length;
+  const maxCount = Math.max(0, ...photosByCountry.values());
 
   const getFill = (country: string) => {
     if ((country === 'China' || country === 'Taiwan') && isChinaOrTaiwanHovered) return 'var(--map-hovered)';
     if (hoveredCountry === country) return 'var(--map-hovered)';
-    if (photosByCountry.has(country)) return 'var(--map-visited)';
-    if (country === 'China' || country === 'Taiwan') return 'var(--map-visited)';
+    const count = photosByCountry.get(country) ?? 0;
+    if (count > 0) return getPhotoFill(count, maxCount);
+    if (country === 'China' || country === 'Taiwan') return fillWithIntensity(FORCED_VISITED_INTENSITY);
     return 'var(--map-unvisited)';
   };
 
