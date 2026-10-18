@@ -7,7 +7,9 @@ import { timelineVisualEnd } from '../../components/FadeInSequence';
 import { FADE_IN_FROM, FADE_IN_TO } from '../../components/fadeIn';
 
 const NAME = '贺阳明';
-const ROLES = ['自诩为设计师', '完美主义者', '强迫症患者'];
+const ROLES = ['自诩设计师', '完美主义者', '强迫症患者'];
+/** 首屏入场整体延后：幕布和文字一起平移，保持两者原有的相对节奏 */
+const INTRO_DELAY = 0.382;
 
 /**
  * 版式：中轴金线。
@@ -38,14 +40,14 @@ const Page = () => {
     if (hasPlayed.current || reduce) {
       gsap.set('#curtain', { yPercent: -100 });
     } else {
-      gsap.to('#curtain', { yPercent: -100, duration: 0.9, ease: 'expo.inOut', delay: 0.1 });
+      gsap.to('#curtain', { yPercent: -100, duration: 0.9, ease: 'expo.inOut', delay: 0.1 + INTRO_DELAY });
     }
     sessionStorage.setItem('curtain-played', '1');
   }, { scope: container });
 
   // 首访时等幕布升起一半再开始，否则入场被幕布挡住
   const buildHero = () => {
-    const heroDelay = hasPlayed.current ? 0 : 0.5;
+    const heroDelay = (hasPlayed.current ? 0 : 0.5) + INTRO_DELAY;
     const timeline = gsap.timeline({ paused: true, delay: heroDelay, defaults: { ease: 'expo.out' } });
 
     timeline
@@ -77,7 +79,7 @@ const Page = () => {
         />
 
         <FadeInBlock build={buildHero} className="w-full flex flex-col items-center text-center">
-          <h1 className="whitespace-nowrap font-extralight leading-none text-[length:calc(var(--r)*1.618)]">
+          <h1 className="whitespace-nowrap font-mono leading-none text-mint-950 dark:text-mint-50 text-[length:calc(var(--r)*1.618)]">
             {NAME.split('').map((char, index) => (
               <span className="hp-char inline-block mx-[0.08em]" key={`${char}-${index}`}>{char}</span>
             ))}
